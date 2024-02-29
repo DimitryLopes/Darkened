@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeData : MonoBehaviour
+[CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Maze Data")]
+public class MazeData : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private int height;
+    [SerializeField]
+    private int width;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int Height => height;
+    public int Width => width;
 }

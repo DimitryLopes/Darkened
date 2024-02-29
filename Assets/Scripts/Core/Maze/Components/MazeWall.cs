@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeWall : MonoBehaviour
+public class MazeWall : Activateable
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnActivate()
     {
-        
+        gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnDeactivate()
     {
-        
+        gameObject.SetActive(false);
     }
 }
