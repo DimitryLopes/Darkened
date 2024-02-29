@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa82ebbc382314ca99f5f3a8f53057, type: 3}
   m_Name: TestData
   m_EditorClassIdentifier: 
-  height: 5
-  width: 5
+  height: 8
+  width: 8

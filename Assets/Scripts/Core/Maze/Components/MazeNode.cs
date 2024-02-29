@@ -49,6 +49,7 @@ public class MazeNode : MonoBehaviour
     {
         Vector3 offset = NodeUtils.GetWallPositionOffset(direction) * NodeUtils.NODE_SIZE / 2;
         wallDictionary[direction].transform.position = transform.position + offset;
+        wallDictionary[direction].AlignWith(direction);
     }
 
     public void Clear()

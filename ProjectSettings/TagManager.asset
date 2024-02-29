@@ -41,3 +41,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Maze Floor
+    uniqueID: 2396455605
+    locked: 0
+  - name: Maze Walls
+    uniqueID: 2603997533
+    locked: 0
+  - name: Maze Items
+    uniqueID: 2994701903
+    locked: 0
+  - name: Player
+    uniqueID: 2752001315
+    locked: 0
+  - name: Enemy
+    uniqueID: 2618873705
+    locked: 0

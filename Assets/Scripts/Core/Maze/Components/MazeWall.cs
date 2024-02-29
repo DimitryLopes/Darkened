@@ -13,4 +13,10 @@ public class MazeWall : Activateable
     {
         gameObject.SetActive(false);
     }
+
+    public void AlignWith(Cardinal direction)
+    {
+        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
+    }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NodeUtils : MonoBehaviour
 {
-    public const int NODE_SIZE = 1;
+    public const float NODE_SIZE = 0.975f;
     public static Vector2 GetWallPositionOffset(Cardinal direction)
     {
         Vector2 offset = Vector2.zero;
@@ -24,5 +24,28 @@ public class NodeUtils : MonoBehaviour
         }
 
         return offset;
+    }
+
+    public static float GetWallRotationByCardinal(Cardinal direction)
+    {
+        float rotation = 0f;
+
+        switch (direction)
+        {
+            case Cardinal.North:
+                rotation = -90f;
+                break;
+            case Cardinal.East:
+                rotation = 0f;
+                break;
+            case Cardinal.South:
+                rotation = 90f;
+                break;
+            case Cardinal.West:
+                rotation = 180f;
+                break;
+        }
+
+        return rotation;
     }
 }
