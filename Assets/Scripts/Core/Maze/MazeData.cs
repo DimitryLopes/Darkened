@@ -7,7 +7,10 @@ public class MazeData : ScriptableObject
     private int height;
     [SerializeField]
     private int width;
+    [SerializeField]
+    private float minDistanceStartToFinish;
 
     public int Height => height;
     public int Width => width;
+    public float MinDistanceStartToFinish => minDistanceStartToFinish;
 }

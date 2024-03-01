@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MazeWall : Activateable
 {
+    public bool IsAtBorder { get; private set; }
+
     protected override void OnActivate()
     {
         gameObject.SetActive(true);
@@ -14,9 +16,11 @@ public class MazeWall : Activateable
         gameObject.SetActive(false);
     }
 
-    public void AlignWith(Cardinal direction)
+    public void AlignWith(Cardinal direction, bool isAtBorder)
     {
+        IsAtBorder = isAtBorder;
         float rotation = NodeUtils.GetWallRotationByCardinal(direction);
         transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
+
 }

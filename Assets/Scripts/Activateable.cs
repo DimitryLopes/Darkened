@@ -15,7 +15,7 @@ public class Activateable : MonoBehaviour
         }
     }
 
-    public void Dectivate()
+    public void Deactivate()
     {
         if (active)
         {
