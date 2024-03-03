@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class LevelDataBase : MonoBehaviour
+[CreateAssetMenu(fileName = "LevelDataBase", menuName = "Scriptable Objects/Data Bases/Level Data Base")]
+public class LevelDataBase : ScriptableObject
 {
     [SerializeField]
     private List<LevelData> levelDatas;
 
     public List<LevelData> LevelDatas => levelDatas;
 }
-
-
 
 [Serializable]
 public struct LevelData

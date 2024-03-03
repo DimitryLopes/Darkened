@@ -10,7 +10,7 @@ public class LevelManager
     [Inject]
     public LevelManager(LevelDataBase levelDataBase, MazeManager mazeManager)
     {
-        this.levelDatas = levelDataBase.LevelDatas;
+        levelDatas = levelDataBase.LevelDatas;
         this.mazeManager = mazeManager;
     }
 

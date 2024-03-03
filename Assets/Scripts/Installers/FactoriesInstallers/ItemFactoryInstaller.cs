@@ -1,12 +1,14 @@
 using Zenject;
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class ItemFactoryInstaller : MonoInstaller
 {
+    [Inject]
+    private ItemDataBase itemDataBase;
+
     public override void InstallBindings()
     {
-        Container.BindFactory<Item, Item.Factory>().AsSingle();
+        Container.Bind<ItemFactory>().AsSingle();
+        Container.Bind<Item>().FromInstance(itemDataBase.ItemDatas[ItemType.Exit]).WhenInjectedInto<ItemFactory>();
     }
 }

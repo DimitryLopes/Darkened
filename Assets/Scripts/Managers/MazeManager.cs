@@ -6,7 +6,7 @@ using Zenject;
 public class MazeManager 
 {
     private readonly MazeGenerator mazeGenerator;
-    private readonly Item.Factory itemFactory;
+    private readonly ItemFactory itemFactory;
 
     public void LoadMaze(MazeData data)
     {
@@ -19,9 +19,11 @@ public class MazeManager
     }
 
     [Inject]
-    public MazeManager(Item.Factory itemFactory, MazeGenerator mazeGenerator)
+    public MazeManager(ItemFactory itemFactory, MazeGenerator mazeGenerator)
     {
         this.itemFactory = itemFactory;
         this.mazeGenerator = mazeGenerator;
+
+        MazeExit exit = (MazeExit)itemFactory.Create<MazeExit>(ItemType.Exit);
     }
 }

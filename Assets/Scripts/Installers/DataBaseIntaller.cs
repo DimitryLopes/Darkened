@@ -4,9 +4,14 @@ using Zenject;
 public class DataBaseIntaller : MonoInstaller
 {
     [SerializeField]
-    private LevelDataBase database;
+    private LevelDataBase levelDataBase;
+    [SerializeField]
+    private ItemDataBase itemDataBase;
+
     public override void InstallBindings()
     {
-        Container.Bind<LevelDataBase>().FromInstance(database).AsSingle();
+        itemDataBase.SetUp();
+        Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();
+        Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
     }
 }
