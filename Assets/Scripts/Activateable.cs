@@ -11,6 +11,7 @@ public class Activateable : MonoBehaviour
         if (!active)
         {
             active = true;
+            gameObject.SetActive(true);
             OnActivate();
         }
     }
@@ -20,6 +21,7 @@ public class Activateable : MonoBehaviour
         if (active)
         {
             active = false;
+            gameObject.SetActive(false);
             OnDeactivate();
         }
     }

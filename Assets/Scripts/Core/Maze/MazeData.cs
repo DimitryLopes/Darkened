@@ -13,4 +13,11 @@ public class MazeData : ScriptableObject
     public int Height => height;
     public int Width => width;
     public float MinDistanceStartToFinish => minDistanceStartToFinish;
+
+    public MazeData(int size)
+    {
+        height = size;
+        width = size;
+        minDistanceStartToFinish = Mathf.Ceil(size/2);
+    }
 }

@@ -2,9 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using System;
+using Zenject;
 
 public class MazeGenerator : MonoBehaviour
 {
+    [Inject]
+    GameManager gameManager;
+
     [SerializeField]
     private MazeWall wallPrefab;
     [SerializeField]
@@ -20,16 +24,6 @@ public class MazeGenerator : MonoBehaviour
     private List<MazeWall> instantiatedWalls = new List<MazeWall>();
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            ClearMaze();
-            CreateMaze(TemporaryDAta);
-        }
-    }
-
     private void ClearMaze()
     {
         foreach(MazeNode node in instantiatedNodes)
@@ -38,13 +32,22 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            gameManager.StartGame();
+        }
+    }
+
     public void CreateMaze(MazeData data)
     {
+        ClearMaze();
         MazeNode[,] mazeNodes = CreateBase(data);
         CreatePath(mazeNodes, data);
     }
 
-    public MazeNode[,] CreateBase(MazeData data)
+    private MazeNode[,] CreateBase(MazeData data)
     {
         MazeNode[,] nodes = new MazeNode[data.Width, data.Height];
         for (int y = 0; y < data.Height; y++)
