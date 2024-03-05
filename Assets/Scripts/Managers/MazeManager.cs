@@ -13,9 +13,22 @@ public class MazeManager
         mazeGenerator.CreateMaze(data);
     }
 
-    public void CreateItem(ItemType type)
+    public Item CreateItem<T>(ItemType type) where T : Item
     {
-        //MazeExit item = itemFactory.Create();
+        return itemFactory.Create<T>(type);
+    }
+
+    public List<MissionItem> GetMissionItems(Objective objective)
+    {
+        List<ItemType> missionItemsInfo = objective.GetRequiredItems();
+        List<MissionItem> items = new List<MissionItem>();
+        foreach(ItemType type in missionItemsInfo)
+        {
+            MissionItem missionItem = (MissionItem)CreateItem<Item>(type);
+            missionItem.SetObjective(objective);
+            items.Add(missionItem);
+        }
+        return items;
     }
 
     [Inject]
@@ -23,7 +36,5 @@ public class MazeManager
     {
         this.itemFactory = itemFactory;
         this.mazeGenerator = mazeGenerator;
-
-        MazeExit exit = (MazeExit)itemFactory.Create<MazeExit>(ItemType.Exit);
     }
 }

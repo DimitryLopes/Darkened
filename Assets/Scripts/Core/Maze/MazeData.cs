@@ -9,15 +9,19 @@ public class MazeData : ScriptableObject
     private int width;
     [SerializeField]
     private float minDistanceStartToFinish;
+    [SerializeField]
+    private Objective objective;
 
     public int Height => height;
     public int Width => width;
+    public Objective Objective => objective;
     public float MinDistanceStartToFinish => minDistanceStartToFinish;
 
-    public MazeData(int size)
+    public MazeData(int size, Objective objective)
     {
         height = size;
         width = size;
+        this.objective = objective;
         minDistanceStartToFinish = Mathf.Ceil(size/2);
     }
 }

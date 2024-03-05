@@ -8,10 +8,11 @@ public class LevelManager
     private MazeManager mazeManager;
 
     [Inject]
-    public LevelManager(LevelDataBase levelDataBase, MazeManager mazeManager)
+    public LevelManager(LevelDataBase levelDataBase, MazeManager mazeManager, ObjectivesDataBase objectivesDataBase)
     {
         levelDatas = levelDataBase.LevelDatas;
         this.mazeManager = mazeManager;
+        this.objectivesDataBase = objectivesDataBase;
     }
 
     #region Defined Level
@@ -29,7 +30,10 @@ public class LevelManager
 
     #region Random Level
 
-    private int currentRandomLevelSize = 8;
+    private ObjectivesDataBase objectivesDataBase;
+
+    private int currentRandomLevelSize = 1024;
+
     public void ChangeRandomMazeSize(int size)
     {
         currentRandomLevelSize = size;
@@ -37,7 +41,8 @@ public class LevelManager
 
     public void StartRandomLevel()
     {
-        MazeData randomLevelData = new MazeData(currentRandomLevelSize);
+        Objective objective = objectivesDataBase.GetRandomObjective();
+        MazeData randomLevelData = new MazeData(currentRandomLevelSize, objective);
         LoadLevel(randomLevelData);
     }
     #endregion

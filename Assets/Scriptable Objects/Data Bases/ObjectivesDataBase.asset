@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4aa82ebbc382314ca99f5f3a8f53057, type: 3}
-  m_Name: TestData
+  m_Script: {fileID: 11500000, guid: 2b32ab52404a0854f9ff661ac82ca316, type: 3}
+  m_Name: ObjectivesDataBase
   m_EditorClassIdentifier: 
-  height: 8
-  width: 8
-  minDistanceStartToFinish: 0
-  objective: {fileID: 11400000, guid: 2a4feef9555a73044b8117569739ac6f, type: 2}
+  objectives:
+  - {fileID: 11400000, guid: 2a4feef9555a73044b8117569739ac6f, type: 2}

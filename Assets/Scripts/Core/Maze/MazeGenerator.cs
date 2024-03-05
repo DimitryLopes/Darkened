@@ -8,13 +8,13 @@ public class MazeGenerator : MonoBehaviour
 {
     [Inject]
     GameManager gameManager;
+    [Inject]
+    private MazeManager mazeManager;
 
     [SerializeField]
     private MazeWall wallPrefab;
     [SerializeField]
     private MazeNode nodePrefab;
-    [SerializeField]
-    private MazeData TemporaryDAta;
 
     [SerializeField, Header("Containers")]
     private Transform nodeContainer;
@@ -69,12 +69,10 @@ public class MazeGenerator : MonoBehaviour
     private void CreatePath(MazeNode[,] nodes, MazeData data)
     {
         MazeNode startNode = SetStartingPoint(nodes, data);
-        MazeNode finishNode = SetFinishingPoint(startNode, data);
 
         Stack<MazeNode> stack = new Stack<MazeNode>();
         stack.Push(nodes[startNode.X, startNode.Y]);
         StartCoroutine(CreatePath(data, stack));
-        // RemoveDeadEnds();
     }
 
     private IEnumerator CreatePath(MazeData data, Stack<MazeNode> stack)
@@ -102,6 +100,7 @@ public class MazeGenerator : MonoBehaviour
         }
 
         RemoveDeadEnds(data);
+        AddItems(data);
     }
 
     public void RemoveDeadEnds(MazeData data)
@@ -205,6 +204,37 @@ public class MazeGenerator : MonoBehaviour
 
         nodeB.RemoveWall(direction);
     }
+    public void RemoveDeadEndWall(MazeNode node, MazeData data)
+    {
+        List<Cardinal> cardinals = new List<Cardinal>();
+        foreach(Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
+        {
+            cardinals.Add(cardinal);
+        }
+
+        while (cardinals.Count > 0)
+        {
+            if (!node.Edges[cardinals[0]] && node.HasWall(cardinals[0]))
+            {
+                MazeNode neighboorNode = GetNodeAtCardinalFromNode(cardinals[0], node, data);
+                if (neighboorNode != null)
+                {
+                    RemoveWallsAt(node, neighboorNode);
+                    break;
+                }
+                else
+                {
+                    cardinals.RemoveAt(0);
+                    cardinals.Shuffle();
+                }
+            }
+            else
+            {
+                cardinals.RemoveAt(0);
+                cardinals.Shuffle();
+            }
+        }
+    }
 
     public MazeNode GetRandomEdgeCoordinate(MazeNode node, MazeData data, float minDistance = float.MaxValue)
     {
@@ -292,38 +322,15 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-
-    public void RemoveDeadEndWall(MazeNode node, MazeData data)
+    private void AddItems(MazeData data)
     {
-        List<Cardinal> cardinals = new List<Cardinal>();
-        foreach(Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
+        List<MissionItem> items = mazeManager.GetMissionItems(data.Objective);
+        foreach (MissionItem item in items)
         {
-            cardinals.Add(cardinal);
-        }
-
-        while (cardinals.Count > 0)
-        {
-            if (!node.Edges[cardinals[0]] && node.HasWall(cardinals[0]))
-            {
-                MazeNode neighboorNode = GetNodeAtCardinalFromNode(cardinals[0], node, data);
-                if (neighboorNode != null)
-                {
-                    RemoveWallsAt(node, neighboorNode);
-                    break;
-                }
-                else
-                {
-                    cardinals.RemoveAt(0);
-                    cardinals.Shuffle();
-                }
-            }
-            else
-            {
-                cardinals.RemoveAt(0);
-                cardinals.Shuffle();
-            }
+            Debug.Log('a');
         }
     }
+
 
     #region Pooling
     private MazeWall GetAvailableWall()

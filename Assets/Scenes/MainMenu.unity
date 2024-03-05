@@ -213,6 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelDataBase: {fileID: 11400000, guid: 7f2b385226eec5446bf5bbb934fcc2ce, type: 2}
   itemDataBase: {fileID: 11400000, guid: bf5a592e54ca8bd49bf35737e1b06ce0, type: 2}
+  objectivesDataBase: {fileID: 11400000, guid: 8be21d94500c4d642b4f245d94648660, type: 2}
 --- !u!1 &204006950
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,7 +469,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 3386954019067638389, guid: 34d63fc63c50ac443969917b60969e0c, type: 3}
   nodePrefab: {fileID: 6688492782065923794, guid: f73c4193bafc49044ac37ff1797b640e, type: 3}
-  TemporaryDAta: {fileID: 11400000, guid: 322729c1d59aac94c835e465da42f15a, type: 2}
   nodeContainer: {fileID: 1097074141}
   wallsContainer: {fileID: 204006951}
 --- !u!4 &1737776605

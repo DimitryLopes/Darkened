@@ -15,4 +15,10 @@ public static class ListExtensions
             list[n] = value;
         }
     }
+
+    public static T GetRandom<T>(this IList<T> list)
+    {
+        int randomIndex = Random.Range(0, list.Count - 1);
+        return list[randomIndex];
+    }
 }

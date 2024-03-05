@@ -1,0 +1,23 @@
+using Zenject;
+using UnityEngine;
+
+public class MazeExit : MissionItem
+{
+    private SignalBus signalBus;
+
+    [Inject]
+    public void Create(SignalBus signalBus)
+    {
+        this.signalBus = signalBus;
+    }
+
+    public override void Interact()
+    {
+        if (canInteract)
+        {
+            ContributeToProgress();
+        }
+    }
+}
+
+
