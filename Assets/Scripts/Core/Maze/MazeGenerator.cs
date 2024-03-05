@@ -40,14 +40,16 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    #region Main Generation
     public void CreateMaze(MazeData data)
     {
         ClearMaze();
-        MazeNode[,] mazeNodes = CreateBase(data);
-        CreatePath(mazeNodes, data);
+
+        IEnumerator<MazeNode[,]> enumerator = CreateBase(data);
+        StartCoroutine(enumerator);
     }
 
-    private MazeNode[,] CreateBase(MazeData data)
+    private IEnumerator<MazeNode[,]> CreateBase(MazeData data)
     {
         MazeNode[,] nodes = new MazeNode[data.Width, data.Height];
         for (int y = 0; y < data.Height; y++)
@@ -61,9 +63,11 @@ public class MazeGenerator : MonoBehaviour
                 PositionNode(newNode);
                 SetNodeEdges(newNode, data);
                 MazeUtils.ExecuteActionWithAllCardinals(AddNodeWalls, newNode);
+                Debug.Log("Node Generated");
+                yield return null;
             }
         }
-        return nodes;
+        CreatePath(nodes, data);
     }
 
     private void CreatePath(MazeNode[,] nodes, MazeData data)
@@ -87,8 +91,6 @@ public class MazeGenerator : MonoBehaviour
             if (neighbors.Count > 0)
             {
                 stack.Push(currentNode);
-
-                // Shuffle the neighbors to randomize the search
                 neighbors.Shuffle();
                 foreach (MazeNode node in neighbors)
                 {
@@ -100,7 +102,6 @@ public class MazeGenerator : MonoBehaviour
         }
 
         RemoveDeadEnds(data);
-        AddItems(data);
     }
 
     public void RemoveDeadEnds(MazeData data)
@@ -112,7 +113,17 @@ public class MazeGenerator : MonoBehaviour
                 RemoveDeadEndWall(node, data);
             }
         }
+        AddItems(data); 
     }
+    private void AddItems(MazeData data)
+    {
+        List<MissionItem> items = mazeManager.GetMissionItems(data.Objective);
+        foreach (MissionItem item in items)
+        {
+            Debug.Log("Added item");
+        }
+    }
+    #endregion
 
     private List<MazeNode> GetUnvisitedNeighbors(MazeNode node, MazeData data)
     {
@@ -322,14 +333,6 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private void AddItems(MazeData data)
-    {
-        List<MissionItem> items = mazeManager.GetMissionItems(data.Objective);
-        foreach (MissionItem item in items)
-        {
-            Debug.Log('a');
-        }
-    }
 
 
     #region Pooling
