@@ -32,7 +32,7 @@ public class LevelManager
 
     private ObjectivesDataBase objectivesDataBase;
 
-    private int currentRandomLevelSize = 1024;
+    private int currentRandomLevelSize = 8;
 
     public void ChangeRandomMazeSize(int size)
     {

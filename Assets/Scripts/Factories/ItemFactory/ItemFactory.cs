@@ -11,9 +11,9 @@ public class ItemFactory
         this.dataBase = dataBase;
     }
 
-    public Item Create<T>(ItemType type) where T : Item
+    public Item Create(ItemType type)
     {
         Item prefab = dataBase.ItemDatas[type];
-        return container.InstantiatePrefabForComponent<T>(prefab);
+        return container.InstantiatePrefabForComponent<Item>(prefab);
     }
 }

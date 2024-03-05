@@ -13,9 +13,9 @@ public class MazeManager
         mazeGenerator.CreateMaze(data);
     }
 
-    public Item CreateItem<T>(ItemType type) where T : Item
+    public Item CreateItem(ItemType type)
     {
-        return itemFactory.Create<T>(type);
+        return itemFactory.Create(type);
     }
 
     public List<MissionItem> GetMissionItems(Objective objective)
@@ -24,7 +24,7 @@ public class MazeManager
         List<MissionItem> items = new List<MissionItem>();
         foreach(ItemType type in missionItemsInfo)
         {
-            MissionItem missionItem = (MissionItem)CreateItem<Item>(type);
+            MissionItem missionItem = (MissionItem)CreateItem(type);
             missionItem.SetObjective(objective);
             items.Add(missionItem);
         }
