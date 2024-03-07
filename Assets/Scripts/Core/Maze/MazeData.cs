@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Maze Data")]
 public class MazeData : ScriptableObject
@@ -17,11 +18,16 @@ public class MazeData : ScriptableObject
     public Objective Objective => objective;
     public float MinDistanceStartToFinish => minDistanceStartToFinish;
 
-    public MazeData(int size, Objective objective)
+    public void SetUp(int size, Objective objective)
     {
         height = size;
         width = size;
         this.objective = objective;
-        minDistanceStartToFinish = Mathf.Ceil(size/2);
+        minDistanceStartToFinish = Mathf.Ceil(size / 2);
+    }
+
+    public void StartObjective(SignalBus signalBus)
+    {
+        objective.StartObjective(signalBus);
     }
 }

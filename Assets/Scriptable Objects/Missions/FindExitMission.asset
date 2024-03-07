@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b3a3830f00d68458cc959897bd934c, type: 3}
-  m_Name: EscapeObjective
+  m_Script: {fileID: 11500000, guid: 183fac245659ff941a8a93c4b8082e64, type: 3}
+  m_Name: FindExitMission
   m_EditorClassIdentifier: 
-  description: Find the exit and escape the maze!
-  baseMissions:
-  - {fileID: 11400000, guid: f9e69ce90be171e429fb388d9a1c24c4, type: 2}
+  itemData:
+    item: 0
+    amount: 1

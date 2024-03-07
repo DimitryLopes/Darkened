@@ -39,9 +39,13 @@ public class LevelManager
 
     public void StartRandomLevel()
     {
-        Objective objective = objectivesDataBase.GetRandomObjective();
-        MazeData randomLevelData = new MazeData(currentRandomLevelSize, objective);
-        LoadLevel(randomLevelData);
+        Objective baseObjective = objectivesDataBase.GetRandomObjective();
+        Objective objective = Objective.CreateInstance<Objective>();
+        objective.SetUp(baseObjective);
+
+        MazeData data = MazeData.CreateInstance<MazeData>();
+        data.SetUp(currentRandomLevelSize, objective);
+        LoadLevel(data);
     }
     #endregion
 

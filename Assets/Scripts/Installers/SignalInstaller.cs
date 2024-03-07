@@ -6,8 +6,8 @@ public class SignalInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
-        Container.DeclareSignal<ObjectiveCompletedSignal>();
+        Container.DeclareSignal<OnObjectiveCompletedSignal>();
+        Container.DeclareSignal<OnMissionCompletedSignal>();
 
-        //Container.BindSignal<ObjectiveCompletedSignal>();
     }
 }

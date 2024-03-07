@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 public class NodeUtils : MonoBehaviour
 {
@@ -76,7 +77,7 @@ public class NodeUtils : MonoBehaviour
 
     public static Cardinal GetOppositeCardinal(Cardinal cardinal)
     {
-        switch(cardinal)
+        switch (cardinal)
         {
             case Cardinal.North:
                 return Cardinal.South;
@@ -88,5 +89,23 @@ public class NodeUtils : MonoBehaviour
                 return Cardinal.East;
         }
         return Cardinal.North;
+    }
+
+    public static MazeWall GetRandomWall(MazeNode node, bool edgeOnly = false)
+    {
+        List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        cardinals.Shuffle();
+        foreach (Cardinal cardinal in cardinals)
+        {
+            if (node.HasWall(cardinal) && (!edgeOnly || node.GetEdge(cardinal)))
+            {
+                if (edgeOnly)
+                {
+                    Debug.Log("Got edge wall at " + cardinal.ToString());
+                }
+                return node.GetWall(cardinal);
+            }
+        }
+        return null;
     }
 }

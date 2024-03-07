@@ -10,14 +10,6 @@ public class MazeExit : MissionItem
     {
         this.signalBus = signalBus;
     }
-
-    public override void Interact()
-    {
-        if (canInteract)
-        {
-            ContributeToProgress();
-        }
-    }
 }
 
 

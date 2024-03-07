@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class MissionItem : Item
 {
-    protected Objective objective;
+    protected Mission mission;
 
-    public void SetObjective(Objective objective)
+    public void SetMission(Mission mission)
     {
-        this.objective = objective;
+        this.mission = mission;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Interact();
+        }
     }
 
     public override void Interact()
     {
-        if (canInteract)
+        if (true)
         {
             ContributeToProgress();
         }
@@ -21,6 +29,6 @@ public class MissionItem : Item
 
     public virtual void ContributeToProgress()
     {
-        
+        mission.OnMissionProgress(type);
     }
 }

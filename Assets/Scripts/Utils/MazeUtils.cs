@@ -35,14 +35,16 @@ public class MazeUtils
         }
     }
 
-    public static List<MazeNode> GetEdgeNodes(List<MazeNode> nodes, int gridHeight, int gridWidth)
+    public static List<MazeNode> GetEdgeNodes(MazeNode[,] nodes, MazeData data)
     {
         List<MazeNode> edgeNodes = new List<MazeNode>();
+        int height = data.Height;
+        int width = data.Width;
 
         foreach (MazeNode node in nodes)
         {
-            if (node.X == 0 || node.X == gridWidth - 1 ||
-                node.Y == 0 || node.Y == gridHeight - 1)
+            if (node.X == 0 || node.X == width - 1 ||
+                node.Y == 0 || node.Y == height - 1)
             {
                 edgeNodes.Add(node);
             }

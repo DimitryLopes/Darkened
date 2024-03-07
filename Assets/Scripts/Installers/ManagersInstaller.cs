@@ -4,8 +4,9 @@ public class ManagersInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        //MazeManager doesn't need other managers
+        //Doesn't need other managers
         Container.Bind<MazeManager>().AsSingle();
+        Container.Bind<ObjectiveManager>().AsSingle();
         //LevelManager needs MazeManager
         Container.Bind<LevelManager>().AsSingle();
         //GameManager needs LevelManager

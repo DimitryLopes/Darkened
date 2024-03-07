@@ -13,7 +13,6 @@ public class MazeNode : Activateable
     public int Y => coordinates.Y;
     public int ActiveWalls { get; private set; } = 0;
     public Coordinate Coordinates => coordinates;
-    public Dictionary<Cardinal, bool> Edges => edges;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
@@ -52,6 +51,11 @@ public class MazeNode : Activateable
         }
     }
 
+    public MazeWall GetWall(Cardinal cardinal)
+    {
+        return wallDictionary[cardinal];
+    }
+
     private void PositionWall(Cardinal direction, bool isWallAtBorder)
     {
         Vector3 offset = NodeUtils.GetWallPositionOffset(direction) * NodeUtils.NODE_SIZE / 2;
@@ -77,15 +81,8 @@ public class MazeNode : Activateable
 
     private void ClearWall(MazeWall wall)
     {
-        if (wallDictionary.ContainsValue(wall))
-        {
-            wall.Deactivate();
-            ActiveWalls--;
-        }
-        else
-        {
-            Debug.LogError("Node at [" + X + "," + Y + "] doesn't have a wall at: " + wall.transform.localPosition);
-        }
+        wall.Deactivate();
+        ActiveWalls--;
     }
 
     private void ClearEdge(Cardinal cardinal)
@@ -97,6 +94,22 @@ public class MazeNode : Activateable
     {
         edges[cardinal] = isOnEdge;
     }
+
+    public bool GetEdge(Cardinal cardinal)
+    {
+        return edges[cardinal];
+    }
+
+    public MazeWall GetRandomWallOnEdge()
+    {
+        return NodeUtils.GetRandomWall(this, true);
+    }
+
+    public MazeWall GetRandomWall()
+    {
+        return NodeUtils.GetRandomWall(this);
+    }
+
 
     private void FillDictionary(Cardinal direction)
     {
