@@ -4,23 +4,24 @@ using Zenject;
 public class LevelManager
 {
     private MazeManager mazeManager;
+    private ObjectivesDataBase objectivesDataBase;
+    private LevelDataBase levelDataBase;
 
     [Inject]
     public LevelManager(LevelDataBase levelDataBase, MazeManager mazeManager, ObjectivesDataBase objectivesDataBase)
     {
-        levelDatas = levelDataBase.LevelDatas;
+        this.levelDataBase = levelDataBase;
         this.mazeManager = mazeManager;
         this.objectivesDataBase = objectivesDataBase;
     }
 
     #region Defined Level
-    List<LevelData> levelDatas;
 
     public void StartLevel(int levelIndex)
     {
-        if(levelDatas[levelIndex].Data != null)
+        if(levelDataBase.LevelDatas[levelIndex].Data != null)
         {
-            LoadLevel(levelDatas[levelIndex].Data);
+            LoadLevel(levelDataBase.LevelDatas[levelIndex].Data);
         }
     }
 
@@ -28,7 +29,7 @@ public class LevelManager
 
     #region Random Level
 
-    private ObjectivesDataBase objectivesDataBase;
+
 
     private int currentRandomLevelSize = 8;
 
@@ -43,8 +44,10 @@ public class LevelManager
         Objective objective = Objective.CreateInstance<Objective>();
         objective.SetUp(baseObjective);
 
+        //MazeTorch torch = levelDataBase.Torches.GetRandom();
+
         MazeData data = MazeData.CreateInstance<MazeData>();
-        data.SetUp(currentRandomLevelSize, objective);
+        data.SetUp(currentRandomLevelSize, objective, ItemType.DefaultTorch);
         LoadLevel(data);
     }
     #endregion

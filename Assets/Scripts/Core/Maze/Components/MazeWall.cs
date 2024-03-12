@@ -25,4 +25,10 @@ public class MazeWall : Activateable
         transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
+    public void PositionObject(Item item)
+    {
+        item.transform.rotation = transform.rotation;
+        item.transform.position = transform.position + transform.forward / 2;
+    }
+
 }

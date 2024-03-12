@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeTorch : MonoBehaviour
+public class MazeTorch : Item
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private Light light;
 
-    // Update is called once per frame
-    void Update()
+    public override void Interact()
     {
-        
+
     }
 }

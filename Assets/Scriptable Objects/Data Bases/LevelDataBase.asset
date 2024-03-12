@@ -15,3 +15,5 @@ MonoBehaviour:
   levelDatas:
   - levelID: 0
     data: {fileID: 11400000, guid: 322729c1d59aac94c835e465da42f15a, type: 2}
+  torches:
+  - {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}

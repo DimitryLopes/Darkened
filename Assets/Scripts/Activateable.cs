@@ -14,6 +14,10 @@ public class Activateable : MonoBehaviour
             gameObject.SetActive(true);
             OnActivate();
         }
+        else
+        {
+            Debug.LogWarning("ITEM ALREADY ACTIVE");
+        }
     }
 
     public void Deactivate()
@@ -23,6 +27,10 @@ public class Activateable : MonoBehaviour
             active = false;
             gameObject.SetActive(false);
             OnDeactivate();
+        }
+        else
+        {
+            Debug.LogWarning("ITEM ALREADY INACTIVE");
         }
     }
 

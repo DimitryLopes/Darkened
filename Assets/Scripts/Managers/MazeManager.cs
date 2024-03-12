@@ -34,7 +34,7 @@ public class MazeManager
         }
     }
 
-    public Item CreateItem(ItemType type)
+    public Item GetAvailableItem(ItemType type)
     {
         if (!ItemDictionary.ContainsKey(type))
         {
@@ -45,6 +45,7 @@ public class MazeManager
         {
             if (!item.IsActive)
             {
+                item.Activate();
                 return item;
             }
         }
@@ -63,12 +64,17 @@ public class MazeManager
             List<ItemType> missionItemsInfo = mission.GetRequiredItems();
             foreach (ItemType type in missionItemsInfo)
             {
-                MissionItem missionItem = (MissionItem)CreateItem(type);
+                MissionItem missionItem = (MissionItem)GetAvailableItem(type);
                 items.Add(missionItem);
                 objectiveManager.AddMissionToItem(missionItem, mission);
             }
         }
         return items;
+    }
+
+    public MazeTorch GetMazeTorch(MazeData data)
+    {
+        return (MazeTorch)GetAvailableItem(data.Torch);
     }
 
     [Inject]

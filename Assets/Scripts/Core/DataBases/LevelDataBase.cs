@@ -7,8 +7,11 @@ public class LevelDataBase : ScriptableObject
 {
     [SerializeField]
     private List<LevelData> levelDatas;
+    [SerializeField]
+    private List<MazeTorch> torches;
 
     public List<LevelData> LevelDatas => levelDatas;
+    public List<MazeTorch> Torches => torches;
 }
 
 [Serializable]

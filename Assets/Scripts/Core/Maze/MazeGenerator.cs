@@ -125,6 +125,7 @@ public class MazeGenerator : MonoBehaviour
         {
             PositionItem(item, nodes, data);
         }
+        AddTorches(data, nodes);
     }
     #endregion
 
@@ -345,6 +346,64 @@ public class MazeGenerator : MonoBehaviour
         item.transform.position = transform.position;
         item.transform.rotation = transform.rotation;
     }
+
+    #region Torches
+    private void AddTorches(MazeData data, MazeNode[,] nodes)
+    {
+        int torchCount = 0;
+        float breakChance = 0f;
+        nodes.Shuffle();
+        GenerateTorches(data, nodes, ref torchCount, ref breakChance);
+    }
+
+    private void GenerateTorches(MazeData data, IEnumerable nodes, ref int torchCount, ref float breakChance)
+    {
+        List<MazeNode> nodesWithoutTorches = new List<MazeNode>();
+        foreach (MazeNode node in nodes)
+        {
+            float randomValue = UnityEngine.Random.Range(0f, 1f);
+
+            if (torchCount < data.MinTorchCount || breakChance < 1f)
+            {
+                if (randomValue >= data.TorchRatio)
+                {
+                    PlaceTorchAt(node, data);
+                    torchCount++;
+
+                    if (torchCount == data.MaxTorchCount)
+                    {
+                        break;
+                    }
+
+                    continue;
+                }
+                else
+                {
+                    nodesWithoutTorches.Add(node);
+                    if (torchCount >= data.MinTorchCount)
+                    {
+                        breakChance = (float)(torchCount - data.MinTorchCount) / (data.MaxTorchCount - data.MinTorchCount);
+                    }
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (torchCount < data.MaxTorchCount && breakChance < 1f)
+        {
+            GenerateTorches(data, nodesWithoutTorches, ref torchCount, ref breakChance);
+        }
+    }
+
+    public void PlaceTorchAt(MazeNode node, MazeData data)
+    {
+        MazeTorch torch = mazeManager.GetMazeTorch(data);
+        node.AddTorch(torch);
+    }
+    #endregion
 
     #region Pooling
     private MazeWall GetAvailableWall()

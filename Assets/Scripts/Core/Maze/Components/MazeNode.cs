@@ -16,7 +16,8 @@ public class MazeNode : Activateable
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
-
+    
+    #region Walls
     public bool HasWall(Cardinal direction)
     {
         return wallDictionary[direction] && wallDictionary[direction].IsActive;
@@ -34,7 +35,7 @@ public class MazeNode : Activateable
         }
         else
         {
-            Debug.LogWarning("There is already a wall at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction.ToString());
+            Debug.LogWarning("There is already a wall at X: " + X + " Y: " + Y + " " + direction.ToString());
         }
     }
 
@@ -63,16 +64,6 @@ public class MazeNode : Activateable
         wallDictionary[direction].AlignWith(direction, isWallAtBorder);
     }
 
-    protected override void OnDeactivate()
-    {
-        MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
-        MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
-        ActiveWalls = 0;
-        hasTorch = false;
-        Visited = false;
-        coordinates = new Coordinate();
-    }
-
     private void ClearWall(Cardinal direction)
     {
         wallDictionary[direction].Deactivate();
@@ -85,6 +76,36 @@ public class MazeNode : Activateable
         ActiveWalls--;
     }
 
+    public MazeWall GetRandomWall()
+    {
+        return NodeUtils.GetRandomWall(this);
+    }
+
+    public MazeWall GetRandomWallOnEdge()
+    {
+        return NodeUtils.GetRandomWall(this, true);
+    }
+    #endregion
+
+    #region Torches
+    public void AddTorch(MazeTorch torch)
+    {
+        if (!hasTorch)
+        {
+            MazeWall wall = GetRandomWall();
+            AddTorchAt(wall, torch);
+            hasTorch = true;
+            Debug.Log("Added torch at [" + X + "," + Y + "] at " + wall.AlignedWith + " wall");
+        }
+    }
+
+    private void AddTorchAt(MazeWall wall, MazeTorch torch)
+    {
+        wall.PositionObject(torch);
+    }
+    #endregion
+
+    #region Edges
     private void ClearEdge(Cardinal cardinal)
     {
         edges[cardinal] = false;
@@ -100,15 +121,21 @@ public class MazeNode : Activateable
         return edges[cardinal];
     }
 
-    public MazeWall GetRandomWallOnEdge()
+    #endregion
+
+    protected override void OnDeactivate()
     {
-        return NodeUtils.GetRandomWall(this, true);
+        MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
+        MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
+        ActiveWalls = 0;
+        hasTorch = false;
+        Visited = false;
+        coordinates = new Coordinate();
     }
 
-    public MazeWall GetRandomWall()
-    {
-        return NodeUtils.GetRandomWall(this);
-    }
+
+
+
 
 
     private void FillDictionary(Cardinal direction)

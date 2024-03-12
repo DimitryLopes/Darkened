@@ -38,13 +38,13 @@ public class NodeUtils : MonoBehaviour
                 rotation = -90f;
                 break;
             case Cardinal.East:
-                rotation = 0f;
+                rotation = 180f;
                 break;
             case Cardinal.South:
                 rotation = 90f;
                 break;
             case Cardinal.West:
-                rotation = 180f;
+                rotation = 0f;
                 break;
         }
 
