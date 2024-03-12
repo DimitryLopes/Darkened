@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MazeWall : Activateable
 {
+    [SerializeField]
+    public float WALL_ITEM_OFFSET = 1f;
+
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
 
@@ -28,7 +31,7 @@ public class MazeWall : Activateable
     public void PositionObject(Item item)
     {
         item.transform.rotation = transform.rotation;
-        item.transform.position = transform.position + transform.forward / 2;
+        item.transform.position = transform.position + transform.right * WALL_ITEM_OFFSET;
     }
 
 }

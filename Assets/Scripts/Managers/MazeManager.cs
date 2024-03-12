@@ -53,6 +53,7 @@ public class MazeManager
         Item newItem = itemFactory.Create(type);
         ItemDictionary[type].Add(newItem);
         newItem.SetType(type);
+        newItem.Activate();
         return newItem;
     }
 

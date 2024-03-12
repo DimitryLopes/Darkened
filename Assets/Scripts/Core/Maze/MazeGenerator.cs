@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using System.Linq;
 using Zenject;
+using Unity.VisualScripting;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -353,48 +354,53 @@ public class MazeGenerator : MonoBehaviour
         int torchCount = 0;
         float breakChance = 0f;
         nodes.Shuffle();
-        GenerateTorches(data, nodes, ref torchCount, ref breakChance);
+        StartCoroutine(GenerateTorches(data, nodes, torchCount, breakChance));
     }
 
-    private void GenerateTorches(MazeData data, IEnumerable nodes, ref int torchCount, ref float breakChance)
+    private IEnumerator GenerateTorches(MazeData data, IEnumerable nodes, int torchCount, float breakChance)
     {
-        List<MazeNode> nodesWithoutTorches = new List<MazeNode>();
+        List<MazeNode> remainingNodes = new List<MazeNode>();
+        remainingNodes.AddRange(nodes);
+        bool broken = false;
+
         foreach (MazeNode node in nodes)
         {
-            float randomValue = UnityEngine.Random.Range(0f, 1f);
-
-            if (torchCount < data.MinTorchCount || breakChance < 1f)
+            float randomTorchValue = UnityEngine.Random.Range(0f, 1f);
+            float randomBreakChance = UnityEngine.Random.Range(0f, 1f);
+            Debug.Log("Torches: " + torchCount + "| BreakChance: " + breakChance + " | RNG: " + randomBreakChance);
+            if (torchCount < data.MinTorchCount || breakChance < randomBreakChance)
             {
-                if (randomValue >= data.TorchRatio)
+                if (randomTorchValue >= data.TorchRatio)
                 {
-                    PlaceTorchAt(node, data);
-                    torchCount++;
-
-                    if (torchCount == data.MaxTorchCount)
+                    if (node.HasAnyWall())
                     {
-                        break;
-                    }
+                        PlaceTorchAt(node, data);
+                        torchCount++;
 
-                    continue;
-                }
-                else
-                {
-                    nodesWithoutTorches.Add(node);
-                    if (torchCount >= data.MinTorchCount)
-                    {
-                        breakChance = (float)(torchCount - data.MinTorchCount) / (data.MaxTorchCount - data.MinTorchCount);
+                        if (torchCount == data.MaxTorchCount)
+                        {
+                            break;
+                        }
+                        if (torchCount >= data.MinTorchCount)
+                        {
+                            breakChance = (float)(torchCount - data.MinTorchCount) / (data.MaxTorchCount - data.MinTorchCount);
+                        }
                     }
+                    remainingNodes.Remove(node);
                 }
             }
             else
             {
+                broken = true;
                 break;
             }
+
+            yield return null;
         }
 
-        if (torchCount < data.MaxTorchCount && breakChance < 1f)
+        if (torchCount < data.MaxTorchCount && !broken)
         {
-            GenerateTorches(data, nodesWithoutTorches, ref torchCount, ref breakChance);
+            yield return StartCoroutine(GenerateTorches(data, remainingNodes, torchCount, breakChance));
         }
     }
 
@@ -412,11 +418,13 @@ public class MazeGenerator : MonoBehaviour
         {
             if (!wall.IsActive)
             {
+                wall.Activate();
                 return wall;
             }
         }
         MazeWall newWall = Instantiate(wallPrefab, wallsContainer);
         instantiatedWalls.Add(newWall);
+        newWall.Activate();
         return newWall;
     }
 

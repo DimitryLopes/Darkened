@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using TMPro;
 
 public class MazeNode : Activateable
@@ -23,6 +24,18 @@ public class MazeNode : Activateable
         return wallDictionary[direction] && wallDictionary[direction].IsActive;
     }
 
+    public bool HasAnyWall()
+    {
+        foreach(Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
+        {
+            if (wallDictionary[cardinal].IsActive)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddWall(Cardinal direction, MazeWall wall)
     {
         if (!HasWall(direction))
@@ -31,7 +44,6 @@ public class MazeNode : Activateable
             bool isWallAtBorder = edges[direction];
             PositionWall(direction, isWallAtBorder);
             ActiveWalls++;
-            wall.Activate();
         }
         else
         {
@@ -66,8 +78,11 @@ public class MazeNode : Activateable
 
     private void ClearWall(Cardinal direction)
     {
-        wallDictionary[direction].Deactivate();
-        ActiveWalls--;
+        if (wallDictionary[direction].IsActive)
+        {
+            wallDictionary[direction].Deactivate();
+            ActiveWalls--;
+        }
     }
 
     private void ClearWall(MazeWall wall)
@@ -93,9 +108,9 @@ public class MazeNode : Activateable
         if (!hasTorch)
         {
             MazeWall wall = GetRandomWall();
+            Debug.Log("Added torch at [" + X + "," + Y + "] at " + wall.AlignedWith + " wall");
             AddTorchAt(wall, torch);
             hasTorch = true;
-            Debug.Log("Added torch at [" + X + "," + Y + "] at " + wall.AlignedWith + " wall");
         }
     }
 
