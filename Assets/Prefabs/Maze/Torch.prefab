@@ -101,7 +101,7 @@ MonoBehaviour:
     minDistanceFromOtherItems: 0
     spawnType: 1
     replace: 0
-  light: {fileID: 0}
+  light: {fileID: 5308823624080293511}
 --- !u!212 &6180454501068931032
 SpriteRenderer:
   m_ObjectHideFlags: 0

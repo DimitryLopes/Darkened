@@ -4,22 +4,26 @@ using UnityEngine;
 public class PlayerStatus : ScriptableObject
 {
     [SerializeField]
+    private float rotationSpeed;
+    [SerializeField]
     private float movementSpeed;
     [SerializeField]
     private float sprintingSpeed;
-    [SerializeField]
+
+    [SerializeField, Header("Stamina")]
     private float staminaRegenSpeed;
     [SerializeField]
     private float staminaConsumptionSpeed;
     [SerializeField]
-    private float staminaRegenCooldown;
-    [SerializeField]
     private float depletedStaminaRegenCooldown;
+    [SerializeField]
+    private float maxStamina;
 
     public float DepletedStaminaRegenCooldown => depletedStaminaRegenCooldown;
-    public float StaminaRegenCooldown => staminaRegenCooldown;
     public float StaminaConsumptionSpeed => staminaConsumptionSpeed;
     public float StaminaRegenSpeed  => staminaRegenSpeed;
     public float SprintingSpeed => sprintingSpeed;
     public float MovementSpeed => movementSpeed;
+    public float RotationSpeed => rotationSpeed;
+    public float MaxStamina => maxStamina;
 }
