@@ -6,12 +6,37 @@ public class MazeTorch : Item
     [SerializeField]
     private Light2D light;
 
+    public bool isLit => light.enabled;
+
     public override void Interact()
     {
-        if (canInteract)
+        if (CanInteract)
         {
-            light.enabled = true;
-            canInteract = false;
+            if (isLit)
+            {
+                ActivateLights();
+            }
+            else
+            {
+                DeactivateLights();
+            }
         }
+    }
+
+    protected override void OnActivate()
+    {
+        base.OnActivate();
+        DeactivateLights();
+    }
+
+    public void DeactivateLights()
+    {
+        light.enabled = false;
+    }
+
+    public void ActivateLights()
+    {
+        light.enabled = true;
+
     }
 }
