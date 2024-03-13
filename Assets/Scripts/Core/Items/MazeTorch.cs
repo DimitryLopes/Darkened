@@ -8,6 +8,10 @@ public class MazeTorch : Item
 
     public override void Interact()
     {
-        light.enabled = true;
+        if (canInteract)
+        {
+            light.enabled = true;
+            canInteract = false;
+        }
     }
 }

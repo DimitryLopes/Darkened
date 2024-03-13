@@ -21,9 +21,10 @@ public class MissionItem : Item
 
     public override void Interact()
     {
-        if (true)
+        if (CanInteract)
         {
             ContributeToProgress();
+            canInteract = false;
         }
     }
 

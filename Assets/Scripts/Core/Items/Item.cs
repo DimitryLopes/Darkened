@@ -19,6 +19,16 @@ public class Item : Activateable, IItem, IInteractable
     {
         this.type = type;
     }
+
+    protected override void OnActivate()
+    {
+        canInteract = true;
+    }
+
+    protected override void OnDeactivate()
+    {
+        canInteract = false;
+    }
 }
 
 [Serializable]
