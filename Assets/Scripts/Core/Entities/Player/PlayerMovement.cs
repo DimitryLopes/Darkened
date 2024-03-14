@@ -4,18 +4,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    //not finished
-    [SerializeField] private PlayerStatus status;
 
+    private PlayerStatus status;
     private float currentStamina;
     private bool isSprinting;
     private bool isExhausted;
 
     public bool CanMove { get; private set; }
 
-    void Start()
+    public void SetUp(PlayerStatus status)
     {
-        ToggleMovement(true);
+        this.status = status;
         currentStamina = status.MaxStamina;
         isSprinting = false;
         isExhausted = false;

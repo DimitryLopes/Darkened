@@ -10,5 +10,6 @@ public class ItemFactoryInstaller : MonoInstaller
     {
         Container.Bind<ItemFactory>().AsSingle();
         Container.Bind<Item>().FromInstance(itemDataBase.ItemDatas[ItemType.Exit]).WhenInjectedInto<ItemFactory>();
+        Container.Bind<Item>().FromInstance(itemDataBase.ItemDatas[ItemType.DefaultTorch]).WhenInjectedInto<ItemFactory>();
     }
 }

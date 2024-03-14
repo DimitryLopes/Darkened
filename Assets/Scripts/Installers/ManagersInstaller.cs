@@ -6,10 +6,11 @@ public class ManagersInstaller : MonoInstaller
     {
         //Doesn't need other managers
         Container.Bind<MazeManager>().AsSingle();
+        Container.Bind<EntityManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();
-        //LevelManager needs MazeManager
+        //Needs MazeManager
         Container.Bind<LevelManager>().AsSingle();
-        //GameManager needs LevelManager
+        //Needs LevelManager
         Container.Bind<GameManager>().AsSingle();
     }
 }

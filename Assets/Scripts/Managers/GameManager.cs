@@ -3,8 +3,9 @@ using Zenject;
 
 public class GameManager 
 {
-    private readonly LevelManager levelManager;
     private readonly ObjectiveManager objectiveManager;
+    private readonly EntityManager entityManager;
+    private readonly LevelManager levelManager;
     private readonly MazeManager mazeManager;
     private readonly SignalBus signalBus;
 
@@ -19,13 +20,16 @@ public class GameManager
     }
 
     [Inject]
-    public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, SignalBus signalBus)
+    public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
+        SignalBus signalBus)
     {
         this.objectiveManager = objectiveManager;
+        this.entityManager = entityManager;
         this.levelManager = levelManager;
         this.mazeManager = mazeManager;
         this.signalBus = signalBus;
 
+        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnObjectiveCompletedSignal>(OnObjectiveCompleted);
     }
 
@@ -35,5 +39,12 @@ public class GameManager
         {
             FinishGame();
         }
+    }
+    
+    private void OnMazeLoadFinish()
+    {
+        Player player = entityManager.GetPlayer();
+        player.transform.position = mazeManager.CurrentStartingNode.transform.position;
+        player.ToggleActing(true);
     }
 }

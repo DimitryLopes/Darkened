@@ -2,8 +2,8 @@ using Zenject;
 
 public class ItemFactory
 {
-    readonly DiContainer container;
-    readonly ItemDataBase dataBase;
+    private readonly DiContainer container;
+    private readonly ItemDataBase dataBase;
 
     public ItemFactory(ItemDataBase dataBase,  DiContainer container)
     {

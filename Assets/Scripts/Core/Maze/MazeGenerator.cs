@@ -12,6 +12,8 @@ public class MazeGenerator : MonoBehaviour
     GameManager gameManager;
     [Inject]
     private MazeManager mazeManager;
+    [Inject]
+    private SignalBus signalBus;
 
     [SerializeField]
     private MazeWall wallPrefab;
@@ -24,6 +26,8 @@ public class MazeGenerator : MonoBehaviour
     private Transform wallsContainer;
     [SerializeField]
     private Transform itemsContainer;
+    [SerializeField]
+    private Transform torchContainer;
 
     private List<MazeWall> instantiatedWalls = new List<MazeWall>();
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
@@ -119,6 +123,7 @@ public class MazeGenerator : MonoBehaviour
         }
         AddItems(data, nodes);
     }
+
     private void AddItems(MazeData data, MazeNode[,] nodes)
     {
         List<MissionItem> items = mazeManager.GetMissionItems(data.Objective);
@@ -128,6 +133,7 @@ public class MazeGenerator : MonoBehaviour
         }
         AddTorches(data, nodes);
     }
+
     #endregion
 
     private List<MazeNode> GetUnvisitedNeighbors(MazeNode node, MazeData data)
@@ -402,11 +408,17 @@ public class MazeGenerator : MonoBehaviour
         {
             yield return StartCoroutine(GenerateTorches(data, remainingNodes, torchCount, breakChance));
         }
+        else
+        {
+            //this can be elsewhere
+            signalBus.Fire(new OnMazeLoadFinishSignal());
+        }
     }
 
     public void PlaceTorchAt(MazeNode node, MazeData data)
     {
         MazeTorch torch = mazeManager.GetMazeTorch(data);
+        torch.transform.SetParent(torchContainer);
         node.AddTorch(torch);
     }
     #endregion

@@ -8,6 +8,7 @@ public class SignalInstaller : MonoInstaller
 
         Container.DeclareSignal<OnObjectiveCompletedSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
+        Container.DeclareSignal<OnMazeLoadFinishSignal>();
 
     }
 }

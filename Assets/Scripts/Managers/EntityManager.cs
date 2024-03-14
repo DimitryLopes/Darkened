@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class EntityManager : MonoBehaviour
+public class EntityManager
 {
-    // Start is called before the first frame update
-    void Start()
+    private readonly PlayerFactory playerFactory;
+    private Player player;
+
+    public EntityManager(PlayerFactory playerFactory)
     {
-        
+        this.playerFactory = playerFactory;
     }
 
-    // Update is called once per frame
-    void Update()
+    public Player GetPlayer()
     {
-        
+        if (player == null)
+        {
+            player = playerFactory.Create();
+            player.SetUp();
+        }
+
+        return player;
     }
 }
