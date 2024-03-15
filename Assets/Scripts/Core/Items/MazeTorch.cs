@@ -12,13 +12,13 @@ public class MazeTorch : Item
     {
         if (CanInteract)
         {
-            if (isLit)
+            if(isLit)
             {
-                ActivateLights();
+                DeactivateLights();
             }
             else
             {
-                DeactivateLights();
+                ActivateLights();
             }
         }
     }

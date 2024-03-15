@@ -12,11 +12,12 @@ public class Player : MonoBehaviour
     public void SetUp()
     {
         movement.SetUp(status);
+        interaction.SetUp(status);
     }
 
     public void ToggleActing(bool value)
     {
-        movement.ToggleMovement(value);
-        //interaction.ToggleInteraction(value);
+        movement.ToggleActing(value);
+        interaction.ToggleActing(value);
     }
 }

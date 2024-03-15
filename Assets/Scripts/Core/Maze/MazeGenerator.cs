@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using System;
-using System.Linq;
 using Zenject;
 using Unity.VisualScripting;
 
@@ -100,10 +99,6 @@ public class MazeGenerator : MonoBehaviour
             {
                 stack.Push(currentNode);
                 neighbors.Shuffle();
-                foreach (MazeNode node in neighbors)
-                {
-                    Debug.Log("Current node has node at: [" + node.X + "," + node.Y + "] as available neighbor");
-                }
                 stack.Push(neighbors[0]);
                 RemoveWallsAt(stack.Peek(), currentNode);
             }

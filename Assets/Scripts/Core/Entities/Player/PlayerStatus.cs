@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Status", menuName = "Scriptable Objects/Player Status")]
 public class PlayerStatus : ScriptableObject
 {
-    [SerializeField]
+    [SerializeField, Header("Movement")]
     private float rotationSpeed;
     [SerializeField]
     private float movementSpeed;
@@ -19,8 +19,12 @@ public class PlayerStatus : ScriptableObject
     [SerializeField]
     private float maxStamina;
 
+    [SerializeField, Header("Interaction")]
+    private float interactionDistance;
+
     public float DepletedStaminaRegenCooldown => depletedStaminaRegenCooldown;
     public float StaminaConsumptionSpeed => staminaConsumptionSpeed;
+    public float InteractionRange => interactionDistance;
     public float StaminaRegenSpeed  => staminaRegenSpeed;
     public float SprintingSpeed => sprintingSpeed;
     public float MovementSpeed => movementSpeed;

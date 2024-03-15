@@ -1,5 +1,4 @@
 using Zenject;
-using UnityEngine;
 
 public class MazeExit : MissionItem
 {

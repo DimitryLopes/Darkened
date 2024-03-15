@@ -1,18 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerAction
 {
     [SerializeField] private Rigidbody2D rb;
 
-    private PlayerStatus status;
     private float currentStamina;
     private bool isSprinting;
     private bool isExhausted;
 
-    public bool CanMove { get; private set; }
-
-    public void SetUp(PlayerStatus status)
+    public override void SetUp(PlayerStatus status)
     {
         this.status = status;
         currentStamina = status.MaxStamina;
@@ -22,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (CanMove)
+        if (CanAct)
         {
             HandleMovement();
             HandleSprinting();
@@ -108,10 +105,5 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(status.DepletedStaminaRegenCooldown);
         isExhausted = false;
-    }
-
-    public void ToggleMovement(bool value)
-    {
-        CanMove = value;
     }
 }
