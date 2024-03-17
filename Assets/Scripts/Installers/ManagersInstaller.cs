@@ -1,5 +1,5 @@
 using Zenject;
-using UnityEngine;
+
 public class ManagersInstaller : MonoInstaller
 {
     public override void InstallBindings()
@@ -8,6 +8,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<MazeManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();
+        Container.Bind<ScreenManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();
         //Needs MazeManager
         Container.Bind<LevelManager>().AsSingle();

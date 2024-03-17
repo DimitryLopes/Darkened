@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Activateable : MonoBehaviour
 {
-    private bool active;
+    protected bool active = false;
 
     public bool IsActive => active;
 
-    public void Activate()
+    public virtual void Activate()
     {
         if (!active)
         {
@@ -20,7 +20,7 @@ public class Activateable : MonoBehaviour
         }
     }
 
-    public void Deactivate()
+    public virtual void Deactivate()
     {
         if (active)
         {

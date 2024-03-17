@@ -4,6 +4,8 @@ using Zenject;
 public class DataBaseIntaller : MonoInstaller
 {
     [SerializeField]
+    private UIScreenDataBase screenDataBase;
+    [SerializeField]
     private LevelDataBase levelDataBase;
     [SerializeField]
     private ItemDataBase itemDataBase;
@@ -19,6 +21,7 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();
         Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();
+        Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
     }
 }

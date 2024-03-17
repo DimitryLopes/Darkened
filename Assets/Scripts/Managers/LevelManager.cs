@@ -7,7 +7,6 @@ public class LevelManager
     private ObjectivesDataBase objectivesDataBase;
     private LevelDataBase levelDataBase;
 
-    [Inject]
     public LevelManager(LevelDataBase levelDataBase, MazeManager mazeManager, ObjectivesDataBase objectivesDataBase)
     {
         this.levelDataBase = levelDataBase;

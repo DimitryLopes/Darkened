@@ -8,9 +8,10 @@ public class AudioManager
     private AudioDataBase audioDataBase;
     private AudioFactory audioFactory;
     private AudioSource bgmSource;
-    private List<AudioSource> sfxSources;
     private float sfxVolume = 1f;
     private float bgmVolume = 1f;
+
+    private List<AudioSource> sfxSources = new List<AudioSource>();
 
     public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase)
     {
@@ -62,6 +63,7 @@ public class AudioManager
         {
             AudioSource newSource = GetNewAudioSource();
             sfxSources.Add(newSource);
+            newSource.loop = false;
             return newSource;
         }
         return null;

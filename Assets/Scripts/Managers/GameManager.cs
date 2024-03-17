@@ -4,6 +4,7 @@ using Zenject;
 public class GameManager 
 {
     private readonly ObjectiveManager objectiveManager;
+    private readonly ScreenManager screenManager;
     private readonly EntityManager entityManager;
     private readonly LevelManager levelManager;
     private readonly MazeManager mazeManager;
@@ -21,9 +22,10 @@ public class GameManager
 
     [Inject]
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        SignalBus signalBus)
+        ScreenManager screenManager, SignalBus signalBus)
     {
         this.objectiveManager = objectiveManager;
+        this.screenManager = screenManager;
         this.entityManager = entityManager;
         this.levelManager = levelManager;
         this.mazeManager = mazeManager;

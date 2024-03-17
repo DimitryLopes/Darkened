@@ -39,14 +39,6 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            gameManager.StartGame();
-        }
-    }
-
     #region Main Generation
     public void CreateMaze(MazeData data)
     {
