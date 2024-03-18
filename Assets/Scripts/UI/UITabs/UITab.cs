@@ -12,6 +12,12 @@ public class UITab : Activateable
         }
     }
 
+    public void ForceDeactivate()
+    {
+        active = false;
+        DoDeactivateAnimation();
+    }
+
     public override void Deactivate()
     {
         if (IsActive)

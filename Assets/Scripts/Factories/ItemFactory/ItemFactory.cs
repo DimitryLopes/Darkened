@@ -5,7 +5,7 @@ public class ItemFactory
     private readonly DiContainer container;
     private readonly ItemDataBase dataBase;
 
-    public ItemFactory(ItemDataBase dataBase,  DiContainer container)
+    public ItemFactory(ItemDataBase dataBase, DiContainer container)
     {
         this.container = container;
         this.dataBase = dataBase;

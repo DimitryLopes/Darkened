@@ -24,7 +24,7 @@ public abstract class UITabGroup<T> : MonoBehaviour where T : Enum
 
         foreach(T tabType in Enum.GetValues(typeof(T)))
         {
-            Tabs[tabType].Deactivate();
+            Tabs[tabType].ForceDeactivate();
         }
 
         if (defaultTab != null)

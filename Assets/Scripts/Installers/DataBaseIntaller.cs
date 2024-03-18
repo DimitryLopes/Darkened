@@ -18,6 +18,7 @@ public class DataBaseIntaller : MonoInstaller
     {
         itemDataBase.SetUp();
         audioDataBase.SetUp();
+        screenDataBase.SetUp();
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();
         Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();

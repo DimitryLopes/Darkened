@@ -6,10 +6,13 @@ public class PrefabInstaller : MonoInstaller
     private Player playerPrefab;
     [SerializeField, Header("Audio")]
     private AudioSource audioSource;
+    [SerializeField, Header("UI")]
+    private MainCanvas mainCanvas;
 
     public override void InstallBindings()
     {
         Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
         Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
+        Container.Bind<MainCanvas>().FromInstance(mainCanvas).AsSingle();
     }
 }

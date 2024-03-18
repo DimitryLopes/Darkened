@@ -5,35 +5,44 @@ using UnityEngine;
 public class ScreenManager
 {
     private readonly UIScreenDataBase screenDataBase;
-    private Dictionary<Type, IScreen> uiScreens = new Dictionary<Type, IScreen>();
+    private readonly ScreenFactory screenFactory;
+    private Dictionary<Type, IScreen> instantiatedScreens = new Dictionary<Type, IScreen>();
 
-    public ScreenManager(UIScreenDataBase screenDataBase)
+    public ScreenManager(UIScreenDataBase screenDataBase, ScreenFactory screenFactory)
     {
         this.screenDataBase = screenDataBase;
-        SetUpScreenDictionary();
-    }
-
-    private void SetUpScreenDictionary()
-    {
-        List<GameObject> screenPrefabs = screenDataBase.GetScreens();
-
-        foreach (GameObject screenPrefab in screenPrefabs)
-        {
-            IScreen screen = screenPrefab.GetComponent<IScreen>();
-            if (screen != null)
-            {
-                uiScreens.Add(screen.GetType(), screen);
-            }
-        }
+        this.screenFactory = screenFactory;
     }
 
     public T GetScreen<T>() where T : IScreen
     {
         Type type = typeof(T);
-        if (uiScreens.ContainsKey(type))
+        if (screenDataBase.UIScreens.ContainsKey(type))
         {
-            return (T)uiScreens[type];
+            T screen;
+            if (instantiatedScreens.ContainsKey(type))
+            {
+                screen = (T)instantiatedScreens[type];
+            }
+            else
+            {
+                screen = GetNewScreen<T>(type);
+            }
+            return screen;
         }
+        Debug.Log($"Screen database doesn't contain a screen of type {type}!");
         return default(T);
+    }
+
+    private T GetNewScreen<T>(Type type) where T : IScreen
+    {
+        T screen;
+        T newScreen = (T)screenFactory.Create<T>();
+        if (newScreen != null)
+        {
+            instantiatedScreens.Add(type, newScreen);
+        }
+        screen = newScreen;
+        return screen;
     }
 }
