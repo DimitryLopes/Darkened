@@ -12,6 +12,8 @@ public class GameManager
 
     public void StartGame()
     {
+        MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
+        screen.Hide();
         levelManager.StartRandomLevel();
     }
 

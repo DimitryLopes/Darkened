@@ -22,8 +22,8 @@ public abstract class UIScreen<T> : MonoBehaviour, IScreen where T : ScreenContr
         OnAfterHide();
     }
 
-    public virtual void OnBeforeShow() { }
-    public virtual void OnAfterShow() { }
-    public virtual void OnBeforeHide() { }
-    public virtual void OnAfterHide() { }
+    protected virtual void OnBeforeShow() { }
+    protected virtual void OnAfterShow() { }
+    protected virtual void OnBeforeHide() { }
+    protected virtual void OnAfterHide() { }
 }

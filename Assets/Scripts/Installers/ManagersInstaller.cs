@@ -1,5 +1,5 @@
+using UnityEngine;
 using Zenject;
-
 public class ManagersInstaller : MonoInstaller
 {
     public override void InstallBindings()
@@ -14,5 +14,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<LevelManager>().AsSingle();
         //Needs LevelManager
         Container.Bind<GameManager>().AsSingle();
+
+        SceneManager.LoadScene(Constants.Scenes.MAIN_MENU_SCENE);
     }
 }
