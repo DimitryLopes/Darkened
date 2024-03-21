@@ -13,16 +13,20 @@ public class DataBaseIntaller : MonoInstaller
     private ObjectivesDataBase objectivesDataBase;
     [SerializeField]
     private AudioDataBase audioDataBase;
+    [SerializeField]
+    private MazeSizeDataBase mazeSizeDataBase;
 
     public override void InstallBindings()
     {
         itemDataBase.SetUp();
         audioDataBase.SetUp();
         screenDataBase.SetUp();
+        objectivesDataBase.SetUp();
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();
         Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();
         Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
+        Container.Bind<MazeSizeDataBase>().FromInstance(mazeSizeDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
     }
 }

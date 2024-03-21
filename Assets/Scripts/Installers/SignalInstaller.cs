@@ -7,9 +7,9 @@ public class SignalInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<OnObjectiveCompletedSignal>();
+        Container.DeclareSignal<OnSelectableSelectedSignal>();
         Container.DeclareSignal<OnBindingsFinishedSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
-
     }
 }

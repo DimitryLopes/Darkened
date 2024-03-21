@@ -8,15 +8,29 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
     private GameManager gameManager;
 
     [SerializeField]
-    private Button startGameButton;
+    private Button startStoryGameButton;
+    [SerializeField]
+    private Button startCustomGameButton;
+    [SerializeField]
+    private Button startRandomGameButton;
 
     private void Start()
     {
-        startGameButton.onClick.AddListener(StartGame);
+        startStoryGameButton.onClick.AddListener(StartStoryGame);
+        startCustomGameButton.onClick.AddListener(StartCustomGame);
+        startRandomGameButton.onClick.AddListener(StartRandomGame);
     }
 
-    public void StartGame()
+    public void StartStoryGame()
     {
-        gameManager.StartGame();
+        gameManager.StartStoryGame();
+    }
+    public void StartCustomGame()
+    {
+        gameManager.StartCustomGame();
+    }
+    public void StartRandomGame()
+    {
+        gameManager.StartRandomGame();
     }
 }

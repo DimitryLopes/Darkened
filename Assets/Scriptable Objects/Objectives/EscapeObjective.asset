@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: EscapeObjective
   m_EditorClassIdentifier: 
   description: Find the exit and escape the maze!
+  title: Escape
+  objectiveType: 0
   baseMissions:
   - {fileID: 11400000, guid: f9e69ce90be171e429fb388d9a1c24c4, type: 2}

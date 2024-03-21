@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f2489d8df1fe1d49a6895fcb2f45c6e, type: 3}
-  m_Name: UIScreenDataBase
+  m_Script: {fileID: 11500000, guid: 6ed8a8459655936488b38c0d0539295d, type: 3}
+  m_Name: 6x6
   m_EditorClassIdentifier: 
-  RegisteredScreens:
-  - {fileID: 4799720729380093916, guid: 301b8568b50111749974e9aeebcdd33d, type: 3}
-  - {fileID: 7539356157193245616, guid: 1611df56435e4fe4f97d15ff81b2046e, type: 3}
+  height: 6
+  width: 6

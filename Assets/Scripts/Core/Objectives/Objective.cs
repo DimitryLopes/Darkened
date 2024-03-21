@@ -2,17 +2,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class Objective : ScriptableObject
+public class Objective : ScriptableObject, IUISelectable
 {
     [SerializeField]
     private string description;
     [SerializeField]
+    private string title;
+    [SerializeField]
+    private ObjectiveType objectiveType;
+    [SerializeField]
     private List<Mission> baseMissions;
 
+    public string Title => title;
     public string Description => description;
     public bool IsCompleted { get; private set; }
     public float Progress { get; private set; }
     public List<Mission> Missions { get; private set; }
+    public SelectableType Type => SelectableType.Objective;
+    public ObjectiveType ObjectiveType => objectiveType;
+
 
     private SignalBus signalBus;
     private int missionsCompleted;

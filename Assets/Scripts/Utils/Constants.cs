@@ -7,6 +7,7 @@ public static class Constants
     {
         public const string LOADING_SCENE = "Loading Scene";
         public const string MAIN_MENU_SCENE = "Main Menu";
+        public const string TESTING_SCENE = "Testing";
         public const string GAME_SCENE = "Game";
     }
 }

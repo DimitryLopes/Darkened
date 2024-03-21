@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -10,11 +11,29 @@ public class GameManager
     private readonly MazeManager mazeManager;
     private readonly SignalBus signalBus;
 
-    public void StartGame()
+    public void StartStoryGame()
+    {
+        HideMainMenu();
+        levelManager.StartStoryLevel(0);
+    }
+
+    public void StartCustomGame()
+    {
+        HideMainMenu();
+        levelManager.StartCustomLevel();
+
+    }
+
+    public void StartRandomGame()
+    {
+        HideMainMenu();
+        levelManager.StartRandomLevel();
+    }
+
+    private void HideMainMenu()
     {
         MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
         screen.Hide();
-        levelManager.StartRandomLevel();
     }
 
     public void FinishGame()

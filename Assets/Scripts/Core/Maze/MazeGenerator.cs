@@ -8,10 +8,6 @@ using Unity.VisualScripting;
 public class MazeGenerator : MonoBehaviour
 {
     [Inject]
-    GameManager gameManager;
-    [Inject]
-    private MazeManager mazeManager;
-    [Inject]
     private SignalBus signalBus;
 
     [SerializeField]
@@ -30,6 +26,7 @@ public class MazeGenerator : MonoBehaviour
 
     private List<MazeWall> instantiatedWalls = new List<MazeWall>();
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
+    private MazeManager mazeManager;
 
     private void ClearMaze()
     {
@@ -40,8 +37,9 @@ public class MazeGenerator : MonoBehaviour
     }
 
     #region Main Generation
-    public void CreateMaze(MazeData data)
+    public void CreateMaze(MazeData data,MazeManager mazeManager)
     {
+        this.mazeManager = mazeManager;
         ClearMaze();
 
         IEnumerator<MazeNode[,]> enumerator = CreateBase(data);
