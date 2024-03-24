@@ -83,6 +83,12 @@ public class LevelManager
     private void LoadLevel(MazeData data, LevelType levelType)
     {
         CurrentLevelType = levelType;
+
+        if(levelType == LevelType.Story)
+        {
+            Objective objective = GetObjectiveByType(data.Objective.ObjectiveType);
+            data.SetUp(data, objective);
+        }
         mazeManager.LoadMaze(data);
 
         float cameraPos = data.SizeData.cameraPosition;

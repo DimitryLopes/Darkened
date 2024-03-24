@@ -35,10 +35,10 @@ public class LoadingOperation : ILoadable
         LoadingStep currentStep = steps[currentIndex];
         currentStep.Load();
 
-        while(currentIndex < steps.Count - 1)
+        while(currentIndex < steps.Count - 1 || !steps[currentIndex].IsComplete)
         {
             Progress = (steps[currentIndex].Progress + currentIndex) / steps.Count;
-            Debug.Log("Loading Operation progress: " + Progress);
+            Debug.Log($"Loading Operation progress: { Progress } | Current Step Progress: {currentIndex} | Current Step: {currentIndex}");
             if (steps[currentIndex].IsComplete)
             {
                 currentIndex++;
@@ -47,6 +47,7 @@ public class LoadingOperation : ILoadable
             }
             yield return null;
         }
+
         Progress = 1;
         IsComplete = true;
         OnLoadingComplete?.Invoke();

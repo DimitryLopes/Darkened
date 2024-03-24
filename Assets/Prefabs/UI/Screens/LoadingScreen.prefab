@@ -423,6 +423,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2488219473181765839}
   - component: {fileID: 756264452644625866}
+  - component: {fileID: 2118409257771232958}
+  - component: {fileID: 8989623437911492141}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -462,9 +464,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f0abedcc6d8e8499cbe03f8a83a8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenAnimation: {fileID: 2118409257771232958}
   progressText: {fileID: 4857407449970311509}
   currentTaskText: {fileID: 7234082236700007459}
   fillProgress: {fileID: 445017308385155309}
+--- !u!114 &2118409257771232958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624343805921065310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4226aafa49c60774bbb1b21c78c577ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationDuration: 0.5
+  inEase: 18
+  outEase: 17
+  target: {fileID: 8989623437911492141}
+  inTarget: 1
+  outTarget: 0
+--- !u!225 &8989623437911492141
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624343805921065310}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6797547616229734809
 GameObject:
   m_ObjectHideFlags: 0

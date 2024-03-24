@@ -5,6 +5,8 @@ public abstract class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenContr
 {
     [Inject]
     private SignalBus signalBus;
+    [SerializeField]
+    private UIAnimation screenAnimation;
 
     public U Controller { get; private set; }
 
@@ -16,12 +18,17 @@ public abstract class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenContr
         gameObject.SetActive(true);
         IsShown = true;
         OnBeforeShow();
-        OnAfterShow();
+        screenAnimation.DoInAnimation(OnAfterShow);
     }
 
     public virtual void Hide()
     {
         OnBeforeHide();
+        screenAnimation.DoOutAnimation(OnHideAnimationFinish);
+    }
+
+    private void OnHideAnimationFinish()
+    {
         gameObject.SetActive(false);
         IsShown = false;
         OnAfterHide();

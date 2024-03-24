@@ -43,4 +43,9 @@ public class MazeData : ScriptableObject
         maxTorchRatio = 0.3f; // ~50% of total nodes
         torchRatio = (minTorchRatio + maxTorchRatio) / 2;
     }
+
+    public void SetUp(MazeData data, Objective objective)
+    {
+        SetUp(data.sizeData, objective, ItemType.DefaultTorch);
+    }
 }

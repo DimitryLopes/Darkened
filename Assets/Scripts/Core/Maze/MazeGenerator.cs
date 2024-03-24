@@ -130,7 +130,7 @@ public class MazeGenerator : MonoBehaviour
                 stack.Push(neighbors[0]);
                 RemoveWallsAt(stack.Peek(), currentNode);
             }
-            yield return LoadingUtils.GetProgress(visitedNodes, currentNodes.Length);
+            yield return LoadingUtils.GetProgress(visitedNodes, currentNodes.Length * 2);
         }
     }
 
@@ -314,7 +314,6 @@ public class MazeGenerator : MonoBehaviour
         node.RemoveWall(direction);
     }
 
-
     private MazeNode GetClosestNodeToVector(Vector2 position)
     {
         float closest = float.MaxValue;
@@ -392,7 +391,16 @@ public class MazeGenerator : MonoBehaviour
         float breakChance = 0f;
         MazeNode[,] nodes = currentNodes.Clone() as MazeNode[,];
         nodes.Shuffle();
-        yield return GenerateTorches(nodes, torchCount, breakChance).Current;
+
+        IEnumerator<float> torchEnumerator = GenerateTorches(nodes, torchCount, breakChance);
+        StartCoroutine(torchEnumerator);
+
+        while (torchEnumerator.MoveNext())
+        {
+            yield return torchEnumerator.Current;
+        }
+
+        yield return 1;
     }
 
     private IEnumerator<float> GenerateTorches(IEnumerable nodes, int torchCount, float breakChance)
