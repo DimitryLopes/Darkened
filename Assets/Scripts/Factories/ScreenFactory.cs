@@ -6,7 +6,6 @@ public class ScreenFactory
 {
     private readonly UIScreenDataBase screenDataBase;
     private readonly DiContainer container;
-    private readonly DiContainer subContainer;
     private readonly MainCanvas mainCanvas;
 
     public ScreenFactory(DiContainer container, UIScreenDataBase screenDataBase, MainCanvas mainCanvas)
@@ -14,7 +13,6 @@ public class ScreenFactory
         this.screenDataBase = screenDataBase;
         this.container = container;
         this.mainCanvas = mainCanvas;
-        subContainer = container.CreateSubContainer();
     }
 
     public IScreen Create<T>() where T : IScreen
@@ -23,6 +21,7 @@ public class ScreenFactory
         GameObject screenReference = screenDataBase.UIScreens[type];
         T newPrefab = container.InstantiatePrefabForComponent<T>(screenReference, mainCanvas.transform);
 
+        DiContainer subContainer = container.CreateSubContainer();
         subContainer.Inject(newPrefab);
         subContainer.ResolveRoots();
         

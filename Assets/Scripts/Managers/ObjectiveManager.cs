@@ -6,7 +6,6 @@ public class ObjectiveManager
 
     public Objective CurrentObjective { get; private set; }
 
-    [Inject]
     public ObjectiveManager(SignalBus signalBus)
     {
         this.signalBus = signalBus;
@@ -14,10 +13,15 @@ public class ObjectiveManager
         signalBus.Subscribe<OnMissionCompletedSignal>(OnMissionCompleted);
     }
 
+    public void StartObjective(Objective objective)
+    {
+        SetObjective(objective);
+        objective.StartObjective(signalBus);
+    }
+
     public void SetObjective(Objective objective)
     {
         CurrentObjective = objective;
-        objective.StartObjective(signalBus);
     }
 
     private void ActivateMission(Mission mission)

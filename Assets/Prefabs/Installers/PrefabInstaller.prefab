@@ -48,6 +48,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 8381653057655002583, guid: daf2eaa5fdc00b64c8b97e47c0402ccc, type: 3}
   audioSource: {fileID: 6669032310483767517, guid: 1259796071ab07d478a21fd7eddc8788, type: 3}
   mainCanvas: {fileID: 9045602064976007267}
+  selectableItem: {fileID: 2948998494977838938, guid: 6d5cb5a9c963da247998c55e8faae047, type: 3}
 --- !u!1001 &8419450677727664588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +140,14 @@ PrefabInstance:
     - target: {fileID: 2020961803043312054, guid: 23795d320185675458742af9ecc11c09, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116324787455274486, guid: 23795d320185675458742af9ecc11c09, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116324787455274486, guid: 23795d320185675458742af9ecc11c09, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1920
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

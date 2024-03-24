@@ -11,6 +11,7 @@ public class GameManager
     private readonly MazeManager mazeManager;
     private readonly SignalBus signalBus;
 
+    #region Game Start
     public void StartStoryGame()
     {
         HideMainMenu();
@@ -21,7 +22,6 @@ public class GameManager
     {
         HideMainMenu();
         levelManager.StartCustomLevel();
-
     }
 
     public void StartRandomGame()
@@ -29,6 +29,7 @@ public class GameManager
         HideMainMenu();
         levelManager.StartRandomLevel();
     }
+    #endregion
 
     private void HideMainMenu()
     {
@@ -36,12 +37,58 @@ public class GameManager
         screen.Hide();
     }
 
-    public void FinishGame()
+    private void ShowMainMenu()
     {
-        Debug.Log("Game ended!");
+        objectiveManager.SetObjective(null);
+        MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
+        MainMenuScreenController controller = new MainMenuScreenController();
+        screen.Show(controller);
     }
 
-    [Inject]
+    public void FinishGame(bool objectiveCompleted)
+    {
+        Player player = entityManager.GetPlayer();
+        player.ToggleActing(false);
+
+        Objective currentObjective = objectiveManager.CurrentObjective;
+        string screenMessage = objectiveCompleted ? currentObjective.VictoryMessage : currentObjective.DefeatMessage;
+        string screenTitle = currentObjective.Title;
+        UIGameFinishScreen screen = screenManager.GetScreen<UIGameFinishScreen>();
+        GameFinishScreenController controller;
+        switch (levelManager.CurrentLevelType)
+        {
+            case LevelType.Story:
+                controller = new GameFinishScreenController(screenMessage, screenTitle, StartStoryGame, ShowMainMenu);
+                break;
+            case LevelType.Random:
+                controller = new GameFinishScreenController(screenMessage, screenTitle, StartRandomGame, ShowMainMenu);
+                break;
+            case LevelType.Custom:
+                controller = new GameFinishScreenController(screenMessage, screenTitle, StartCustomGame, ShowMainMenu);
+                break;
+            default:
+                controller = new GameFinishScreenController(screenMessage, screenTitle, StartCustomGame, ShowMainMenu);
+                break;
+        }
+        screen.Show(controller);
+    }
+
+
+    private void OnObjectiveCompleted(OnGameCompletedSignal signal)
+    {
+        if(signal.Objective == objectiveManager.CurrentObjective)
+        {
+            FinishGame(signal.Won);
+        }
+    }
+    
+    private void OnMazeLoadFinish()
+    {
+        Player player = entityManager.GetPlayer();
+        player.transform.position = mazeManager.CurrentStartingNode.transform.position;
+        player.ToggleActing(true);
+    }
+
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, SignalBus signalBus)
     {
@@ -53,21 +100,6 @@ public class GameManager
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
-        signalBus.Subscribe<OnObjectiveCompletedSignal>(OnObjectiveCompleted);
-    }
-
-    private void OnObjectiveCompleted(OnObjectiveCompletedSignal signal)
-    {
-        if(signal.Objective == objectiveManager.CurrentObjective)
-        {
-            FinishGame();
-        }
-    }
-    
-    private void OnMazeLoadFinish()
-    {
-        Player player = entityManager.GetPlayer();
-        player.transform.position = mazeManager.CurrentStartingNode.transform.position;
-        player.ToggleActing(true);
+        signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
     }
 }

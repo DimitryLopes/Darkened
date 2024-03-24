@@ -22,11 +22,11 @@ public class MazeData : ScriptableObject
 
     public int Height => sizeData.Height;
     public int Width => sizeData.Width;
-    public int MazeSize => sizeData.Width * sizeData.Height;
+    public int Size => sizeData.Width * sizeData.Height;
     public MazeSizeData SizeData => sizeData;
 
-    public int MinTorchCount => (int)(MazeSize * minTorchRatio); 
-    public int MaxTorchCount => (int)(MazeSize * maxTorchRatio); 
+    public int MinTorchCount => (int)(Size * minTorchRatio); 
+    public int MaxTorchCount => (int)(Size * maxTorchRatio); 
     public float TorchRatio => torchRatio; 
     
     public Objective Objective => objective;
@@ -42,10 +42,5 @@ public class MazeData : ScriptableObject
         minTorchRatio = 0.15f; // ~30% of total nodes
         maxTorchRatio = 0.3f; // ~50% of total nodes
         torchRatio = (minTorchRatio + maxTorchRatio) / 2;
-    }
-
-    public void StartObjective(SignalBus signalBus)
-    {
-        objective.StartObjective(signalBus);
     }
 }

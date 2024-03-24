@@ -4,7 +4,7 @@ using UnityEngine.Rendering.Universal;
 public class MazeTorch : Item
 {
     [SerializeField]
-    private Light2D light;
+    private new Light2D light;
 
     public bool isLit => light.enabled;
 

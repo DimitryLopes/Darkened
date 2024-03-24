@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ScreenManager
 {
     private readonly UIScreenDataBase screenDataBase;
     private readonly ScreenFactory screenFactory;
+    private readonly SignalBus signalBus;
     private Dictionary<Type, IScreen> instantiatedScreens = new Dictionary<Type, IScreen>();
+    private IScreen currentScreen;
 
-    public ScreenManager(UIScreenDataBase screenDataBase, ScreenFactory screenFactory)
+    public ScreenManager(UIScreenDataBase screenDataBase, ScreenFactory screenFactory, SignalBus signalBus)
     {
         this.screenDataBase = screenDataBase;
         this.screenFactory = screenFactory;
+
+        signalBus.Subscribe<OnScreenBeforeHideSignal>(OnScreenBeforeHideSignal);
+        signalBus.Subscribe<OnScreenBeforeShowSignal>(OnScreenBeforeShowSignal);
+        signalBus.Subscribe<OnScreenAfterHideSignal>(OnScreenAfterHideSignal);
+        signalBus.Subscribe<OnScreenAfterShowSignal>(OnScreenAfterShowSignal);
     }
 
     public T GetScreen<T>() where T : IScreen
@@ -44,5 +52,31 @@ public class ScreenManager
         }
         screen = newScreen;
         return screen;
+    }
+
+    private void OnScreenAfterShowSignal(OnScreenAfterShowSignal signal)
+    {
+
+    }
+
+    private void OnScreenAfterHideSignal(OnScreenAfterHideSignal signal)
+    {
+    }
+
+    private void OnScreenBeforeShowSignal(OnScreenBeforeShowSignal signal)
+    {
+        if(currentScreen != null)
+        {
+            currentScreen.Hide();
+        }
+        currentScreen = signal.Screen;
+    }
+
+    private void OnScreenBeforeHideSignal(OnScreenBeforeHideSignal signal)
+    {
+        if(currentScreen == signal.Screen)
+        {
+            currentScreen = null;
+        }
     }
 }

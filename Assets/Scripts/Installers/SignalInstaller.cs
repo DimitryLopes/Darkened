@@ -6,10 +6,18 @@ public class SignalInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
-        Container.DeclareSignal<OnObjectiveCompletedSignal>();
-        Container.DeclareSignal<OnSelectableSelectedSignal>();
-        Container.DeclareSignal<OnBindingsFinishedSignal>();
+        //In Game
+        Container.DeclareSignal<OnGameCompletedSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
+        //Screens
+        Container.DeclareSignal<OnScreenAfterHideSignal>();
+        Container.DeclareSignal<OnScreenAfterShowSignal>();
+        Container.DeclareSignal<OnScreenBeforeHideSignal>();
+        Container.DeclareSignal<OnScreenBeforeShowSignal>();
+        //UI
+        Container.DeclareSignal<OnSelectableSelectedSignal>();
+        //whatever armengue shit I did
+        Container.DeclareSignal<OnBindingsFinishedSignal>();
     }
 }

@@ -15,7 +15,7 @@ public class MazeManager
     public void LoadMaze(MazeData data)
     {
         ClearItems();
-        objectiveManager.SetObjective(data.Objective);
+        objectiveManager.StartObjective(data.Objective);
         mazeGenerator.CreateMaze(data, this);
     }
 

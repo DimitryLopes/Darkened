@@ -1,18 +1,23 @@
+using UnityEngine;
+
 public class UISlideAnimation : UIAnimation
 {
+    [SerializeField]
+    private Vector3 inTarget;
+    [SerializeField]
+    private Vector3 outTarget;
+
     protected override void InAnimation()
     {
-
-        currentTween = LeanTween.moveX(gameObject, originalPosition.x, animationDuration)
+        currentTween = transform.LeanMoveLocal(inTarget, animationDuration)
             .setEase(inEase)
-            .setOnComplete(OnAnimationFinish); // Clear currentTween reference when animation completes
+            .setOnComplete(OnAnimationFinish);
     }
 
     protected override void OutAnimation()
     {
-        float targetX = originalPosition.x + 100f; // Adjust this value based on your desired slide distance
-        currentTween = LeanTween.moveX(gameObject, targetX, animationDuration)
+        currentTween = transform.LeanMoveLocal(outTarget, animationDuration)
             .setEase(outEase)
-            .setOnComplete(OnAnimationFinish); // Clear currentTween reference when animation completes
+            .setOnComplete(OnAnimationFinish);
     }
 }

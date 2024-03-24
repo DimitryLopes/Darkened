@@ -5,9 +5,13 @@ using Zenject;
 public class Objective : ScriptableObject, IUISelectable
 {
     [SerializeField]
+    private string title;
+    [SerializeField]
     private string description;
     [SerializeField]
-    private string title;
+    private string victoryMessage = "You escaped";
+    [SerializeField]
+    private string defeatMessage = "The monster got Clebinho";
     [SerializeField]
     private ObjectiveType objectiveType;
     [SerializeField]
@@ -15,9 +19,13 @@ public class Objective : ScriptableObject, IUISelectable
 
     public string Title => title;
     public string Description => description;
+    public string VictoryMessage => victoryMessage;
+    public string DefeatMessage => defeatMessage;
+
     public bool IsCompleted { get; private set; }
     public float Progress { get; private set; }
     public List<Mission> Missions { get; private set; }
+
     public SelectableType Type => SelectableType.Objective;
     public ObjectiveType ObjectiveType => objectiveType;
 
@@ -44,7 +52,7 @@ public class Objective : ScriptableObject, IUISelectable
     public void CompleteObjective()
     {
         IsCompleted = true;
-        signalBus.Fire(new OnObjectiveCompletedSignal(this));
+        signalBus.Fire(new OnGameCompletedSignal(this, true));
     }
 
     public void Clear()
@@ -64,10 +72,10 @@ public class Objective : ScriptableObject, IUISelectable
 
     public void SetUp(Objective objective)
     {
-        this.description = objective.Description;
-        this.IsCompleted = objective.IsCompleted;
-        this.Progress = objective.Progress;
-        this.baseMissions = objective.baseMissions;
+        description = objective.Description;
+        IsCompleted = objective.IsCompleted;
+        Progress = objective.Progress;
+        baseMissions = objective.baseMissions;
         Missions = new List<Mission>();
     }
 
