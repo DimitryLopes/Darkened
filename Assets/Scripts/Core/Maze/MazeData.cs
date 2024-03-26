@@ -18,7 +18,7 @@ public class MazeData : ScriptableObject
     private ItemType torch;
 
     [SerializeField, Space]
-    private Objective objective;
+    private ObjectiveData objective;
 
     public int Height => sizeData.Height;
     public int Width => sizeData.Width;
@@ -29,11 +29,11 @@ public class MazeData : ScriptableObject
     public int MaxTorchCount => (int)(Size * maxTorchRatio); 
     public float TorchRatio => torchRatio; 
     
-    public Objective Objective => objective;
+    public ObjectiveData ObjectiveData => objective;
     public ItemType Torch => torch;
 
 
-    public void SetUp(MazeSizeData sizeData, Objective objective, ItemType torch)
+    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, ItemType torch)
     {
         this.sizeData = sizeData;
         this.objective = objective;
@@ -44,7 +44,7 @@ public class MazeData : ScriptableObject
         torchRatio = (minTorchRatio + maxTorchRatio) / 2;
     }
 
-    public void SetUp(MazeData data, Objective objective)
+    public void SetUp(MazeData data, ObjectiveData objective)
     {
         SetUp(data.sizeData, objective, ItemType.DefaultTorch);
     }

@@ -10,6 +10,12 @@ public static class Constants
         public const string TESTING_SCENE = "Testing";
         public const string GAME_SCENE = "Game";
     }
+
+    public static class Hud
+    {
+        public const string UI_MISSION_DESCRIPTION_FORMAT = "{0}: {1}/{2}";
+
+    }
 }
 
 

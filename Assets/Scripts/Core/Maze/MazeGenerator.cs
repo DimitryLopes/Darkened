@@ -32,8 +32,9 @@ public class MazeGenerator : MonoBehaviour
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
     private MazeManager mazeManager;
 
-    private MazeData currentData;
-    private MazeNode[,] currentNodes;
+    private Maze currentMaze;
+    private MazeData CurrentData => currentMaze.Data;
+    private MazeNode[,] CurrentNodes => currentMaze.Nodes;
 
     private void ClearMaze()
     {
@@ -47,9 +48,9 @@ public class MazeGenerator : MonoBehaviour
     public void CreateMaze(MazeData data,MazeManager mazeManager)
     {
         this.mazeManager = mazeManager;
-        currentData = data;
+        currentMaze = new Maze(data);
         ClearMaze();
-        
+
         LoadingOperation mazeLoadingOperation = MazeLoadOperation();
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish);
         UILoadingScreen screen = screenManager.GetScreen<UILoadingScreen>();
@@ -59,19 +60,19 @@ public class MazeGenerator : MonoBehaviour
     private LoadingOperation MazeLoadOperation()
     {
         IEnumerator<float> step1enumerator = CreateBase();
-        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "A");
+        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Creating floor");
 
         IEnumerator<float> step2enumerator = CreatePath();
-        LoadingStep step2 = new LoadingStep(step2enumerator, coroutiner, "B");
+        LoadingStep step2 = new LoadingStep(step2enumerator, coroutiner, "Generating paths");
 
         IEnumerator<float> step3enumerator = RemoveDeadEnds();
-        LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "C");
+        LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Removing dead ends");
 
         IEnumerator<float> step4enumerator = AddItems();
-        LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "D");
+        LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "Adding items");
 
         IEnumerator<float> step5enumerator = AddTorches();
-        LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "E");
+        LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Adding torches");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
@@ -84,22 +85,22 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator<float> CreateBase()
     {
-        MazeNode[,] nodes = new MazeNode[currentData.Width, currentData.Height];
-        for (int y = 0; y < currentData.Height; y++)
+        MazeNode[,] nodes = new MazeNode[CurrentData.Width, CurrentData.Height];
+        for (int y = 0; y < CurrentData.Height; y++)
         {
-            for (int x = 0; x < currentData.Width; x++)
+            for (int x = 0; x < CurrentData.Width; x++)
             {
                 MazeNode newNode = GetAvailableNode();
                 nodes[x, y] = newNode;
                 newNode.Activate();
                 newNode.SetCoordinate(x, y);
                 PositionNode(newNode);
-                SetNodeEdges(newNode, currentData);
+                SetNodeEdges(newNode, CurrentData);
                 MazeUtils.ExecuteActionWithAllCardinals(AddNodeWalls, newNode);
-                yield return LoadingUtils.GetProgress(y * currentData.Height + x, currentData.Size);
+                yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
             }
         }
-        currentNodes = nodes;
+        currentMaze.SetNodes(nodes);
     }
 
     private Stack<MazeNode> GetNodeStack(MazeNode[,] nodes, MazeData data)
@@ -115,14 +116,14 @@ public class MazeGenerator : MonoBehaviour
     private IEnumerator<float> CreatePath()
     {
         float visitedNodes = 0;
-        Stack<MazeNode> stack = GetNodeStack(currentNodes, currentData);
+        Stack<MazeNode> stack = GetNodeStack(CurrentNodes, CurrentData);
         while (stack.Count > 0)
         {
             MazeNode currentNode = stack.Pop();
             Debug.Log("going to Node at: [" + currentNode.X + "," + currentNode.Y + "]");
             currentNode.Visit();
             visitedNodes++;
-            List<MazeNode> neighbors = GetUnvisitedNeighbors(currentNode, currentData);
+            List<MazeNode> neighbors = GetUnvisitedNeighbors(currentNode, CurrentData);
             if (neighbors.Count > 0)
             {
                 stack.Push(currentNode);
@@ -130,23 +131,23 @@ public class MazeGenerator : MonoBehaviour
                 stack.Push(neighbors[0]);
                 RemoveWallsAt(stack.Peek(), currentNode);
             }
-            yield return LoadingUtils.GetProgress(visitedNodes, currentNodes.Length * 2);
+            yield return LoadingUtils.GetProgress(visitedNodes, CurrentNodes.Length * 2);
         }
     }
 
     public IEnumerator<float> RemoveDeadEnds()
     {
-        MazeNode[,] nodes = currentNodes.Clone() as MazeNode[,];
+        MazeNode[,] nodes = CurrentNodes.Clone() as MazeNode[,];
 
-        for (int y = 0; y < currentData.Height; y++)
+        for (int y = 0; y < CurrentData.Height; y++)
         {
-            for (int x = 0; x < currentData.Width; x++)
+            for (int x = 0; x < CurrentData.Width; x++)
             {
                 if (nodes[x,y].IsActive && nodes[x,y].ActiveWalls == 3)
                 {
-                    StartCoroutine(RemoveDeadEndWall(nodes[x,y], currentData));
+                    StartCoroutine(RemoveDeadEndWall(nodes[x,y], CurrentData));
                 }
-                yield return LoadingUtils.GetProgress(y * currentData.Height + x, nodes.Length);
+                yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
         }
     }
@@ -183,7 +184,7 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator<float> AddItems()
     {
-        List<MissionItem> items = mazeManager.GetMissionItems(currentData.Objective);
+        List<MissionItem> items = mazeManager.GetMissionItems();
         for (int i = 0; i < items.Count; i++)
         {
             PositionItem(items[i]);
@@ -198,13 +199,13 @@ public class MazeGenerator : MonoBehaviour
         switch (item.GenerationData.SpawnType)
         {
             case SpawnType.Node:
-                transform = GetAvailableNodeAwayFrom(mazeManager.CurrentStartingNode, currentNodes, item.GenerationData.MinDistanceFromStart).transform;
+                transform = GetAvailableNodeAwayFrom(mazeManager.CurrentStartingNode, CurrentNodes, item.GenerationData.MinDistanceFromStart).transform;
                 break;
             case SpawnType.Wall:
-                transform = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, currentNodes, item.GenerationData.MinDistanceFromStart).transform;
+                transform = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, CurrentNodes, item.GenerationData.MinDistanceFromStart).transform;
                 break;
             case SpawnType.EdgeWalls:
-                List<MazeNode> edgeNodes = MazeUtils.GetEdgeNodes(currentNodes, currentData);
+                List<MazeNode> edgeNodes = MazeUtils.GetEdgeNodes(CurrentNodes, CurrentData);
                 MazeWall chosenWall = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, edgeNodes, item.GenerationData.MinDistanceFromStart, true, item.GenerationData.Replace);
                 if (chosenWall != null)
                 {
@@ -389,7 +390,7 @@ public class MazeGenerator : MonoBehaviour
     {
         int torchCount = 0;
         float breakChance = 0f;
-        MazeNode[,] nodes = currentNodes.Clone() as MazeNode[,];
+        MazeNode[,] nodes = CurrentNodes.Clone() as MazeNode[,];
         nodes.Shuffle();
 
         IEnumerator<float> torchEnumerator = GenerateTorches(nodes, torchCount, breakChance);
@@ -414,26 +415,26 @@ public class MazeGenerator : MonoBehaviour
             float randomTorchValue = UnityEngine.Random.Range(0f, 1f);
             float randomBreakChance = UnityEngine.Random.Range(0f, 1f);
             Debug.Log("Torches: " + torchCount + "| BreakChance: " + breakChance + " | RNG: " + randomBreakChance);
-            if (torchCount < currentData.MinTorchCount || breakChance < randomBreakChance)
+            if (torchCount < CurrentData.MinTorchCount || breakChance < randomBreakChance)
             {
-                if (randomTorchValue >= currentData.TorchRatio)
+                if (randomTorchValue >= CurrentData.TorchRatio)
                 {
                     if (node.HasAnyWall())
                     {
                         PlaceTorchAt(node);
                         torchCount++;
-                        if (torchCount == currentData.MaxTorchCount)
+                        if (torchCount == CurrentData.MaxTorchCount)
                         {
                             break;
                         }
-                        if (torchCount >= currentData.MinTorchCount)
+                        if (torchCount >= CurrentData.MinTorchCount)
                         {
-                            breakChance = (float)(torchCount - currentData.MinTorchCount) / (currentData.MaxTorchCount - currentData.MinTorchCount);
+                            breakChance = (float)(torchCount - CurrentData.MinTorchCount) / (CurrentData.MaxTorchCount - CurrentData.MinTorchCount);
                         }
                     }
                     remainingNodes.Remove(node);
                 }
-                yield return LoadingUtils.GetProgress(torchCount, currentData.MaxTorchCount);
+                yield return LoadingUtils.GetProgress(torchCount, CurrentData.MaxTorchCount);
             }
             else
             {
@@ -441,10 +442,10 @@ public class MazeGenerator : MonoBehaviour
                 break;
             }
 
-            yield return LoadingUtils.GetProgress(torchCount, currentData.MaxTorchCount);
+            yield return LoadingUtils.GetProgress(torchCount, CurrentData.MaxTorchCount);
         }
 
-        if (torchCount < currentData.MaxTorchCount && !broken)
+        if (torchCount < CurrentData.MaxTorchCount && !broken)
         {
             yield return GenerateTorches(remainingNodes, torchCount, breakChance).Current;
         }
@@ -457,7 +458,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void PlaceTorchAt(MazeNode node)
     {
-        MazeTorch torch = mazeManager.GetMazeTorch(currentData);
+        MazeTorch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
         node.AddTorch(torch);
     }

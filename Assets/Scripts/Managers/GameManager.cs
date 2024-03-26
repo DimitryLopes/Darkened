@@ -51,8 +51,8 @@ public class GameManager
         player.ToggleActing(false);
 
         Objective currentObjective = objectiveManager.CurrentObjective;
-        string screenMessage = objectiveCompleted ? currentObjective.VictoryMessage : currentObjective.DefeatMessage;
-        string screenTitle = currentObjective.Title;
+        string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
+        string screenTitle = currentObjective.Data.Title;
         UIGameFinishScreen screen = screenManager.GetScreen<UIGameFinishScreen>();
         GameFinishScreenController controller;
         switch (levelManager.CurrentLevelType)

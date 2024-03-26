@@ -1,7 +1,12 @@
 using System;
 using UnityEngine;
+using Zenject;
+
 public class Item : Activateable, IItem, IInteractable
 {
+    [Inject]
+    protected SignalBus signalBus;
+
     [SerializeField]
     private ItemGenerationData itemGenerationData;
     protected ItemType type;

@@ -1,7 +1,7 @@
 public interface IUISelectable
 {
     string Title { get; }
-    SelectableType Type { get; }
+    SelectableType SelectableType { get; }
 }
 
 public enum SelectableType

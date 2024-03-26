@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MissionItem : Item
@@ -11,25 +9,23 @@ public class MissionItem : Item
         this.mission = mission;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Interact();
-        }
-    }
-
     public override void Interact()
     {
         if (CanInteract)
         {
-            ContributeToProgress();
-            canInteract = false;
+            signalBus.Fire(new OnMissionItemInteractedSignal(this));
+            DisableInteraction();
         }
     }
 
-    public virtual void ContributeToProgress()
+    public void EnableInteraction()
     {
-        mission.OnMissionProgress(type);
+        canInteract = true;
     }
+
+    public void DisableInteraction()
+    {
+        canInteract = false;
+    }
+
 }

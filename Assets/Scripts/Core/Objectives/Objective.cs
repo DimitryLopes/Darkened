@@ -1,51 +1,77 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class Objective : ScriptableObject, IUISelectable
+public class Objective 
 {
-    [SerializeField]
-    private string title;
-    [SerializeField]
-    private string description;
-    [SerializeField]
-    private string victoryMessage = "You escaped";
-    [SerializeField]
-    private string defeatMessage = "The monster got Clebinho";
-    [SerializeField]
-    private ObjectiveType objectiveType;
-    [SerializeField]
-    private List<Mission> baseMissions;
+    private ObjectiveData data;
+    private SignalBus signalBus;
+    private int currentGroupIndex;
 
-    public string Title => title;
-    public string Description => description;
-    public string VictoryMessage => victoryMessage;
-    public string DefeatMessage => defeatMessage;
-
+    public ObjectiveData Data => data;
     public bool IsCompleted { get; private set; }
     public float Progress { get; private set; }
-    public List<Mission> Missions { get; private set; }
+    public List<MissionGroup> MissionGroups { get; private set; }
+    public MissionGroup CurrentMissionGroup => MissionGroups[currentGroupIndex];
 
-    public SelectableType Type => SelectableType.Objective;
-    public ObjectiveType ObjectiveType => objectiveType;
+    public Objective (ObjectiveData data, SignalBus signalBus)
+    {
+        SetUp(data, signalBus);
 
+        for (int i = 0; i < Data.MissionGroups.Count; i++)
+        {
+            MissionGroup newGroup = new MissionGroup(Data.MissionGroups[i], signalBus);
+            foreach (MissionData missionData in Data.MissionGroups[i].Missions)
+            {
+                Mission newMission = new Mission(missionData, signalBus);
+                newGroup.AddMission(newMission);
+            }
+            newGroup.SetActive(false);
+            MissionGroups.Add(newGroup);
+        }
+    }
 
-    private SignalBus signalBus;
-    private int missionsCompleted;
+    private void SetUp(ObjectiveData data, SignalBus signalBus)
+    {
+        this.data = data;
+        this.signalBus = signalBus;
+        MissionGroups = new List<MissionGroup>();
+        currentGroupIndex = 0;
+        IsCompleted = false;
+    }
 
     public void CompleteMission(Mission mission)
     {
-        if (Missions.Contains(mission))
+        CurrentMissionGroup.CompleteMission(mission);
+        if (CurrentMissionGroup.IsComplete)
         {
-            missionsCompleted++;
-            if(missionsCompleted == Missions.Count)
-            {
-                CompleteObjective();
-            }
+            CompleteMissionGroup();
+        }
+    }
+
+    private void CompleteMissionGroup()
+    {
+        CurrentMissionGroup.SetActive(false);
+        signalBus.Fire(new OnMissionGroupCompletedSignal(CurrentMissionGroup));
+
+        currentGroupIndex++;
+        if (currentGroupIndex < MissionGroups.Count)
+        {
+            CurrentMissionGroup.SetActive(true);
         }
         else
         {
-            Debug.LogError("Completed mission was not in the active objective");
+            CompleteObjective();
+        }
+    }
+
+    public void UpdateProgress(float amount)
+    {
+        Progress += amount;
+        if (Progress >= 1)
+        {
+            CompleteObjective();
         }
     }
 
@@ -53,53 +79,5 @@ public class Objective : ScriptableObject, IUISelectable
     {
         IsCompleted = true;
         signalBus.Fire(new OnGameCompletedSignal(this, true));
-    }
-
-    public void Clear()
-    {
-        Progress = 0;
-    }
-
-    public List<ItemType> GetRequiredItems()
-    {
-        List<ItemType> items = new List<ItemType>();
-        foreach(Mission mission in Missions)
-        {
-            items.AddRange(mission.GetRequiredItems());
-        }
-        return items;
-    }
-
-    public void SetUp(Objective objective)
-    {
-        description = objective.Description;
-        IsCompleted = objective.IsCompleted;
-        Progress = objective.Progress;
-        baseMissions = objective.baseMissions;
-        Missions = new List<Mission>();
-    }
-
-    public void StartObjective(SignalBus signalBus)
-    {
-        Missions.Clear();
-        foreach (Mission mission in baseMissions)
-        {
-            Mission newMission = Mission.CreateInstance<Mission>();
-            newMission.SetUp(mission.ItemData, signalBus);
-            Missions.Add(newMission);
-        }
-
-        this.signalBus = signalBus;
-        missionsCompleted = 0;
-        IsCompleted = false;
-    }
-
-    public void UpdateProgress(float amount)
-    {
-        Progress += amount;
-        if(Progress >= 1)
-        {
-            CompleteObjective();
-        }
     }
 }

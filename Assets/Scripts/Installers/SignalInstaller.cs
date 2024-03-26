@@ -8,7 +8,11 @@ public class SignalInstaller : MonoInstaller
 
         //In Game
         Container.DeclareSignal<OnGameCompletedSignal>();
+        Container.DeclareSignal<OnMissionProgressSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
+        Container.DeclareSignal<OnMissionGroupStartedSignal>();
+        Container.DeclareSignal<OnMissionGroupCompletedSignal>();
+        Container.DeclareSignal<OnMissionItemInteractedSignal>();
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
         //Screens
         Container.DeclareSignal<OnScreenAfterHideSignal>();

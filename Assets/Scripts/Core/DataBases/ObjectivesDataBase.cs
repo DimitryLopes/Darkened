@@ -5,30 +5,30 @@ using UnityEngine;
 public class ObjectivesDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<Objective> objectives;
+    private List<ObjectiveData> objectives;
 
-    public Dictionary<ObjectiveType, Objective> ObjectivesDictionary = new Dictionary<ObjectiveType, Objective>();
-    public List<Objective> Objectives => objectives;
+    public Dictionary<ObjectiveType, ObjectiveData> ObjectivesDictionary = new Dictionary<ObjectiveType, ObjectiveData>();
+    public List<ObjectiveData> Objectives => objectives;
 
     public void SetUp()
     {
-        foreach(Objective objective in objectives)
+        foreach(ObjectiveData objective in objectives)
         {
             ObjectivesDictionary.Add(objective.ObjectiveType, objective);
         }
     }
 
-    public Objective GetRandomObjective()
+    public ObjectiveData GetRandomObjective()
     {
         return objectives.GetRandom();
     }
 
-    public List<Objective> GetAllObjectives()
+    public List<ObjectiveData> GetAllObjectives()
     {
         return objectives;
     }
 
-    public Objective GetObjective(ObjectiveType type)
+    public ObjectiveData GetObjective(ObjectiveType type)
     {
         return ObjectivesDictionary[type];
     }

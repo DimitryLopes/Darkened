@@ -4,5 +4,6 @@ public enum ItemType
     Crossbow,
     Flashlight,
     Supplies,
+    Button,
     DefaultTorch,
 }

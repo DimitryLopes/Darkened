@@ -1,0 +1,58 @@
+using System.Collections.Generic;
+using UnityEngine;
+using Zenject;
+
+public class ObjectiveHUD : MonoBehaviour
+{
+    [Inject]
+    private SignalBus signalBus;
+    [SerializeField]
+    private UIMissionDescription missionDescriptionPrefab;
+    [SerializeField]
+    private Transform descriptionsContainer;
+
+    private List<UIMissionDescription> instantiatedDescriptions = new List<UIMissionDescription>();
+
+    private void Start()
+    {
+        signalBus.Subscribe<OnMissionGroupCompletedSignal>(OnMissionCompleted);
+        signalBus.Subscribe<OnMissionGroupStartedSignal>(OnMissionGroupStarted);
+    }
+
+    private void OnMissionCompleted(OnMissionGroupCompletedSignal signal)
+    {
+        foreach (UIMissionDescription missionDescription in instantiatedDescriptions)
+        {
+            if (missionDescription.IsActive)
+            {
+                missionDescription.Deactivate();
+            }
+        }
+    }
+
+    private void OnMissionGroupStarted(OnMissionGroupStartedSignal signal)
+    {
+        foreach(Mission mission in signal.MissionGroup.Missions)
+        {
+            UIMissionDescription description = GetAvailableDescription();
+            description.SetUp(mission, signalBus);
+        }
+    }
+
+    public UIMissionDescription GetAvailableDescription()
+    {
+        foreach(UIMissionDescription missionDescription in instantiatedDescriptions)
+        {
+            if (!missionDescription.IsActive)
+            {
+                missionDescription.Activate();
+                return missionDescription;
+            }
+        }
+
+        UIMissionDescription newMissionDescription = Instantiate(missionDescriptionPrefab, descriptionsContainer);
+        newMissionDescription.Activate();
+        instantiatedDescriptions.Add(newMissionDescription);
+        return newMissionDescription;
+    }
+}

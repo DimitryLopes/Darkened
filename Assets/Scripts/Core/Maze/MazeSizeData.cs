@@ -14,7 +14,7 @@ public class MazeSizeData : ScriptableObject, IUISelectable
     public float cameraPosition => Height / 2 - 0.5f;
     public float cameraSize => Height;
 
-    public SelectableType Type => SelectableType.MazeSize;
+    public SelectableType SelectableType => SelectableType.MazeSize;
 
     public string Title => $"{Width} x {Height}";
 }

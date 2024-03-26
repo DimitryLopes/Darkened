@@ -6,7 +6,6 @@ public class MazeManager
     private readonly MazeGenerator mazeGenerator;
     private readonly ItemFactory itemFactory;
     private readonly ObjectiveManager objectiveManager;
-    private readonly SignalBus signalBus;
 
     public MazeNode CurrentStartingNode { get; set; }
 
@@ -15,7 +14,7 @@ public class MazeManager
     public void LoadMaze(MazeData data)
     {
         ClearItems();
-        objectiveManager.StartObjective(data.Objective);
+        objectiveManager.StartObjective(data.ObjectiveData);
         mazeGenerator.CreateMaze(data, this);
     }
 
@@ -57,17 +56,20 @@ public class MazeManager
         return newItem;
     }
 
-    public List<MissionItem> GetMissionItems(Objective objective)
+    public List<MissionItem> GetMissionItems()
     {
         List<MissionItem> items = new List<MissionItem>();
-        foreach (Mission mission in objective.Missions)
+        foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
         {
-            List<ItemType> missionItemsInfo = mission.GetRequiredItems();
-            foreach (ItemType type in missionItemsInfo)
+            foreach (Mission mission in missionGroup.Missions)
             {
-                MissionItem missionItem = (MissionItem)GetAvailableItem(type);
-                items.Add(missionItem);
-                objectiveManager.AddMissionToItem(missionItem, mission);
+                List<ItemType> missionItemsInfo = mission.GetRequiredItems();
+                foreach (ItemType type in missionItemsInfo)
+                {
+                    MissionItem missionItem = (MissionItem)GetAvailableItem(type);
+                    items.Add(missionItem);
+                    objectiveManager.AddMissionToItem(missionItem, mission);
+                }
             }
         }
         return items;
@@ -79,11 +81,10 @@ public class MazeManager
     }
 
     [Inject]
-    public MazeManager(ObjectiveManager objectiveManager, ItemFactory itemFactory, MazeGenerator mazeGenerator, SignalBus signalBus)
+    public MazeManager(ObjectiveManager objectiveManager, ItemFactory itemFactory, MazeGenerator mazeGenerator)
     {
         this.objectiveManager = objectiveManager;
         this.mazeGenerator = mazeGenerator;
         this.itemFactory = itemFactory;
-        this.signalBus = signalBus;
     }
 }

@@ -11,12 +11,14 @@ public class ObjectiveManager
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnMissionCompletedSignal>(OnMissionCompleted);
+        signalBus.Subscribe<OnMissionGroupCompletedSignal>(OnMissionGroupCompleted);
+        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
     }
 
-    public void StartObjective(Objective objective)
+    public void StartObjective(ObjectiveData data)
     {
+        Objective objective = new Objective(data, signalBus);
         SetObjective(objective);
-        objective.StartObjective(signalBus);
     }
 
     public void SetObjective(Objective objective)
@@ -24,19 +26,30 @@ public class ObjectiveManager
         CurrentObjective = objective;
     }
 
-    private void ActivateMission(Mission mission)
+    private void ActivateMissionGroup(MissionGroup missionGroup)
     {
-
+        missionGroup.SetActive(true);
     }
     
     public void AddMissionToItem(MissionItem item, Mission mission)
     {
         item.SetMission(mission);
+        mission.Items.Add(item);
+        item.DisableInteraction();
     }
 
     private void OnMissionCompleted(OnMissionCompletedSignal signal)
     {
         CurrentObjective.CompleteMission(signal.Mission);
+    }
+
+    private void OnMazeLoadFinish(OnMazeLoadFinishSignal signal)
+    {
+        ActivateMissionGroup(CurrentObjective.CurrentMissionGroup);
+    }
+
+    private void OnMissionGroupCompleted(OnMissionGroupCompletedSignal signal)
+    {
     }
 
 }

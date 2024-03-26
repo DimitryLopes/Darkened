@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183fac245659ff941a8a93c4b8082e64, type: 3}
   m_Name: FindExitMission
   m_EditorClassIdentifier: 
+  description: Find the exit
   itemData:
     item: 0
     amount: 1

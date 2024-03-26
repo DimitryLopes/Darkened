@@ -24,7 +24,7 @@ public class UICustomLevelSelection : MonoBehaviour
 
     private void PopulateObjectivesContainer()
     {
-        List<Objective> selectables = objectivesDataBase.GetAllObjectives();
+        List<ObjectiveData> selectables = objectivesDataBase.GetAllObjectives();
         List<UISelectableItem> items = new List<UISelectableItem>();
         foreach (IUISelectable uISelectable in selectables)
         {

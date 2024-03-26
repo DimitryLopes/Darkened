@@ -40,7 +40,7 @@ public class LevelManager
     private ObjectiveType customObjectiveType = ObjectiveType.FindExit; 
     private void OnSelectableSelected(OnSelectableSelectedSignal signal)
     {
-        switch (signal.Selectable.Type)
+        switch (signal.Selectable.SelectableType)
         {
             case SelectableType.MazeSize:
                 MazeSizeData data = signal.Selectable as MazeSizeData;
@@ -50,7 +50,7 @@ public class LevelManager
             case SelectableType.GameMode:
                 break;
             case SelectableType.Objective:
-                Objective objective = signal.Selectable as Objective;
+                ObjectiveData objective = signal.Selectable as ObjectiveData;
                 customObjectiveType = objective.ObjectiveType;
                 break;
         }
@@ -58,7 +58,7 @@ public class LevelManager
 
     public void StartCustomLevel()
     {
-        Objective objective = GetObjectiveByType(customObjectiveType);
+        ObjectiveData objective = GetObjectiveByType(customObjectiveType);
         MazeData data = MazeData.CreateInstance<MazeData>();
         data.SetUp(customSizeData, objective, ItemType.DefaultTorch);
         LoadLevel(data, LevelType.Custom);
@@ -69,7 +69,7 @@ public class LevelManager
     #region Random Level
     public void StartRandomLevel()
     {
-        Objective objective = GetObjective();
+        ObjectiveData objective = GetObjective();
         MazeSizeData mazeSizeData = mazeSizeDataBase.GetSizeDatas().GetRandom();
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
@@ -86,7 +86,7 @@ public class LevelManager
 
         if(levelType == LevelType.Story)
         {
-            Objective objective = GetObjectiveByType(data.Objective.ObjectiveType);
+            ObjectiveData objective = GetObjectiveByType(data.ObjectiveData.ObjectiveType);
             data.SetUp(data, objective);
         }
         mazeManager.LoadMaze(data);
@@ -96,26 +96,23 @@ public class LevelManager
         Camera.main.orthographicSize = data.SizeData.cameraSize;
     }
 
-    private Objective GetObjective(Objective targetObjective = null)
+    private ObjectiveData GetObjective(ObjectiveData targetObjective = null)
     {
-        Objective baseObjective;
+        ObjectiveData objectiveData;
         if (targetObjective != null)
         {
-            baseObjective = objectivesDataBase.GetObjective(targetObjective.ObjectiveType);
+            objectiveData = objectivesDataBase.GetObjective(targetObjective.ObjectiveType);
         }
         else
         {
-            baseObjective = objectivesDataBase.GetRandomObjective();
+            objectiveData = objectivesDataBase.GetRandomObjective();
         }
-
-        Objective objective = Objective.CreateInstance<Objective>();
-        objective.SetUp(baseObjective);
-        return objective;
+        return objectiveData;
     }
 
-    private Objective GetObjectiveByType(ObjectiveType type)
+    private ObjectiveData GetObjectiveByType(ObjectiveType type)
     {
-        Objective baseObjective;
+        ObjectiveData baseObjective;
         baseObjective = objectivesDataBase.GetObjective(type);
         baseObjective = GetObjective(baseObjective);
         return baseObjective;
