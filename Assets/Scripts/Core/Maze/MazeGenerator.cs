@@ -155,6 +155,7 @@ public class MazeGenerator : MonoBehaviour
     private IEnumerator RemoveDeadEndWall(MazeNode node, MazeData data)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        cardinals.Shuffle();
 
         while (cardinals.Count > 0)
         {
@@ -170,13 +171,11 @@ public class MazeGenerator : MonoBehaviour
                 else
                 {
                     cardinals.RemoveAt(0);
-                    cardinals.Shuffle();
                 }
             }
             else
             {
                 cardinals.RemoveAt(0);
-                cardinals.Shuffle();
             }
             yield return null;
         }
@@ -255,33 +254,14 @@ public class MazeGenerator : MonoBehaviour
         Debug.Log("Removing walls between [" + nodeA.X + "," + nodeA.Y + "] and [" + nodeB.X + "," + nodeB.Y + "]");
         Cardinal direction = NodeUtils.GetCardinalDirection(nodeA, nodeB);
         Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
-        nodeA.RemoveWall(oppositeDirection);
 
+        nodeA.RemoveWall(oppositeDirection);
         nodeB.RemoveWall(direction);
     }
 
     private void RemoveWall(MazeNode node, Cardinal direction)
     {
         node.RemoveWall(direction);
-    }
-
-    private MazeNode GetClosestNodeToVector(Vector2 position)
-    {
-        float closest = float.MaxValue;
-        MazeNode closestNode = null;
-        foreach (MazeNode node in CurrentNodes)
-        {
-            if (node.IsActive)
-            {
-                float currentDistance = Vector2.Distance(position, node.transform.position);
-                if (currentDistance < closest)
-                {
-                    closestNode = node;
-                    closest = currentDistance;
-                }
-            }
-        }
-        return closestNode;
     }
 
     private void AddNodeWalls(Cardinal direction, MazeNode newNode)

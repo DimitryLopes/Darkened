@@ -112,23 +112,42 @@ public class MazeUtils
 
             return path;
         }
+
+        MazeNode GetLowestFScoreNode(HashSet<MazeNode> openSet)
+        {
+            MazeNode lowestNode = null;
+            float lowestFScore = float.MaxValue;
+
+            foreach (MazeNode node in openSet)
+            {
+                if (node.fScore < lowestFScore)
+                {
+                    lowestNode = node;
+                    lowestFScore = node.fScore;
+                }
+            }
+
+            return lowestNode;
+        }
     }
 
-    private static MazeNode GetLowestFScoreNode(HashSet<MazeNode> openSet)
+    public static MazeNode GetClosestNodeToVector(Vector2 position, MazeNode[,] nodes)
     {
-        MazeNode lowestNode = null;
-        float lowestFScore = float.MaxValue;
-
-        foreach (MazeNode node in openSet)
+        float closest = float.MaxValue;
+        MazeNode closestNode = null;
+        foreach (MazeNode node in nodes)
         {
-            if (node.fScore < lowestFScore)
+            if (node.IsActive)
             {
-                lowestNode = node;
-                lowestFScore = node.fScore;
+                float currentDistance = Vector2.Distance(position, node.transform.position);
+                if (currentDistance < closest)
+                {
+                    closestNode = node;
+                    closest = currentDistance;
+                }
             }
         }
-
-        return lowestNode;
+        return closestNode;
     }
 
     public static bool IsNodeAtEdge(Coordinate coordinate, MazeData data)
@@ -146,28 +165,32 @@ public class MazeUtils
                 if (node.Coordinates.Y < maze.Data.Height - 1)
                 {
                     coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y + 1);
+                    return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.South:
                 if (node.Coordinates.Y > 0)
                 {
                     coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y - 1);
+                    return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.East:
                 if (node.Coordinates.X < maze.Data.Width - 1)
                 {
                     coordinate = new Coordinate(node.Coordinates.X + 1, node.Coordinates.Y);
+                    return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.West:
                 if (node.Coordinates.X > 0)
                 {
                     coordinate = new Coordinate(node.Coordinates.X - 1, node.Coordinates.Y);
+                    return maze.NodesByCoordinate[coordinate];
                 }
                 break;
         }
-        return maze.NodesByCoordinate[coordinate];
+        return null;
     }
 
     public static MazeNode GetNodeAtCoordinate(Coordinate coordinate, Maze maze)
@@ -185,7 +208,7 @@ public class MazeUtils
         {
             if (!node.HasWall(cardinal))
             {
-                availableNodes.Add(GetNodeAtCardinalFromNode(Cardinal.North, node, maze));
+                availableNodes.Add(GetNodeAtCardinalFromNode(cardinal, node, maze));
             }
         }
     }

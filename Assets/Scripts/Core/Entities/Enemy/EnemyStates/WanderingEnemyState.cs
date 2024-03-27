@@ -1,42 +1,60 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WanderingEnemyState : EnemyState<WanderingEnemyStateData>
+public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
 {
-    public LayerMask obstacleMask; 
-    private MazeNode currentTarget;
-    private Stack<Vector3> path;
+    protected MazeNode currentTarget;
+    protected MazeNode closestNode;
 
-    private Vector3 targetPosition;
+    protected Stack<MazeNode> path;
 
     public override void OnActivate()
     {
-        GetRandomPath();
+        SetclosestNode();
+        SetPath();
     }
 
-    private void GetRandomPath()
+    private void SetclosestNode()
     {
-        currentTarget = Data.Maze.Nodes.GetRandom();
-        //path = MazeUtils.GetPathFromNodeToNode(enemy.transform.position, currentTarget);
+        closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, Data.Maze.Nodes);
     }
 
-    private void MoveTowardsTarget()
+    public virtual void SetPath(MazeNode target = null)
     {
-        if (path != null && path.Count > 0)
+        if (target == null)
         {
-            Vector3 nextPos = path.Peek();
-            Vector3 direction = (nextPos - enemy.transform.position).normalized;
-            //enemy.transform.Translate(direction * enemy.MovementSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(enemy.transform.position, nextPos) < 0.1f)
-            {
-                path.Pop();
-            }
+            currentTarget = Data.Maze.Nodes.GetRandom();
         }
         else
         {
-            GetRandomPath();
+            currentTarget = target;
+        }
+        path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, Data.Maze);
+    }
+
+    protected virtual void MoveTowardsTarget()
+    {
+        if (path != null && path.Count > 0)
+        {
+            HandleMovement();
+        }
+        else
+        {
+            SetPath();
+        }
+    }
+
+    protected void HandleMovement()
+    {
+        MazeNode nextNode = path.Peek();
+        Vector3 targetDirection = nextNode.transform.position;
+        Vector3 direction = (targetDirection - Enemy.transform.position).normalized;
+
+        Enemy.Move(direction);
+
+        if (Vector3.Distance(Enemy.transform.position, targetDirection) < 0.1f)
+        {
+            path.Pop();
         }
     }
 

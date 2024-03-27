@@ -1,22 +1,33 @@
 using UnityEngine;
-using Zenject;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    [Inject]
-    protected MazeManager mazeManager;
+    [SerializeField]
+    private EnemyData data;
+    [SerializeField]
+    private new Rigidbody2D rb;
 
-    //protected EnemyState currentState;
+    protected IEnemyState currentState;
 
-    //protected virtual void ChangeState(EnemyState state)
-    //{
-    //    currentState.Deactivate();
-    //    currentState = state;
-    //    currentState.Activate();
-    //}
+    public float MovementSpeed => data.Speed;
+    public float SprintingSpeed => data.Speed * data.SprintingSpeedMultiplier;
 
-    //private void Update()
-    //{
-    //    currentState.HandleState();
-    //}
+    protected virtual void ChangeState(IEnemyState state)
+    {
+        currentState.Deactivate();
+        currentState = state;
+        currentState.Activate();
+    }
+
+    public void Move(Vector3 target, bool isSprinting = false)
+    {
+        Vector3 direction = target - transform.position;
+        direction *= isSprinting ? SprintingSpeed : MovementSpeed;
+        rb.velocity = direction;
+    }
+
+    private void Update()
+    {
+        currentState.HandleState();
+    }
 }

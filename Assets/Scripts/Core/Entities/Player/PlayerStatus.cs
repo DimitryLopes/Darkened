@@ -8,7 +8,7 @@ public class PlayerStatus : ScriptableObject
     [SerializeField]
     private float movementSpeed;
     [SerializeField]
-    private float sprintingSpeed;
+    private float sprintingSpeedMultiplier;
 
     [SerializeField, Header("Stamina")]
     private float staminaRegenSpeed;
@@ -26,7 +26,7 @@ public class PlayerStatus : ScriptableObject
     public float StaminaConsumptionSpeed => staminaConsumptionSpeed;
     public float InteractionRange => interactionDistance;
     public float StaminaRegenSpeed  => staminaRegenSpeed;
-    public float SprintingSpeed => sprintingSpeed;
+    public float SprintingSpeedMultiplier => sprintingSpeedMultiplier;
     public float MovementSpeed => movementSpeed;
     public float RotationSpeed => rotationSpeed;
     public float MaxStamina => maxStamina;

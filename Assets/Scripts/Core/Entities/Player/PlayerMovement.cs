@@ -54,7 +54,7 @@ public class PlayerMovement : PlayerAction
         {
             if (isSprinting)
             {
-                movement *= status.SprintingSpeed;
+                movement *= status.SprintingSpeedMultiplier;
                 currentStamina -= status.StaminaConsumptionSpeed * Time.deltaTime;
                 if (currentStamina <= 0)
                 {

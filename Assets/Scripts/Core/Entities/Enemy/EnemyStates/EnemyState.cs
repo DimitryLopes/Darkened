@@ -1,17 +1,22 @@
-public abstract class EnemyState<T> : IActivateable where T : EnemyStateData
+using System.Numerics;
+using UnityEngine.Events;
+
+public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
 {
     private bool isActive;
-    protected EnemyBase enemy;
-    protected T Data { get; private set; }
+    private UnityAction onDeactivateCallback;
+    private UnityAction onActivateCallback;
 
+    protected EnemyBase Enemy => Data.Enemy;
     public bool IsActive => isActive;
-
-    public void SetUp(T data)
-    {
-        Data = data;
-    }
+    protected U Data { get; private set; }
 
     public abstract void HandleState();
+
+    public void SetUp<T>(T data) where T : BaseEnemyStateData
+    {
+        Data = data as U;
+    }
 
     public void Activate()
     {
@@ -31,6 +36,22 @@ public abstract class EnemyState<T> : IActivateable where T : EnemyStateData
         }
     }
 
-    public virtual void OnDeactivate() { }
-    public virtual void OnActivate() { }
+    public virtual void OnDeactivate()
+    {
+        onDeactivateCallback?.Invoke();
+    }
+    public virtual void OnActivate() 
+    {
+        onActivateCallback?.Invoke();
+    }
+
+    public void SetOnDeactivateCallback(UnityAction callback)
+    {
+        onDeactivateCallback = callback;
+    }
+
+    public void SetOnActivateCallback(UnityAction callback)
+    {
+        onActivateCallback = callback;
+    }
 }
