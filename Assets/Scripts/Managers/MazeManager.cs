@@ -8,14 +8,30 @@ public class MazeManager
     private readonly ObjectiveManager objectiveManager;
 
     public MazeNode CurrentStartingNode { get; set; }
+    public Maze CurrentMaze { get; set; }
 
     public Dictionary<ItemType, List<Item>> ItemDictionary = new Dictionary<ItemType, List<Item>>();
+
+    [Inject]
+    public MazeManager(ObjectiveManager objectiveManager, ItemFactory itemFactory, MazeGenerator mazeGenerator, SignalBus signalBus)
+    {
+        this.objectiveManager = objectiveManager;
+        this.mazeGenerator = mazeGenerator;
+        this.itemFactory = itemFactory;
+
+        signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStarted);
+    }
 
     public void LoadMaze(MazeData data)
     {
         ClearItems();
         objectiveManager.StartObjective(data.ObjectiveData);
         mazeGenerator.CreateMaze(data, this);
+    }
+
+    private void OnMazeLoadStarted(OnMazeLoadStartedSignal signal)
+    {
+        CurrentMaze = signal.Maze;
     }
 
     private void ClearItems()
@@ -80,11 +96,4 @@ public class MazeManager
         return (MazeTorch)GetAvailableItem(data.Torch);
     }
 
-    [Inject]
-    public MazeManager(ObjectiveManager objectiveManager, ItemFactory itemFactory, MazeGenerator mazeGenerator)
-    {
-        this.objectiveManager = objectiveManager;
-        this.mazeGenerator = mazeGenerator;
-        this.itemFactory = itemFactory;
-    }
 }

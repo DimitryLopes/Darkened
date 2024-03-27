@@ -14,7 +14,13 @@ public static class Constants
     public static class Hud
     {
         public const string UI_MISSION_DESCRIPTION_FORMAT = "{0}: {1}/{2}";
+    }
 
+    public static class Layers
+    {
+        public const string WALL_LAYER = "Wall";
+        public const string PLAYER_LAYER = "Player";
+        public const string ENEMY_LAYER = "Enemy";
     }
 }
 

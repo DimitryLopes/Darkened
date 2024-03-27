@@ -25,12 +25,12 @@ public class Item : Activateable, IItem, IInteractable
         this.type = type;
     }
 
-    protected override void OnActivate()
+    public override void OnActivate()
     {
         canInteract = true;
     }
 
-    protected override void OnDeactivate()
+    public override void OnDeactivate()
     {
         canInteract = false;
     }

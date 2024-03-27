@@ -17,7 +17,13 @@ public class MazeNode : Activateable
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
-    
+
+    public void Visit()
+    {
+        floorRenderer.color = Color.green;
+        Visited = true;
+    }
+
     #region Walls
     public bool HasWall(Cardinal direction)
     {
@@ -138,7 +144,7 @@ public class MazeNode : Activateable
 
     #endregion
 
-    protected override void OnDeactivate()
+    public override void OnDeactivate()
     {
         MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
@@ -147,11 +153,6 @@ public class MazeNode : Activateable
         Visited = false;
         coordinates = new Coordinate();
     }
-
-
-
-
-
 
     private void FillDictionary(Cardinal direction)
     {
@@ -173,15 +174,21 @@ public class MazeNode : Activateable
         text.text = x + "," + y;
     }
 
+    #region In Game
     //In Game
     [SerializeField]
     private TextMeshProUGUI text;
     [SerializeField]
     private SpriteRenderer floorRenderer;
+    #endregion
 
-    public void Visit()
+    #region Path Finding
+    public float gScore { get; set; }
+    public float fScore { get; set; }
+
+    public float GetHeuristic(MazeNode node)
     {
-        floorRenderer.color = Color.green;
-        Visited = true;
+        return Vector3.Distance(transform.position, node.transform.position);
     }
+    #endregion
 }

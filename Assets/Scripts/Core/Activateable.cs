@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Activateable : MonoBehaviour
+public class Activateable : MonoBehaviour, IActivateable
 {
     protected bool active = false;
 
@@ -34,12 +34,12 @@ public class Activateable : MonoBehaviour
         }
     }
 
-    protected virtual void OnActivate()
+    public virtual void OnActivate()
     {
 
     }
 
-    protected virtual void OnDeactivate()
+    public virtual void OnDeactivate()
     {
 
     }

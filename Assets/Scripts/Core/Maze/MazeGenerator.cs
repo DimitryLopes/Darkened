@@ -123,7 +123,7 @@ public class MazeGenerator : MonoBehaviour
             Debug.Log("going to Node at: [" + currentNode.X + "," + currentNode.Y + "]");
             currentNode.Visit();
             visitedNodes++;
-            List<MazeNode> neighbors = GetUnvisitedNeighbors(currentNode, CurrentData);
+            List<MazeNode> neighbors = GetUnvisitedNeighbors(currentNode);
             if (neighbors.Count > 0)
             {
                 stack.Push(currentNode);
@@ -160,7 +160,7 @@ public class MazeGenerator : MonoBehaviour
         {
             if (!node.GetEdge(cardinals[0]) && node.HasWall(cardinals[0]))
             {
-                MazeNode neighboorNode = GetNodeAtCardinalFromNode(cardinals[0], node, data);
+                MazeNode neighboorNode = MazeUtils.GetNodeAtCardinalFromNode(cardinals[0], node, currentMaze);
                 if (neighboorNode != null)
                 {
                     RemoveWallsAt(node, neighboorNode);
@@ -225,17 +225,17 @@ public class MazeGenerator : MonoBehaviour
 
     #endregion
 
-    private List<MazeNode> GetUnvisitedNeighbors(MazeNode node, MazeData data)
+    private List<MazeNode> GetUnvisitedNeighbors(MazeNode node)
     {
         List<MazeNode> neighbors = new List<MazeNode>();
-        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, data, ref neighbors);
+        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref neighbors);
         neighbors.RemoveAll(item => item == null);
         return neighbors;
     }
 
-    private MazeNode AddToNeighborsList(Cardinal direction, MazeNode node, MazeData data)
+    private MazeNode AddToNeighborsList(Cardinal direction, MazeNode node)
     {
-        MazeNode neighbor = GetNodeAtCardinalFromNode(direction, node, data);
+        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
         if (neighbor != null && neighbor.Visited == false)
         {
             return neighbor;
@@ -243,56 +243,6 @@ public class MazeGenerator : MonoBehaviour
         return null;
     }
 
-    private MazeNode GetNodeAt(Coordinate coordinate)
-    {
-        foreach (MazeNode node in instantiatedNodes)
-        {
-            if (node.X == coordinate.X && node.Y == coordinate.Y)
-            {
-                return node;
-            }
-        }
-        Debug.LogError("No node found at X: " + coordinate.X + " Y: " + coordinate.Y);
-        return null;
-    }
-
-    private MazeNode GetNodeAtCardinalFromNode(Cardinal direction, MazeNode node, MazeData data)
-    {
-        Coordinate coordinate;
-        switch (direction)
-        {
-            case Cardinal.North:
-                if (node.Coordinates.Y < data.Height - 1)
-                {
-                    coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y + 1);
-                    return GetNodeAt(coordinate);
-                }
-                break;
-            case Cardinal.South:
-                if (node.Coordinates.Y > 0)
-                {
-                    coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y - 1);
-                    return GetNodeAt(coordinate);
-                }
-                break;
-            case Cardinal.East:
-                if (node.Coordinates.X < data.Width - 1)
-                {
-                    coordinate = new Coordinate(node.Coordinates.X + 1, node.Coordinates.Y);
-                    return GetNodeAt(coordinate);
-                }
-                break;
-            case Cardinal.West:
-                if (node.Coordinates.X > 0)
-                {
-                    coordinate = new Coordinate(node.Coordinates.X - 1, node.Coordinates.Y);
-                    return GetNodeAt(coordinate);
-                }
-                break;
-        }
-
-        return null;
-    }
 
     private MazeNode SetStartingPoint(MazeNode[,] nodes, MazeData data)
     {
@@ -319,7 +269,7 @@ public class MazeGenerator : MonoBehaviour
     {
         float closest = float.MaxValue;
         MazeNode closestNode = null;
-        foreach (MazeNode node in instantiatedNodes)
+        foreach (MazeNode node in CurrentNodes)
         {
             if (node.IsActive)
             {
@@ -453,7 +403,12 @@ public class MazeGenerator : MonoBehaviour
 
     private void OnMazeGenerationFinish()
     {
-        signalBus.Fire(new OnMazeLoadFinishSignal());
+        Stack<MazeNode> nodes = MazeUtils.GetPathFromNodeToNode(CurrentNodes.GetRandom(), CurrentNodes.GetRandom(), currentMaze);
+        foreach(MazeNode node in nodes)
+        {
+            Debug.Log($"[{node.Coordinates.X} | {node.Coordinates.Y}]");
+        }
+        signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
     }
 
     public void PlaceTorchAt(MazeNode node)

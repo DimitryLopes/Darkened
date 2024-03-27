@@ -23,7 +23,7 @@ public class MazeTorch : Item
         }
     }
 
-    protected override void OnActivate()
+    public override void OnActivate()
     {
         base.OnActivate();
         DeactivateLights();

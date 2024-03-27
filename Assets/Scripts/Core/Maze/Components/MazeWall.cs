@@ -10,12 +10,12 @@ public class MazeWall : Activateable
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
 
-    protected override void OnActivate()
+    public override void OnActivate()
     {
         gameObject.SetActive(true);
     }
 
-    protected override void OnDeactivate()
+    public override void OnDeactivate()
     {
         gameObject.SetActive(false);
     }

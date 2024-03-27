@@ -21,4 +21,12 @@ public static class ArrayExtensions
             array[j0, j1] = temp;
         }
     }
+
+    public static T GetRandom<T>(this T[,] array)
+    {
+        Random random = new Random();
+        int randomX = random.Next(array.GetLength(0));
+        int randomY = random.Next(array.GetLength(1));
+        return array[randomX, randomY];
+    }
 }
