@@ -1,8 +1,6 @@
-using System;
-using UnityEngine;
 using Zenject;
 
-public class GameManager 
+public class GameManager
 {
     private readonly ObjectiveManager objectiveManager;
     private readonly ScreenManager screenManager;
@@ -33,15 +31,16 @@ public class GameManager
 
     private void HideMainMenu()
     {
-        MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
+        var screen = screenManager.GetScreen<MainMenuScreen>();
         screen.Hide();
     }
 
     private void ShowMainMenu()
     {
         objectiveManager.SetObjective(null);
-        MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
-        MainMenuScreenController controller = new MainMenuScreenController();
+
+        var screen = screenManager.GetScreen<MainMenuScreen>();
+        var controller = new MainMenuScreenController();
         screen.Show(controller);
     }
 
@@ -49,11 +48,14 @@ public class GameManager
     {
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
+        entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
 
         Objective currentObjective = objectiveManager.CurrentObjective;
+
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
         string screenTitle = currentObjective.Data.Title;
-        UIGameFinishScreen screen = screenManager.GetScreen<UIGameFinishScreen>();
+
+        var screen = screenManager.GetScreen<UIGameFinishScreen>();
         GameFinishScreenController controller;
         switch (levelManager.CurrentLevelType)
         {
@@ -76,17 +78,19 @@ public class GameManager
 
     private void OnObjectiveCompleted(OnGameCompletedSignal signal)
     {
-        if(signal.Objective == objectiveManager.CurrentObjective)
-        {
-            FinishGame(signal.Won);
-        }
+        FinishGame(signal.Won);
     }
     
     private void OnMazeLoadFinish()
     {
         Player player = entityManager.GetPlayer();
+
         player.transform.position = mazeManager.CurrentStartingNode.transform.position;
         player.ToggleActing(true);
+
+        Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType);
+        enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
+        entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
     }
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,

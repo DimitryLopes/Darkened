@@ -10,7 +10,6 @@ public class ItemDataBase : ScriptableObject
 
     private Dictionary<ItemType, Item> itemDatas;
 
-    public List<ItemTypeData> DataBaseList => itemDataBase;
     public Dictionary<ItemType, Item> ItemDatas => itemDatas;
 
     public void SetUp()

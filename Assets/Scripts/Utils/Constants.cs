@@ -16,11 +16,11 @@ public static class Constants
         public const string UI_MISSION_DESCRIPTION_FORMAT = "{0}: {1}/{2}";
     }
 
-    public static class Tags
+    public static class LayersAndTags
     {
-        public const string WALL_LAYER = "Wall";
-        public const string PLAYER_LAYER = "Player";
-        public const string ENEMY_LAYER = "Enemy";
+        public const string WALL_TAG = "Wall";
+        public const string PLAYER_TAG = "Player";
+        public const string ENEMY_TAG = "Enemy";
     }
 }
 

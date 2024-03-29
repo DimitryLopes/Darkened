@@ -7,7 +7,7 @@ public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
     private UnityAction onDeactivateCallback;
     private UnityAction onActivateCallback;
 
-    protected EnemyBase Enemy => Data.Enemy;
+    protected Enemy Enemy => Data.Enemy;
     public bool IsActive => isActive;
     protected U Data { get; private set; }
 

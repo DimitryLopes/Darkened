@@ -1,11 +1,6 @@
 public class WanderingEnemyStateData : BaseEnemyStateData
 {
-    public Maze Maze { get; private set; }
-    public EnemyBase Enemy { get; private set; }
-
-    public WanderingEnemyStateData(Maze maze, EnemyBase enemy)
+    public WanderingEnemyStateData(Maze maze, Enemy enemy) : base(maze, enemy)
     {
-        Maze = maze;
-        Enemy = enemy;
     }
 }

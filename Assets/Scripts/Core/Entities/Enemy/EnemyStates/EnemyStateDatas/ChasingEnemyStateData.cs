@@ -1,6 +1,6 @@
 public class ChasingEnemyStateData : BaseEnemyStateData
 {
-    public ChasingEnemyStateData(Maze maze, EnemyBase enemy) : base(maze, enemy)
+    public ChasingEnemyStateData(Maze maze, Enemy enemy) : base(maze, enemy)
     {
     }
 }

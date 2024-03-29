@@ -17,6 +17,9 @@ public class MazeData : ScriptableObject
     [SerializeField]
     private ItemType torch;
 
+    [SerializeField, Header("Enemy")]
+    private EnemyType enemyType;
+
     [SerializeField, Space]
     private ObjectiveData objective;
 
@@ -27,13 +30,15 @@ public class MazeData : ScriptableObject
 
     public int MinTorchCount => (int)(Size * minTorchRatio); 
     public int MaxTorchCount => (int)(Size * maxTorchRatio); 
-    public float TorchRatio => torchRatio; 
-    
-    public ObjectiveData ObjectiveData => objective;
+    public float TorchRatio => torchRatio;
     public ItemType Torch => torch;
+   
+    public EnemyType EnemyType => enemyType;
+
+    public ObjectiveData ObjectiveData => objective;
 
 
-    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, ItemType torch)
+    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, ItemType torch, EnemyType enemyType)
     {
         this.sizeData = sizeData;
         this.objective = objective;
@@ -42,10 +47,11 @@ public class MazeData : ScriptableObject
         minTorchRatio = 0.15f; // ~30% of total nodes
         maxTorchRatio = 0.3f; // ~50% of total nodes
         torchRatio = (minTorchRatio + maxTorchRatio) / 2;
+        this.enemyType = enemyType;
     }
 
     public void SetUp(MazeData data, ObjectiveData objective)
     {
-        SetUp(data.sizeData, objective, ItemType.DefaultTorch);
+        SetUp(data.sizeData, objective, ItemType.DefaultTorch, data.enemyType);
     }
 }

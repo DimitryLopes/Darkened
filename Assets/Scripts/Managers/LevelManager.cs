@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -8,15 +7,18 @@ public class LevelManager
     private ObjectivesDataBase objectivesDataBase;
     private LevelDataBase levelDataBase;
     private MazeSizeDataBase mazeSizeDataBase;
+    private EnemyDataBase enemyDataBase;
 
     public LevelType CurrentLevelType { get; private set; }
+    public MazeData CurrentLevelData { get; private set; }
 
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
-        SignalBus signalBus)
+        SignalBus signalBus, EnemyDataBase enemyDataBase)
     {
         this.mazeManager = mazeManager;
         this.levelDataBase = levelDataBase;
+        this.enemyDataBase = enemyDataBase;
         this.mazeSizeDataBase = mazeSizeDataBase;
         this.objectivesDataBase = objectivesDataBase;
 
@@ -60,7 +62,7 @@ public class LevelManager
     {
         ObjectiveData objective = GetObjectiveByType(customObjectiveType);
         MazeData data = MazeData.CreateInstance<MazeData>();
-        data.SetUp(customSizeData, objective, ItemType.DefaultTorch);
+        data.SetUp(customSizeData, objective, ItemType.DefaultTorch, EnemyType.Default);
         LoadLevel(data, LevelType.Custom);
     }
 
@@ -74,7 +76,7 @@ public class LevelManager
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
         MazeData data = MazeData.CreateInstance<MazeData>();
-        data.SetUp(mazeSizeData, objective, ItemType.DefaultTorch);
+        data.SetUp(mazeSizeData, objective, ItemType.DefaultTorch, enemyDataBase.EnemyTypes.GetRandom());
         LoadLevel(data, LevelType.Random);
     }
 
@@ -83,6 +85,7 @@ public class LevelManager
     private void LoadLevel(MazeData data, LevelType levelType)
     {
         CurrentLevelType = levelType;
+        CurrentLevelData = data;
 
         if(levelType == LevelType.Story)
         {

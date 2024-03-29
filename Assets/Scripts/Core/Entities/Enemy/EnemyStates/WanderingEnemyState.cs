@@ -10,7 +10,6 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
 
     public override void OnActivate()
     {
-        SetclosestNode();
         SetPath();
     }
 
@@ -21,14 +20,9 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
 
     public virtual void SetPath(MazeNode target = null)
     {
-        if (target == null)
-        {
-            currentTarget = Data.Maze.Nodes.GetRandom();
-        }
-        else
-        {
-            currentTarget = target;
-        }
+        SetclosestNode();
+        currentTarget = target != null ? target : Data.Maze.Nodes.GetRandom();
+        Debug.Log($"Enemy is going to: [{currentTarget.Coordinates.X}|{currentTarget.Coordinates.Y}]");
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, Data.Maze);
     }
 
@@ -40,7 +34,7 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
         }
         else
         {
-            SetPath();
+            Deactivate();
         }
     }
 
@@ -51,8 +45,8 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
         Vector3 direction = (targetDirection - Enemy.transform.position).normalized;
 
         Enemy.Move(direction);
-
-        if (Vector3.Distance(Enemy.transform.position, targetDirection) < 0.1f)
+        float distance = Vector3.Distance(Enemy.transform.position, nextNode.transform.position);
+        if (distance < 0.35f)
         {
             path.Pop();
         }

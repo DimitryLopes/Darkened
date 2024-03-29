@@ -50,3 +50,4 @@ MonoBehaviour:
   objectivesDataBase: {fileID: 11400000, guid: 8be21d94500c4d642b4f245d94648660, type: 2}
   audioDataBase: {fileID: 11400000, guid: 92cd40ce8a26cd549b43fa560900032c, type: 2}
   mazeSizeDataBase: {fileID: 11400000, guid: 7fb23b77cbbb28a408d7b462b7f7ce5b, type: 2}
+  enemyDataBase: {fileID: 11400000, guid: 02993b5962cb26646bfc843e53053a18, type: 2}

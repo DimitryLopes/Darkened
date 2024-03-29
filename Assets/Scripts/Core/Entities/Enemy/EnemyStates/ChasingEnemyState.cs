@@ -11,6 +11,6 @@ public class ChasingEnemyState : EnemyState<BaseEnemyStateData>
 
     public override void HandleState()
     {
-        Enemy.Move(currentTarget.position, true);
+        Enemy.Move(currentTarget.position - Enemy.transform.position, true);
     }
 }

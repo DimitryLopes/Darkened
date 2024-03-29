@@ -75,7 +75,8 @@ public class MazeUtils
             openSet.Remove(current);
             closedSet.Add(current);
 
-            foreach (MazeNode neighbor in GetNeighborNodes(current, maze))
+            List<MazeNode> neighbors = GetNeighborNodes(current, maze);
+            foreach (MazeNode neighbor in neighbors)
             {
                 if (closedSet.Contains(neighbor))
                 {
@@ -97,6 +98,7 @@ public class MazeUtils
                 }
             }
         }
+
         return null;
 
         Stack<MazeNode> ReconstructPath(Dictionary<MazeNode, MazeNode> cameFrom, MazeNode currentNode)
@@ -150,10 +152,10 @@ public class MazeUtils
         return closestNode;
     }
 
-    public static bool IsNodeAtEdge(Coordinate coordinate, MazeData data)
+    public static int GetManhatthanDistanceFromNodeToNode(MazeNode from, MazeNode to)
     {
-        return coordinate.X == 0 || coordinate.X == data.Width - 1 ||
-               coordinate.Y == 0 || coordinate.Y == data.Height - 1;
+        int distance = Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
+        return distance;
     }
 
     public static MazeNode GetNodeAtCardinalFromNode(Cardinal direction, MazeNode node, Maze maze)
@@ -206,9 +208,10 @@ public class MazeUtils
 
         void AddToAvailableNodes(Cardinal cardinal)
         {
-            if (!node.HasWall(cardinal))
+            if (!node.HasWall(cardinal) && !node.GetEdge(cardinal))
             {
-                availableNodes.Add(GetNodeAtCardinalFromNode(cardinal, node, maze));
+                MazeNode neighbour = GetNodeAtCardinalFromNode(cardinal, node, maze);
+                availableNodes.Add(neighbour);
             }
         }
     }

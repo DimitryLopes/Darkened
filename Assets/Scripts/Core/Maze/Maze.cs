@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class Maze 
+public class Maze
 {
     private MazeData data;
     private MazeNode[,] nodes;

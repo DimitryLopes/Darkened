@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using System;
 using Zenject;
 using Unity.VisualScripting;
 
@@ -55,6 +54,8 @@ public class MazeGenerator : MonoBehaviour
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish);
         UILoadingScreen screen = screenManager.GetScreen<UILoadingScreen>();
         screen.Show(controller);
+
+        signalBus.Fire(new OnMazeLoadStartedSignal(currentMaze));
     }
 
     private LoadingOperation MazeLoadOperation()
@@ -101,22 +102,33 @@ public class MazeGenerator : MonoBehaviour
             }
         }
         currentMaze.SetNodes(nodes);
+        SetSpawnPoints(nodes);
     }
 
-    private Stack<MazeNode> GetNodeStack(MazeNode[,] nodes, MazeData data)
+    private Stack<MazeNode> GetNodeStack(MazeNode[,] nodes)
     {
-        MazeNode startNode = SetStartingPoint(nodes, data);
+        Stack<MazeNode> stack = new Stack<MazeNode>();
+        stack.Push(nodes[mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y]);
+
+        return stack;
+    }
+
+    private void SetSpawnPoints(MazeNode[,] nodes)
+    {
+        nodes.Shuffle();
+        MazeNode startNode = SetStartingPoint(nodes, CurrentData);
+        Debug.Log($"Player spawn is: [{startNode.X}|{startNode.Y}]");
         mazeManager.CurrentStartingNode = startNode;
 
-        Stack<MazeNode> stack = new Stack<MazeNode>();
-        stack.Push(nodes[startNode.X, startNode.Y]);
-        return stack;
+        MazeNode enemySpawn = GetAvailableNodeAwayFrom(startNode, nodes, CurrentData.Size);
+        Debug.Log($"Enemy spawn is: [{enemySpawn.X}|{enemySpawn.Y}]");
+        mazeManager.EnemyStartingNode = enemySpawn;
     }
 
     private IEnumerator<float> CreatePath()
     {
         float visitedNodes = 0;
-        Stack<MazeNode> stack = GetNodeStack(CurrentNodes, CurrentData);
+        Stack<MazeNode> stack = GetNodeStack(CurrentNodes);
         while (stack.Count > 0)
         {
             MazeNode currentNode = stack.Pop();
@@ -194,17 +206,19 @@ public class MazeGenerator : MonoBehaviour
     private void PositionItem(Item item)
     {
         Transform transform = null;
+        MazeNode[,] shuffledNodes = CurrentNodes.Clone() as MazeNode[,];
+        shuffledNodes.Shuffle();
 
         switch (item.GenerationData.SpawnType)
         {
             case SpawnType.Node:
-                transform = GetAvailableNodeAwayFrom(mazeManager.CurrentStartingNode, CurrentNodes, item.GenerationData.MinDistanceFromStart).transform;
+                transform = GetAvailableNodeAwayFrom(mazeManager.CurrentStartingNode, shuffledNodes, item.GenerationData.MinDistanceFromStart).transform;
                 break;
             case SpawnType.Wall:
-                transform = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, CurrentNodes, item.GenerationData.MinDistanceFromStart).transform;
+                transform = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, shuffledNodes, item.GenerationData.MinDistanceFromStart).transform;
                 break;
             case SpawnType.EdgeWalls:
-                List<MazeNode> edgeNodes = MazeUtils.GetEdgeNodes(CurrentNodes, CurrentData);
+                List<MazeNode> edgeNodes = MazeUtils.GetEdgeNodes(shuffledNodes, CurrentData);
                 MazeWall chosenWall = GetAvailableWallAwayFrom(mazeManager.CurrentStartingNode, edgeNodes, item.GenerationData.MinDistanceFromStart, true, item.GenerationData.Replace);
                 if (chosenWall != null)
                 {
@@ -383,11 +397,6 @@ public class MazeGenerator : MonoBehaviour
 
     private void OnMazeGenerationFinish()
     {
-        Stack<MazeNode> nodes = MazeUtils.GetPathFromNodeToNode(CurrentNodes.GetRandom(), CurrentNodes.GetRandom(), currentMaze);
-        foreach(MazeNode node in nodes)
-        {
-            Debug.Log($"[{node.Coordinates.X} | {node.Coordinates.Y}]");
-        }
         signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
     }
 
@@ -435,25 +444,26 @@ public class MazeGenerator : MonoBehaviour
 
     private MazeNode GetAvailableNodeAwayFrom(MazeNode focusNode, IEnumerable nodes, int minDistance)
     {
-        List<MazeNode> candidateNodes = new List<MazeNode>();
-        //TODO: make it so it picks a random node from the nodes and then check. return it after;
-        //NOTE: Idk how to do that
+        int maxDistance = 0;
+        MazeNode fallbackNode = null;
+
         foreach (MazeNode node in nodes)
         {
-            int distance = Math.Abs(focusNode.X - node.X) + Math.Abs(focusNode.Y - node.Y);
-            Debug.Log("[" + focusNode.X + "," + focusNode.Y + "] is " + distance + " nodes distant from [" + node.X + "," + node.Y+ "]");
+            int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
+            Debug.Log("[" + focusNode.X + "," + focusNode.Y + "] is " + distance + " nodes distant from [" + node.X + "," + node.Y + "]");
             if (distance >= minDistance)
             {
-                candidateNodes.Add(node);
-                Debug.Log("[" + focusNode.X + "," + focusNode.Y + "]" + " is far enough from " + "[" + node.X + "," + node.Y+ "]");
+                Debug.Log("[" + focusNode.X + "," + focusNode.Y + "]" + " is far enough from " + "[" + node.X + "," + node.Y + "]");
+                return node; // Return the first node that meets the requirement
+            }
+            else if(distance > maxDistance)
+            {
+                fallbackNode = node;
+                maxDistance = distance;
             }
         }
 
-        if (candidateNodes.Count > 0)
-        {
-            return candidateNodes.GetRandom();
-        }
-        return null;
+        return fallbackNode;
     }
 
     private MazeWall GetAvailableWallAwayFrom(MazeNode focusNode, IEnumerable nodes, int minDistance, bool edge = false, bool destroyWall = false)

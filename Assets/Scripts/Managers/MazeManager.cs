@@ -8,6 +8,7 @@ public class MazeManager
     private readonly ObjectiveManager objectiveManager;
 
     public MazeNode CurrentStartingNode { get; set; }
+    public MazeNode EnemyStartingNode { get; set; }
     public Maze CurrentMaze { get; set; }
 
     public Dictionary<ItemType, List<Item>> ItemDictionary = new Dictionary<ItemType, List<Item>>();

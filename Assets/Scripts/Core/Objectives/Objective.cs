@@ -78,6 +78,6 @@ public class Objective
     public void CompleteObjective()
     {
         IsCompleted = true;
-        signalBus.Fire(new OnGameCompletedSignal(this, true));
+        signalBus.Fire(new OnGameCompletedSignal(true));
     }
 }

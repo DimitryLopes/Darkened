@@ -8,30 +8,20 @@ public class Activateable : MonoBehaviour, IActivateable
 
     public virtual void Activate()
     {
-        if (!active)
-        {
-            active = true;
-            gameObject.SetActive(true);
-            OnActivate();
-        }
-        else
-        {
-            Debug.LogWarning("ITEM ALREADY ACTIVE");
-        }
+        if (active) return;
+
+        active = true;
+        gameObject.SetActive(true);
+        OnActivate();
     }
 
     public virtual void Deactivate()
     {
-        if (active)
-        {
-            active = false;
-            gameObject.SetActive(false);
-            OnDeactivate();
-        }
-        else
-        {
-            Debug.LogWarning("ITEM ALREADY INACTIVE");
-        }
+        if (!active) return;
+
+        active = false;
+        gameObject.SetActive(false);
+        OnDeactivate();
     }
 
     public virtual void OnActivate()

@@ -1,10 +1,11 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
+public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
 {
     [Inject]
     private SignalBus signalBus;
+
     [SerializeField]
     private UIAnimation screenAnimation;
 
