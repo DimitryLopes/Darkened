@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47d7a7f6b94fd5419055e178f9af0c8, type: 3}
   m_Name: DefaultEnemyData
   m_EditorClassIdentifier: 
-  speed: 1.5
+  speed: 1
   enhancedSpeedMultiplier: 1.5
-  detectionRange: 4
-  enhancedDetectionRange: 5
+  detectionRange: 3
+  enhancedDetectionRange: 4

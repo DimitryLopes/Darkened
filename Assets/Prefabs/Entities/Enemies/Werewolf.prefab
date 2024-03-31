@@ -101,10 +101,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 22a2b9eb22b52124280cdbc9883af1ba, type: 2}
   rb: {fileID: 4829018076957723263}
-  wallLayer:
+  sightLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   waitingTime: 1.65
+  raycastOffset: 9
 --- !u!50 &4829018076957723263
 Rigidbody2D:
   serializedVersion: 4
@@ -161,7 +162,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

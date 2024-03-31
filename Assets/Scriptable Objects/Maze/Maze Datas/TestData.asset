@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
   minTorchRatio: 0.15
-  maxTorchRatio: 0.25
-  torchRatio: 0.2
-  torch: 4
-  minDistanceStartToFinish: 0
+  maxTorchRatio: 0.3
+  torchRatio: 0.22500001
+  torch: 5
+  enemyType: 0
   objective: {fileID: 11400000, guid: 2a4feef9555a73044b8117569739ac6f, type: 2}

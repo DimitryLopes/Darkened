@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Escape
   description: Find the exit and escape the maze!
-  victoryMessage: You escaped
+  victoryMessage: Clebinho has escaped
   defeatMessage: The monster got Clebinho
   objectiveType: 0
   missionGroups:

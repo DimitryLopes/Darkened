@@ -10,8 +10,8 @@ public abstract class Enemy : Activateable
     private new Rigidbody2D rb;
 
     protected IEnemyState currentState;
-    protected SignalBus signalBus; 
-    protected Player player;
+    protected SignalBus signalBus;
+    protected Player Player;
     protected Maze Maze;
 
     public float EnhancedDetectionRange => data.EnhancedDetectionRange;
@@ -23,7 +23,7 @@ public abstract class Enemy : Activateable
     public virtual void Initialize(MazeManager mazeManager, EntityManager entityManager, SignalBus signalBus)
     {
         Maze = mazeManager.CurrentMaze;
-        player = entityManager.GetPlayer();
+        Player = entityManager.GetPlayer();
         this.signalBus = signalBus;
     }
 
@@ -33,12 +33,13 @@ public abstract class Enemy : Activateable
 
         currentState?.Deactivate();
         currentState = state;
+        Debug.Log($"Changed state to {state}");
         currentState.Activate();
     }
 
     public void Move(Vector3 target, bool isSprinting = false)
     {
-        Vector3 direction = target;
+        Vector3 direction = target.normalized;
         direction *= isSprinting ? SprintingSpeed : MovementSpeed;
         rb.velocity = direction;
 

@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
+public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
 {
     protected MazeNode currentTarget;
     protected MazeNode closestNode;
 
     protected Stack<MazeNode> path;
 
-    public override void OnActivate()
+    public MovingTowardsTargetEnemyState(BaseEnemyStateData data) : base(data)
     {
-        SetPath();
     }
 
     private void SetclosestNode()
@@ -18,12 +17,13 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
         closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, Data.Maze.Nodes);
     }
 
-    public virtual void SetPath(MazeNode target = null)
+    public virtual void SetPath(Color debugColor, MazeNode target = null)
     {
         SetclosestNode();
         currentTarget = target != null ? target : Data.Maze.Nodes.GetRandom();
-        Debug.Log($"Enemy is going to: [{currentTarget.Coordinates.X}|{currentTarget.Coordinates.Y}]");
+        currentTarget.DebugColor(debugColor);
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, Data.Maze);
+        path.Pop();
     }
 
     protected virtual void MoveTowardsTarget()
@@ -34,7 +34,7 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
         }
         else
         {
-            Deactivate();
+            Complete();
         }
     }
 
@@ -42,11 +42,11 @@ public class WanderingEnemyState : EnemyState<BaseEnemyStateData>
     {
         MazeNode nextNode = path.Peek();
         Vector3 targetDirection = nextNode.transform.position;
-        Vector3 direction = (targetDirection - Enemy.transform.position).normalized;
+        Vector3 direction = targetDirection - Enemy.transform.position;
 
-        Enemy.Move(direction);
+        Enemy.Move(direction, Data.IsSprinting);
         float distance = Vector3.Distance(Enemy.transform.position, nextNode.transform.position);
-        if (distance < 0.35f)
+        if (distance < 0.25f)
         {
             path.Pop();
         }

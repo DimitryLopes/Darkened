@@ -50,6 +50,7 @@ public class GameManager
         player.ToggleActing(false);
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
 
+
         Objective currentObjective = objectiveManager.CurrentObjective;
 
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;

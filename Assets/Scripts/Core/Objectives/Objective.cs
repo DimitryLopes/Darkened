@@ -66,15 +66,6 @@ public class Objective
         }
     }
 
-    public void UpdateProgress(float amount)
-    {
-        Progress += amount;
-        if (Progress >= 1)
-        {
-            CompleteObjective();
-        }
-    }
-
     public void CompleteObjective()
     {
         IsCompleted = true;

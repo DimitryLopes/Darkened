@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStatus
   m_EditorClassIdentifier: 
   rotationSpeed: 0.1
-  movementSpeed: 2.5
+  movementSpeed: 1
   sprintingSpeedMultiplier: 1.5
   staminaRegenSpeed: 8
   staminaConsumptionSpeed: 12

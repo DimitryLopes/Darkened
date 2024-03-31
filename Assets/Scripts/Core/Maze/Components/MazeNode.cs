@@ -20,7 +20,6 @@ public class MazeNode : Activateable
 
     public void Visit()
     {
-        floorRenderer.color = Color.green;
         Visited = true;
     }
 
@@ -32,7 +31,7 @@ public class MazeNode : Activateable
 
     public bool HasAnyWall()
     {
-        foreach(Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
+        foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
             if (wallDictionary[cardinal].IsActive)
             {
@@ -168,8 +167,8 @@ public class MazeNode : Activateable
 
     public void SetCoordinate(int x, int y)
     {
-        
-            MazeUtils.ExecuteActionWithAllCardinals(FillDictionary);
+
+        MazeUtils.ExecuteActionWithAllCardinals(FillDictionary);
         coordinates = new Coordinate(x, y);
         text.text = x + "," + y;
     }
@@ -189,6 +188,13 @@ public class MazeNode : Activateable
     public float GetHeuristic(MazeNode node)
     {
         return Vector3.Distance(transform.position, node.transform.position);
+    }
+    #endregion
+
+    #region Debug
+    public void DebugColor(Color color)
+    {
+        floorRenderer.color = color;
     }
     #endregion
 }

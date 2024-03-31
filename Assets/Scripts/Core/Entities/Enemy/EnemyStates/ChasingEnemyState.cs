@@ -3,6 +3,9 @@ using UnityEngine;
 public class ChasingEnemyState : EnemyState<BaseEnemyStateData>
 {
     protected Transform currentTarget;
+    public ChasingEnemyState(BaseEnemyStateData data) : base(data)
+    {
+    }
 
     public void SetPath(Transform targetTransform)
     {

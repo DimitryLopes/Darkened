@@ -17,6 +17,7 @@ public class ObjectiveHUD : MonoBehaviour
     {
         signalBus.Subscribe<OnMissionGroupCompletedSignal>(OnMissionCompleted);
         signalBus.Subscribe<OnMissionGroupStartedSignal>(OnMissionGroupStarted);
+        signalBus.Subscribe<OnGameCompletedSignal>(OnGameCompleted);
     }
 
     private void OnMissionCompleted(OnMissionGroupCompletedSignal signal)
@@ -36,6 +37,17 @@ public class ObjectiveHUD : MonoBehaviour
         {
             UIMissionDescription description = GetAvailableDescription();
             description.SetUp(mission, signalBus);
+        }
+    }
+
+    private void OnGameCompleted()
+    {
+        foreach (UIMissionDescription missionDescription in instantiatedDescriptions)
+        {
+            if (missionDescription.IsActive)
+            {
+                missionDescription.Deactivate();
+            }
         }
     }
 

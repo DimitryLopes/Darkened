@@ -4,6 +4,10 @@ public class WaitingEnemyState : EnemyState<WaitingEnemyStateData>
 {
     private float timeRemaining;
 
+    public WaitingEnemyState(WaitingEnemyStateData data) : base(data)
+    {
+    }
+
     public override void OnActivate()
     {
         base.OnActivate();
@@ -16,7 +20,7 @@ public class WaitingEnemyState : EnemyState<WaitingEnemyStateData>
         timeRemaining -= Time.deltaTime;
         if(timeRemaining <= 0)
         {
-            Deactivate();
+            Complete();
         }
     }
 }

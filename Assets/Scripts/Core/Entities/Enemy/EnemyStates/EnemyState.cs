@@ -1,57 +1,66 @@
-using System.Numerics;
-using UnityEngine.Events;
-
 public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
 {
-    private bool isActive;
-    private UnityAction onDeactivateCallback;
-    private UnityAction onActivateCallback;
-
     protected Enemy Enemy => Data.Enemy;
-    public bool IsActive => isActive;
+    public bool IsActive { get; private set; }
+    public bool IsCompleted { get; private set; }
     protected U Data { get; private set; }
+
+
+    public EnemyState(U data)
+    {
+        Data = data;
+    }
 
     public abstract void HandleState();
 
-    public void SetUp<T>(T data) where T : BaseEnemyStateData
-    {
-        Data = data as U;
-    }
-
     public void Activate()
     {
-        if (!isActive)
+        if (!IsActive)
         {
-            isActive = true;
+            IsActive = true;
+            IsCompleted = false;
             OnActivate();
         }
     }
 
     public void Deactivate()
     {
-        if (isActive)
+        if (IsActive)
         {
-            isActive = false;
+            IsActive = false;
+            IsCompleted = true;
             OnDeactivate();
         }
     }
 
+    public void Complete()
+    {
+        if (!IsCompleted)
+        {
+            IsCompleted = true;
+            OnComplete();
+            Deactivate();
+        }
+    }
+
+    public void RawDeactivate()
+    {
+        IsActive = false;
+        IsCompleted = true;
+    }
+
     public virtual void OnDeactivate()
     {
-        onDeactivateCallback?.Invoke();
+        Data.OnDeactivateCallback?.Invoke();
     }
+
     public virtual void OnActivate() 
     {
-        onActivateCallback?.Invoke();
+        Data.OnActivateCallback?.Invoke();
     }
 
-    public void SetOnDeactivateCallback(UnityAction callback)
+    public virtual void OnComplete()
     {
-        onDeactivateCallback = callback;
-    }
-
-    public void SetOnActivateCallback(UnityAction callback)
-    {
-        onActivateCallback = callback;
+        Data.OnStateCompletedCallback?.Invoke();
     }
 }

@@ -48,7 +48,7 @@ public class PlayerMovement : PlayerAction
             movement += Vector3.right;
         }
 
-        rb.velocity = movement * status.MovementSpeed;
+        movement *= status.MovementSpeed;
 
         if (movement != Vector3.zero)
         {
@@ -69,7 +69,7 @@ public class PlayerMovement : PlayerAction
         else
         {
             rb.velocity = Vector3.zero;
-        }        
+        }
 
         rb.velocity = movement;
     }
