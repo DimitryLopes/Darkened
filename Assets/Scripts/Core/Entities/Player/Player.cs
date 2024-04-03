@@ -26,5 +26,8 @@ public class Player : MonoBehaviour
     {
         movement.ToggleActing(value);
         interaction.ToggleActing(value);
+        if (!value) return;
+
+        movement.ResetMovement();
     }
 }

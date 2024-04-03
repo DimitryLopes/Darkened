@@ -4,7 +4,6 @@ using Zenject;
 
 public class PlayerMovement : PlayerAction
 {
-
     [SerializeField] private Rigidbody2D rb;
 
     private SignalBus signalBus;
@@ -19,9 +18,8 @@ public class PlayerMovement : PlayerAction
     {
         this.status = status;
         this.signalBus = signalBus;
-        currentStamina = status.MaxStamina;
-        isSprinting = false;
-        isExhausted = false;
+
+        ResetMovement();
     }
 
     void Update()
@@ -103,6 +101,13 @@ public class PlayerMovement : PlayerAction
         Debug.Log(amount);
         Debug.Log(currentStamina);
         signalBus.Fire(new OnPlayerStaminaChangedSignal());
+    }
+
+    public void ResetMovement()
+    {
+        currentStamina = status.MaxStamina;
+        isSprinting = false;
+        isExhausted = false;
     }
 
     private IEnumerator Exaustion()
