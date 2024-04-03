@@ -34,15 +34,16 @@ public class UIPauseScreen : UIScreen<PauseScreenController>
     private void ReturnToMenu()
     {
         gameManager.FinishGame(false, false);
+        gameManager.ShowMainMenu();
     }
 
-    protected override void OnBeforeShow()
+    protected override void OnAfterShow()
     {
-        base.OnBeforeShow();
+        base.OnAfterShow();
         Time.timeScale = 0;
     }
 
-    protected override void OnAfterHide()
+    protected override void OnBeforeHide()
     {
         base.OnBeforeHide();
         Time.timeScale = 1;

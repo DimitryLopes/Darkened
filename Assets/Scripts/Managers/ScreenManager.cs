@@ -11,6 +11,8 @@ public class ScreenManager
     private Dictionary<Type, IScreen> instantiatedScreens = new Dictionary<Type, IScreen>();
     private IScreen currentScreen;
 
+    public bool IsShowingScreen => currentScreen != null;
+
     public ScreenManager(UIScreenDataBase screenDataBase, ScreenFactory screenFactory, SignalBus signalBus)
     {
         this.screenDataBase = screenDataBase;

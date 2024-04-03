@@ -82,14 +82,7 @@ public class PlayerMovement : PlayerAction
 
     private void HandleSprinting()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isExhausted)
-        {
-            isSprinting = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) || isExhausted)
-        {
-            isSprinting = false;
-        }
+        isSprinting = Input.GetKey(KeyCode.LeftShift) && !isExhausted;
     }
 
     private void HandleStaminaRegeneration()
