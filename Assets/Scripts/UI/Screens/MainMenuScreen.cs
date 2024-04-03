@@ -13,12 +13,15 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
     private Button startCustomGameButton;
     [SerializeField]
     private Button startRandomGameButton;
+    [SerializeField]
+    private Button quitButton;
 
     private void Start()
     {
         startStoryGameButton.onClick.AddListener(StartStoryGame);
         startCustomGameButton.onClick.AddListener(StartCustomGame);
         startRandomGameButton.onClick.AddListener(StartRandomGame);
+        quitButton.onClick.AddListener(Quit);
     }
 
     public void StartStoryGame()
@@ -32,5 +35,10 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
     public void StartRandomGame()
     {
         gameManager.StartRandomGame();
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

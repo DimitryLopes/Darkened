@@ -29,6 +29,11 @@ public class MazeTorch : Item
         DeactivateLights();
     }
 
+    public void SetLightRadius(float radius)
+    {
+        light.pointLightOuterRadius = radius;
+    }
+
     public void DeactivateLights()
     {
         light.enabled = false;
@@ -37,6 +42,5 @@ public class MazeTorch : Item
     public void ActivateLights()
     {
         light.enabled = true;
-
     }
 }

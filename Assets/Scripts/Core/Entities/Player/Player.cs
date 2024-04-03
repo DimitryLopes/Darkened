@@ -1,7 +1,11 @@
 using UnityEngine;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
+    [Inject]
+    private SignalBus signalBus;
+
     [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
@@ -9,9 +13,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerInteraction interaction;
 
+    public float CurrentStamina => movement.CurrentStamina;
+    public float MaxStamina => status.MaxStamina;
+
     public void SetUp()
     {
-        movement.SetUp(status);
+        movement.SetUp(status, signalBus);
         interaction.SetUp(status);
     }
 

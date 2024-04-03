@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: TestData
   m_EditorClassIdentifier: 
   sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
-  minTorchRatio: 0.15
-  maxTorchRatio: 0.3
+  difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
   torchRatio: 0.22500001
   torch: 5
   enemyType: 0

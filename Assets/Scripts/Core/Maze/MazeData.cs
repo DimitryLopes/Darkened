@@ -4,15 +4,13 @@ using Zenject;
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Maze Data")]
 public class MazeData : ScriptableObject
 {
-
     [SerializeField, Header("Size")]
     private MazeSizeData sizeData;
 
+    [SerializeField, Header("Difficulty")]
+    private DifficultyData difficultyData;
+
     [SerializeField, Range(0,1), Header("Torches")]
-    private float minTorchRatio;
-    [SerializeField, Range(0,1)]
-    private float maxTorchRatio;
-    [SerializeField, Range(0,1)]
     private float torchRatio;
     [SerializeField]
     private ItemType torch;
@@ -27,9 +25,10 @@ public class MazeData : ScriptableObject
     public int Width => sizeData.Width;
     public int Size => sizeData.Width * sizeData.Height;
     public MazeSizeData SizeData => sizeData;
+    public DifficultyData DifficultyData => difficultyData;
 
-    public int MinTorchCount => (int)(Size * minTorchRatio); 
-    public int MaxTorchCount => (int)(Size * maxTorchRatio); 
+    public int MinTorchCount => Mathf.CeilToInt(difficultyData.MinimumTorchRatio * Size);
+    public int MaxTorchCount => Mathf.CeilToInt(difficultyData.MaximumTorchRatio * Size);
     public float TorchRatio => torchRatio;
     public ItemType Torch => torch;
    
@@ -38,20 +37,18 @@ public class MazeData : ScriptableObject
     public ObjectiveData ObjectiveData => objective;
 
 
-    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, ItemType torch, EnemyType enemyType)
+    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, ItemType torch, EnemyType enemyType)
     {
         this.sizeData = sizeData;
         this.objective = objective;
         this.torch = torch;
-        //arbritary stupidity made by sky
-        minTorchRatio = 0.15f; // ~30% of total nodes
-        maxTorchRatio = 0.3f; // ~50% of total nodes
-        torchRatio = (minTorchRatio + maxTorchRatio) / 2;
+        difficultyData = difficulty;
+        torchRatio = (difficultyData.MinimumTorchRatio + difficultyData.MaximumTorchRatio) / 2;
         this.enemyType = enemyType;
     }
 
     public void SetUp(MazeData data, ObjectiveData objective)
     {
-        SetUp(data.sizeData, objective, ItemType.DefaultTorch, data.enemyType);
+        SetUp(data.sizeData, objective, difficultyData, ItemType.DefaultTorch, data.enemyType);
     }
 }

@@ -7,6 +7,7 @@ public class GameManager
     private readonly EntityManager entityManager;
     private readonly LevelManager levelManager;
     private readonly MazeManager mazeManager;
+    private readonly HUDManager hudManager;
     private readonly SignalBus signalBus;
 
     #region Game Start
@@ -35,16 +36,18 @@ public class GameManager
         screen.Hide();
     }
 
-    private void ShowMainMenu()
+    //called be main menu listener, there might be a better way to do this
+    public void ShowMainMenu()
     {
         objectiveManager.SetObjective(null);
+        hudManager.HideHud();
 
         var screen = screenManager.GetScreen<MainMenuScreen>();
         var controller = new MainMenuScreenController();
         screen.Show(controller);
     }
 
-    public void FinishGame(bool objectiveCompleted)
+    public void FinishGame(bool objectiveCompleted, bool showScreen = true)
     {
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
@@ -54,27 +57,30 @@ public class GameManager
         Objective currentObjective = objectiveManager.CurrentObjective;
 
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
-        string screenTitle = currentObjective.Data.Title;
+
+        if (!showScreen) return;
 
         var screen = screenManager.GetScreen<UIGameFinishScreen>();
         GameFinishScreenController controller;
+
         switch (levelManager.CurrentLevelType)
         {
             case LevelType.Story:
-                controller = new GameFinishScreenController(screenMessage, screenTitle, StartStoryGame, ShowMainMenu);
+                controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu);
                 break;
             case LevelType.Random:
-                controller = new GameFinishScreenController(screenMessage, screenTitle, StartRandomGame, ShowMainMenu);
+                controller = new GameFinishScreenController(screenMessage, StartRandomGame, ShowMainMenu);
                 break;
             case LevelType.Custom:
-                controller = new GameFinishScreenController(screenMessage, screenTitle, StartCustomGame, ShowMainMenu);
+                controller = new GameFinishScreenController(screenMessage, StartCustomGame, ShowMainMenu);
                 break;
             default:
-                controller = new GameFinishScreenController(screenMessage, screenTitle, StartCustomGame, ShowMainMenu);
+                controller = new GameFinishScreenController(screenMessage, StartCustomGame, ShowMainMenu);
                 break;
         }
         screen.Show(controller);
     }
+    
 
 
     private void OnObjectiveCompleted(OnGameCompletedSignal signal)
@@ -92,16 +98,19 @@ public class GameManager
         Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType);
         enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
         entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
+
+        hudManager.ShowHud();
     }
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        ScreenManager screenManager, SignalBus signalBus)
+        ScreenManager screenManager, HUDManager hudManager, SignalBus signalBus)
     {
         this.objectiveManager = objectiveManager;
         this.screenManager = screenManager;
         this.entityManager = entityManager;
         this.levelManager = levelManager;
         this.mazeManager = mazeManager;
+        this.hudManager = hudManager;
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);

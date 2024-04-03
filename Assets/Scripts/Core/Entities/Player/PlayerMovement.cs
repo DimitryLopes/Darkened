@@ -1,17 +1,24 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class PlayerMovement : PlayerAction
 {
+
     [SerializeField] private Rigidbody2D rb;
 
+    private SignalBus signalBus;
     private float currentStamina;
     private bool isSprinting;
     private bool isExhausted;
+    private bool isMoving;
 
-    public override void SetUp(PlayerStatus status)
+    public float CurrentStamina => currentStamina;
+
+    public void SetUp(PlayerStatus status, SignalBus signalBus)
     {
         this.status = status;
+        this.signalBus = signalBus;
         currentStamina = status.MaxStamina;
         isSprinting = false;
         isExhausted = false;
@@ -19,12 +26,12 @@ public class PlayerMovement : PlayerAction
 
     void Update()
     {
+        HandleStaminaRegeneration();
         if (CanAct)
         {
-            HandleMovement();
             HandleSprinting();
+            HandleMovement();
         }
-        HandleStaminaRegeneration();
     }
 
     private void HandleMovement()
@@ -48,19 +55,18 @@ public class PlayerMovement : PlayerAction
             movement += Vector3.right;
         }
 
+        isMoving = movement != Vector3.zero;
         movement *= status.MovementSpeed;
 
-        if (movement != Vector3.zero)
+        if (isMoving)
         {
             if (isSprinting)
             {
                 movement *= status.SprintingSpeedMultiplier;
-                currentStamina -= status.StaminaConsumptionSpeed * Time.deltaTime;
+                ChangeStamina(-status.StaminaConsumptionSpeed * Time.deltaTime);
                 if (currentStamina <= 0)
                 {
-                    isExhausted = true;
-                    currentStamina = 0;
-                    isSprinting = false;
+                    StartCoroutine(Exaustion());
                 }
             }
             float angle = Mathf.Atan2(-movement.x, movement.y) * Mathf.Rad2Deg;
@@ -88,22 +94,39 @@ public class PlayerMovement : PlayerAction
 
     private void HandleStaminaRegeneration()
     {
-        if (!isSprinting && currentStamina < status.MaxStamina && !isExhausted)
-        {
-            if (currentStamina == 0)
-            {
-                StartCoroutine(StartStaminaRegeneration());
-            }
-            else
-            {
-                currentStamina = Mathf.Min(currentStamina + (status.MaxStamina / status.StaminaRegenSpeed) * Time.deltaTime, status.MaxStamina);
-            }
-        }
+        if (isExhausted || (isMoving && isSprinting) || currentStamina >= status.MaxStamina) return;
+
+        RegenerateStamina();
     }
 
-    private IEnumerator StartStaminaRegeneration()
+    private void RegenerateStamina()
     {
+        ChangeStamina(Mathf.Min(status.StaminaRegenSpeed * Time.deltaTime, status.MaxStamina));
+    }
+
+    private void ChangeStamina(float amount)
+    {
+        currentStamina += amount;
+        Debug.Log(amount);
+        Debug.Log(currentStamina);
+        signalBus.Fire(new OnPlayerStaminaChangedSignal());
+    }
+
+    private IEnumerator Exaustion()
+    {
+        isExhausted = true;
+        isSprinting = false;
+        currentStamina = 0;
+
         yield return new WaitForSeconds(status.DepletedStaminaRegenCooldown);
+
+
+        while(currentStamina < status.MaxStamina)
+        {
+            RegenerateStamina();
+            yield return null;
+        }
+
         isExhausted = false;
     }
 }

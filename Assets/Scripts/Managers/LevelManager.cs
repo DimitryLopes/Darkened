@@ -8,19 +8,21 @@ public class LevelManager
     private LevelDataBase levelDataBase;
     private MazeSizeDataBase mazeSizeDataBase;
     private EnemyDataBase enemyDataBase;
+    private DifficultyDataBase difficultyDataBase;
 
     public LevelType CurrentLevelType { get; private set; }
     public MazeData CurrentLevelData { get; private set; }
-
+    
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
-        SignalBus signalBus, EnemyDataBase enemyDataBase)
+        SignalBus signalBus, EnemyDataBase enemyDataBase, DifficultyDataBase difficultyDataBase)
     {
         this.mazeManager = mazeManager;
         this.levelDataBase = levelDataBase;
         this.enemyDataBase = enemyDataBase;
         this.mazeSizeDataBase = mazeSizeDataBase;
         this.objectivesDataBase = objectivesDataBase;
+        this.difficultyDataBase = difficultyDataBase;
 
         signalBus.Subscribe<OnSelectableSelectedSignal>(OnSelectableSelected);
     }
@@ -39,17 +41,20 @@ public class LevelManager
 
     #region Custom Level
     private MazeSizeData customSizeData;
-    private ObjectiveType customObjectiveType = ObjectiveType.FindExit; 
+    private ObjectiveType customObjectiveType = ObjectiveType.FindExit;
+    private DifficultyData customDifficultyData;
     private void OnSelectableSelected(OnSelectableSelectedSignal signal)
     {
         switch (signal.Selectable.SelectableType)
         {
             case SelectableType.MazeSize:
-                MazeSizeData data = signal.Selectable as MazeSizeData;
-                customSizeData = data;
+                MazeSizeData mazeSizeData = signal.Selectable as MazeSizeData;
+                customSizeData = mazeSizeData;
                 //currentRandomLevelWidth = data.Width;
                 break;
-            case SelectableType.GameMode:
+            case SelectableType.Difficulty:
+                DifficultyData difficultyData = signal.Selectable as DifficultyData;
+                customDifficultyData = difficultyData;
                 break;
             case SelectableType.Objective:
                 ObjectiveData objective = signal.Selectable as ObjectiveData;
@@ -62,7 +67,7 @@ public class LevelManager
     {
         ObjectiveData objective = GetObjectiveByType(customObjectiveType);
         MazeData data = MazeData.CreateInstance<MazeData>();
-        data.SetUp(customSizeData, objective, ItemType.DefaultTorch, EnemyType.Default);
+        data.SetUp(customSizeData, objective, customDifficultyData, ItemType.DefaultTorch, EnemyType.Default);
         LoadLevel(data, LevelType.Custom);
     }
 
@@ -73,10 +78,11 @@ public class LevelManager
     {
         ObjectiveData objective = GetObjective();
         MazeSizeData mazeSizeData = mazeSizeDataBase.GetSizeDatas().GetRandom();
+        DifficultyData difficultyData = difficultyDataBase.GetRandomData();
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
         MazeData data = MazeData.CreateInstance<MazeData>();
-        data.SetUp(mazeSizeData, objective, ItemType.DefaultTorch, enemyDataBase.EnemyTypes.GetRandom());
+        data.SetUp(mazeSizeData, objective, difficultyData, ItemType.DefaultTorch, enemyDataBase.EnemyTypes.GetRandom());
         LoadLevel(data, LevelType.Random);
     }
 

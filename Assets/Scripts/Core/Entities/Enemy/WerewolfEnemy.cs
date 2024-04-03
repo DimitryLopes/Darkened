@@ -165,7 +165,7 @@ public class WerewolfEnemy : Enemy
 
     private void OnWanderingStarted()
     {
-        wanderingState.SetPath(Color.green);
+        wanderingState.SetPath(Color.grey);
     }
 
     private void OnWanderingCompleted()

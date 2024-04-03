@@ -33,7 +33,6 @@ public abstract class Enemy : Activateable
 
         currentState?.Deactivate();
         currentState = state;
-        Debug.Log($"Changed state to {state}");
         currentState.Activate();
     }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 public class MazeManager
@@ -27,6 +28,7 @@ public class MazeManager
     {
         ClearItems();
         objectiveManager.StartObjective(data.ObjectiveData);
+        Debug.Log($"Generating Maze with data following data: \n Size: {data.Size} cells \n Min torches: {data.MinTorchCount} \n Max torches: {data.MaxTorchCount}");
         mazeGenerator.CreateMaze(data, this);
     }
 
@@ -94,7 +96,9 @@ public class MazeManager
 
     public MazeTorch GetMazeTorch(MazeData data)
     {
-        return (MazeTorch)GetAvailableItem(data.Torch);
+        MazeTorch torch = (MazeTorch)GetAvailableItem(data.Torch);
+        torch.SetLightRadius(data.DifficultyData.TorchRadius);
+        return torch;
     }
 
 }

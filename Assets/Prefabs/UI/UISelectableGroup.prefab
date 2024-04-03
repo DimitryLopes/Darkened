@@ -683,6 +683,7 @@ GameObject:
   - component: {fileID: 138016077622232289}
   - component: {fileID: 1141076163055118019}
   - component: {fileID: 5727332796673074129}
+  - component: {fileID: 2391619867721161860}
   m_Layer: 5
   m_Name: UISelectableGroup
   m_TagString: Untagged
@@ -753,3 +754,17 @@ MonoBehaviour:
   nextButton: {fileID: 460912029861531539}
   previousButton: {fileID: 1400622403035882888}
   selectableItemContainer: {fileID: 3362475370243326808}
+--- !u!114 &2391619867721161860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541869505753710407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 0

@@ -12,6 +12,7 @@ public class UIScreenDataBase : ScriptableObject
 
     public Dictionary<Type, GameObject> UIScreens = new Dictionary<Type, GameObject>();
 
+#if UNITY_EDITOR
     public void UpdateScreenList()
     {
         RegisteredScreens.Clear();
@@ -31,7 +32,7 @@ public class UIScreenDataBase : ScriptableObject
             }
         }
     }
-
+#endif
     public void SetUp()
     {
         foreach (GameObject screenPrefab in RegisteredScreens)

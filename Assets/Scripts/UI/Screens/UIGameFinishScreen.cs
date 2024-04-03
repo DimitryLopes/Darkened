@@ -16,7 +16,6 @@ public class UIGameFinishScreen : UIScreen<GameFinishScreenController>
     {
         base.OnBeforeShow();
         gameFinishedText.text = Controller.GameFinishedText;
-        gameTypeText.text = Controller.GameTypeText;
 
         replayButton.onClick.RemoveAllListeners();
         backToMainMenuButton.onClick.RemoveAllListeners();

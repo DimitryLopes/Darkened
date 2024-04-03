@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class ObjectiveHUD : MonoBehaviour
+public class ObjectiveHUD : Activateable
 {
     [Inject]
     private SignalBus signalBus;
+
     [SerializeField]
     private UIMissionDescription missionDescriptionPrefab;
     [SerializeField]
@@ -13,7 +14,7 @@ public class ObjectiveHUD : MonoBehaviour
 
     private List<UIMissionDescription> instantiatedDescriptions = new List<UIMissionDescription>();
 
-    private void Start()
+    private void Awake()
     {
         signalBus.Subscribe<OnMissionGroupCompletedSignal>(OnMissionCompleted);
         signalBus.Subscribe<OnMissionGroupStartedSignal>(OnMissionGroupStarted);

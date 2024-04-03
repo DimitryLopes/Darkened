@@ -5,6 +5,7 @@ public class ManagersInstaller : MonoInstaller
     public override void InstallBindings()
     {
         //Doesn't need other managers
+        Container.Bind<HUDManager>().AsSingle();
         Container.Bind<MazeManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();

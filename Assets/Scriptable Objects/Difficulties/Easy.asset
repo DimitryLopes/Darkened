@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d7f40f83e90ce442a0630847c502e66, type: 3}
+  m_Name: Easy
+  m_EditorClassIdentifier: 
+  difficultyName: Easy
+  torchRadius: 1.4
+  minTorchRatio: 0.3
+  maxTorchRatio: 0.4

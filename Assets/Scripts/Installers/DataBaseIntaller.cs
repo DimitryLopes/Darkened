@@ -17,6 +17,8 @@ public class DataBaseIntaller : MonoInstaller
     private MazeSizeDataBase mazeSizeDataBase;
     [SerializeField]
     private EnemyDataBase enemyDataBase;
+    [SerializeField]
+    private DifficultyDataBase difficultyDataBase;
 
     public override void InstallBindings()
     {
@@ -25,6 +27,7 @@ public class DataBaseIntaller : MonoInstaller
         audioDataBase.SetUp();
         screenDataBase.SetUp();
         objectivesDataBase.SetUp();
+        difficultyDataBase.SetUp();
 
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();
@@ -33,5 +36,6 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
         Container.Bind<MazeSizeDataBase>().FromInstance(mazeSizeDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
+        Container.Bind<DifficultyDataBase>().FromInstance(difficultyDataBase).AsSingle();
     }
 }

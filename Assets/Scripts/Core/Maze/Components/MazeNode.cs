@@ -194,6 +194,8 @@ public class MazeNode : Activateable
     #region Debug
     public void DebugColor(Color color)
     {
+        if (color == null) return;
+
         floorRenderer.color = color;
     }
     #endregion

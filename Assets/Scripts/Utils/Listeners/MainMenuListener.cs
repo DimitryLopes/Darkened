@@ -4,11 +4,10 @@ using Zenject;
 public class MainMenuListener : MonoBehaviour
 {
     [Inject]
-    private ScreenManager screenManager;
+    private GameManager gameManager;
 
     void Start()
     {
-        MainMenuScreen screen = screenManager.GetScreen<MainMenuScreen>();
-        screen.Show(new MainMenuScreenController());
+        gameManager.ShowMainMenu();
     }
 }

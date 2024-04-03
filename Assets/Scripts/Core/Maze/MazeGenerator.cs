@@ -96,6 +96,7 @@ public class MazeGenerator : MonoBehaviour
                 newNode.Activate();
                 newNode.SetCoordinate(x, y);
                 PositionNode(newNode);
+                newNode.DebugColor(Color.grey);
                 SetNodeEdges(newNode, CurrentData);
                 MazeUtils.ExecuteActionWithAllCardinals(AddNodeWalls, newNode);
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);

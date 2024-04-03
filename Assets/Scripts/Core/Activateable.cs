@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Activateable : MonoBehaviour, IActivateable
 {
-    protected bool active = false;
+    protected bool active;
 
     public bool IsActive => active;
 
@@ -22,6 +22,12 @@ public class Activateable : MonoBehaviour, IActivateable
         active = false;
         gameObject.SetActive(false);
         OnDeactivate();
+    }
+
+    public virtual void RawDeactivate()
+    {
+        active = false;
+        gameObject.SetActive(false);
     }
 
     public virtual void OnActivate()
