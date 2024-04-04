@@ -4,30 +4,47 @@ using UnityEngine;
 
 public class PlayerInteraction : PlayerAction
 {
+    [SerializeField]
+    private LayerMask interactableLayer;
+
+    public IInteractable currentInteractable;
 
     private void Update()
     {
         if (CanAct)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, status.InteractionRange, interactableLayer);
+
+            Debug.DrawRay(transform.position, transform.up * status.InteractionRange, Color.yellow);
+            IInteractable interactable = null;
+
+            if (hit.collider != null)
             {
-                TryInteract();
+                interactable = hit.collider.GetComponent<IInteractable>();
             }
+
+            ChangeInteractable(interactable);
+
+            if (!Input.GetKeyDown(KeyCode.E)) return;
+
+            TryInteract();
+
         }
+    }
+
+    private void ChangeInteractable(IInteractable interactable)
+    {
+        if (currentInteractable == interactable) return;
+
+        currentInteractable?.RemoveHighlight();
+        currentInteractable = interactable;
+        interactable?.Highlight();
     }
 
     private void TryInteract()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, status.InteractionRange);
+        if (currentInteractable == null) return;
 
-        Debug.DrawRay(transform.position, transform.up * status.InteractionRange, Color.yellow, 1f);
-        if (hit.collider != null)
-        {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable != null)
-            {
-                interactable.Interact();
-            }
-        }
+        currentInteractable.Interact();
     }
 }

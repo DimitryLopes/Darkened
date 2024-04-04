@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1669193551814374406}
   - component: {fileID: 6180454501068931032}
   - component: {fileID: 6185794388864277759}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,9 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de410a4dae5672740b2835510699e56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 6180454501068931032}
+  standardtMaterial: 0
+  highlightedtMaterial: 1
   itemGenerationData:
     minDistanceFromStart: 0
-    minDistanceFromOtherItems: 0
+    minDistanceFromOtherItems: 1
     spawnType: 1
     replace: 0
   light: {fileID: 5308823624080293511}
@@ -123,7 +126,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: f39947d1e7408a24fa325b73864ba3d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,12 +147,12 @@ SpriteRenderer:
   m_SortingLayerID: -1300265393
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 28d47cbaafc98254f8d4f6184dff22cd, type: 3}
-  m_Color: {r: 1, g: 0.40566033, b: 0.40566033, a: 1}
+  m_Sprite: {fileID: -1606681317, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.48, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -187,6 +190,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06, y: 0}
+  m_Offset: {x: 0.02, y: 0}
   serializedVersion: 2
   m_Radius: 0.16

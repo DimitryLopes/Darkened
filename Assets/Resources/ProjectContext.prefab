@@ -179,6 +179,10 @@ PrefabInstance:
       value: DataBaseInstaller
       objectReference: {fileID: 0}
     - target: {fileID: 8563920832605975736, guid: 28251820a67cdb14baba5d74deef0555, type: 3}
+      propertyPath: materialDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: 99e4b826739fc19419e7b6271a293568, type: 2}
+    - target: {fileID: 8563920832605975736, guid: 28251820a67cdb14baba5d74deef0555, type: 3}
       propertyPath: difficultyDataBase
       value: 
       objectReference: {fileID: 11400000, guid: 57618a3783942444ebaec9c763e10c23, type: 2}

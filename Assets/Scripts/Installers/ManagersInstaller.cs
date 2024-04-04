@@ -1,4 +1,3 @@
-using UnityEngine;
 using Zenject;
 public class ManagersInstaller : MonoInstaller
 {
@@ -10,6 +9,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();
         Container.Bind<ScreenManager>().AsSingle();
+        Container.Bind<MaterialManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();
         //Needs MazeManager
         Container.Bind<LevelManager>().AsSingle();

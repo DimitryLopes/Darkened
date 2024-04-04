@@ -199,6 +199,7 @@ public class MazeGenerator : MonoBehaviour
         List<MissionItem> items = mazeManager.GetMissionItems();
         for (int i = 0; i < items.Count; i++)
         {
+            items[i].RemoveHighlight();
             PositionItem(items[i]);
             yield return LoadingUtils.GetProgress(i, items.Count);
         }

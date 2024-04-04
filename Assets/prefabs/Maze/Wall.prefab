@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646f28186a5c5c443bbdee960c3a93cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WALL_ITEM_OFFSET: 0.1
+  WALL_ITEM_OFFSET: 0.17
 --- !u!212 &1418582601741916346
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   - {x: 1.2800001, y: -1.2800001, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 30798
+  m_InstanceId: 34374
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.2800001, y: 1.2800001, z: 0}

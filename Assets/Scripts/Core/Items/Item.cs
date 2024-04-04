@@ -6,9 +6,18 @@ public class Item : Activateable, IItem, IInteractable
 {
     [Inject]
     protected SignalBus signalBus;
+    [Inject]
+    protected MaterialManager materialManager;
 
     [SerializeField]
+    private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private MaterialType standardtMaterial;
+    [SerializeField]
+    private MaterialType highlightedtMaterial;
+    [SerializeField]
     private ItemGenerationData itemGenerationData;
+
     protected ItemType type;
 
     public ItemGenerationData GenerationData => itemGenerationData;
@@ -33,6 +42,16 @@ public class Item : Activateable, IItem, IInteractable
     public override void OnDeactivate()
     {
         canInteract = false;
+    }
+
+    public void Highlight()
+    {
+        spriteRenderer.material = materialManager.GetMaterial(highlightedtMaterial);
+    }
+
+    public void RemoveHighlight()
+    {
+        spriteRenderer.material = materialManager.GetMaterial(standardtMaterial);
     }
 }
 

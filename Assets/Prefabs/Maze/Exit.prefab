@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1265893472881442220}
   - component: {fileID: 1418582601741916346}
   - component: {fileID: 1515450181062793677}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3155664a9c841f44b5a6fa6062b533e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1418582601741916346}
+  standardtMaterial: 0
+  highlightedtMaterial: 1
   itemGenerationData:
     minDistanceFromStart: 8
     minDistanceFromOtherItems: 8
