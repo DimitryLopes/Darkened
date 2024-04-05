@@ -430,19 +430,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  sfxKey: 0
-  snapValues:
-  - 0
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
-  - 10
+  sfxKey: 1
   onSnapValueChanged:
     m_PersistentCalls:
       m_Calls: []

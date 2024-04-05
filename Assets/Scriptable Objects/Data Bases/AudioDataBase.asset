@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: AudioDataBase
   m_EditorClassIdentifier: 
   audioInfoList:
-  - audioKey: ui_hover_default
+  - audioKey: 1
     audioClip: {fileID: 8300000, guid: 2c4f1e01c1d9cf947a7b1bb5c4ed5ddc, type: 3}
-    origin: 1
+    origin: 2
+  - audioKey: 4
+    audioClip: {fileID: 8300000, guid: 89760c1f4fb642940bde091e303bbcaa, type: 3}
+    origin: 0
+  - audioKey: 5
+    audioClip: {fileID: 8300000, guid: 89760c1f4fb642940bde091e303bbcaa, type: 3}
+    origin: 0

@@ -6,9 +6,27 @@ public class GameManager
     private readonly ScreenManager screenManager;
     private readonly EntityManager entityManager;
     private readonly LevelManager levelManager;
+    private readonly AudioManager audioManager;
     private readonly MazeManager mazeManager;
     private readonly HUDManager hudManager;
     private readonly SignalBus signalBus;
+
+    public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
+        ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, SignalBus signalBus)
+    {
+        this.objectiveManager = objectiveManager;
+        this.screenManager = screenManager;
+        this.entityManager = entityManager;
+        this.levelManager = levelManager;
+        this.audioManager = audioManager;
+        this.mazeManager = mazeManager;
+        this.hudManager = hudManager;
+        this.signalBus = signalBus;
+
+        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
+        signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
+    }
+
 
     #region Game Start
     public void StartStoryGame()
@@ -41,6 +59,7 @@ public class GameManager
     {
         objectiveManager.SetObjective(null);
         hudManager.HideHud();
+        audioManager.PlayBGM(AudioKey.BGM_main_menu);
 
         var screen = screenManager.GetScreen<MainMenuScreen>();
         var controller = new MainMenuScreenController();
@@ -52,7 +71,6 @@ public class GameManager
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
-
 
         Objective currentObjective = objectiveManager.CurrentObjective;
 
@@ -80,14 +98,12 @@ public class GameManager
         }
         screen.Show(controller);
     }
-    
-
 
     private void OnObjectiveCompleted(OnGameCompletedSignal signal)
     {
         FinishGame(signal.Won);
     }
-    
+
     private void OnMazeLoadFinish()
     {
         Player player = entityManager.GetPlayer();
@@ -99,21 +115,7 @@ public class GameManager
         enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
         entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
 
+        audioManager.PlayBGM(AudioKey.BGM_in_game);
         hudManager.ShowHud();
-    }
-
-    public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        ScreenManager screenManager, HUDManager hudManager, SignalBus signalBus)
-    {
-        this.objectiveManager = objectiveManager;
-        this.screenManager = screenManager;
-        this.entityManager = entityManager;
-        this.levelManager = levelManager;
-        this.mazeManager = mazeManager;
-        this.hudManager = hudManager;
-        this.signalBus = signalBus;
-
-        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
-        signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
     }
 }

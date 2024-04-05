@@ -15,8 +15,8 @@ public class UIOptions : MonoBehaviour
 
     private void Start()
     {
-        sfxSlider.value = audioManager.SFXVolume;
-        bgmSlider.value = audioManager.BGMVolume;
+        sfxSlider.value = audioManager.SFXVolume * 10;
+        bgmSlider.value = audioManager.BGMVolume * 10;
         sfxSlider.onSnapValueChanged.AddListener(ChangeSFXVolume);
         bgmSlider.onSnapValueChanged.AddListener(ChangeBGMVolume);
     }

@@ -22,6 +22,7 @@ public class UILoadingScreen : UIScreen<LoadingScreenController>
         operation = Controller.Operation;
         operation.OnStepChanged += OnStepChanged;
         operation.OnLoadingComplete += Hide;
+        Controller.AudioManager.StopBGM();
     }
 
     protected override void OnAfterShow()

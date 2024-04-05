@@ -12,6 +12,8 @@ public class MazeGenerator : MonoBehaviour
     private SignalBus signalBus;
     [Inject]
     private ScreenManager screenManager;
+    [Inject]
+    private AudioManager audioManager;
 
     [SerializeField]
     private MazeWall wallPrefab;
@@ -51,7 +53,7 @@ public class MazeGenerator : MonoBehaviour
         ClearMaze();
 
         LoadingOperation mazeLoadingOperation = MazeLoadOperation();
-        LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish);
+        LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish, audioManager);
         UILoadingScreen screen = screenManager.GetScreen<UILoadingScreen>();
         screen.Show(controller);
 

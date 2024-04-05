@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class AudioManager 
 {
     private const int MAXIMUM_SFX_SOURCES_ALLOWED = 6;
 
+    private AudioMixingSettings audioSettings;
     private AudioDataBase audioDataBase;
     private AudioFactory audioFactory;
     private AudioSource bgmSource;
@@ -16,10 +19,11 @@ public class AudioManager
 
     private List<AudioSource> sfxSources = new List<AudioSource>();
 
-    public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase)
+    public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase, AudioMixingSettings audioMixingSettings)
     {
         this.audioFactory = audioFactory;
         this.audioDataBase = audioDataBase;
+        this.audioSettings = audioMixingSettings;
 
         CreateBGMSource();
     }
@@ -45,11 +49,52 @@ public class AudioManager
         }
     }
 
+    public void StopBGM()
+    {
+        FadeOutBGM();
+    }
+
+    public void PlayBGM(AudioKey key)
+    {
+        AudioInfo info = audioDataBase.GetAudioInfo(key);
+        bgmSource.clip = info.AudioClip;
+        bgmSource.Play();
+        FadeInBGM();
+    }
+
+    private void FadeOutBGM(AudioKey key = AudioKey.default_key, UnityAction<AudioKey> onFadeOutComplete = null)
+    {
+
+        LeanTween.value(bgmSource.gameObject, 0, -80, audioSettings.AudioFadeDuration)
+            .setOnUpdate((float val) =>
+            {
+                audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
+            })
+            .setOnComplete(() =>
+            {
+                onFadeOutComplete?.Invoke(key);
+            });
+    }
+
+    private void FadeInBGM(UnityAction onFadeInComplete = null)
+    {
+        LeanTween.value(bgmSource.gameObject, -80, 0, audioSettings.AudioFadeDuration)
+            .setOnUpdate((float val) =>
+            {
+                audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
+            })
+            .setOnComplete(() =>
+            {
+                onFadeInComplete?.Invoke();
+            });
+    }
+
     private void CreateBGMSource()
     {
         AudioSource bgmSource = GetNewAudioSource();
         bgmSource.transform.position = Camera.main.transform.position;
         this.bgmSource = bgmSource;
+        bgmSource.outputAudioMixerGroup = audioSettings.BGMGroup;
     }
 
     private AudioSource GetAvailableSFXSource()
@@ -66,6 +111,7 @@ public class AudioManager
         {
             AudioSource newSource = GetNewAudioSource();
             sfxSources.Add(newSource);
+            newSource.outputAudioMixerGroup = audioSettings.SFXGroup;
             newSource.loop = false;
             return newSource;
         }
@@ -96,6 +142,7 @@ public class AudioManager
 
 public enum SoundOrigin
 {
+    BGM,
     World,
     UI
 }
