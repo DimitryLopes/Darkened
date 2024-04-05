@@ -11,6 +11,9 @@ public class AudioManager
     private float sfxVolume = 1f;
     private float bgmVolume = 1f;
 
+    public float BGMVolume => bgmVolume;
+    public float SFXVolume => sfxVolume;
+
     private List<AudioSource> sfxSources = new List<AudioSource>();
 
     public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase)
