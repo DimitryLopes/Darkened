@@ -51,3 +51,5 @@ MonoBehaviour:
   audioDataBase: {fileID: 11400000, guid: 92cd40ce8a26cd549b43fa560900032c, type: 2}
   mazeSizeDataBase: {fileID: 11400000, guid: 7fb23b77cbbb28a408d7b462b7f7ce5b, type: 2}
   enemyDataBase: {fileID: 11400000, guid: 02993b5962cb26646bfc843e53053a18, type: 2}
+  difficultyDataBase: {fileID: 11400000, guid: 57618a3783942444ebaec9c763e10c23, type: 2}
+  materialDataBase: {fileID: 11400000, guid: 99e4b826739fc19419e7b6271a293568, type: 2}

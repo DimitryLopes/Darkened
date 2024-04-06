@@ -8,6 +8,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<MazeManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();
+        Container.Bind<CameraManager>().AsSingle();
         Container.Bind<ScreenManager>().AsSingle();
         Container.Bind<MaterialManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();

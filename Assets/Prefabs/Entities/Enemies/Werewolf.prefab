@@ -106,6 +106,7 @@ MonoBehaviour:
     m_Bits: 192
   waitingTime: 1.65
   raycastOffset: 9
+  chasePostProcessingEffect: {fileID: 11400000, guid: 338d3563588a9904aa9d7781da65e89e, type: 2}
 --- !u!50 &4829018076957723263
 Rigidbody2D:
   serializedVersion: 4

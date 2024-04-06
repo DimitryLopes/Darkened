@@ -9,6 +9,7 @@ public abstract class Enemy : Activateable
     [SerializeField]
     private new Rigidbody2D rb;
 
+    protected CameraManager cameraManager;
     protected IEnemyState currentState;
     protected SignalBus signalBus;
     protected Player Player;
@@ -20,10 +21,11 @@ public abstract class Enemy : Activateable
     public float SprintingSpeed => data.Speed * data.SprintingSpeedMultiplier;
 
     [Inject]
-    public virtual void Initialize(MazeManager mazeManager, EntityManager entityManager, SignalBus signalBus)
+    public virtual void Initialize(MazeManager mazeManager, EntityManager entityManager, CameraManager cameraManager, SignalBus signalBus)
     {
         Maze = mazeManager.CurrentMaze;
         Player = entityManager.GetPlayer();
+        this.cameraManager = cameraManager;
         this.signalBus = signalBus;
     }
 

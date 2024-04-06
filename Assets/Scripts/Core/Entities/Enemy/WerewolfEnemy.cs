@@ -10,6 +10,8 @@ public class WerewolfEnemy : Enemy
     private float waitingTime;
     [SerializeField]
     private float raycastOffset;
+    [SerializeField]
+    private VignetteAnimationData chasePostProcessingEffect;
 
     private MovingTowardsTargetEnemyState wanderingState;
     private MovingTowardsTargetEnemyState investigatingState;
@@ -39,9 +41,9 @@ public class WerewolfEnemy : Enemy
         currentState.RawDeactivate();
     }
 
-    public override void Initialize(MazeManager mazeManager, EntityManager entityManager, SignalBus signalBus)
+    public override void Initialize(MazeManager mazeManager, EntityManager entityManager, CameraManager cameraManager, SignalBus signalBus)
     {
-        base.Initialize(mazeManager, entityManager, signalBus);
+        base.Initialize(mazeManager, entityManager, cameraManager, signalBus);
 
         BaseEnemyStateData chasingData = new BaseEnemyStateData(Maze, this, true, OnChasingEnded, OnChasingStarted, null);
 
@@ -133,11 +135,13 @@ public class WerewolfEnemy : Enemy
     #region Callbacks
     private void OnChasingStarted()
     {
+        cameraManager.AnimateVignette(chasePostProcessingEffect);
         chasingState.SetPath(Player.transform);
     }
 
     private void OnChasingEnded()
     {
+        cameraManager.FinishVignetteAnimation(chasePostProcessingEffect);
         ChangeState(trackingState);
     }
 
@@ -160,8 +164,6 @@ public class WerewolfEnemy : Enemy
     {
         ChangeState(waitingState);
     }
-
-
 
     private void OnWanderingStarted()
     {
