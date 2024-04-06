@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a0d50ef15fc634ebbaee04040c2f93, type: 3}
   m_Name: EnemyChaseVignette
   m_EditorClassIdentifier: 
-  animationDuration: -1
+  animationDuration: 1
   priority: 2
-  hideOnFinish: 1
+  hideOnFinish: 0
   intensityCurve:
     serializedVersion: 2
     m_Curve:

@@ -1,24 +1,30 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using Zenject;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CameraManager
 {
 
-    private PostProcessVolume postProcessVolume;
+    private Volume postProcessVolume;
     private Coroutiner coroutiner;
+    private SignalBus signalBus;
 
+    private IEnumerator currentVignetteAnimation;
     private bool isVignetteAnimating = false;
     private Vignette vignette;
     private VignetteAnimationData currentVignetteAnimationData;
     
     public Camera MainCamera => Camera.main;
 
-    public CameraManager(PostProcessVolume postProcessVolume, Coroutiner coroutiner)
+    public CameraManager(Volume postProcessVolume, Coroutiner coroutiner, SignalBus signalBus)
     {
+        this.signalBus = signalBus;
         this.postProcessVolume = postProcessVolume;
         this.coroutiner = coroutiner;
+
+        signalBus.Subscribe<OnGameCompletedSignal>(ForceFinishAllAnimations);
     }
 
     #region Vignette
@@ -27,7 +33,7 @@ public class CameraManager
         if (vignette == null)
         {
             Vignette tempVignette;
-            if (postProcessVolume.profile.TryGetSettings(out tempVignette))
+            if (postProcessVolume.profile.TryGet(out tempVignette))
             {
                 vignette = tempVignette;
             }
@@ -39,36 +45,34 @@ public class CameraManager
     {
         if (animationData == null) return;
 
-        if (!isVignetteAnimating)
-        {
-            currentVignetteAnimationData = animationData;
-            coroutiner.RunCoroutine(AnimateVignette());
-        }
-        else if (currentVignetteAnimationData.Priority < animationData.Priority)
+        if (isVignetteAnimating)
         {
             FinishVignetteAnimation();
-            StartVignetteAnimation(animationData);
+            return;
         }
+        else if (isVignetteAnimating && currentVignetteAnimationData.Priority >= animationData.Priority) return;
+
+        StartVignetteAnimation(animationData);
+
     }
 
     private void StartVignetteAnimation(VignetteAnimationData animationData)
     {
         currentVignetteAnimationData = animationData;
-        coroutiner.RunCoroutine(AnimateVignette());
+        currentVignetteAnimation = AnimateVignette();
+        coroutiner.RunCoroutine(currentVignetteAnimation);
     }
-
 
     private IEnumerator AnimateVignette()
     {
         isVignetteAnimating = true;
-        vignette.enabled.overrideState = true;
+        vignette.active = true;
         float timer = 0;
 
-        while (timer < currentVignetteAnimationData.Duration || currentVignetteAnimationData.Indefinite)
+        while (timer < currentVignetteAnimationData.Duration)
         {
             timer += Time.deltaTime;
-            ApplyToVignette(timer / currentVignetteAnimationData.Duration);
-            Debug.Log(timer / currentVignetteAnimationData.Duration);
+            ApplyToVignette(timer);
             yield return null;
         }
 
@@ -83,13 +87,22 @@ public class CameraManager
 
     private void FinishVignetteAnimation()
     {
-        ApplyToVignette(1);
+        if (currentVignetteAnimation == null) return;
+
+        coroutiner.StopCoroutine(currentVignetteAnimation);
+        currentVignetteAnimation = null;
+
         if (currentVignetteAnimationData.HideOnFinish)
         {
-            vignette.enabled.overrideState = false;
+            vignette.active = false;
         }
         currentVignetteAnimationData = null;
         isVignetteAnimating = false;
+    }
+
+    public void ForceFinishAllAnimations()
+    {
+        FinishVignetteAnimation();
     }
 
     public void FinishVignetteAnimation(VignetteAnimationData animationData)

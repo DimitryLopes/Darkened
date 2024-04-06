@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
 using Zenject;
 
 public class UtilsInstaller : MonoInstaller
@@ -9,12 +9,12 @@ public class UtilsInstaller : MonoInstaller
     [SerializeField]
     private AudioMixingSettings audioSettings;
     [SerializeField]
-    private PostProcessVolume postProcessVolume;
+    private Volume postProcessVolume;
 
     public override void InstallBindings()
     {
         Container.Bind<Coroutiner>().FromInstance(coroutiner).AsSingle();
+        Container.Bind<Volume>().FromInstance(postProcessVolume).AsSingle();
         Container.Bind<AudioMixingSettings>().FromInstance(audioSettings).AsSingle();
-        Container.Bind<PostProcessVolume>().FromInstance(postProcessVolume).AsSingle();
     }
 }
