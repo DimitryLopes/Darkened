@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63a0d50ef15fc634ebbaee04040c2f93, type: 3}
-  m_Name: EnemyChaseVignette
+  m_Name: EnemyTrackingVignette
   m_EditorClassIdentifier: 
   animationDuration: 1
-  priority: 2
+  priority: 1
   hideOnFinish: 0
   intensityCurve:
     serializedVersion: 2
@@ -21,17 +21,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.2453887
-      outSlope: 1.2453887
+      inSlope: 0.5608355
+      outSlope: 0.5608355
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.08884093
+      outWeight: 0.09666667
     - serializedVersion: 3
       time: 1.0007036
-      value: 0.5005356
-      inSlope: 0.043890912
-      outSlope: 0.043890912
+      value: 0.30051196
+      inSlope: 0.02439387
+      outSlope: 0.02439387
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.19333333

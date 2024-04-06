@@ -448,6 +448,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UtilsInstaller
       objectReference: {fileID: 0}
+    - target: {fileID: 3664944101145361301, guid: 6ac4f721a6c61524482798590c4c4c0b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5948371369075759018, guid: 6ac4f721a6c61524482798590c4c4c0b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.9503875
@@ -490,7 +494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7339409799271166157, guid: 6ac4f721a6c61524482798590c4c4c0b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9999
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5467520781378466260, guid: 6ac4f721a6c61524482798590c4c4c0b, type: 3}

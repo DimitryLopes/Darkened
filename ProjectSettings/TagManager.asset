@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Wall
   - Enemy
+  - Secondary Camera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Post Processing
   - Water
   - UI
   - Wall
