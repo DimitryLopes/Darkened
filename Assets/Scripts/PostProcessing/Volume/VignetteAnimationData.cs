@@ -4,10 +4,10 @@ using UnityEngine;
 public class VignetteAnimationData : PostProcessingData
 {
     [SerializeField]
-    private AnimationCurve intensityCurve;
+    private float intensityTarget;
     [SerializeField]
-    private AnimationCurve smoothnessCurve;
+    private float smoothnessTarget;
 
-    public AnimationCurve IntensityCurve => intensityCurve;
-    public AnimationCurve SmoothnessCurve => smoothnessCurve;
+    public float Intensity => intensityTarget;
+    public float Smoothness => smoothnessTarget;
 }

@@ -12,6 +12,8 @@ public class WerewolfEnemy : Enemy
     private float raycastOffset;
     [SerializeField]
     private VignetteAnimationData chasePostProcessingEffect;
+    [SerializeField]
+    private VignetteAnimationData trackingPostProcessingEffect;
 
     private MovingTowardsTargetEnemyState wanderingState;
     private MovingTowardsTargetEnemyState investigatingState;
@@ -147,11 +149,13 @@ public class WerewolfEnemy : Enemy
 
     private void OnTrackingStarted()
     {
+        cameraManager.AnimateVignette(trackingPostProcessingEffect);
         SetTrackingPath();
     }
 
     private void OnTrackingComplete()
     {
+        cameraManager.FinishVignetteAnimation(trackingPostProcessingEffect);
         ChangeState(waitingState);
     }
 

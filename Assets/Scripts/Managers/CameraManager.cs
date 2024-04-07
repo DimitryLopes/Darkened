@@ -81,8 +81,8 @@ public class CameraManager
 
     private void ApplyToVignette(float curveValue)
     {
-        vignette.intensity.value = currentVignetteAnimationData.IntensityCurve.Evaluate(curveValue);
-        vignette.smoothness.value = currentVignetteAnimationData.SmoothnessCurve.Evaluate(curveValue);
+        vignette.intensity.value = curveValue;
+        vignette.smoothness.value = curveValue;
     }
 
     private void FinishVignetteAnimation()

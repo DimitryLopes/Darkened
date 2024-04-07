@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -62,31 +63,27 @@ public class AudioManager
         FadeInBGM();
     }
 
-    private void FadeOutBGM(AudioKey key = AudioKey.default_key, UnityAction<AudioKey> onFadeOutComplete = null)
+    private void FadeOutBGM(Action onFadeOutComplete = null)
     {
-
-        LeanTween.value(bgmSource.gameObject, 0, -80, audioSettings.AudioFadeDuration)
-            .setOnUpdate((float val) =>
-            {
-                audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
-            })
-            .setOnComplete(() =>
-            {
-                onFadeOutComplete?.Invoke(key);
-            });
+        LeanTweenAnimationData data = new LeanTweenAnimationData(bgmSource.gameObject, 0, -80, audioSettings.AudioFadeDuration,
+            ChangeBGMMixerVolume, onFadeOutComplete);
+        TweenUtils.DoTween(data);
+    }
+    
+    private void FadeInBGM(Action onFadeInComplete = null)
+    {
+        LeanTweenAnimationData data = new LeanTweenAnimationData(bgmSource.gameObject, -80, 0, audioSettings.AudioFadeDuration,
+            ChangeBGMMixerVolume, onFadeInComplete);
+        TweenUtils.DoTween(data);
     }
 
-    private void FadeInBGM(UnityAction onFadeInComplete = null)
+    private void ChangeBGMMixerVolume(float value)
     {
-        LeanTween.value(bgmSource.gameObject, -80, 0, audioSettings.AudioFadeDuration)
-            .setOnUpdate((float val) =>
-            {
-                audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
-            })
-            .setOnComplete(() =>
-            {
-                onFadeInComplete?.Invoke();
-            });
+        audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, value);
+    }
+    private void ChangeSFXMixerVolume(float val)
+    {
+        audioSettings.AudioMixer.SetFloat(audioSettings.SFXGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
     }
 
     private void CreateBGMSource()
