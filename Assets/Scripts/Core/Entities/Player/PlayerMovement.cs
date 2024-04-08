@@ -98,8 +98,6 @@ public class PlayerMovement : PlayerAction
     private void ChangeStamina(float amount)
     {
         currentStamina += amount;
-        Debug.Log(amount);
-        Debug.Log(currentStamina);
         signalBus.Fire(new OnPlayerStaminaChangedSignal());
     }
 

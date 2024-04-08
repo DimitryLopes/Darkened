@@ -81,6 +81,7 @@ public class WerewolfEnemy : Enemy
         currentState.HandleState();
 
         distanceBetweenPlayer = Vector2.Distance(transform.position, Player.transform.position);
+
         // Cast raycasts
         leftHit = Physics2D.Raycast(LeftRaycastOrigin, LeftRayCastDirection, DetectionRange, sightLayer);
         rightHit = Physics2D.Raycast(RightRaycastOrigin, RightRayCastDirection, DetectionRange, sightLayer);

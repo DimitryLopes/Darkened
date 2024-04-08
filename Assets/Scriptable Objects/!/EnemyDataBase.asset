@@ -15,3 +15,5 @@ MonoBehaviour:
   enemyDataBase:
   - type: 0
     enemy: {fileID: 4488295343940273846, guid: e497bb0c1e41ef14691a64bb8965f098, type: 3}
+  - type: 2
+    enemy: {fileID: 4488295343940273846, guid: 45e3e0a04cb1bfb4bb6a4418df26f5cc, type: 3}

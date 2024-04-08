@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TweenUtils
@@ -13,9 +11,17 @@ public class TweenUtils
         LeanTween.cancel(gameObject, finishCurrent);
     }
 
-    public static void DoTween(LeanTweenAnimationData data, bool finishCurrent = true)
+    /// <summary>
+    /// tweens a float variable using animation data
+    /// </summary>
+    /// <param name="data">Animation Data</param>
+    /// <param name="overrideCurrent">whether or not the current tween should be overriden</param>
+    /// <param name="finishCurrent">whether or not the current tween should call OnComplete. Only works if overrideCurrent is true</param>
+    public static void DoTween(LeanTweenAnimationData data, bool overrideCurrent = true, bool finishCurrent = true)
     {
+        if (!overrideCurrent) return;
         CancelTween(data.GameObject, finishCurrent);
+
         LeanTween.value(data.GameObject, data.From, data.To, data.Duration).setOnUpdate(data.OnUpdate).setOnComplete(data.OnComplete);
     }
 }

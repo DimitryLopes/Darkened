@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using Zenject;
 using UnityEngine.Rendering;
@@ -8,22 +7,17 @@ public class CameraManager
 {
 
     private Volume postProcessVolume;
-    private Coroutiner coroutiner;
-    private SignalBus signalBus;
-
-    private IEnumerator currentVignetteAnimation;
-    private bool isVignetteAnimating = false;
+    private LeanTweenAnimationData finishVignetteIntensityAnimationData;
+    private LeanTweenAnimationData finishVignetteSmoothnessAnimationData;
     private Vignette vignette;
     private VignetteAnimationData currentVignetteAnimationData;
-    
+    private bool IsVignetteAnimating => currentVignetteAnimationData != null;
+
     public Camera MainCamera => Camera.main;
 
-    public CameraManager(Volume postProcessVolume, Coroutiner coroutiner, SignalBus signalBus)
+    public CameraManager(Volume postProcessVolume, SignalBus signalBus)
     {
-        this.signalBus = signalBus;
         this.postProcessVolume = postProcessVolume;
-        this.coroutiner = coroutiner;
-
         signalBus.Subscribe<OnGameCompletedSignal>(ForceFinishAllAnimations);
     }
 
@@ -36,6 +30,8 @@ public class CameraManager
             if (postProcessVolume.profile.TryGet(out tempVignette))
             {
                 vignette = tempVignette;
+                finishVignetteIntensityAnimationData = new LeanTweenAnimationData(postProcessVolume.gameObject, vignette.intensity.value, 0, 0.5f, ApplyIntentsityToVignette);
+                finishVignetteSmoothnessAnimationData = new LeanTweenAnimationData(postProcessVolume.gameObject, vignette.smoothness.value, 0, 0.5f, ApplyIntentsityToVignette);
             }
         }
         PlayVignetteAnimation(animationData);
@@ -45,71 +41,81 @@ public class CameraManager
     {
         if (animationData == null) return;
 
-        if (isVignetteAnimating)
-        {
-            FinishVignetteAnimation();
-            return;
-        }
-        else if (isVignetteAnimating && currentVignetteAnimationData.Priority >= animationData.Priority) return;
+        if (IsVignetteAnimating && currentVignetteAnimationData.Priority >= animationData.Priority) return;
 
+        FinishVignetteAnimation();
         StartVignetteAnimation(animationData);
-
     }
 
     private void StartVignetteAnimation(VignetteAnimationData animationData)
     {
         currentVignetteAnimationData = animationData;
-        currentVignetteAnimation = AnimateVignette();
-        coroutiner.RunCoroutine(currentVignetteAnimation);
+
+        LeanTweenAnimationData itensityData = new LeanTweenAnimationData(
+            postProcessVolume.gameObject,
+            vignette.intensity.value,
+            animationData.Intensity,
+            animationData.Duration,
+            ApplyIntentsityToVignette,
+            FinishVignetteAnimation);
+
+        LeanTweenAnimationData smoothnessData = new LeanTweenAnimationData(
+            postProcessVolume.gameObject,
+            vignette.smoothness.value,
+            animationData.Smoothness,
+            animationData.Duration,
+            ApplySmoothnessToVignette,
+            FinishVignetteAnimation);
+
+        TweenUtils.DoTween(itensityData);
+        TweenUtils.DoTween(smoothnessData, false);
     }
 
-    private IEnumerator AnimateVignette()
+
+    private void ApplyIntentsityToVignette(float value)
     {
-        isVignetteAnimating = true;
-        vignette.active = true;
-        float timer = 0;
-
-        while (timer < currentVignetteAnimationData.Duration)
-        {
-            timer += Time.deltaTime;
-            ApplyToVignette(timer);
-            yield return null;
-        }
-
-        FinishVignetteAnimation();
+        vignette.intensity.value = value;
     }
 
-    private void ApplyToVignette(float curveValue)
+    private void ApplySmoothnessToVignette(float value)
     {
-        vignette.intensity.value = curveValue;
-        vignette.smoothness.value = curveValue;
+        vignette.smoothness.value = value;
     }
 
     private void FinishVignetteAnimation()
     {
-        if (currentVignetteAnimation == null) return;
+        if (currentVignetteAnimationData == null) return;
 
-        coroutiner.StopCoroutine(currentVignetteAnimation);
-        currentVignetteAnimation = null;
+        TweenUtils.CancelTween(postProcessVolume.gameObject, false);
 
-        if (currentVignetteAnimationData.HideOnFinish)
-        {
-            vignette.active = false;
-        }
+        if (!currentVignetteAnimationData.HideOnFinish) return;
+
+        TweenUtils.DoTween(finishVignetteIntensityAnimationData);
+        TweenUtils.DoTween(finishVignetteSmoothnessAnimationData, false);
+
         currentVignetteAnimationData = null;
-        isVignetteAnimating = false;
+    }
+
+    private void ForceFinishVignetteAnimation()
+    {
+        if (currentVignetteAnimationData == null) return;
+
+        TweenUtils.DoTween(finishVignetteIntensityAnimationData);
+        TweenUtils.DoTween(finishVignetteSmoothnessAnimationData, false);
+
+        currentVignetteAnimationData = null;
     }
 
     public void ForceFinishAllAnimations()
     {
-        FinishVignetteAnimation();
+        ForceFinishVignetteAnimation();
     }
 
     public void FinishVignetteAnimation(VignetteAnimationData animationData)
     {
         if (currentVignetteAnimationData != animationData) return;
 
-        FinishVignetteAnimation();
+        ForceFinishVignetteAnimation();
     }
     #endregion
 }

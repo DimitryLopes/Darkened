@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 0.1
   movementSpeed: 1
-  sprintingSpeedMultiplier: 1.5
-  staminaRegenSpeed: 8
-  staminaConsumptionSpeed: 12
-  depletedStaminaRegenCooldown: 4
+  sprintingSpeedMultiplier: 1.7
+  staminaRegenSpeed: 10
+  staminaConsumptionSpeed: 16
+  depletedStaminaRegenCooldown: 2.75
   maxStamina: 80
-  interactionDistance: 0.35
+  interactionDistance: 0.4

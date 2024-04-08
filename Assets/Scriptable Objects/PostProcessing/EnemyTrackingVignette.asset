@@ -12,54 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a0d50ef15fc634ebbaee04040c2f93, type: 3}
   m_Name: EnemyTrackingVignette
   m_EditorClassIdentifier: 
-  animationDuration: 1
+  animationDuration: 0.5
   priority: 1
   hideOnFinish: 0
-  intensityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.5608355
-      outSlope: 0.5608355
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.09666667
-    - serializedVersion: 3
-      time: 1.0007036
-      value: 0.30051196
-      inSlope: 0.02439387
-      outSlope: 0.02439387
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.19333333
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  smoothnessCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1.0691582
-      outSlope: 1.0691582
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.10738105
-    - serializedVersion: 3
-      time: 0.99334717
-      value: 0.5023575
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  intensityTarget: 0.3
+  smoothnessTarget: 0.5

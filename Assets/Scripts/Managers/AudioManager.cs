@@ -77,11 +77,12 @@ public class AudioManager
         TweenUtils.DoTween(data);
     }
 
-    private void ChangeBGMMixerVolume(float value)
+    public void ChangeBGMMixerVolume(float value)
     {
         audioSettings.AudioMixer.SetFloat(audioSettings.BGMGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, value);
     }
-    private void ChangeSFXMixerVolume(float val)
+
+    public void ChangeSFXMixerVolume(float val)
     {
         audioSettings.AudioMixer.SetFloat(audioSettings.SFXGroup + Constants.AudioParameters.MIXER_GROUP_VOLUME_PARAMETER, val);
     }
