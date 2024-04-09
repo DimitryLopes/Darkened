@@ -23,6 +23,12 @@ public class AudioDataBase : ScriptableObject
         AudioInfo info = audioInfo[clipKey];
         return info;
     }
+
+    public AudioClip GetClip(AudioKey clipKey)
+    {
+        AudioInfo info = audioInfo[clipKey];
+        return info.AudioClip;
+    }
 }
 
 [Serializable]
@@ -38,5 +44,4 @@ public struct AudioInfo
     public AudioClip AudioClip => audioClip;
     public SoundOrigin Origin => origin;
     public AudioKey AudioKey => audioKey;
-
 }

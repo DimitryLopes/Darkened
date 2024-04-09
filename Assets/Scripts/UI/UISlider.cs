@@ -20,7 +20,7 @@ public class UISlider : Slider
         onValueChanged.AddListener(OnSliderValueChanged);
     }
 
-    void OnSliderValueChanged(float value)
+    private void OnSliderValueChanged(float value)
     {
         audioManager.PlaySFX(sfxKey);
         onSnapValueChanged.Invoke(value);

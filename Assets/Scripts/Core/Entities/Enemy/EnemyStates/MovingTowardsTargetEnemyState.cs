@@ -12,17 +12,16 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
     {
     }
 
-    private void SetclosestNode()
+    private void SetclosestNode(Maze maze)
     {
-        closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, Data.Maze.Nodes);
+        closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, maze.Nodes);
     }
 
-    public virtual void SetPath(Color debugColor, MazeNode target = null)
+    public virtual void SetPath(Maze maze, MazeNode target = null)
     {
-        SetclosestNode();
-        currentTarget = target != null ? target : Data.Maze.Nodes.GetRandom();
-        currentTarget.DebugColor(debugColor);
-        path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, Data.Maze);
+        SetclosestNode(maze);
+        currentTarget = target != null ? target : maze.Nodes.GetRandom();
+        path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, maze);
         path.Pop();
     }
 

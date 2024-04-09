@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -27,16 +28,33 @@ public class LevelManager
         signalBus.Subscribe<OnSelectableSelectedSignal>(OnSelectableSelected);
     }
 
-    #region Story Level
-
-    public void StartStoryLevel(int levelIndex)
+    public bool IsLevelUnlocked(int id)
     {
-        if(levelDataBase.LevelDatas[levelIndex].Data != null)
-        {
-            LoadLevel(levelDataBase.LevelDatas[levelIndex].Data, LevelType.Story);
-        }
+        return true;
     }
 
+    public List<MazeData> GetUnlockedLevels()
+    {
+        List<MazeData> unlockedDatas = new();
+        foreach (MazeData data in levelDataBase.LevelDatas)
+        {
+            if (IsLevelUnlocked(levelDataBase.GetLevelID(data)))
+            {
+                unlockedDatas.Add(data);
+            }
+        }
+        return unlockedDatas;
+    }
+
+    #region Story Level
+    private int currentStoryLevelIndex = 0;
+    public void StartStoryLevel()
+    {
+        if(levelDataBase.LevelDatas[currentStoryLevelIndex] != null)
+        {
+            LoadLevel(levelDataBase.LevelDatas[currentStoryLevelIndex], LevelType.Story);
+        }
+    }
     #endregion
 
     #region Custom Level
@@ -45,21 +63,26 @@ public class LevelManager
     private DifficultyData customDifficultyData;
     private void OnSelectableSelected(OnSelectableSelectedSignal signal)
     {
+        Debug.Log(signal.Selectable.Title + " Selected");
         switch (signal.Selectable.SelectableType)
         {
             case SelectableType.MazeSize:
                 MazeSizeData mazeSizeData = signal.Selectable as MazeSizeData;
                 customSizeData = mazeSizeData;
                 //currentRandomLevelWidth = data.Width;
-                break;
+                return;
             case SelectableType.Difficulty:
                 DifficultyData difficultyData = signal.Selectable as DifficultyData;
                 customDifficultyData = difficultyData;
-                break;
+                return;
             case SelectableType.Objective:
                 ObjectiveData objective = signal.Selectable as ObjectiveData;
                 customObjectiveType = objective.ObjectiveType;
-                break;
+                return;
+            case SelectableType.Level:
+                MazeData levelData = signal.Selectable as MazeData;
+                currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
+                return;
         }
     }
 
@@ -99,10 +122,6 @@ public class LevelManager
             data.SetUp(data, objective);
         }
         mazeManager.LoadMaze(data);
-
-        float cameraPos = data.SizeData.cameraPosition;
-        Camera.main.transform.position = new Vector3(cameraPos, cameraPos, -10);
-        Camera.main.orthographicSize = data.SizeData.cameraSize;
     }
 
     private ObjectiveData GetObjective(ObjectiveData targetObjective = null)

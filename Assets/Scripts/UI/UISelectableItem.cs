@@ -8,19 +8,36 @@ public class UISelectableItem : MonoBehaviour
     [Inject]
     private SignalBus signalBus;
 
+    [SerializeField, Header("Small")]
+    private GameObject smallContainer;
     [SerializeField]
-    private Transform itemContainer;
+    private TextMeshProUGUI smallTitle;
     [SerializeField]
-    private UIAnimation animation;
+    private GameObject bigContainer;
     [SerializeField]
-    private TextMeshProUGUI selectableDescription;
+    private TextMeshProUGUI bigTitle;
 
     public IUISelectable Selectable { get; private set; }
 
-    public void SetUp(IUISelectable selectable)
+    public void SetUp(IUISelectable selectable, SelectableItemSize size)
     {
         Selectable = selectable;
-        selectableDescription.text = selectable.Title;
+        SetSize(size);
+        switch (size)
+        {
+            case SelectableItemSize.Small:
+                smallTitle.text = selectable.Title;
+                return;
+            case SelectableItemSize.Big:
+                bigTitle.text = selectable.Title;
+                return;
+        }
+    }
+
+    private void SetSize(SelectableItemSize size)
+    {
+        bigContainer.SetActive(size == SelectableItemSize.Big);
+        smallContainer.SetActive(size == SelectableItemSize.Small);
     }
 
     public void Select(UnityAction callback = null)
@@ -33,4 +50,12 @@ public class UISelectableItem : MonoBehaviour
     {
         //animation.DoOutAnimation(callback);
     }
+
+
+}
+
+public enum SelectableItemSize
+{
+    Small,
+    Big
 }

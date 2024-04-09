@@ -22,3 +22,12 @@ MonoBehaviour:
   - audioKey: 5
     audioClip: {fileID: 8300000, guid: 89760c1f4fb642940bde091e303bbcaa, type: 3}
     origin: 0
+  - audioKey: 8
+    audioClip: {fileID: 8300000, guid: c8f4db88a6247ba459a1cbb84877d1e6, type: 3}
+    origin: 1
+  - audioKey: 7
+    audioClip: {fileID: 8300000, guid: 9a7b5bb00ef5d6e488f1629739d9b19b, type: 3}
+    origin: 1
+  - audioKey: 6
+    audioClip: {fileID: 8300000, guid: bc78b9cb5ab0ff04db1a44effd31bb6a, type: 3}
+    origin: 1

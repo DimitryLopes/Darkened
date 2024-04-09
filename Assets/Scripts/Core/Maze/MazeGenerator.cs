@@ -360,8 +360,8 @@ public class MazeGenerator : MonoBehaviour
 
         foreach (MazeNode node in nodes)
         {
-            float randomTorchValue = UnityEngine.Random.Range(0f, 1f);
-            float randomBreakChance = UnityEngine.Random.Range(0f, 1f);
+            float randomTorchValue = Random.Range(0f, 1f);
+            float randomBreakChance = Random.Range(0f, 1f);
             Debug.Log("Torches: " + torchCount + "| BreakChance: " + breakChance + " | RNG: " + randomBreakChance);
             if (torchCount < CurrentData.MinTorchCount || breakChance < randomBreakChance)
             {

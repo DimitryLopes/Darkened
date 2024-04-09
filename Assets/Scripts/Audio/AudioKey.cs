@@ -6,4 +6,7 @@ public enum AudioKey
     UI_close_button_click,
     BGM_main_menu,
     BGM_in_game,
+    SFX_enemy_sniff,
+    SFX_enemy_howl,
+    SFX_enemy_growl,
 }

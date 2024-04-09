@@ -35,7 +35,7 @@ public class UICustomLevelSelection : MonoBehaviour
         {
             IUISelectable uISelectable = selector(selectableData);
             UISelectableItem selectable = uiFactory.CreateUISelectableItem(customSelectableGroup.Container);
-            selectable.SetUp(uISelectable);
+            selectable.SetUp(uISelectable, SelectableItemSize.Small);
             items.Add(selectable);
         }
         customSelectableGroup.Setup(items);

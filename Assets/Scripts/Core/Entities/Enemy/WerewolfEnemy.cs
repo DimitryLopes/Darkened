@@ -42,12 +42,15 @@ public class WerewolfEnemy : Enemy
         base.OnDeactivate();
         currentState.RawDeactivate();
     }
-
-    public override void Initialize(MazeManager mazeManager, EntityManager entityManager, CameraManager cameraManager, SignalBus signalBus)
+    public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
     {
-        base.Initialize(mazeManager, entityManager, cameraManager, signalBus);
+        base.Initialize(entityManager, cameraManager, audioManager, signalBus);
+        CreateDatas();
+    }
 
-        BaseEnemyStateData chasingData = new BaseEnemyStateData(Maze, this, true, OnChasingEnded, OnChasingStarted, null);
+    private void CreateDatas()
+    {
+        BaseEnemyStateData chasingData = new BaseEnemyStateData(this, true, OnChasingEnded, OnChasingStarted, null);
 
         chasingState = new ChasingEnemyState(chasingData);
         waitingState = CreateWaitingStateData(OnWaitingCompleted);
@@ -58,13 +61,13 @@ public class WerewolfEnemy : Enemy
 
     private WaitingEnemyState CreateWaitingStateData(UnityAction onWaitingEnded)
     {
-        var data = new WaitingEnemyStateData(Maze, this, false, waitingTime, null, null, onWaitingEnded);
+        var data = new WaitingEnemyStateData(this, false, waitingTime, null, null, onWaitingEnded);
         return new WaitingEnemyState(data);
     }
 
     private MovingTowardsTargetEnemyState CreateMovingStateData(bool isSprinting, UnityAction onStateDeactivated, UnityAction onStateActivated, UnityAction onStateCompleted)
     {
-        var data = new BaseEnemyStateData(Maze, this, isSprinting, onStateDeactivated, onStateActivated, onStateCompleted);
+        var data = new BaseEnemyStateData(this, isSprinting, onStateDeactivated, onStateActivated, onStateCompleted);
         return new MovingTowardsTargetEnemyState(data);
     }
 
@@ -126,7 +129,7 @@ public class WerewolfEnemy : Enemy
 
     private void SetTrackingPath()
     {
-        trackingState.SetPath(Color.red, GetPlayerNode());
+        trackingState.SetPath(Maze, GetPlayerNode());
     }
 
     private MazeNode GetPlayerNode()
@@ -138,6 +141,11 @@ public class WerewolfEnemy : Enemy
     #region Callbacks
     private void OnChasingStarted()
     {
+        if(currentState != trackingState)
+        {
+            audioManager.PlaySFX(AudioKey.SFX_enemy_howl, false, transform.position);
+        }
+
         cameraManager.AnimateVignette(chasePostProcessingEffect);
         chasingState.SetPath(Player.transform);
     }
@@ -156,13 +164,15 @@ public class WerewolfEnemy : Enemy
 
     private void OnTrackingComplete()
     {
+        audioManager.PlaySFX(AudioKey.SFX_enemy_growl, false, transform.position);
         cameraManager.FinishVignetteAnimation(trackingPostProcessingEffect);
         ChangeState(waitingState);
     }
 
     private void OnInvestigationStarted()
     {
-        investigatingState.SetPath(Color.yellow, GetPlayerNode());
+        audioManager.PlaySFX(AudioKey.SFX_enemy_sniff, false, transform.position);
+        investigatingState.SetPath(Maze, GetPlayerNode());
     }
 
     private void OnInvestigationCompleted()
@@ -172,7 +182,7 @@ public class WerewolfEnemy : Enemy
 
     private void OnWanderingStarted()
     {
-        wanderingState.SetPath(Color.grey);
+        wanderingState.SetPath(Maze);
     }
 
     private void OnWanderingCompleted()

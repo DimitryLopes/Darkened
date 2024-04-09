@@ -18,7 +18,7 @@ public class AudioManager
     public float BGMVolume => bgmVolume;
     public float SFXVolume => sfxVolume;
 
-    private List<AudioSource> sfxSources = new List<AudioSource>();
+    private List<AudioSource> sfxSources = new ();
 
     public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase, AudioMixingSettings audioMixingSettings)
     {
@@ -29,12 +29,12 @@ public class AudioManager
         CreateBGMSource();
     }
 
-    public void PlaySFX(AudioKey clipKey, Vector3 position = new())
+    public void PlaySFX(AudioKey clipKey, bool canHaveMultiple = true, Vector3 position = new())
     {
-        AudioSource source = GetAvailableSFXSource();
-        AudioInfo info = audioDataBase.GetAudioInfo(clipKey);
+        AudioSource source = GetAvailableSFXSource(clipKey, canHaveMultiple);
         if (source != null)
         {
+            AudioInfo info = audioDataBase.GetAudioInfo(clipKey);
             source.clip = info.AudioClip;
             source.volume = sfxVolume;
             source.Play();
@@ -95,25 +95,33 @@ public class AudioManager
         bgmSource.outputAudioMixerGroup = audioSettings.BGMGroup;
     }
 
-    private AudioSource GetAvailableSFXSource()
+    private AudioSource GetAvailableSFXSource(AudioKey key, bool canHaveMultiple = true)
     {
-        foreach (var source in sfxSources)
+        AudioSource source = null;
+        foreach (var instantiatedSource in sfxSources)
         {
-            if (!source.isPlaying)
+            if (!instantiatedSource.isPlaying)
             {
-                return source;
+                source = instantiatedSource;
+            }
+            else if (!canHaveMultiple)
+            {
+                if(instantiatedSource.clip == audioDataBase.GetClip(key))
+                {
+                    return null;
+                }
             }
         }
 
         if(sfxSources.Count < MAXIMUM_SFX_SOURCES_ALLOWED)
         {
-            AudioSource newSource = GetNewAudioSource();
-            sfxSources.Add(newSource);
-            newSource.outputAudioMixerGroup = audioSettings.SFXGroup;
-            newSource.loop = false;
-            return newSource;
+            source = GetNewAudioSource();
+            sfxSources.Add(source);
+            source.outputAudioMixerGroup = audioSettings.SFXGroup;
+            source.loop = false;
+            return source;
         }
-        return null;
+        return source;
     }
 
     private AudioSource GetNewAudioSource()

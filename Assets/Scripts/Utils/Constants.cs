@@ -11,6 +11,11 @@ public static class Constants
         public const string GAME_SCENE = "Game";
     }
 
+    public static class Levels
+    {
+        public const string LEVEL_SAVED_DATA_KEY = "level_{0}";
+    }
+
     public static class Hud
     {
         public const string UI_MISSION_DESCRIPTION_FORMAT = "{0}: {1}/{2}";

@@ -9,5 +9,5 @@ public enum SelectableType
     MazeSize,
     Difficulty,
     Objective,
-    GameMode,
+    Level,
 }

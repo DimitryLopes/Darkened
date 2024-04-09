@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4aa82ebbc382314ca99f5f3a8f53057, type: 3}
-  m_Name: TestData 2
+  m_Name: TestData 5
   m_EditorClassIdentifier: 
-  levelName: El Bananon
-  sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
+  levelName: El Goiabon
+  sizeData: {fileID: 11400000, guid: f569998e1b25e2b4d9a94cd3d5315e64, type: 2}
   difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
   torchRatio: 0.22500001
   torch: 5

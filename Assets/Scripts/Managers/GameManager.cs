@@ -12,7 +12,7 @@ public class GameManager
     private readonly SignalBus signalBus;
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, SignalBus signalBus)
+        ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, SignalBus signalBus)
     {
         this.objectiveManager = objectiveManager;
         this.screenManager = screenManager;
@@ -32,7 +32,7 @@ public class GameManager
     public void StartStoryGame()
     {
         HideMainMenu();
-        levelManager.StartStoryLevel(0);
+        levelManager.StartStoryLevel();
     }
 
     public void StartCustomGame()
@@ -114,6 +114,7 @@ public class GameManager
         Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType);
         enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
         entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
+        enemy.SetMaze(mazeManager.CurrentMaze);
 
         audioManager.PlayBGM(AudioKey.BGM_in_game);
         hudManager.ShowHud();

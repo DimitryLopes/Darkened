@@ -2,8 +2,11 @@ using UnityEngine;
 using Zenject;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Maze Data")]
-public class MazeData : ScriptableObject
+public class MazeData : ScriptableObject, IUISelectable
 {
+    [SerializeField]
+    private string levelName;
+
     [SerializeField, Header("Size")]
     private MazeSizeData sizeData;
 
@@ -31,10 +34,11 @@ public class MazeData : ScriptableObject
     public int MaxTorchCount => Mathf.CeilToInt(difficultyData.MaximumTorchRatio * Size);
     public float TorchRatio => torchRatio;
     public ItemType Torch => torch;
-   
     public EnemyType EnemyType => enemyType;
-
     public ObjectiveData ObjectiveData => objective;
+
+    public string Title => levelName;
+    public SelectableType SelectableType => SelectableType.Level;
 
 
     public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, ItemType torch, EnemyType enemyType)
