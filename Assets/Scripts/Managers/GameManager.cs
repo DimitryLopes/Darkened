@@ -9,7 +9,6 @@ public class GameManager
     private readonly AudioManager audioManager;
     private readonly MazeManager mazeManager;
     private readonly HUDManager hudManager;
-    private readonly SignalBus signalBus;
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, SignalBus signalBus)
@@ -21,7 +20,6 @@ public class GameManager
         this.audioManager = audioManager;
         this.mazeManager = mazeManager;
         this.hudManager = hudManager;
-        this.signalBus = signalBus;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);

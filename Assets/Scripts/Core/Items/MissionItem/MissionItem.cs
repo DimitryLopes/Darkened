@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class MissionItem : Item
 {
     protected Mission mission;
@@ -25,6 +23,7 @@ public class MissionItem : Item
 
     public void DisableInteraction()
     {
+        RemoveHighlight();
         canInteract = false;
     }
 

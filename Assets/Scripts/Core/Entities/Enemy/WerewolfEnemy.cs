@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -5,12 +7,21 @@ using Zenject;
 public class WerewolfEnemy : Enemy
 {
     [SerializeField]
+    private new SpriteRenderer renderer;
+    [SerializeField]
+    private SpriteRenderer effectsRenderer;
+
+    [SerializeField, Header("Config")]
     private LayerMask sightLayer;
     [SerializeField]
     private float waitingTime;
     [SerializeField]
     private float raycastOffset;
-    [SerializeField]
+
+    [SerializeField, Header("Animations")]
+    private float animationDuration;
+
+    [SerializeField, Header("Post Processing")]
     private VignetteAnimationData chasePostProcessingEffect;
     [SerializeField]
     private VignetteAnimationData trackingPostProcessingEffect;
@@ -26,6 +37,7 @@ public class WerewolfEnemy : Enemy
     private RaycastHit2D rightHit;
     private float distanceBetweenPlayer;
     private bool isInLineOfSight;
+    private Color effectsRendererColor;
 
     private Vector3 LeftRaycastOrigin => transform.position - (Vector3.right * transform.localScale.x) / raycastOffset;
     private Vector3 RightRaycastOrigin => transform.position + (Vector3.right * transform.localScale.x) / raycastOffset;
@@ -44,6 +56,7 @@ public class WerewolfEnemy : Enemy
     }
     public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
     {
+        effectsRendererColor = Color.red;
         base.Initialize(entityManager, cameraManager, audioManager, signalBus);
         CreateDatas();
     }
@@ -143,7 +156,7 @@ public class WerewolfEnemy : Enemy
     {
         if(currentState != trackingState)
         {
-            audioManager.PlaySFX(AudioKey.SFX_enemy_howl, false, transform.position);
+            PlaySFX(AudioKey.SFX_enemy_howl);
         }
 
         cameraManager.AnimateVignette(chasePostProcessingEffect);
@@ -164,14 +177,15 @@ public class WerewolfEnemy : Enemy
 
     private void OnTrackingComplete()
     {
-        audioManager.PlaySFX(AudioKey.SFX_enemy_growl, false, transform.position);
+        PlaySFX(AudioKey.SFX_enemy_growl);
         cameraManager.FinishVignetteAnimation(trackingPostProcessingEffect);
         ChangeState(waitingState);
     }
 
     private void OnInvestigationStarted()
     {
-        audioManager.PlaySFX(AudioKey.SFX_enemy_sniff, false, transform.position);
+
+        PlaySFX(AudioKey.SFX_enemy_sniff);
         investigatingState.SetPath(Maze, GetPlayerNode());
     }
 
@@ -194,6 +208,32 @@ public class WerewolfEnemy : Enemy
     private void OnWaitingCompleted()
     {
         ChangeState(wanderingState);
+    }
+    #endregion
+
+    #region Feedback
+    private void PlaySFX(AudioKey sfx)
+    {
+        audioManager.PlaySFX(sfx, false, transform.position);
+        DoShowOutlineAnimation(DoHideOutlineAnimation);
+    }
+
+    private void DoShowOutlineAnimation(Action callback)
+    {
+        LeanTweenAnimationData data = new LeanTweenAnimationData(effectsRenderer.gameObject, effectsRenderer.color.a, 1, animationDuration, ChangeEffectAlpha, callback);
+        TweenUtils.DoTween(data, finishCurrent: false);
+    }
+
+    private void DoHideOutlineAnimation()
+    {
+        LeanTweenAnimationData data = new LeanTweenAnimationData(effectsRenderer.gameObject, effectsRenderer.color.a, 0, animationDuration, ChangeEffectAlpha);
+        TweenUtils.DoTween(data, finishCurrent: false);
+    }
+
+    private void ChangeEffectAlpha(float value)
+    {
+        effectsRendererColor.a = value;
+        effectsRenderer.color = effectsRendererColor;
     }
     #endregion
 }

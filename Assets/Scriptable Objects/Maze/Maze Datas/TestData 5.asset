@@ -15,7 +15,7 @@ MonoBehaviour:
   levelName: El Goiabon
   sizeData: {fileID: 11400000, guid: f569998e1b25e2b4d9a94cd3d5315e64, type: 2}
   difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
-  torchRatio: 0.22500001
+  torchRatio: 0.25
   torch: 5
   enemyType: 0
   objective: {fileID: 11400000, guid: 2a4feef9555a73044b8117569739ac6f, type: 2}
