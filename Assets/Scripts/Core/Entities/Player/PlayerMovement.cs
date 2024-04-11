@@ -113,6 +113,7 @@ public class PlayerMovement : PlayerAction
         isExhausted = true;
         isSprinting = false;
         currentStamina = 0;
+        signalBus.Fire<OnPlayerStaminaExaustedSignal>();
 
         yield return new WaitForSeconds(status.DepletedStaminaRegenCooldown);
 
@@ -124,5 +125,6 @@ public class PlayerMovement : PlayerAction
         }
 
         isExhausted = false;
+        signalBus.Fire<OnPlayerExaustedRecoveredSignal>();
     }
 }

@@ -17,6 +17,7 @@ public class UILoadingScreen : UIScreen<LoadingScreenController>
 
     protected override void OnBeforeShow()
     {
+        base.OnBeforeShow();
         progressText.text = string.Format(LOADING_PROGRESS_TEXT_FORMAT, 0);
         currentTaskText.text = "Right now I'm currently loading something. If you can read this, this means that somehow the loading went trough the QA testing and the game crashed, please restart it. Sorry for the inconvenience";
         operation = Controller.Operation;

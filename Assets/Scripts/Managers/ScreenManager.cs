@@ -7,7 +7,6 @@ public class ScreenManager
 {
     private readonly UIScreenDataBase screenDataBase;
     private readonly ScreenFactory screenFactory;
-    private readonly SignalBus signalBus;
     private Dictionary<Type, IScreen> instantiatedScreens = new Dictionary<Type, IScreen>();
     private IScreen currentScreen;
 
@@ -63,6 +62,10 @@ public class ScreenManager
 
     private void OnScreenAfterHideSignal(OnScreenAfterHideSignal signal)
     {
+        if (currentScreen == signal.Screen)
+        {
+            currentScreen = null;
+        }
     }
 
     private void OnScreenBeforeShowSignal(OnScreenBeforeShowSignal signal)
@@ -76,9 +79,6 @@ public class ScreenManager
 
     private void OnScreenBeforeHideSignal(OnScreenBeforeHideSignal signal)
     {
-        if(currentScreen == signal.Screen)
-        {
-            currentScreen = null;
-        }
+        
     }
 }

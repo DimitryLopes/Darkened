@@ -14,6 +14,8 @@ public class PlayerHUD : Activateable
     private void Awake()
     {
         signalBus.Subscribe<OnPlayerStaminaChangedSignal>(OnPlayerStaminaChanged);
+        signalBus.Subscribe<OnPlayerStaminaExaustedSignal>(OnPlayerStaminaExausted);
+        signalBus.Subscribe<OnPlayerExaustedRecoveredSignal>(OnPlayerExaustionRecovered);
 
         staminaBar.SetUp(entityManager.GetPlayer());
     }
@@ -22,4 +24,25 @@ public class PlayerHUD : Activateable
     {
         staminaBar.UpdateBar();
     }
+
+    private void OnPlayerStaminaExausted()
+    {
+        staminaBar.DoExaustedAnimation();
+    }
+
+    private void OnPlayerExaustionRecovered()
+    {
+        staminaBar.DoStaminaRecoveredAnimation();
+    }
+
+    public override void OnActivate()
+    {
+        staminaBar.UpdateBar();
+    }
+
+    public override void OnDeactivate()
+    {
+        staminaBar.StopAnimations();
+    }
+
 }

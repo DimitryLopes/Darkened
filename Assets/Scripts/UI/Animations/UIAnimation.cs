@@ -1,18 +1,22 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class UIAnimation : MonoBehaviour
 {
 
     [SerializeField]
-    protected float animationDuration = 0.5f;
+    protected float inAnimationDuration = 0.5f;
+    [SerializeField]
+    protected float outAnimationDuration = 0.5f;
     [SerializeField]
     protected LeanTweenType inEase = LeanTweenType.easeOutExpo;
     [SerializeField]
     protected LeanTweenType outEase = LeanTweenType.easeInExpo;
+    [SerializeField]
+    private bool loop;
 
     protected Vector3 originalPosition;
-    protected UnityAction onFinishCallback;
+    protected Action onFinishCallback;
     protected LTDescr currentTween;
 
     private void Start()
@@ -20,34 +24,43 @@ public class UIAnimation : MonoBehaviour
         originalPosition = transform.position;
     }
 
-    public void DoInAnimation(UnityAction onFinishCallback)
+    public void DoInAnimation(Action onFinishCallback = null)
     {
         this.onFinishCallback = onFinishCallback;
+        if (loop)
+        {
+            this.onFinishCallback += () => { DoOutAnimation(); };
+        }
         CancelCurrentAnimation();
         InAnimation();
     }
 
 
-    public void DoOutAnimation(UnityAction onFinishCallback)
+    public void DoOutAnimation(Action onFinishCallback = null)
     {
         this.onFinishCallback = onFinishCallback;
+        if (loop)
+        {
+            this.onFinishCallback += () => { DoInAnimation(); };
+        }
         CancelCurrentAnimation();
         OutAnimation();
     }
 
-    private void CancelCurrentAnimation()
+    public virtual void CancelCurrentAnimation()
     {
         if (currentTween != null)
         {
-            LeanTween.cancel(currentTween.uniqueId, true); // Complete the previous animation
+            LeanTween.cancel(currentTween.uniqueId, !loop);
         }
     }
 
     protected void OnAnimationFinish()
     {
-        onFinishCallback?.Invoke();
+        Action action = onFinishCallback;
         onFinishCallback = null;
         currentTween = null;
+        action?.Invoke();
     }
 
     protected virtual void InAnimation() { }

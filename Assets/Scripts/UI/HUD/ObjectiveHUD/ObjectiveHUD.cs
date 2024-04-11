@@ -18,7 +18,6 @@ public class ObjectiveHUD : Activateable
     {
         signalBus.Subscribe<OnMissionGroupCompletedSignal>(OnMissionCompleted);
         signalBus.Subscribe<OnMissionGroupStartedSignal>(OnMissionGroupStarted);
-        signalBus.Subscribe<OnGameCompletedSignal>(OnGameCompleted);
     }
 
     private void OnMissionCompleted(OnMissionGroupCompletedSignal signal)
@@ -41,7 +40,7 @@ public class ObjectiveHUD : Activateable
         }
     }
 
-    private void OnGameCompleted()
+    public override void OnDeactivate()
     {
         foreach (UIMissionDescription missionDescription in instantiatedDescriptions)
         {

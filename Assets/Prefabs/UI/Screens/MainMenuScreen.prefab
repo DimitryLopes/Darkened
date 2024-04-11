@@ -2177,9 +2177,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4226aafa49c60774bbb1b21c78c577ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  inAnimationDuration: 0
+  outAnimationDuration: 0.5
   inEase: 18
   outEase: 17
+  loop: 0
   target: {fileID: 5595784191584308314}
   inTarget: 1
   outTarget: 0

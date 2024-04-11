@@ -12,7 +12,7 @@ public class UIFadeAnimation : UIAnimation
     protected override void InAnimation()
     {
         target.alpha = 0;
-        currentTween = target.LeanAlpha(inTarget, animationDuration)
+        currentTween = target.LeanAlpha(inTarget, inAnimationDuration)
             .setEase(inEase)
             .setOnComplete(OnAnimationFinish);
     }
@@ -20,7 +20,7 @@ public class UIFadeAnimation : UIAnimation
     protected override void OutAnimation()
     {
         target.alpha = 1;
-        currentTween = target.LeanAlpha(outTarget, animationDuration)
+        currentTween = target.LeanAlpha(outTarget, outAnimationDuration)
             .setEase(outEase)
             .setOnComplete(OnAnimationFinish);
     }

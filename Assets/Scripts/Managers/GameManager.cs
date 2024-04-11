@@ -29,34 +29,24 @@ public class GameManager
     #region Game Start
     public void StartStoryGame()
     {
-        HideMainMenu();
         levelManager.StartStoryLevel();
     }
 
     public void StartCustomGame()
     {
-        HideMainMenu();
         levelManager.StartCustomLevel();
     }
 
     public void StartRandomGame()
     {
-        HideMainMenu();
         levelManager.StartRandomLevel();
     }
     #endregion
-
-    private void HideMainMenu()
-    {
-        var screen = screenManager.GetScreen<MainMenuScreen>();
-        screen.Hide();
-    }
 
     //called be main menu listener, there might be a better way to do this
     public void ShowMainMenu()
     {
         objectiveManager.SetObjective(null);
-        hudManager.HideHud();
         audioManager.PlayBGM(AudioKey.BGM_main_menu);
 
         var screen = screenManager.GetScreen<MainMenuScreen>();
@@ -64,7 +54,7 @@ public class GameManager
         screen.Show(controller);
     }
 
-    public void FinishGame(bool objectiveCompleted, bool showScreen = true)
+    public void FinishGame(bool objectiveCompleted, bool isForced = true)
     {
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
@@ -74,7 +64,9 @@ public class GameManager
 
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
 
-        if (!showScreen) return;
+        hudManager.HideHud();
+
+        if (!isForced) return;
 
         var screen = screenManager.GetScreen<UIGameFinishScreen>();
         GameFinishScreenController controller;

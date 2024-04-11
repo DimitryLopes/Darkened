@@ -9,14 +9,14 @@ public class UISlideAnimation : UIAnimation
 
     protected override void InAnimation()
     {
-        currentTween = transform.LeanMoveLocal(inTarget, animationDuration)
+        currentTween = transform.LeanMoveLocal(inTarget, inAnimationDuration)
             .setEase(inEase)
             .setOnComplete(OnAnimationFinish);
     }
 
     protected override void OutAnimation()
     {
-        currentTween = transform.LeanMoveLocal(outTarget, animationDuration)
+        currentTween = transform.LeanMoveLocal(outTarget, outAnimationDuration)
             .setEase(outEase)
             .setOnComplete(OnAnimationFinish);
     }
