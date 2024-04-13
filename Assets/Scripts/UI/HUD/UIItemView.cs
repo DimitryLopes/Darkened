@@ -19,6 +19,8 @@ public class UIItemView : Activateable, ISelectable
     private InventoryItemData itemData;
     private Action<Item> onSelectCallback;
     private Action onDeselectCallback;
+    private Action<UIItemView> onDeactivateCallback;
+    private Action<UIItemView> onActivateCallback;
 
     public bool IsSelected { get; private set; }
 
@@ -26,15 +28,37 @@ public class UIItemView : Activateable, ISelectable
     {
         itemImage.sprite = itemData.Item.Icon;
         this.itemData = itemData;
+        selectButton.interactable = onSelectCallback != null;
         this.onSelectCallback = onSelectCallback;
         this.onDeselectCallback = onDeselectCallback;
         RawDeselect();
         SetOnButtonClickCallback(Select);
     }
 
-    public void UpdateView()
+    public void UpdateView(InventoryItemData data)
     {
-        itemAmountText.text = itemData.Amount.ToString();
+        if(data.Amount > 0)
+        {
+            Deactivate();
+            return;
+        }
+        else
+        {
+            Activate();
+        }
+        
+        itemAmountText.gameObject.SetActive(data.Amount > 1);
+        itemAmountText.text = data.Amount.ToString();
+    }
+
+    public override void OnDeactivate()
+    {
+        onDeactivateCallback?.Invoke(this);
+    }
+
+    public override void OnActivate()
+    {
+        onActivateCallback?.Invoke(this);
     }
 
     public void Select()
@@ -46,7 +70,7 @@ public class UIItemView : Activateable, ISelectable
     private void OnSelect()
     {
         SetOnButtonClickCallback(Deselect);
-        onSelectCallback?.Invoke(item);
+        onSelectCallback?.Invoke(itemData.Item);
     }
 
     private void OnDeselect()
@@ -70,6 +94,11 @@ public class UIItemView : Activateable, ISelectable
     {
         selectButton.onClick.RemoveAllListeners();
         selectButton.onClick.AddListener(callback);
+    }
 
+    public void SetActivatableCallbacks(Action<UIItemView> onActivateCallback, Action<UIItemView> onDeactivateCallback)
+    {
+        this.onActivateCallback = onActivateCallback;
+        this.onDeactivateCallback = onDeactivateCallback;
     }
 }

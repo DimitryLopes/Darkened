@@ -3,6 +3,7 @@ using Zenject;
 public class GameManager
 {
     private readonly ObjectiveManager objectiveManager;
+    private readonly InventoryManager inventoryManager;
     private readonly ScreenManager screenManager;
     private readonly EntityManager entityManager;
     private readonly LevelManager levelManager;
@@ -11,9 +12,11 @@ public class GameManager
     private readonly HUDManager hudManager;
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, SignalBus signalBus)
+        ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
+        SignalBus signalBus)
     {
         this.objectiveManager = objectiveManager;
+        this.inventoryManager = inventoryManager;
         this.screenManager = screenManager;
         this.entityManager = entityManager;
         this.levelManager = levelManager;
@@ -61,9 +64,9 @@ public class GameManager
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
 
         Objective currentObjective = objectiveManager.CurrentObjective;
-
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
 
+        inventoryManager.Clear();
         hudManager.HideHud();
 
         if (!isForced) return;

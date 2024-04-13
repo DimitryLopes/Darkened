@@ -9,7 +9,7 @@ public class InventoryManager
 
     public Item SelectedItem { get; private set; }
 
-    private Dictionary<ItemType,InventoryItemData> inventoryItems = new();
+    private Dictionary<ItemType, InventoryItemData> inventoryItems = new();
 
     public InventoryManager(SignalBus signalBus, HUDManager hudManager)
     {
@@ -27,7 +27,14 @@ public class InventoryManager
         {
             data = new InventoryItemData();
             inventoryItems.Add(type, data);
-            hudManager.CreateItemView(data, SelectItem);
+            if (signal.Item is UsableItem)
+            {
+                hudManager.CreateItemView(data, SelectItem);
+            }
+            else
+            {
+                hudManager.CreateItemView(data);
+            }
         }
         data = inventoryItems[type];
         IncreaseItemAmount(type, signal.Amount);
@@ -73,7 +80,7 @@ public class InventoryManager
     public void Clear()
     {
         InventoryItemData data;
-       foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+        foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
         {
             if (!inventoryItems.ContainsKey(type)) continue;
 

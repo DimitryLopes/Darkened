@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class HUD : MonoBehaviour
@@ -30,5 +31,8 @@ public class HUD : MonoBehaviour
         objectiveHUD.Deactivate();
         playerHUD.Deactivate();
         itemHUD.Deactivate();
+        itemHUD.Clear();
     }
+
+
 }
