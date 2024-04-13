@@ -12,9 +12,10 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<ScreenManager>().AsSingle();
         Container.Bind<MaterialManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();
-        //Needs MazeManager
+        //Needs previous managers
+        Container.Bind<InventoryManager>().AsSingle();
         Container.Bind<LevelManager>().AsSingle();
-        //Needs LevelManager
+        //Needs previous managers
         Container.Bind<GameManager>().AsSingle();
 
         SceneManager.LoadScene(Constants.Scenes.MAIN_MENU_SCENE);

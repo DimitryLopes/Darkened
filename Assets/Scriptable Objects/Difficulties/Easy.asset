@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Easy
   m_EditorClassIdentifier: 
   difficultyName: Easy
-  torchRadius: 1.4
-  minTorchRatio: 0.3
-  maxTorchRatio: 0.4
+  torchRadius: 1.5
+  minTorchRatio: 0.4
+  maxTorchRatio: 0.5

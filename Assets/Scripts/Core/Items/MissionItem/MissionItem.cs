@@ -12,6 +12,7 @@ public class MissionItem : Item
         if (CanInteract)
         {
             signalBus.Fire(new OnMissionItemInteractedSignal(this));
+            OnInteract();
             DisableInteraction();
         }
     }
@@ -26,5 +27,7 @@ public class MissionItem : Item
         RemoveHighlight();
         canInteract = false;
     }
+
+    protected virtual void OnInteract() { }
 
 }

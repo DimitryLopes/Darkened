@@ -9,16 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b3a3830f00d68458cc959897bd934c, type: 3}
-  m_Name: PressButtons
+  m_Script: {fileID: 11500000, guid: 97a561bcb37c87841af16f24a6e6cd35, type: 3}
+  m_Name: Escape
   m_EditorClassIdentifier: 
-  title: Open the exit
-  description: Press all buttons to open the exit
+  title: Escape
+  description: Find the exit
   victoryMessage: You escaped
   defeatMessage: The monster got Clebinho
-  objectiveType: 1
+  objectiveType: 0
   missionGroups:
-  - Missions:
-    - {fileID: 11400000, guid: 52d01ccffd61fbf4d8cd588b7b13d0bd, type: 2}
   - Missions:
     - {fileID: 11400000, guid: f9e69ce90be171e429fb388d9a1c24c4, type: 2}

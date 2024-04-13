@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Hard
   m_EditorClassIdentifier: 
   difficultyName: Hard
-  torchRadius: 1
-  minTorchRatio: 0.15
-  maxTorchRatio: 0.2
+  torchRadius: 0.85
+  minTorchRatio: 0.2
+  maxTorchRatio: 0.3

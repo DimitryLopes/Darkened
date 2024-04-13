@@ -12,8 +12,8 @@ public class AudioManager
     private AudioDataBase audioDataBase;
     private AudioFactory audioFactory;
     private AudioSource bgmSource;
-    private float sfxVolume = 1f;
-    private float bgmVolume = 1f;
+    private float sfxVolume = 0.5f;
+    private float bgmVolume = 0.5f;
 
     public float BGMVolume => bgmVolume;
     public float SFXVolume => sfxVolume;
@@ -92,6 +92,7 @@ public class AudioManager
         AudioSource bgmSource = GetNewAudioSource();
         bgmSource.transform.position = Camera.main.transform.position;
         this.bgmSource = bgmSource;
+        bgmSource.volume = bgmVolume;
         bgmSource.outputAudioMixerGroup = audioSettings.BGMGroup;
     }
 

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a561bcb37c87841af16f24a6e6cd35, type: 3}
+  m_Name: Press All Buttons
+  m_EditorClassIdentifier: 
+  title: Buttons
+  description: Press all buttons to open the exit
+  victoryMessage: You escaped
+  defeatMessage: The monster got Clebinho
+  objectiveType: 1
+  missionGroups:
+  - Missions:
+    - {fileID: 11400000, guid: 52d01ccffd61fbf4d8cd588b7b13d0bd, type: 2}
+  - Missions:
+    - {fileID: 11400000, guid: f9e69ce90be171e429fb388d9a1c24c4, type: 2}

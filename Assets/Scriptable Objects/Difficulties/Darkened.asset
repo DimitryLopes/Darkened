@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Darkened
   m_EditorClassIdentifier: 
   difficultyName: Darkened
-  torchRadius: 0.8
+  torchRadius: 0.5
   minTorchRatio: 0.1
   maxTorchRatio: 0.2

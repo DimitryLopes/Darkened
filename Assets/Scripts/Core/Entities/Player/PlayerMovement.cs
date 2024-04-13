@@ -90,9 +90,9 @@ public class PlayerMovement : PlayerAction
         RegenerateStamina();
     }
 
-    private void RegenerateStamina()
+    private void RegenerateStamina(float speedMultiplier = 1f)
     {
-        ChangeStamina(Mathf.Min(status.StaminaRegenSpeed * Time.deltaTime, status.MaxStamina));
+        ChangeStamina(Mathf.Min(status.StaminaRegenSpeed * Time.deltaTime * speedMultiplier, status.MaxStamina));
     }
 
     private void ChangeStamina(float amount)
@@ -120,7 +120,7 @@ public class PlayerMovement : PlayerAction
 
         while(currentStamina < status.MaxStamina)
         {
-            RegenerateStamina();
+            RegenerateStamina(status.DepletedStaminaRegenSpeedMultiplier);
             yield return null;
         }
 

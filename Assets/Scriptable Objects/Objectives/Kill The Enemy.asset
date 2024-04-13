@@ -9,14 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b3a3830f00d68458cc959897bd934c, type: 3}
-  m_Name: EscapeObjective
+  m_Script: {fileID: 11500000, guid: 97a561bcb37c87841af16f24a6e6cd35, type: 3}
+  m_Name: Kill The Enemy
   m_EditorClassIdentifier: 
-  title: Escape
-  description: Find the exit and escape the maze!
-  victoryMessage: Clebinho has escaped
+  title: Elimination
+  description: Kill the monster
+  victoryMessage: You escaped
   defeatMessage: The monster got Clebinho
-  objectiveType: 0
+  objectiveType: 2
   missionGroups:
+  - Missions:
+    - {fileID: 11400000, guid: 5257f1f0a043c814086e0b7f1415b3d4, type: 2}
+    - {fileID: 11400000, guid: e99cf4875f1f10541bc5143e37e6fc41, type: 2}
   - Missions:
     - {fileID: 11400000, guid: f9e69ce90be171e429fb388d9a1c24c4, type: 2}

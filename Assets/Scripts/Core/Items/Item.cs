@@ -10,6 +10,8 @@ public class Item : Activateable, IItem, IInteractable
     protected MaterialManager materialManager;
 
     [SerializeField]
+    private Sprite itemIcon;
+    [SerializeField]
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private MaterialType standardtMaterial;
@@ -19,6 +21,9 @@ public class Item : Activateable, IItem, IInteractable
     private ItemGenerationData itemGenerationData;
 
     protected ItemType type;
+
+    public Sprite Icon => itemIcon;
+    public ItemType Type => type;
 
     public ItemGenerationData GenerationData => itemGenerationData;
 

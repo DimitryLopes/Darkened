@@ -17,12 +17,15 @@ public class PlayerStatus : ScriptableObject
     [SerializeField]
     private float depletedStaminaRegenCooldown;
     [SerializeField]
+    private float depletedStaminaRegenSpeedMultiplier;
+    [SerializeField]
     private float maxStamina;
 
     [SerializeField, Header("Interaction")]
     private float interactionDistance;
 
     public float DepletedStaminaRegenCooldown => depletedStaminaRegenCooldown;
+    public float DepletedStaminaRegenSpeedMultiplier => depletedStaminaRegenSpeedMultiplier;
     public float StaminaConsumptionSpeed => staminaConsumptionSpeed;
     public float InteractionRange => interactionDistance;
     public float StaminaRegenSpeed  => staminaRegenSpeed;

@@ -12,7 +12,6 @@ public static class ColorExtensions
         {
             Color updatedColor = Color.Lerp(color, targetColor, floatito);
             onUpdate.Invoke(updatedColor);
-            Debug.Log(updatedColor.a);
         }
     }
     
