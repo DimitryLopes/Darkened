@@ -28,11 +28,11 @@ public class UIItemView : Activateable, ISelectable
     {
         itemImage.sprite = itemData.Item.Icon;
         this.itemData = itemData;
-        selectButton.interactable = onSelectCallback != null;
+        selectButton.interactable = false; //onSelectCallback != null;
         this.onSelectCallback = onSelectCallback;
         this.onDeselectCallback = onDeselectCallback;
         RawDeselect();
-        SetOnButtonClickCallback(Select);
+        //SetOnButtonClickCallback(Select);
     }
 
     public void UpdateView(InventoryItemData data)
@@ -69,13 +69,13 @@ public class UIItemView : Activateable, ISelectable
 
     private void OnSelect()
     {
-        SetOnButtonClickCallback(Deselect);
+        //SetOnButtonClickCallback(Deselect);
         onSelectCallback?.Invoke(itemData.Item);
     }
 
     private void OnDeselect()
     {
-        SetOnButtonClickCallback(Select);
+        //SetOnButtonClickCallback(Select);
         onDeselectCallback?.Invoke();
     }
 

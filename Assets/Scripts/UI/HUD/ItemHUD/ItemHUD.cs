@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -15,7 +14,7 @@ public class ItemHUD : Activateable
     private Transform itemViewContainer;
 
     private UIItemView selectedItemView;
-
+    private int selectionIndex;
     private Dictionary<ItemType, UIItemView> instantiatedViews = new();
     private List<UIItemView> activeViews = new();
     public Transform ItemViewContainer => itemViewContainer;
@@ -23,10 +22,10 @@ public class ItemHUD : Activateable
 
     private void Start()
     {
+        selectionIndex = 0; 
         signalBus.Subscribe<OnInventoryItemSelectedSignal>(OnItemSelected);
-        signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnItemSelected);
-        signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnItemSelected);
-        signalBus.Subscribe<OnBottomHUDUseButtonClickedSignal>(OnItemSelected);
+        signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
+        signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
     }
 
     private void OnItemSelected(OnInventoryItemSelectedSignal signal)
@@ -63,6 +62,11 @@ public class ItemHUD : Activateable
         instantiatedViews.Add(data.Item.Type, itemView);
         itemView.SetActivatableCallbacks(OnItemViewActivated, OnItemViewDeactivated);
         itemView.SetUp(data, onSelectCallback);
+
+        if(selectedItemView == null)
+        {
+            itemView.Select();
+        }
         return;
     }
 
@@ -74,5 +78,25 @@ public class ItemHUD : Activateable
     private void OnItemViewDeactivated(UIItemView view)
     {
         activeViews.Remove(view);
+    }
+
+    private void OnNextButtonClicked()
+    {
+        selectionIndex++;
+        if(selectionIndex >= activeViews.Count - 1)
+        {
+            selectionIndex = 0;
+        }
+        activeViews[selectionIndex].Select();
+    }
+
+    private void OnPreviousButtonClicked()
+    {
+        selectionIndex--;
+        if (selectionIndex <= 0)
+        {
+            selectionIndex = activeViews.Count - 1;
+        }
+        activeViews[selectionIndex].Select();
     }
 }

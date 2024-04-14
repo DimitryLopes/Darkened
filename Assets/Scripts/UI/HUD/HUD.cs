@@ -9,12 +9,15 @@ public class HUD : MonoBehaviour
     private PlayerHUD playerHUD;
     [SerializeField]
     private ItemHUD itemHUD;
+    [SerializeField]
+    private BottomHUD bottomHUD;
 
     public ItemHUD ItemHUD => itemHUD;
 
     private void Start()
     {
         objectiveHUD.RawDeactivate();
+        bottomHUD.RawDeactivate();
         playerHUD.RawDeactivate();
         itemHUD.RawDeactivate();
     }
@@ -22,6 +25,7 @@ public class HUD : MonoBehaviour
     public void Show()
     {
         objectiveHUD.Activate();
+        bottomHUD.Activate();
         playerHUD.Activate();
         itemHUD.Activate();
     }
@@ -29,10 +33,9 @@ public class HUD : MonoBehaviour
     public void Hide()
     {
         objectiveHUD.Deactivate();
+        bottomHUD.Deactivate();
         playerHUD.Deactivate();
         itemHUD.Deactivate();
         itemHUD.Clear();
     }
-
-
 }

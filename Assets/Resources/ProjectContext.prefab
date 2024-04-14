@@ -552,6 +552,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 207321213078882575}
     m_Modifications:
     - target: {fileID: 541408242668522080, guid: 2399afe103fe22944a8e8807af87b16a, type: 3}
+      propertyPath: itemView
+      value: 
+      objectReference: {fileID: 8465315272671842177, guid: 06d918dc412a0534ca6fe4a37b99cbf8, type: 3}
+    - target: {fileID: 541408242668522080, guid: 2399afe103fe22944a8e8807af87b16a, type: 3}
       propertyPath: bigSelectableItem
       value: 
       objectReference: {fileID: 2331901276804434206, guid: da290dd879e53784883b4e0e6cd3f76d, type: 3}

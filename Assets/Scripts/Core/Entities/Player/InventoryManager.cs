@@ -17,6 +17,7 @@ public class InventoryManager
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnInventoryItemGetSignal>(OnItemGet);
+        signalBus.Subscribe<OnBottomHUDUseButtonClickedSignal>(UseItem);
     }
 
     private void OnItemGet(OnInventoryItemGetSignal signal)
@@ -41,11 +42,11 @@ public class InventoryManager
         hudManager.UpdateItemView(data);
     }
 
-    public void UseItem(UsableItem item)
+    public void UseItem(OnBottomHUDUseButtonClickedSignal signal)
     {
-        if (!inventoryItems.ContainsKey(item.Type)) return;
+        if (!inventoryItems.ContainsKey(signal.Item.Type)) return;
 
-        item.UseItem();
+        signal.Item.UseItem();
     }
 
     public void ReduceItemAmount(ItemType type, int amount = 1)

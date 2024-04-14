@@ -10,12 +10,15 @@ public class PrefabInstaller : MonoInstaller
     private MainCanvas mainCanvas;
     [SerializeField]
     private UISelectableItem selectableItem;
+    [SerializeField]
+    private UIItemView itemView;
 
     public override void InstallBindings()
     {
-        Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
-        Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
         Container.Bind<UISelectableItem>().FromInstance(selectableItem).AsTransient();
+        Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
+        Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
+        Container.Bind<UIItemView>().FromInstance(itemView).AsTransient();
         Container.Bind<MainCanvas>().FromInstance(mainCanvas).AsSingle();
     }
 }

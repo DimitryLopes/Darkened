@@ -8,7 +8,7 @@ public class SignalInstaller : MonoInstaller
 
         //In Game
         Container.DeclareSignal<OnGameCompletedSignal>();
-
+        //Missions and Objectives
         Container.DeclareSignal<OnMissionProgressSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
         Container.DeclareSignal<OnMissionGroupStartedSignal>();
@@ -21,6 +21,12 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnPlayerExaustedRecoveredSignal>();
         Container.DeclareSignal<OnPlayerStaminaChangedSignal>();
         Container.DeclareSignal<OnPlayerStaminaExaustedSignal>();
+
+        
+        //Items
+        Container.DeclareSignal<OnInventoryItemSelectedSignal>();
+        Container.DeclareSignal<OnInventoryItemGetSignal>();
+        
         //Screens
         Container.DeclareSignal<OnScreenAfterHideSignal>();
         Container.DeclareSignal<OnScreenAfterShowSignal>();
@@ -28,6 +34,10 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnScreenBeforeShowSignal>();
         //UI
         Container.DeclareSignal<OnSelectableSelectedSignal>();
+        //HUD
+        Container.DeclareSignal<OnBottomHUDNextButtonClickedSignal>();
+        Container.DeclareSignal<OnBottomHUDUseButtonClickedSignal>();
+        Container.DeclareSignal<OnBottomHUDPreviousButtonClickedSignal>();
         //whatever armengue shit I did
         Container.DeclareSignal<OnBindingsFinishedSignal>();
     }

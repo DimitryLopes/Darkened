@@ -18,4 +18,4 @@ MonoBehaviour:
   torchRatio: 0.25
   torch: 5
   enemyType: 0
-  objective: {fileID: 11400000, guid: 2a4feef9555a73044b8117569739ac6f, type: 2}
+  objective: {fileID: 11400000, guid: 2c139d5705bea60458f0ab07ff224643, type: 2}
