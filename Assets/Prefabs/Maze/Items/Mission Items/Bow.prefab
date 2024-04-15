@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3012472805241565801}
   - component: {fileID: 1418582601741916346}
   - component: {fileID: 9119037806584697216}
-  - component: {fileID: 3706213132056409378}
+  - component: {fileID: 1598136555925064013}
   m_Layer: 9
   m_Name: Bow
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
---- !u!114 &3706213132056409378
+--- !u!114 &1598136555925064013
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7457524580155732483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2da1b1bb0975241a16d1cb05798854, type: 3}
+  m_Script: {fileID: 11500000, guid: d7596bc98a6da0a4b8ba20e6f5205107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: c1c1b7cbf27221242b78abde6d632934, type: 3}
@@ -148,7 +148,7 @@ MonoBehaviour:
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
-    minDistanceFromStart: 4
-    minDistanceFromOtherItems: 0
+    minDistanceFromStart: 3
+    minDistanceFromOtherItems: 1
     spawnType: 0
     replace: 0

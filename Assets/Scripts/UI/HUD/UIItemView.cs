@@ -32,12 +32,15 @@ public class UIItemView : Activateable, ISelectable
         this.onSelectCallback = onSelectCallback;
         this.onDeselectCallback = onDeselectCallback;
         RawDeselect();
+
+        itemAmountText.gameObject.SetActive(itemData.Amount > 1);
+        itemAmountText.text = itemData.Amount.ToString();
         //SetOnButtonClickCallback(Select);
     }
 
     public void UpdateView(InventoryItemData data)
     {
-        if(data.Amount > 0)
+        if(data.Amount <= 0)
         {
             Deactivate();
             return;

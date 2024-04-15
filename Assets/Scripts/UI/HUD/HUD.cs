@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
     private BottomHUD bottomHUD;
 
     public ItemHUD ItemHUD => itemHUD;
+    public BottomHUD BottomHUD => bottomHUD;
 
     private void Start()
     {

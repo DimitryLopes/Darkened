@@ -29,6 +29,8 @@ public abstract class Enemy : Activateable
         Player = entityManager.GetPlayer();
         this.cameraManager = cameraManager;
         this.signalBus = signalBus;
+
+        signalBus.Subscribe<OnEnemyHitSignal>(OnHit);
     }
 
     public virtual void SetMaze(Maze maze)
@@ -56,6 +58,11 @@ public abstract class Enemy : Activateable
             float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
         }
+    }
+
+    protected virtual void OnHit()
+    {
+        Deactivate();
     }
 
     private void Update()

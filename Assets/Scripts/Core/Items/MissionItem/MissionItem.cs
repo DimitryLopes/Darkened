@@ -7,14 +7,10 @@ public class MissionItem : Item
         this.mission = mission;
     }
 
-    public override void Interact()
+    protected override void OnInteract()
     {
-        if (CanInteract)
-        {
-            signalBus.Fire(new OnMissionItemInteractedSignal(this));
-            OnInteract();
-            DisableInteraction();
-        }
+        signalBus.Fire(new OnMissionItemInteractedSignal(this));
+        DisableInteraction();
     }
 
     public void EnableInteraction()
@@ -27,7 +23,5 @@ public class MissionItem : Item
         RemoveHighlight();
         canInteract = false;
     }
-
-    protected virtual void OnInteract() { }
 
 }

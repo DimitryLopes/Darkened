@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1418582601741916346}
   - component: {fileID: 9119037806584697216}
   - component: {fileID: 3450538608040370067}
+  - component: {fileID: 5053398134400275785}
   m_Layer: 9
   m_Name: Arrow
   m_TagString: Untagged
@@ -144,11 +145,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: 50b8dfa23277123459978a31698148d7, type: 3}
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 1418582601741916346}
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
     minDistanceFromStart: 3
-    minDistanceFromOtherItems: 0
+    minDistanceFromOtherItems: 1
     spawnType: 0
     replace: 0
+  rb: {fileID: 5053398134400275785}
+  travelTime: 4
+  speed: 2
+--- !u!50 &5053398134400275785
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457524580155732483}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0

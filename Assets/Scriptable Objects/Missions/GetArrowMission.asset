@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183fac245659ff941a8a93c4b8082e64, type: 3}
   m_Name: GetArrowMission
   m_EditorClassIdentifier: 
-  description: Find an arrow
+  description: Find arrows
   itemData:
     item: 4
-    amount: 1
+    amount: 3

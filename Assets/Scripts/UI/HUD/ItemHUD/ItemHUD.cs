@@ -9,6 +9,8 @@ public class ItemHUD : Activateable
     private UIFactory uiFactory;
     [Inject]
     private SignalBus signalBus;
+    [Inject]
+    private HUDManager hudManager;
 
     [SerializeField]
     private Transform itemViewContainer;
@@ -22,7 +24,7 @@ public class ItemHUD : Activateable
 
     private void Start()
     {
-        selectionIndex = 0; 
+        selectionIndex = 0;
         signalBus.Subscribe<OnInventoryItemSelectedSignal>(OnItemSelected);
         signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
         signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
@@ -36,6 +38,7 @@ public class ItemHUD : Activateable
         }
 
         selectedItemView = instantiatedViews[signal.Item.Type];
+        hudManager.UpdateBottomHUD(signal.Item, selectionIndex, activeViews.Count);
     }
 
     public void Clear()
@@ -60,10 +63,11 @@ public class ItemHUD : Activateable
 
         UIItemView itemView = uiFactory.CreateUIItemView(itemViewContainer);
         instantiatedViews.Add(data.Item.Type, itemView);
+        activeViews.Add(itemView);
         itemView.SetActivatableCallbacks(OnItemViewActivated, OnItemViewDeactivated);
         itemView.SetUp(data, onSelectCallback);
 
-        if(selectedItemView == null)
+        if(selectedItemView == null && data.Item is IUsable)
         {
             itemView.Select();
         }

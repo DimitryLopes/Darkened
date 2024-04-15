@@ -18,7 +18,7 @@ MonoBehaviour:
   - type: 3
     item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
   - type: 5
-    item: {fileID: 3706213132056409378, guid: 4c561b8a1fc277b489613be56d2dd226, type: 3}
+    item: {fileID: 1598136555925064013, guid: 4c561b8a1fc277b489613be56d2dd226, type: 3}
   - type: 4
     item: {fileID: 3450538608040370067, guid: 13e9c8c40fa54da47a0ca9f8ce787e95, type: 3}
   - type: 6

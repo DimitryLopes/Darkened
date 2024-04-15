@@ -26,9 +26,16 @@ public class BottomHUD : Activateable
 
     public void UpdateButtonHUD(Item item, int currentIndex, int itemAmount)
     {
-        useItemButton.interactable = item is UsableItem;
-        nextItemButton.interactable = currentIndex < itemAmount;
-        previousItemButton.interactable = currentIndex > 0;
+        useItemButton.interactable = item is IUsable;
+        nextItemButton.interactable = currentIndex < itemAmount -1;
+        previousItemButton.interactable = currentIndex > 0 && itemAmount > 0;
+    }
+
+    public override void OnActivate()
+    {
+        useItemButton.interactable = false;
+        nextItemButton.interactable = false;
+        previousItemButton.interactable = false;
     }
 
     private void OnNextButtonClicked()
@@ -38,11 +45,11 @@ public class BottomHUD : Activateable
 
     private void OnPreviousButtonClicked()
     {
-        signalBus.Fire(new OnBottomHUDNextButtonClickedSignal());
+        signalBus.Fire(new OnBottomHUDPreviousButtonClickedSignal());
     }
 
     private void OnUseButtonClicked()
     {
-        signalBus.Fire(new OnBottomHUDNextButtonClickedSignal());
+        signalBus.Fire(new OnBottomHUDUseButtonClickedSignal());
     }
 }

@@ -32,7 +32,13 @@ public class Item : Activateable, IItem, IInteractable
 
     public virtual void Interact()
     {
+        if (CanInteract)
+        {
+            OnInteract();
+        }
     }
+
+    protected virtual void OnInteract() { }
 
     public void SetType(ItemType type)
     {
@@ -42,6 +48,7 @@ public class Item : Activateable, IItem, IInteractable
     public override void OnActivate()
     {
         canInteract = true;
+        RemoveHighlight();
     }
 
     public override void OnDeactivate()
@@ -64,6 +71,7 @@ public class Item : Activateable, IItem, IInteractable
             spriteRenderer.material = materialManager.GetMaterial(standardtMaterial);
         }
     }
+
 }
 
 [Serializable]

@@ -26,9 +26,9 @@ public class InventoryManager
         InventoryItemData data;
         if (!inventoryItems.ContainsKey(type))
         {
-            data = new InventoryItemData();
+            data = new InventoryItemData(signal.Item, 0);
             inventoryItems.Add(type, data);
-            if (signal.Item is UsableItem)
+            if (signal.Item is IUsable)
             {
                 hudManager.CreateItemView(data, SelectItem);
             }
@@ -37,25 +37,32 @@ public class InventoryManager
                 hudManager.CreateItemView(data);
             }
         }
-        data = inventoryItems[type];
         IncreaseItemAmount(type, signal.Amount);
-        hudManager.UpdateItemView(data);
+        hudManager.UpdateItemView(inventoryItems[type]);
     }
 
     public void UseItem(OnBottomHUDUseButtonClickedSignal signal)
     {
-        if (!inventoryItems.ContainsKey(signal.Item.Type)) return;
+        if (SelectedItem == null) return;
 
-        signal.Item.UseItem();
+        (SelectedItem as IUsable).Use();
     }
 
-    public void ReduceItemAmount(ItemType type, int amount = 1)
+    public void DecreaseItemAmount(ItemType type, int amount = 1)
     {
         if (!HasEnoughItem(type, amount)) return;
 
         InventoryItemData data = inventoryItems[type];
         data.Amount -= amount;
         inventoryItems[type] = data;
+        hudManager.UpdateItemView(inventoryItems[type]);
+    }
+
+    public T GetItem<T>(ItemType type) where T : Item
+    {
+        if (!HasEnoughItem(type)) return null;
+
+        return inventoryItems[type].Item as T;
     }
 
     public void IncreaseItemAmount(ItemType type, int amount = 1)
@@ -74,8 +81,11 @@ public class InventoryManager
 
     private void SelectItem(Item item)
     {
-        SelectedItem = item;
-        signalBus.Fire(new OnInventoryItemSelectedSignal(item));
+        if (item is IUsable)
+        {
+            SelectedItem = item;
+            signalBus.Fire(new OnInventoryItemSelectedSignal(item));
+        }
     }
 
     public void Clear()
@@ -89,11 +99,18 @@ public class InventoryManager
             data.Amount = 0;
             inventoryItems[type] = data;
         }
+        SelectedItem = null;
     }
 }
 
 public struct InventoryItemData
 {
+    public InventoryItemData(Item item, int amount)
+    {
+        Item = item;
+        Amount = amount;
+    }
+
     public Item Item { get; private set; }
     public int Amount { get; set; }
 }
