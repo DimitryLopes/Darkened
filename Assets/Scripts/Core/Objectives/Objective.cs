@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 public class Objective 
@@ -22,12 +20,20 @@ public class Objective
         for (int i = 0; i < Data.MissionGroups.Count; i++)
         {
             MissionGroup newGroup = new MissionGroup(Data.MissionGroups[i], signalBus);
-            foreach (MissionData missionData in Data.MissionGroups[i].Missions)
+            foreach (MissionData missionData in Data.MissionGroups[i].Datas)
             {
-                Mission newMission = new Mission(missionData, signalBus);
-                newGroup.AddMission(newMission);
+                if (missionData is ItemMissionData itemMissionData)
+                {
+                    ItemMission itemMission = new ItemMission(signalBus);
+                    itemMission.SetUp(itemMissionData);
+                    newGroup.AddMission(itemMission);
+                }
+                else if (false)
+                {
+
+                }
             }
-            newGroup.SetActive(false);
+            newGroup.Deactivate();
             MissionGroups.Add(newGroup);
         }
     }
@@ -41,7 +47,7 @@ public class Objective
         IsCompleted = false;
     }
 
-    public void CompleteMission(Mission mission)
+    public void CompleteMission(IMission mission)
     {
         CurrentMissionGroup.CompleteMission(mission);
         if (CurrentMissionGroup.IsComplete)
@@ -52,13 +58,13 @@ public class Objective
 
     private void CompleteMissionGroup()
     {
-        CurrentMissionGroup.SetActive(false);
+        CurrentMissionGroup.Deactivate();
         signalBus.Fire(new OnMissionGroupCompletedSignal(CurrentMissionGroup));
 
         currentGroupIndex++;
         if (currentGroupIndex < MissionGroups.Count)
         {
-            CurrentMissionGroup.SetActive(true);
+            CurrentMissionGroup.Activate();
         }
         else
         {

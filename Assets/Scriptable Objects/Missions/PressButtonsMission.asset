@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Press all buttons
   itemData:
-    item: 4
+    item: 3
     amount: 4

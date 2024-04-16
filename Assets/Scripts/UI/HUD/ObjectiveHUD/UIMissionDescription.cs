@@ -10,10 +10,10 @@ public class UIMissionDescription : Activateable
     [SerializeField]
     private Image progressImage;
 
-    private Mission mission;
+    private IMission mission;
     private SignalBus signalBus;
 
-    public void SetUp(Mission mission, SignalBus signalBus)
+    public void SetUp(IMission mission, SignalBus signalBus)
     {
         this.mission = mission;
         this.signalBus = signalBus;
@@ -24,10 +24,10 @@ public class UIMissionDescription : Activateable
         UpdateText(mission);
     }
 
-    public void UpdateText(Mission mission)
+    public void UpdateText(IMission mission)
     {
         progressImage.fillAmount = mission.Progress;
-        descrptionText.text = string.Format(Constants.Hud.UI_MISSION_DESCRIPTION_FORMAT, mission.Data.Description, mission.RawProgress, mission.Items.Count);
+        descrptionText.text = string.Format(Constants.Hud.UI_MISSION_DESCRIPTION_FORMAT, mission.Description, mission.RawProgress, mission.ProgressTarget);
     }
 
     public void OnMissionProgress(OnMissionProgressSignal signal)

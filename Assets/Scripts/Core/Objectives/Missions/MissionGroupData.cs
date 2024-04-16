@@ -6,5 +6,5 @@ using UnityEngine;
 public struct MissionGroupData
 {
     [SerializeField]
-    public List<MissionData> Missions;
+    public List<MissionData> Datas;
 }

@@ -1,76 +1,63 @@
-using System.Collections.Generic;
 using Zenject;
 
-public class Mission
+public abstract class Mission<T> : IMission where T : MissionData
 {
-    private MissionData data;
-    private SignalBus signalBus;
-    private int progress;
+    protected SignalBus signalBus;
+    protected int progress;
 
-    public MissionData Data => data;
-    public float Progress => (float)progress / (float)Data.ItemData.Amount;
+    public string Description => Data.Description;
+    public int ProgressTarget => Data.ProgressTarget;
+    protected T Data { get; set; }
+    public virtual float Progress { get; protected set; }
     public int RawProgress => progress;
     public bool IsCompleted { get; private set; }
     public bool IsActive { get; set; }
 
-    public List<MissionItem> Items { get; set; } = new List<MissionItem>();
-
-    public void OnMissionProgress(OnMissionItemInteractedSignal signal)
-    {
-        if (IsActive)
-        {
-            if (Items.Contains(signal.MissionItem))
-            {
-                progress += 1;
-                signalBus.Fire(new OnMissionProgressSignal(this));
-                if (progress == Data.ItemData.Amount)
-                {
-                    CompleteMission();
-                }
-            }
-        }
-    }
-
-    public List<ItemType> GetRequiredItems()
-    {
-        List<ItemType> items = new List<ItemType>();
-
-        for (int i = 0; i < Data.ItemData.Amount; i++)
-        {
-            items.Add(Data.ItemData.ItemType);
-        }
-        return items;
-    }
-
-    private void CompleteMission()
+    protected void CompleteMission()
     {
         IsCompleted = true;
         signalBus.Fire(new OnMissionCompletedSignal(this));
     }
 
-    public void SetActive(bool value)
+    public void Activate()
     {
-        IsActive = value;
-        foreach(MissionItem item in Items)
-        {
-            if (value)
-            {
-                item.EnableInteraction();
-            }
-            else
-            {
-                item.DisableInteraction();
-            }
-        }
+        if (IsActive) return;
+        IsActive = true;
+        OnActivate();
     }
 
-    public Mission(MissionData data, SignalBus signalBus)
+
+    public void Deactivate()
     {
-        this.data = data;
+        if (!IsActive) return;
+        IsActive = false;
+        OnDeactivate();
+    }
+
+    protected virtual void OnActivate() { }
+
+    protected virtual void OnDeactivate() { }
+    protected virtual void OnMissionStarted() 
+    {
+        progress = 0;
+        IsCompleted = false;
+    }
+
+    public void SetUp<U>(U data) where U : MissionData
+    {
+        Data = data as T;
+    }
+
+    public void StartMission()
+    {
+        Activate();
+        OnMissionStarted();
+    }
+
+    public Mission(SignalBus signalBus)
+    {
         this.signalBus = signalBus;
         progress = 0;
-        Items.Clear();
-
-        signalBus.Subscribe<OnMissionItemInteractedSignal>(OnMissionProgress);
+        IsActive = false;
     }
 }

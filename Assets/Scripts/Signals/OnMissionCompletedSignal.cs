@@ -1,8 +1,8 @@
 public class OnMissionCompletedSignal
 {
-    public Mission Mission { get; private set; }
+    public IMission Mission { get; private set; }
 
-    public OnMissionCompletedSignal(Mission mission)
+    public OnMissionCompletedSignal(IMission mission)
     {
         Mission = mission;
     }

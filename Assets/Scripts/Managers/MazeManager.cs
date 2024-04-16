@@ -80,7 +80,7 @@ public class MazeManager
         List<MissionItem> items = new List<MissionItem>();
         foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
         {
-            foreach (Mission mission in missionGroup.Missions)
+            foreach (ItemMission mission in missionGroup.Missions)
             {
                 List<ItemType> missionItemsInfo = mission.GetRequiredItems();
                 foreach (ItemType type in missionItemsInfo)

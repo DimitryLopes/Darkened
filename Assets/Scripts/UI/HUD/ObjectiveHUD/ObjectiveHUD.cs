@@ -33,7 +33,7 @@ public class ObjectiveHUD : Activateable
 
     private void OnMissionGroupStarted(OnMissionGroupStartedSignal signal)
     {
-        foreach(Mission mission in signal.MissionGroup.Missions)
+        foreach(IMission mission in signal.MissionGroup.Missions)
         {
             UIMissionDescription description = GetAvailableDescription();
             description.SetUp(mission, signalBus);

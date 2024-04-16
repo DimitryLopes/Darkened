@@ -28,12 +28,11 @@ public class ObjectiveManager
 
     private void ActivateMissionGroup(MissionGroup missionGroup)
     {
-        missionGroup.SetActive(true);
+        missionGroup.Activate();
     }
     
-    public void AddMissionToItem(MissionItem item, Mission mission)
+    public void AddMissionToItem(MissionItem item, ItemMission mission)
     {
-        item.SetMission(mission);
         mission.Items.Add(item);
         item.DisableInteraction();
     }

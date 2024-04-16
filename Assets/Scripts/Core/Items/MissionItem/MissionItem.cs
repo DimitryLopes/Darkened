@@ -1,12 +1,5 @@
 public class MissionItem : Item
 {
-    protected Mission mission;
-
-    public void SetMission(Mission mission)
-    {
-        this.mission = mission;
-    }
-
     protected override void OnInteract()
     {
         signalBus.Fire(new OnMissionItemInteractedSignal(this));
