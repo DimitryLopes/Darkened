@@ -38,6 +38,7 @@ public class ItemHUD : Activateable
         }
 
         selectedItemView = instantiatedViews[signal.Item.Type];
+        //active veiws should only count the usable ones
         hudManager.UpdateBottomHUD(signal.Item, selectionIndex, activeViews.Count);
     }
 

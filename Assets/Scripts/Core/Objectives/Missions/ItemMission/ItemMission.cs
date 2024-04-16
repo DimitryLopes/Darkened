@@ -19,11 +19,7 @@ public class ItemMission : Mission<ItemMissionData>
         if (!Items.Contains(Signal.MissionItem)) return;
 
         progress++;
-        signalBus.Fire(new OnMissionProgressSignal(this));
-        if (progress == Data.ItemData.Amount)
-        {
-            CompleteMission();
-        }
+        UpdateProgress();
     }
 
     public List<ItemType> GetRequiredItems()

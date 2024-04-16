@@ -13,6 +13,15 @@ public abstract class Mission<T> : IMission where T : MissionData
     public bool IsCompleted { get; private set; }
     public bool IsActive { get; set; }
 
+    protected virtual void UpdateProgress()
+    {
+        signalBus.Fire(new OnMissionProgressSignal(this));
+        if (progress == Data.ProgressTarget)
+        {
+            CompleteMission();
+        }
+    }
+
     protected void CompleteMission()
     {
         IsCompleted = true;

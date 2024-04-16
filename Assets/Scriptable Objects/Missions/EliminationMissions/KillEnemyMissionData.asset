@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 183fac245659ff941a8a93c4b8082e64, type: 3}
-  m_Name: GetArrowMission
+  m_Script: {fileID: 11500000, guid: 8d8bc81305d717c4a8dd3cbac90134ad, type: 3}
+  m_Name: KillEnemyMissionData
   m_EditorClassIdentifier: 
-  description: Find arrows
-  itemData:
-    item: 4
-    amount: 3
+  description: Kill the monster
+  enemyHealth: 1

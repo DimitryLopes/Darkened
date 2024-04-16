@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "Rename Me", menuName = "Scriptable Objects/Mission")]
+[CreateAssetMenu(fileName = "Rename Me", menuName = "Scriptable Objects/Datas/Mission Datas/Item Mission Data")]
 public class ItemMissionData : MissionData
 {
     [SerializeField]

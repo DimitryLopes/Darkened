@@ -28,9 +28,11 @@ public class Objective
                     itemMission.SetUp(itemMissionData);
                     newGroup.AddMission(itemMission);
                 }
-                else if (false)
+                else if (missionData is EliminationMissionData eliminationMissionData)
                 {
-
+                    EliminationMission eliminationMissions = new EliminationMission(signalBus);
+                    eliminationMissions.SetUp(eliminationMissionData);
+                    newGroup.AddMission(eliminationMissions);
                 }
             }
             newGroup.Deactivate();

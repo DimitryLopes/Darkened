@@ -45,6 +45,7 @@ public class MazeArrow : CollectableMissionItem, IProjectile
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (CanInteract) return;
         OnHit(collision);
     }
 }

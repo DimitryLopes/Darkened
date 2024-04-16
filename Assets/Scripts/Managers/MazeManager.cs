@@ -80,14 +80,17 @@ public class MazeManager
         List<MissionItem> items = new List<MissionItem>();
         foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
         {
-            foreach (ItemMission mission in missionGroup.Missions)
+            foreach (IMission baseMission in missionGroup.Missions)
             {
-                List<ItemType> missionItemsInfo = mission.GetRequiredItems();
-                foreach (ItemType type in missionItemsInfo)
+                if (baseMission is ItemMission mission)
                 {
-                    MissionItem missionItem = (MissionItem)GetAvailableItem(type);
-                    items.Add(missionItem);
-                    objectiveManager.AddMissionToItem(missionItem, mission);
+                    List<ItemType> missionItemsInfo = mission.GetRequiredItems();
+                    foreach (ItemType type in missionItemsInfo)
+                    {
+                        MissionItem missionItem = (MissionItem)GetAvailableItem(type);
+                        items.Add(missionItem);
+                        objectiveManager.AddMissionToItem(missionItem, mission);
+                    }
                 }
             }
         }
