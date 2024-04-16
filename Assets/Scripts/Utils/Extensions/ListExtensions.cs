@@ -16,6 +16,12 @@ public static class ListExtensions
         }
     }
 
+    public static T Last<T>(this IList<T> list)
+    {
+        int lastIndex = list.Count - 1;
+        return list[lastIndex];
+    }
+
     public static T GetRandom<T>(this IList<T> list)
     {
         int randomIndex = Random.Range(0, list.Count - 1);

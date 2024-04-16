@@ -36,8 +36,8 @@ public class HUDManager
         hud.ItemHUD.CreateItemView(data, onSelectCallback);
     }
 
-    public void UpdateBottomHUD(Item item, int index, int count)
+    public void UpdateBottomHUD(bool hasUse, int count)
     {
-        hud.BottomHUD.UpdateButtonHUD(item, index, count);
+        hud.BottomHUD.UpdateButtonHUD(hasUse, count);
     }
 }

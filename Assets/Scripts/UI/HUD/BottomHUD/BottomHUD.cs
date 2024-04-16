@@ -24,11 +24,11 @@ public class BottomHUD : Activateable
         previousItemButton.onClick.AddListener(OnPreviousButtonClicked);
     }
 
-    public void UpdateButtonHUD(Item item, int currentIndex, int itemAmount)
+    public void UpdateButtonHUD(bool hasUse, int itemAmount)
     {
-        useItemButton.interactable = item is IUsable;
-        nextItemButton.interactable = currentIndex < itemAmount -1;
-        previousItemButton.interactable = currentIndex > 0 && itemAmount > 0;
+        useItemButton.interactable = hasUse;
+        nextItemButton.interactable = itemAmount > 1;
+        previousItemButton.interactable = itemAmount > 1;
     }
 
     public override void OnActivate()

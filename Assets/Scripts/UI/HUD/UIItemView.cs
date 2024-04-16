@@ -22,6 +22,8 @@ public class UIItemView : Activateable, ISelectable
     private Action<UIItemView> onDeactivateCallback;
     private Action<UIItemView> onActivateCallback;
 
+    public bool HasUseCallback => onSelectCallback != null;
+
     public bool IsSelected { get; private set; }
 
     public void SetUp(InventoryItemData itemData, Action<Item> onSelectCallback = null, Action onDeselectCallback = null)

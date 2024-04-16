@@ -25,21 +25,8 @@ public class ItemHUD : Activateable
     private void Start()
     {
         selectionIndex = 0;
-        signalBus.Subscribe<OnInventoryItemSelectedSignal>(OnItemSelected);
         signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
         signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
-    }
-
-    private void OnItemSelected(OnInventoryItemSelectedSignal signal)
-    {
-        if(selectedItemView != null)
-        {
-            selectedItemView.Deselect();
-        }
-
-        selectedItemView = instantiatedViews[signal.Item.Type];
-        //active veiws should only count the usable ones
-        hudManager.UpdateBottomHUD(signal.Item, selectionIndex, activeViews.Count);
     }
 
     public void Clear()
@@ -56,6 +43,7 @@ public class ItemHUD : Activateable
 
         UIItemView itemView = instantiatedViews[data.Item.Type];
         itemView.UpdateView(data);
+        OnViewsChanged();
     }
 
     public void CreateItemView(InventoryItemData data, Action<Item> onSelectCallback)
@@ -64,14 +52,15 @@ public class ItemHUD : Activateable
 
         UIItemView itemView = uiFactory.CreateUIItemView(itemViewContainer);
         instantiatedViews.Add(data.Item.Type, itemView);
-        activeViews.Add(itemView);
         itemView.SetActivatableCallbacks(OnItemViewActivated, OnItemViewDeactivated);
         itemView.SetUp(data, onSelectCallback);
+        itemView.Activate();
 
         if(selectedItemView == null && data.Item is IUsable)
         {
-            itemView.Select();
+            selectionIndex = activeViews.Count - 1;
         }
+        OnViewsChanged();
         return;
     }
 
@@ -88,20 +77,33 @@ public class ItemHUD : Activateable
     private void OnNextButtonClicked()
     {
         selectionIndex++;
-        if(selectionIndex >= activeViews.Count - 1)
+        if(selectionIndex > activeViews.Count -1)
         {
             selectionIndex = 0;
         }
-        activeViews[selectionIndex].Select();
+        OnViewsChanged();
     }
 
     private void OnPreviousButtonClicked()
     {
         selectionIndex--;
-        if (selectionIndex <= 0)
+        if (selectionIndex < 0)
         {
             selectionIndex = activeViews.Count - 1;
         }
-        activeViews[selectionIndex].Select();
+        OnViewsChanged();
     }
+
+    private void OnViewsChanged()
+    {
+        if(selectedItemView != null)
+        {
+            selectedItemView.Deselect();
+        }
+
+        activeViews[selectionIndex].Select();
+        selectedItemView = activeViews[selectionIndex];
+        hudManager.UpdateBottomHUD(activeViews[selectionIndex].HasUseCallback, activeViews.Count);
+    }
+
 }
