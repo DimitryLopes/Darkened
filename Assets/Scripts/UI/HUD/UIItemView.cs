@@ -13,30 +13,26 @@ public class UIItemView : Activateable, ISelectable
     private TextMeshProUGUI itemAmountText;
     [SerializeField]
     private Image selectedOutline;
-    
+
     private InventoryItemData itemData;
     private Action<Item> onSelectCallback;
-    private Action onDeselectCallback;
-    private Action<UIItemView> onDeactivateCallback;
-    private Action<UIItemView> onActivateCallback;
 
     public bool HasUseCallback => onSelectCallback != null;
     public ItemType ItemType => itemData.Item.Type;
 
     public bool IsSelected { get; private set; }
 
-    public void UpdateView(InventoryItemData data, bool overrideCallback, Action<Item> onSelectCallback = null, Action onDeselectCallback = null)
+    public void UpdateView(InventoryItemData data, bool overrideCallback, Action<Item> onSelectCallback = null)
     {
+        if (overrideCallback || !HasUseCallback)
+        {
+            this.onSelectCallback = onSelectCallback;
+        }
+
         if (data.Amount <= 0)
         {
             Deactivate();
             return;
-        }
-
-        if (overrideCallback)
-        {
-            this.onSelectCallback = onSelectCallback;
-            this.onDeselectCallback = onDeselectCallback;
         }
 
         itemData = data;
@@ -69,17 +65,15 @@ public class UIItemView : Activateable, ISelectable
         OnDeactivate();
     }
 
-    public override void OnDeactivate()
-    {
-        itemImage.gameObject.SetActive(false);
-        itemData = new InventoryItemData();
-        onDeactivateCallback?.Invoke(this);
-    }
-
     public override void OnActivate()
     {
         itemImage.gameObject.SetActive(true);
-        onActivateCallback?.Invoke(this);
+    }
+
+    public override void OnDeactivate()
+    {
+        itemImage.gameObject.SetActive(false);
+        UpdateView(new InventoryItemData(), true);
     }
 
     public void Select()
@@ -93,25 +87,13 @@ public class UIItemView : Activateable, ISelectable
         onSelectCallback?.Invoke(itemData.Item);
     }
 
-    private void OnDeselect()
-    {
-        onDeselectCallback?.Invoke();
-    }
-
     public void Deselect()
     {
         RawDeselect();
-        OnDeselect();
     }
 
     public void RawDeselect()
     {
         selectedOutline.gameObject.SetActive(false);
-    }
-
-    public void SetActivatableCallbacks(Action<UIItemView> onActivateCallback, Action<UIItemView> onDeactivateCallback)
-    {
-        this.onActivateCallback = onActivateCallback;
-        this.onDeactivateCallback = onDeactivateCallback;
     }
 }

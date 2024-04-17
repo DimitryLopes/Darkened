@@ -70,7 +70,7 @@ public class WerewolfEnemy : Enemy
 
     private void CreateDatas()
     {
-        BaseEnemyStateData chasingData = new BaseEnemyStateData(this, true, OnChasingEnded, OnChasingStarted, null);
+        var chasingData = new BaseEnemyStateData(this, true, OnChasingEnded, OnChasingStarted, null);
 
         chasingState = new ChasingEnemyState(chasingData);
         waitingState = CreateWaitingStateData(OnWaitingCompleted);

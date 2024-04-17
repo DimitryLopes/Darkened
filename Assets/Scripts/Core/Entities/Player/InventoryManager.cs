@@ -91,21 +91,13 @@ public class InventoryManager
         if (item is IUsable)
         {
             SelectedItem = item;
-            signalBus.Fire(new OnInventoryItemSelectedSignal(item));
+            //signalBus.Fire(new OnInventoryItemSelectedSignal(item));
         }
     }
 
     public void Clear()
     {
-        InventoryItemData data;
-        foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
-        {
-            if (!inventoryItems.ContainsKey(type)) continue;
-
-            data = inventoryItems[type];
-            data.Amount = 0;
-            inventoryItems[type] = data;
-        }
+        inventoryItems.Clear();
         SelectedItem = null;
     }
 }
