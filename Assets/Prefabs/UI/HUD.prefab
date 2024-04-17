@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionDescriptionPrefab: {fileID: 3053658518696037859, guid: b8bdff29f270bf243ae662719d293a61, type: 3}
-  descriptionsContainer: {fileID: 4165235180684109299}
+  descriptionsContainer: {fileID: 7428051253700629372}
 --- !u!114 &7428051253700629372
 MonoBehaviour:
   m_ObjectHideFlags: 0

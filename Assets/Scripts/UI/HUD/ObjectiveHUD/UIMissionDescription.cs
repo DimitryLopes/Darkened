@@ -9,6 +9,8 @@ public class UIMissionDescription : Activateable
     private TextMeshProUGUI descrptionText;
     [SerializeField]
     private Image progressImage;
+    [SerializeField]
+    private LayoutGroup layoutGroup;
 
     private IMission mission;
     private SignalBus signalBus;
@@ -22,12 +24,13 @@ public class UIMissionDescription : Activateable
         signalBus.Subscribe<OnMissionProgressSignal>(OnMissionProgress);
 
         UpdateText(mission);
+        layoutGroup.CalculateLayoutInputVertical();
     }
 
     public void UpdateText(IMission mission)
     {
         progressImage.fillAmount = mission.Progress;
-        descrptionText.text = string.Format(Constants.Hud.UI_MISSION_DESCRIPTION_FORMAT, mission.Description, mission.RawProgress, mission.ProgressTarget);
+        descrptionText.text = mission.Description;
     }
 
     public void OnMissionProgress(OnMissionProgressSignal signal)

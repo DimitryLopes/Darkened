@@ -90,6 +90,7 @@ public class ItemHUD : Activateable
         }
         selectionIndex = 0;
         instantiatedViews[selectionIndex].Select();
+        selectedItemView = instantiatedViews[selectionIndex];
     }
 
     private void OnNextButtonClicked()
@@ -121,6 +122,6 @@ public class ItemHUD : Activateable
 
         instantiatedViews[selectionIndex].Select();
         selectedItemView = instantiatedViews[selectionIndex];
-        hudManager.UpdateBottomHUD(instantiatedViews[selectionIndex].HasUseCallback, instantiatedViews.Count);
+        hudManager.UpdateBottomHUD(instantiatedViews[selectionIndex].HasUseCallback);
     }
 }

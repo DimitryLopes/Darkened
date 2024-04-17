@@ -54,6 +54,13 @@ public class WerewolfEnemy : Enemy
         base.OnDeactivate();
         currentState.RawDeactivate();
     }
+
+    protected override void OnHit()
+    {
+        cameraManager.ForceFinishAllAnimations();
+        base.OnHit();
+    }
+
     public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
     {
         effectsRendererColor = Color.red;

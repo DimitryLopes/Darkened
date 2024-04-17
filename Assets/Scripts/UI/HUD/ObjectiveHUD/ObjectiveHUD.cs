@@ -1,18 +1,24 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class ObjectiveHUD : Activateable
 {
     [Inject]
     private SignalBus signalBus;
+    [Inject]
+    private Coroutiner coroutiner;
 
     [SerializeField]
     private UIMissionDescription missionDescriptionPrefab;
     [SerializeField]
-    private Transform descriptionsContainer;
+    private LayoutGroup descriptionsContainer;
 
     private List<UIMissionDescription> instantiatedDescriptions = new List<UIMissionDescription>();
+
+    private WaitForEndOfFrame waitForFrame = new WaitForEndOfFrame();
 
     private void Awake()
     {
@@ -38,6 +44,15 @@ public class ObjectiveHUD : Activateable
             UIMissionDescription description = GetAvailableDescription();
             description.SetUp(mission, signalBus);
         }
+
+        descriptionsContainer.CalculateLayoutInputVertical();
+        coroutiner.RunCoroutine(OnHudUpdated());
+    }
+
+    private IEnumerator OnHudUpdated()
+    {
+        yield return waitForFrame;
+        Canvas.ForceUpdateCanvases();
     }
 
     public override void OnDeactivate()
@@ -62,7 +77,7 @@ public class ObjectiveHUD : Activateable
             }
         }
 
-        UIMissionDescription newMissionDescription = Instantiate(missionDescriptionPrefab, descriptionsContainer);
+        UIMissionDescription newMissionDescription = Instantiate(missionDescriptionPrefab, descriptionsContainer.transform);
         newMissionDescription.Activate();
         instantiatedDescriptions.Add(newMissionDescription);
         return newMissionDescription;

@@ -4,21 +4,18 @@ using System;
 public class HUDManager
 {
     private HUD hud;
-    private SignalBus signalBus;
-    private UIFactory uiFactory;
 
 
     [Inject]
-    public HUDManager(HUD hud, SignalBus signalBus, UIFactory uiFactory)
+    public HUDManager(HUD hud)
     {
         this.hud = hud;
-        this.signalBus = signalBus;
-        this.uiFactory = uiFactory;
     }
 
     public void ShowHud()
     {
         hud.Show();
+        UpdateBottomHUD(false);
     }
 
     public void HideHud()
@@ -41,8 +38,8 @@ public class HUDManager
         hud.ItemHUD.UpdateItemView(data);
     }
 
-    public void UpdateBottomHUD(bool hasUse, int count)
+    public void UpdateBottomHUD(bool hasUse)
     {
-        hud.BottomHUD.UpdateButtonHUD(hasUse, count);
+        hud.BottomHUD.UpdateButtonHUD(hasUse);
     }
 }
