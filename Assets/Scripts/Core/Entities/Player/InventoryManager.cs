@@ -4,6 +4,8 @@ using Zenject;
 
 public class InventoryManager
 {
+    private const int INVENTORY_SIZE = 4;
+
     private HUDManager hudManager;
     private SignalBus signalBus;
 
@@ -18,6 +20,8 @@ public class InventoryManager
 
         signalBus.Subscribe<OnInventoryItemGetSignal>(OnItemGet);
         signalBus.Subscribe<OnBottomHUDUseButtonClickedSignal>(UseItem);
+
+        hudManager.CreateItemViews(INVENTORY_SIZE);
     }
 
     private void OnItemGet(OnInventoryItemGetSignal signal)
@@ -26,7 +30,7 @@ public class InventoryManager
         InventoryItemData data;
         if (!inventoryItems.ContainsKey(type))
         {
-            data = new InventoryItemData(signal.Item, 0);
+            data = new InventoryItemData(signal.Item, signal.Amount);
             inventoryItems.Add(type, data);
             if (signal.Item is IUsable)
             {
@@ -37,7 +41,10 @@ public class InventoryManager
                 hudManager.CreateItemView(data);
             }
         }
-        IncreaseItemAmount(type, signal.Amount);
+        else
+        {
+            IncreaseItemAmount(type, signal.Amount);
+        }
         hudManager.UpdateItemView(inventoryItems[type]);
     }
 

@@ -13,8 +13,6 @@ public class UIItemView : Activateable, ISelectable
     private TextMeshProUGUI itemAmountText;
     [SerializeField]
     private Image selectedOutline;
-    [SerializeField]
-    private Button selectButton;
     
     private InventoryItemData itemData;
     private Action<Item> onSelectCallback;
@@ -23,46 +21,64 @@ public class UIItemView : Activateable, ISelectable
     private Action<UIItemView> onActivateCallback;
 
     public bool HasUseCallback => onSelectCallback != null;
+    public ItemType ItemType => itemData.Item.Type;
 
     public bool IsSelected { get; private set; }
 
-    public void SetUp(InventoryItemData itemData, Action<Item> onSelectCallback = null, Action onDeselectCallback = null)
+    public void UpdateView(InventoryItemData data, bool overrideCallback, Action<Item> onSelectCallback = null, Action onDeselectCallback = null)
     {
-        itemImage.sprite = itemData.Item.Icon;
-        this.itemData = itemData;
-        selectButton.interactable = false; //onSelectCallback != null;
-        this.onSelectCallback = onSelectCallback;
-        this.onDeselectCallback = onDeselectCallback;
-        RawDeselect();
-
-        itemAmountText.gameObject.SetActive(itemData.Amount > 1);
-        itemAmountText.text = itemData.Amount.ToString();
-        //SetOnButtonClickCallback(Select);
-    }
-
-    public void UpdateView(InventoryItemData data)
-    {
-        if(data.Amount <= 0)
+        if (data.Amount <= 0)
         {
             Deactivate();
             return;
         }
-        else
+
+        if (overrideCallback)
         {
-            Activate();
+            this.onSelectCallback = onSelectCallback;
+            this.onDeselectCallback = onDeselectCallback;
         }
-        
+
+        itemData = data;
+        Activate();
+
+        itemAmountText.gameObject.SetActive(itemData.Amount > 1);
+        itemAmountText.text = itemData.Amount.ToString();
+
+        itemImage.gameObject.SetActive(itemData.Item != null);
+        itemImage.sprite = itemData.Item?.Icon;
+
+
         itemAmountText.gameObject.SetActive(data.Amount > 1);
         itemAmountText.text = data.Amount.ToString();
     }
 
+    public override void Activate()
+    {
+        if (active) return;
+
+        active = true;
+        OnActivate();
+    }
+
+    public override void Deactivate()
+    {
+        if (!active) return;
+
+        active = false;
+        OnDeactivate();
+    }
+
     public override void OnDeactivate()
     {
+        itemImage.gameObject.SetActive(false);
+        itemData = new InventoryItemData();
         onDeactivateCallback?.Invoke(this);
     }
 
     public override void OnActivate()
     {
+        itemImage.gameObject.SetActive(true);
         onActivateCallback?.Invoke(this);
     }
 
@@ -74,13 +90,11 @@ public class UIItemView : Activateable, ISelectable
 
     private void OnSelect()
     {
-        //SetOnButtonClickCallback(Deselect);
         onSelectCallback?.Invoke(itemData.Item);
     }
 
     private void OnDeselect()
     {
-        //SetOnButtonClickCallback(Select);
         onDeselectCallback?.Invoke();
     }
 
@@ -93,12 +107,6 @@ public class UIItemView : Activateable, ISelectable
     public void RawDeselect()
     {
         selectedOutline.gameObject.SetActive(false);
-    }
-
-    private void SetOnButtonClickCallback(UnityAction callback)
-    {
-        selectButton.onClick.RemoveAllListeners();
-        selectButton.onClick.AddListener(callback);
     }
 
     public void SetActivatableCallbacks(Action<UIItemView> onActivateCallback, Action<UIItemView> onDeactivateCallback)

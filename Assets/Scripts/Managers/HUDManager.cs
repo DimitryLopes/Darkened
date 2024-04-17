@@ -26,14 +26,19 @@ public class HUDManager
         hud.Hide();
     }
 
-    public void UpdateItemView(InventoryItemData itemData)
+    public void CreateItemViews(int amount)
     {
-        hud.ItemHUD.UpdateItemView(itemData);
+        hud.ItemHUD.CreateRawViews(amount);
     }
 
-    public void CreateItemView(InventoryItemData data, Action<Item> onSelectCallback = null)
+    public void CreateItemView(InventoryItemData itemData, Action<Item> onSelectCallback = null)
     {
-        hud.ItemHUD.CreateItemView(data, onSelectCallback);
+        hud.ItemHUD.CreateItemView(itemData, onSelectCallback);
+    }
+
+    public void UpdateItemView(InventoryItemData data)
+    {
+        hud.ItemHUD.UpdateItemView(data);
     }
 
     public void UpdateBottomHUD(bool hasUse, int count)

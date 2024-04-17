@@ -17,8 +17,7 @@ public class ItemHUD : Activateable
 
     private UIItemView selectedItemView;
     private int selectionIndex;
-    private Dictionary<ItemType, UIItemView> instantiatedViews = new();
-    private List<UIItemView> activeViews = new();
+    private List<UIItemView> instantiatedViews = new();
     public Transform ItemViewContainer => itemViewContainer;
 
 
@@ -31,53 +30,72 @@ public class ItemHUD : Activateable
 
     public void Clear()
     {
-        foreach(UIItemView view in instantiatedViews.Values)
+        foreach(UIItemView view in instantiatedViews)
         {
             view.Deactivate();
         }
     }
 
-    public void UpdateItemView(InventoryItemData data)
-    {
-        if (!instantiatedViews.ContainsKey(data.Item.Type)) return;
-
-        UIItemView itemView = instantiatedViews[data.Item.Type];
-        itemView.UpdateView(data);
-        OnViewsChanged();
-    }
-
     public void CreateItemView(InventoryItemData data, Action<Item> onSelectCallback)
     {
-        if (instantiatedViews.ContainsKey(data.Item.Type)) return;
+        UIItemView itemView = GetAvailableItemView();
+        itemView.UpdateView(data, true, onSelectCallback);
+    }
 
-        UIItemView itemView = uiFactory.CreateUIItemView(itemViewContainer);
-        instantiatedViews.Add(data.Item.Type, itemView);
-        itemView.SetActivatableCallbacks(OnItemViewActivated, OnItemViewDeactivated);
-        itemView.SetUp(data, onSelectCallback);
-        itemView.Activate();
-
-        if(selectedItemView == null && data.Item is IUsable)
+    public void UpdateItemView(InventoryItemData data)
+    {
+        UIItemView view = GetView(data);
+        if (view == null)
         {
-            selectionIndex = activeViews.Count - 1;
+            view = GetAvailableItemView();
         }
+        if (view == null) return;
+
+        view.UpdateView(data, false);
         OnViewsChanged();
         return;
     }
 
-    private void OnItemViewActivated(UIItemView view)
+    public UIItemView GetAvailableItemView()
     {
-        activeViews.Add(view);
+        foreach (UIItemView view in instantiatedViews) 
+        {
+            if (view.IsActive) continue;
+            view.Activate();
+            return view;
+        }
+
+        return null;
     }
 
-    private void OnItemViewDeactivated(UIItemView view)
+    private UIItemView GetView(InventoryItemData data)
     {
-        activeViews.Remove(view);
+        foreach(UIItemView view in instantiatedViews)
+        {
+            if(view.IsActive && view.ItemType == data.Item.Type)
+            {
+                return view;
+            }
+        }
+        return null;
+    }
+
+    public void CreateRawViews(int inventorySlots)
+    {
+        for(int i = 0; i < inventorySlots; i++)
+        {
+            UIItemView itemView = uiFactory.CreateUIItemView(itemViewContainer);
+            itemView.UpdateView(new InventoryItemData(), false);
+            instantiatedViews.Add(itemView);
+        }
+        selectionIndex = 0;
+        instantiatedViews[selectionIndex].Select();
     }
 
     private void OnNextButtonClicked()
     {
         selectionIndex++;
-        if(selectionIndex > activeViews.Count -1)
+        if(selectionIndex > instantiatedViews.Count -1)
         {
             selectionIndex = 0;
         }
@@ -89,7 +107,7 @@ public class ItemHUD : Activateable
         selectionIndex--;
         if (selectionIndex < 0)
         {
-            selectionIndex = activeViews.Count - 1;
+            selectionIndex = instantiatedViews.Count - 1;
         }
         OnViewsChanged();
     }
@@ -101,9 +119,8 @@ public class ItemHUD : Activateable
             selectedItemView.Deselect();
         }
 
-        activeViews[selectionIndex].Select();
-        selectedItemView = activeViews[selectionIndex];
-        hudManager.UpdateBottomHUD(activeViews[selectionIndex].HasUseCallback, activeViews.Count);
+        instantiatedViews[selectionIndex].Select();
+        selectedItemView = instantiatedViews[selectionIndex];
+        hudManager.UpdateBottomHUD(instantiatedViews[selectionIndex].HasUseCallback, instantiatedViews.Count);
     }
-
 }
