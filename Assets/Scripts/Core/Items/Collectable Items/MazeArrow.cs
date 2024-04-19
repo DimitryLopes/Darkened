@@ -16,7 +16,10 @@ public class MazeArrow : CollectableMissionItem, IProjectile
 
     public void OnHit(Collider2D collision)
     {
-        if (collision.CompareTag(Constants.LayersAndTags.WALL_TAG))
+        if (
+            collision.CompareTag(Constants.LayersAndTags.WALL_TAG) 
+            || collision.CompareTag(Constants.LayersAndTags.WALL_ITEM_REPLACE_TAG)
+        )
         {
             rb.velocity = Vector2.zero;
             EnableInteraction();
