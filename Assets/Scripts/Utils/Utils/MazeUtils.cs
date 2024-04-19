@@ -20,7 +20,7 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllCardinals(Action<Cardinal, MazeData, MazeNode> action, MazeNode data, MazeData node)
+    public static void ExecuteActionWithAllCardinals(Action<Cardinal, LevelData, MazeNode> action, MazeNode data, LevelData node)
     {
         foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
@@ -36,7 +36,7 @@ public class MazeUtils
         }
     }
 
-    public static List<MazeNode> GetEdgeNodes(MazeNode[,] nodes, MazeData data)
+    public static List<MazeNode> GetEdgeNodes(MazeNode[,] nodes, LevelData data)
     {
         List<MazeNode> edgeNodes = new List<MazeNode>();
         int height = data.Height;

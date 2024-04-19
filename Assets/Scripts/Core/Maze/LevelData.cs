@@ -1,8 +1,7 @@
 using UnityEngine;
-using Zenject;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Maze Data")]
-public class MazeData : ScriptableObject, IUISelectable
+public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
 {
     [SerializeField]
     private string levelName;
@@ -13,7 +12,7 @@ public class MazeData : ScriptableObject, IUISelectable
     [SerializeField, Header("Difficulty")]
     private DifficultyData difficultyData;
 
-    [SerializeField, Range(0,1), Header("Torches")]
+    [SerializeField, Range(0, 1), Header("Torches")]
     private float torchRatio;
     [SerializeField]
     private ItemType torch;
@@ -36,10 +35,9 @@ public class MazeData : ScriptableObject, IUISelectable
     public ItemType Torch => torch;
     public EnemyType EnemyType => enemyType;
     public ObjectiveData ObjectiveData => objective;
-
     public string Title => levelName;
     public SelectableType SelectableType => SelectableType.Level;
-
+    public int ID { get; set; }
 
     public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, ItemType torch, EnemyType enemyType)
     {
@@ -51,8 +49,46 @@ public class MazeData : ScriptableObject, IUISelectable
         this.enemyType = enemyType;
     }
 
-    public void SetUp(MazeData data, ObjectiveData objective)
+    public void SetUp(LevelData data, ObjectiveData objective)
     {
         SetUp(data.sizeData, objective, difficultyData, ItemType.DefaultTorch, data.enemyType);
     }
+
+    #region Save
+    private UnlockableSavedData savedData;
+
+    public UnlockableSavedData SavedData
+    {
+        get
+        {
+            if (savedData.SavedDataKey == string.Empty)
+            {
+                savedData = new UnlockableSavedData(PersistenceKey);
+            }
+
+            return savedData;
+        }
+        private set
+        {
+            savedData = value;
+        }
+    }
+
+    public string PersistenceKey { get; private set; }
+
+    public void SetPersistenceKey()
+    {
+        PersistenceKey = string.Format(Constants.Save.PERSISTENCE_LEVEL_KEY_FORMAT, ID);
+    }
+
+    public void LoadData(GameData data)
+    {
+        SavedData = data.GetLevelSavedData(PersistenceKey);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.SetLevelSavedData(PersistenceKey, SavedData);
+    }
+    #endregion
 }

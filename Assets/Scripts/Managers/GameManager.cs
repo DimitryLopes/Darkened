@@ -2,6 +2,7 @@ using Zenject;
 
 public class GameManager
 {
+    private readonly PersistenceManager percistenceManager;
     private readonly ObjectiveManager objectiveManager;
     private readonly InventoryManager inventoryManager;
     private readonly ScreenManager screenManager;
@@ -13,8 +14,9 @@ public class GameManager
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
-        SignalBus signalBus)
+        PersistenceManager percistenceManager, SignalBus signalBus)
     {
+        this.percistenceManager = percistenceManager;
         this.objectiveManager = objectiveManager;
         this.inventoryManager = inventoryManager;
         this.screenManager = screenManager;
@@ -46,6 +48,11 @@ public class GameManager
     }
     #endregion
 
+    public void OnGameStarted()
+    {
+        percistenceManager.LoadGame();
+    }
+
     //called be main menu listener, there might be a better way to do this
     public void ShowMainMenu()
     {
@@ -62,7 +69,6 @@ public class GameManager
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
-
         Objective currentObjective = objectiveManager.CurrentObjective;
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
 
@@ -89,6 +95,8 @@ public class GameManager
                 controller = new GameFinishScreenController(screenMessage, StartCustomGame, ShowMainMenu);
                 break;
         }
+        percistenceManager.SaveGame();
+
         screen.Show(controller);
     }
 

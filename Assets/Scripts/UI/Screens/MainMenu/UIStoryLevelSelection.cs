@@ -33,7 +33,7 @@ public class UIStoryLevelSelection : MonoBehaviour
 
     private void PopulateLevelContainer()
     {
-        List<MazeData> selectables = levelManager.GetUnlockedLevels();
+        List<LevelData> selectables = levelManager.GetUnlockedLevels();
         PopulateContainer(selectables, storyGroup, (data) => data);
     }
 }

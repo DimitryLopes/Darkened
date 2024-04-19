@@ -5,6 +5,7 @@ public class ManagersInstaller : MonoInstaller
     {
         //Doesn't need other managers
         Container.Bind<MazeManager>().AsSingle();
+        Container.Bind<PersistenceManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();
         Container.Bind<CameraManager>().AsSingle();

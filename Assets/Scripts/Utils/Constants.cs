@@ -1,3 +1,6 @@
+using System.IO;
+using UnityEngine;
+
 public static class Constants
 {
     public const string HORIZONTAL_AXIS = "Horizontal";
@@ -19,6 +22,13 @@ public static class Constants
     public static class Hud
     {
         public const string UI_MISSION_DESCRIPTION_FORMAT = "{0}: {1}/{2}";
+    }
+
+    public static class Save
+    {
+        public static string PERSISTENCE_PATH =  Path.Combine(Application.persistentDataPath, PERSISTENCE_FILE_NAME);
+        public const string PERSISTENCE_FILE_NAME = "GameData.json";
+        public const string PERSISTENCE_LEVEL_KEY_FORMAT = "Level_{0}";
     }
 
     public static class LayersAndTags

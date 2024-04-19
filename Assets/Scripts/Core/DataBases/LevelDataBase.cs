@@ -1,19 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 [CreateAssetMenu(fileName = "LevelDataBase", menuName = "Scriptable Objects/Data Bases/Level Data Base")]
 public class LevelDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<MazeData> levelDatas;
+    private List<LevelData> levelDatas;
     [SerializeField]
     private List<MazeTorch> torches;
 
-    public List<MazeData> LevelDatas => levelDatas;
+    public List<LevelData> LevelDatas => levelDatas;
     public List<MazeTorch> Torches => torches;
 
-    public int GetLevelID(MazeData data)
+    public int GetLevelID(LevelData data)
     {
         for(int i = 0; i < levelDatas.Count; i++)
         {
@@ -24,6 +23,15 @@ public class LevelDataBase : ScriptableObject
         }
         Debug.LogError("There was no level data with specified data in the data base");
         return -1;
+    }
+
+    public void SetUp()
+    {
+        for (int i = 0; i < levelDatas.Count; i++)
+        {
+            levelDatas[i].ID = i;
+            levelDatas[i].SetPersistenceKey();
+        }
     }
 }
 

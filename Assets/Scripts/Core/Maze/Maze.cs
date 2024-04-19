@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 public class Maze
 {
-    private MazeData data;
+    private LevelData data;
     private MazeNode[,] nodes;
-    public MazeData Data => data;
+    public LevelData Data => data;
     public MazeNode[,] Nodes => nodes;
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; }
 
-    public Maze(MazeData data)
+    public Maze(LevelData data)
     {
         this.data = data;
     }

@@ -34,7 +34,7 @@ public class MazeGenerator : MonoBehaviour
     private MazeManager mazeManager;
 
     private Maze currentMaze;
-    private MazeData CurrentData => currentMaze.Data;
+    private LevelData CurrentData => currentMaze.Data;
     private MazeNode[,] CurrentNodes => currentMaze.Nodes;
 
     private void ClearMaze()
@@ -46,7 +46,7 @@ public class MazeGenerator : MonoBehaviour
     }
 
     #region Main Generation
-    public void CreateMaze(MazeData data,MazeManager mazeManager)
+    public void CreateMaze(LevelData data,MazeManager mazeManager)
     {
         this.mazeManager = mazeManager;
         currentMaze = new Maze(data);
@@ -167,7 +167,7 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private IEnumerator RemoveDeadEndWall(MazeNode node, MazeData data)
+    private IEnumerator RemoveDeadEndWall(MazeNode node, LevelData data)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         cardinals.Shuffle();
@@ -261,7 +261,7 @@ public class MazeGenerator : MonoBehaviour
     }
 
 
-    private MazeNode SetStartingPoint(MazeNode[,] nodes, MazeData data)
+    private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
         return nodes[startingX, 0];
@@ -288,7 +288,7 @@ public class MazeGenerator : MonoBehaviour
         newNode.AddWall(direction, wall);
     }
 
-    private void SetNodeEdges(MazeNode node, MazeData data)
+    private void SetNodeEdges(MazeNode node, LevelData data)
     {
         if (node.Coordinates.X == 0)
         {

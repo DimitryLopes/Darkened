@@ -5,6 +5,7 @@ using Zenject;
 public class LevelManager
 {
     private MazeManager mazeManager;
+    private PersistenceManager percistenceManager;
     private ObjectivesDataBase objectivesDataBase;
     private LevelDataBase levelDataBase;
     private MazeSizeDataBase mazeSizeDataBase;
@@ -12,13 +13,15 @@ public class LevelManager
     private DifficultyDataBase difficultyDataBase;
 
     public LevelType CurrentLevelType { get; private set; }
-    public MazeData CurrentLevelData { get; private set; }
+    public LevelData CurrentLevelData { get; private set; }
     
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
-        SignalBus signalBus, EnemyDataBase enemyDataBase, DifficultyDataBase difficultyDataBase)
+        SignalBus signalBus, EnemyDataBase enemyDataBase, DifficultyDataBase difficultyDataBase,
+        PersistenceManager saveManager)
     {
         this.mazeManager = mazeManager;
+        this.percistenceManager = saveManager;
         this.levelDataBase = levelDataBase;
         this.enemyDataBase = enemyDataBase;
         this.mazeSizeDataBase = mazeSizeDataBase;
@@ -28,17 +31,13 @@ public class LevelManager
         signalBus.Subscribe<OnSelectableSelectedSignal>(OnSelectableSelected);
     }
 
-    public bool IsLevelUnlocked(int id)
-    {
-        return true;
-    }
 
-    public List<MazeData> GetUnlockedLevels()
+    public List<LevelData> GetUnlockedLevels()
     {
-        List<MazeData> unlockedDatas = new();
-        foreach (MazeData data in levelDataBase.LevelDatas)
+        List<LevelData> unlockedDatas = new();
+        foreach (LevelData data in levelDataBase.LevelDatas)
         {
-            if (IsLevelUnlocked(levelDataBase.GetLevelID(data)))
+            if (data.SavedData.IsUnlocked)
             {
                 unlockedDatas.Add(data);
             }
@@ -80,7 +79,7 @@ public class LevelManager
                 customObjectiveType = objective.ObjectiveType;
                 return;
             case SelectableType.Level:
-                MazeData levelData = signal.Selectable as MazeData;
+                LevelData levelData = signal.Selectable as LevelData;
                 currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
                 return;
         }
@@ -89,7 +88,7 @@ public class LevelManager
     public void StartCustomLevel()
     {
         ObjectiveData objective = GetObjectiveByType(customObjectiveType);
-        MazeData data = MazeData.CreateInstance<MazeData>();
+        LevelData data = LevelData.CreateInstance<LevelData>();
         data.SetUp(customSizeData, objective, customDifficultyData, ItemType.DefaultTorch, EnemyType.Default);
         LoadLevel(data, LevelType.Custom);
     }
@@ -104,14 +103,14 @@ public class LevelManager
         DifficultyData difficultyData = difficultyDataBase.GetRandomData();
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
-        MazeData data = MazeData.CreateInstance<MazeData>();
+        LevelData data = LevelData.CreateInstance<LevelData>();
         data.SetUp(mazeSizeData, objective, difficultyData, ItemType.DefaultTorch, enemyDataBase.EnemyTypes.GetRandom());
         LoadLevel(data, LevelType.Random);
     }
 
     #endregion
 
-    private void LoadLevel(MazeData data, LevelType levelType)
+    private void LoadLevel(LevelData data, LevelType levelType)
     {
         CurrentLevelType = levelType;
         CurrentLevelData = data;
