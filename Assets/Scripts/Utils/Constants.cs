@@ -36,6 +36,10 @@ public static class Constants
         public const string WALL_TAG = "Wall";
         public const string PLAYER_TAG = "Player";
         public const string ENEMY_TAG = "Enemy";
+        public const string WALL_ITEM_TAG = "Wall Item";
+        public const string NODE_ITEM_TAG = "Node Item";
+        public const string WALL_ITEM_REPLACE_TAG = "Wall Item Replace";
+        public const string NODE_ITEM_REPLACE_TAG = "Node Item Replace";
     }
 
     public static class AudioParameters
