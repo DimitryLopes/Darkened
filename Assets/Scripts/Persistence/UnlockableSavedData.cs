@@ -3,7 +3,7 @@ public class UnlockableSavedData : SavedData
 {
     public bool IsUnlocked;
 
-    public UnlockableSavedData(string key, bool isUnlocked = false) : base (key)
+    public UnlockableSavedData(bool isUnlocked = false)
     {
         IsUnlocked = isUnlocked;
     }

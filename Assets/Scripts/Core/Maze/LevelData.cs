@@ -55,30 +55,32 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
     }
 
     #region Save
-    private UnlockableSavedData savedData;
 
-    public UnlockableSavedData SavedData
+    public bool IsDirty { get; private set; }
+    public UnlockableSavedData SavedData { get; private set; }
+    public string PersistenceKey { get; private set; }
+
+
+    public void Unlock()
     {
-        get
-        {
-            if (savedData.SavedDataKey == string.Empty)
-            {
-                savedData = new UnlockableSavedData(PersistenceKey);
-            }
-
-            return savedData;
-        }
-        private set
-        {
-            savedData = value;
-        }
+        SavedData.IsUnlocked = true;
+        SetDirty();
     }
 
-    public string PersistenceKey { get; private set; }
+    public new void SetDirty()
+    {
+        IsDirty = true;
+    }
+
+    public void ResetDirty()
+    {
+        IsDirty = false;
+    }
 
     public void SetPersistenceKey()
     {
         PersistenceKey = string.Format(Constants.Save.PERSISTENCE_LEVEL_KEY_FORMAT, ID);
+        SavedData = new UnlockableSavedData();
     }
 
     public void LoadData(GameData data)

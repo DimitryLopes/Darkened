@@ -1,4 +1,6 @@
 using UnityEditor;
+using System.IO;
+using UnityEngine;
 
 public class UnityMenus
 {
@@ -19,6 +21,17 @@ public class UnityMenus
     public static void GoToTesting()
     {
         UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/{Constants.Scenes.TESTING_SCENE}.unity");
+    }
+
+    [MenuItem("Persistence/Delete Saved Data")]
+    public static void DeleteSavedData()
+    {
+        string path = Constants.Save.PERSISTENCE_FILE_PATH;
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Deleted file at: " + path);
+        }
     }
 #endif
 }

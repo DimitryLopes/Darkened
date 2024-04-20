@@ -8,7 +8,7 @@ public class FilePersistenceHandler
 {
     public GameData Load()
     {
-        string path = Constants.Save.PERSISTENCE_PATH;
+        string path = Constants.Save.PERSISTENCE_FILE_PATH;
         GameData loadedData = null;
         if (File.Exists(path))
         {
@@ -36,7 +36,7 @@ public class FilePersistenceHandler
 
     public void Save(GameData data)
     {
-        string path = Constants.Save.PERSISTENCE_PATH;
+        string path = Constants.Save.PERSISTENCE_FILE_PATH;
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));

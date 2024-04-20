@@ -11,6 +11,7 @@ public class GameManager
     private readonly AudioManager audioManager;
     private readonly MazeManager mazeManager;
     private readonly HUDManager hudManager;
+    private readonly SignalBus signalBus;
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
@@ -25,6 +26,7 @@ public class GameManager
         this.audioManager = audioManager;
         this.mazeManager = mazeManager;
         this.hudManager = hudManager;
+        this.signalBus = signalBus;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
@@ -84,6 +86,7 @@ public class GameManager
         {
             case LevelType.Story:
                 controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu);
+                levelManager.UnlockNextLevel();
                 break;
             case LevelType.Random:
                 controller = new GameFinishScreenController(screenMessage, StartRandomGame, ShowMainMenu);
@@ -95,7 +98,6 @@ public class GameManager
                 controller = new GameFinishScreenController(screenMessage, StartCustomGame, ShowMainMenu);
                 break;
         }
-        percistenceManager.SaveGame();
 
         screen.Show(controller);
     }

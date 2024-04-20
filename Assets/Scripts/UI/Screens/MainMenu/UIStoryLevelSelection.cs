@@ -13,7 +13,7 @@ public class UIStoryLevelSelection : MonoBehaviour
     [SerializeField]
     private UISelectableGroup storyGroup;
 
-    private void Start()
+    private void OnEnable()
     {
         PopulateLevelContainer();
     }

@@ -41,7 +41,10 @@ public class PersistenceManager
     {
         foreach (IDataPersistence persistence in persistences)
         {
+            if (!persistence.IsDirty) continue;
+
             persistence.SaveData(ref gameData);
+            persistence.ResetDirty();
         }
 
         persistenceHandler.Save(gameData);

@@ -37,12 +37,25 @@ public class LevelManager
         List<LevelData> unlockedDatas = new();
         foreach (LevelData data in levelDataBase.LevelDatas)
         {
-            if (data.SavedData.IsUnlocked)
-            {
-                unlockedDatas.Add(data);
-            }
+            if (!data.SavedData.IsUnlocked) continue;
+
+            unlockedDatas.Add(data);
         }
+
+        if (unlockedDatas.Count > 0) return unlockedDatas;
+
+        //this is always the first level in the list
+        UnlockLevel(levelDataBase.LevelDatas[0]);
+        unlockedDatas.Add(levelDataBase.LevelDatas[0]);
         return unlockedDatas;
+    }
+
+    private void UnlockLevel(LevelData data)
+    {
+        if (data.SavedData.IsUnlocked) return;
+
+        data.Unlock();
+        percistenceManager.SaveGame();
     }
 
     #region Story Level
@@ -53,6 +66,13 @@ public class LevelManager
         {
             LoadLevel(levelDataBase.LevelDatas[currentStoryLevelIndex], LevelType.Story);
         }
+    }
+
+    public void UnlockNextLevel()
+    {
+        if (currentStoryLevelIndex >= levelDataBase.LevelDatas.Count - 1) return;
+
+        UnlockLevel(levelDataBase.LevelDatas[currentStoryLevelIndex + 1]);
     }
     #endregion
 

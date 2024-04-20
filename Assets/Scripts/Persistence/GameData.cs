@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 
 [System.Serializable]
 public class GameData
 {
-    public List<UnlockableSavedData> levelSavedData;
+    public SerializableDictionary<string, UnlockableSavedData> levelSavedData;
 
     public GameData()
     {
@@ -12,26 +11,18 @@ public class GameData
 
     public UnlockableSavedData GetLevelSavedData(string key)
     {
-        foreach(UnlockableSavedData unlockableSavedData in levelSavedData)
-        {
-            if (unlockableSavedData.SavedDataKey != key) continue;
-
-            return unlockableSavedData;
-        }
-
-        return null;
+        UnlockableSavedData unlockableSavedData;
+        levelSavedData.TryGetValue(key, out unlockableSavedData);
+        return unlockableSavedData;
     }
 
     public void SetLevelSavedData(string key, UnlockableSavedData data)
     {
-        for(int i = 0; i < levelSavedData.Count; i++)
+        if (levelSavedData.ContainsKey(key))
         {
-            if (levelSavedData[i].SavedDataKey != key) continue;
-
-            levelSavedData[i] = data;
-            return;
+            levelSavedData.Remove(key);
         }
 
-        levelSavedData.Add(data);
+        levelSavedData.Add(key, data);
     }
 }
