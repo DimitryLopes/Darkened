@@ -3,6 +3,7 @@ using Zenject;
 public class GameManager
 {
     private readonly PersistenceManager percistenceManager;
+    private readonly UnlockableManager unlockableManager;
     private readonly ObjectiveManager objectiveManager;
     private readonly InventoryManager inventoryManager;
     private readonly ScreenManager screenManager;
@@ -15,9 +16,10 @@ public class GameManager
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
-        PersistenceManager percistenceManager, SignalBus signalBus)
+        PersistenceManager percistenceManager, UnlockableManager unlockableManager, SignalBus signalBus)
     {
         this.percistenceManager = percistenceManager;
+        this.unlockableManager = unlockableManager;
         this.objectiveManager = objectiveManager;
         this.inventoryManager = inventoryManager;
         this.screenManager = screenManager;
@@ -30,6 +32,7 @@ public class GameManager
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
+        signalBus.Subscribe<OnNewGameStartedSignal>(OnNewGameStarted);
     }
 
 
@@ -50,12 +53,17 @@ public class GameManager
     }
     #endregion
 
+    private void OnNewGameStarted()
+    {
+        unlockableManager.OnConditionMet(UnlockCondition.StartUnlocked, false);
+    }
+
+    //called be main menu listener, there might be a better way to do this
     public void OnGameStarted()
     {
         percistenceManager.LoadGame();
     }
 
-    //called be main menu listener, there might be a better way to do this
     public void ShowMainMenu()
     {
         objectiveManager.SetObjective(null);

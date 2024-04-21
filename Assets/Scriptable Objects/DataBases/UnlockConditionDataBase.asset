@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d41cebfb504ec4aa171853b5712e5b, type: 3}
+  m_Name: UnlockConditionDataBase
+  m_EditorClassIdentifier: 
+  unlockConditions:
+  - {fileID: 11400000, guid: 13fc6f4fcfbae0642bee262a115f211e, type: 2}
+  - {fileID: 11400000, guid: c7aefcbfe808df14aa715471560e290f, type: 2}
+  - {fileID: 11400000, guid: 0ade3f1579a6803438d19b07e4e5f14f, type: 2}
+  - {fileID: 11400000, guid: d69114a266445314ca1b996e24a47c6a, type: 2}
+  - {fileID: 11400000, guid: 7450c8cdd6b5a1745b3c781c579841fd, type: 2}
+  - {fileID: 11400000, guid: f88d0ae16d1b5be4da280f401c1a6f6e, type: 2}
+  - {fileID: 11400000, guid: 2f30a5c8798ded44d88149b9ee627516, type: 2}
+  - {fileID: 11400000, guid: a2bcbf5eb7ddcce4383a863e15df401e, type: 2}
+  - {fileID: 11400000, guid: 1263f19c4fcf2244ba7d538556924bac, type: 2}

@@ -21,6 +21,8 @@ public class DataBaseIntaller : MonoInstaller
     private DifficultyDataBase difficultyDataBase;
     [SerializeField]
     private MaterialDataBase materialDataBase;
+    [SerializeField]
+    private UnlockConditionDataBase unlockConditionDataBase;
 
     public override void InstallBindings()
     {
@@ -43,5 +45,6 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<DifficultyDataBase>().FromInstance(difficultyDataBase).AsSingle();
 
         Container.Bind<MazeSizeDataBase>().FromInstance(mazeSizeDataBase).AsSingle();
+        Container.Bind<UnlockConditionDataBase>().FromInstance(unlockConditionDataBase).AsSingle();
     }
 }

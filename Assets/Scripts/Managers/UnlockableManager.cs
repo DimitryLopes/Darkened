@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class UnlockableManager
 {
@@ -51,12 +49,13 @@ public class UnlockableManager
         return unlockables;
     }
 
-    public void OnConditionMet(UnlockCondition condition)
+    public void OnConditionMet(UnlockCondition condition, bool save = true)
     {
         foreach(IUnlockable unlockable in UnlockConditions[condition])
         {
             unlockable.Unlock();
         }
+        if (!save) return;
         persistenceManager.SaveGame();
     }
 }

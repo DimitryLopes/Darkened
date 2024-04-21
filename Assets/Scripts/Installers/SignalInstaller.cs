@@ -6,6 +6,7 @@ public class SignalInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
+        Container.DeclareSignal<OnNewGameStartedSignal>();
         //In Game
         Container.DeclareSignal<OnGameCompletedSignal>();
         //Missions and Objectives

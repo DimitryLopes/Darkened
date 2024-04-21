@@ -1,14 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PersistenceManager
 {
     private GameData gameData;
     private List<IDataPersistence> persistences;
     private FilePersistenceHandler persistenceHandler;
+    private SignalBus signalBus;
 
-    public PersistenceManager()
+    public PersistenceManager(SignalBus signalBus)
     {
+        this.signalBus = signalBus;
+
         persistences = FindAllPersistences();
         persistenceHandler = new();
     }
@@ -16,10 +20,13 @@ public class PersistenceManager
     public void NewGame()
     {
         gameData = new();
+        signalBus.Fire(new OnNewGameStartedSignal());
+
         foreach(IDataPersistence persistences in persistences)
         {
             persistences.SaveData(ref gameData);
         }
+        SaveGame();
     }
 
     public void LoadGame()
