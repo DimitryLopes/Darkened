@@ -16,6 +16,6 @@ MonoBehaviour:
   sizeData: {fileID: 11400000, guid: f569998e1b25e2b4d9a94cd3d5315e64, type: 2}
   difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
   torchRatio: 0.25
-  torch: 5
   enemyType: 0
   objective: {fileID: 11400000, guid: 2c139d5705bea60458f0ab07ff224643, type: 2}
+  unlockConditionData: {fileID: 11400000, guid: d69114a266445314ca1b996e24a47c6a, type: 2}

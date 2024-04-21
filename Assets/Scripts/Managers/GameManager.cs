@@ -86,7 +86,7 @@ public class GameManager
         {
             case LevelType.Story:
                 controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu);
-                levelManager.UnlockNextLevel();
+                levelManager.OnNextLevelUnlocked();
                 break;
             case LevelType.Random:
                 controller = new GameFinishScreenController(screenMessage, StartRandomGame, ShowMainMenu);

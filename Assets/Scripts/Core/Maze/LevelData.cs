@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Maze Data")]
-public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
+public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnlockable
 {
     [SerializeField]
     private string levelName;
@@ -14,14 +14,15 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
 
     [SerializeField, Range(0, 1), Header("Torches")]
     private float torchRatio;
-    [SerializeField]
-    private ItemType torch;
 
     [SerializeField, Header("Enemy")]
     private EnemyType enemyType;
 
-    [SerializeField, Space]
+    [SerializeField, Header("Objective")]
     private ObjectiveData objective;
+
+    [SerializeField, Header("Unlock Condition")]
+    private UnlockConditionData unlockConditionData;
 
     public int Height => sizeData.Height;
     public int Width => sizeData.Width;
@@ -32,18 +33,16 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
     public int MinTorchCount => Mathf.CeilToInt(difficultyData.MinimumTorchRatio * Size);
     public int MaxTorchCount => Mathf.CeilToInt(difficultyData.MaximumTorchRatio * Size);
     public float TorchRatio => torchRatio;
-    public ItemType Torch => torch;
     public EnemyType EnemyType => enemyType;
     public ObjectiveData ObjectiveData => objective;
     public string Title => levelName;
     public SelectableType SelectableType => SelectableType.Level;
     public int ID { get; set; }
 
-    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, ItemType torch, EnemyType enemyType)
+    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, EnemyType enemyType)
     {
         this.sizeData = sizeData;
         this.objective = objective;
-        this.torch = torch;
         difficultyData = difficulty;
         torchRatio = (difficultyData.MinimumTorchRatio + difficultyData.MaximumTorchRatio) / 2;
         this.enemyType = enemyType;
@@ -51,7 +50,7 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
 
     public void SetUp(LevelData data, ObjectiveData objective)
     {
-        SetUp(data.sizeData, objective, difficultyData, ItemType.DefaultTorch, data.enemyType);
+        SetUp(data.sizeData, objective, difficultyData, data.enemyType);
     }
 
     #region Save
@@ -60,6 +59,7 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence
     public UnlockableSavedData SavedData { get; private set; }
     public string PersistenceKey { get; private set; }
 
+    public UnlockConditionData UnlockConditionData => unlockConditionData;
 
     public void Unlock()
     {

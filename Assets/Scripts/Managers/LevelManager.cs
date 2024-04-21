@@ -5,7 +5,7 @@ using Zenject;
 public class LevelManager
 {
     private MazeManager mazeManager;
-    private PersistenceManager percistenceManager;
+    private UnlockableManager unlockableManager;
     private ObjectivesDataBase objectivesDataBase;
     private LevelDataBase levelDataBase;
     private MazeSizeDataBase mazeSizeDataBase;
@@ -18,19 +18,23 @@ public class LevelManager
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
         SignalBus signalBus, EnemyDataBase enemyDataBase, DifficultyDataBase difficultyDataBase,
-        PersistenceManager saveManager)
+        UnlockableManager unlockableManager)
     {
         this.mazeManager = mazeManager;
-        this.percistenceManager = saveManager;
         this.levelDataBase = levelDataBase;
         this.enemyDataBase = enemyDataBase;
         this.mazeSizeDataBase = mazeSizeDataBase;
+        this.unlockableManager = unlockableManager;
         this.objectivesDataBase = objectivesDataBase;
         this.difficultyDataBase = difficultyDataBase;
 
         signalBus.Subscribe<OnSelectableSelectedSignal>(OnSelectableSelected);
     }
 
+    public bool IsLevelUnlocked(int index)
+    {
+        return levelDataBase.LevelDatas[index].SavedData.IsUnlocked;
+    }
 
     public List<LevelData> GetUnlockedLevels()
     {
@@ -44,7 +48,6 @@ public class LevelManager
 
         if (unlockedDatas.Count > 0) return unlockedDatas;
 
-        //this is always the first level in the list
         UnlockLevel(levelDataBase.LevelDatas[0]);
         unlockedDatas.Add(levelDataBase.LevelDatas[0]);
         return unlockedDatas;
@@ -54,8 +57,7 @@ public class LevelManager
     {
         if (data.SavedData.IsUnlocked) return;
 
-        data.Unlock();
-        percistenceManager.SaveGame();
+        unlockableManager.OnConditionMet(data.UnlockConditionData.UnlockCondition);
     }
 
     #region Story Level
@@ -68,7 +70,7 @@ public class LevelManager
         }
     }
 
-    public void UnlockNextLevel()
+    public void OnNextLevelUnlocked()
     {
         if (currentStoryLevelIndex >= levelDataBase.LevelDatas.Count - 1) return;
 
@@ -109,7 +111,7 @@ public class LevelManager
     {
         ObjectiveData objective = GetObjectiveByType(customObjectiveType);
         LevelData data = LevelData.CreateInstance<LevelData>();
-        data.SetUp(customSizeData, objective, customDifficultyData, ItemType.DefaultTorch, EnemyType.Default);
+        data.SetUp(customSizeData, objective, customDifficultyData, EnemyType.Default);
         LoadLevel(data, LevelType.Custom);
     }
 
@@ -124,7 +126,7 @@ public class LevelManager
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
         LevelData data = LevelData.CreateInstance<LevelData>();
-        data.SetUp(mazeSizeData, objective, difficultyData, ItemType.DefaultTorch, enemyDataBase.EnemyTypes.GetRandom());
+        data.SetUp(mazeSizeData, objective, difficultyData, enemyDataBase.EnemyTypes.GetRandom());
         LoadLevel(data, LevelType.Random);
     }
 
