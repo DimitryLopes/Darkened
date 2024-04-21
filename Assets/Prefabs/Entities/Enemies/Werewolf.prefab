@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 22a2b9eb22b52124280cdbc9883af1ba, type: 2}
   rb: {fileID: 4829018076957723263}
-  renderer: {fileID: 6402335485789434333}
+  spriteRenderer: {fileID: 6402335485789434333}
   effectsRenderer: {fileID: 4008633894832868557}
   sightLayer:
     serializedVersion: 2

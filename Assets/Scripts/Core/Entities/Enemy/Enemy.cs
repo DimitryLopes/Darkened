@@ -7,7 +7,7 @@ public abstract class Enemy : Activateable
     [SerializeField]
     private EnemyData data;
     [SerializeField]
-    private new Rigidbody2D rb;
+    private Rigidbody2D rb;
 
     protected CameraManager cameraManager;
     protected AudioManager audioManager;
