@@ -4,9 +4,9 @@ using UnityEngine.Rendering.Universal;
 public class MazeTorch : Item
 {
     [SerializeField]
-    private new Light2D light;
+    private Light2D torchlight;
 
-    public bool isLit => light.enabled;
+    public bool isLit => torchlight.enabled;
 
     public override void Interact()
     {
@@ -31,16 +31,16 @@ public class MazeTorch : Item
 
     public void SetLightRadius(float radius)
     {
-        light.pointLightOuterRadius = radius;
+        torchlight.pointLightOuterRadius = radius;
     }
 
     public void DeactivateLights()
     {
-        light.enabled = false;
+        torchlight.enabled = false;
     }
 
     public void ActivateLights()
     {
-        light.enabled = true;
+        torchlight.enabled = true;
     }
 }

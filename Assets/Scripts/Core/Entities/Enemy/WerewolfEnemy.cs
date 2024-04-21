@@ -7,7 +7,7 @@ using Zenject;
 public class WerewolfEnemy : Enemy
 {
     [SerializeField]
-    private new SpriteRenderer renderer;
+    private SpriteRenderer spriteRenderer;
     [SerializeField]
     private SpriteRenderer effectsRenderer;
 

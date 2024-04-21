@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de410a4dae5672740b2835510699e56a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemIcon: {fileID: 0}
   spriteRenderer: {fileID: 6180454501068931032}
   standardtMaterial: 0
   highlightedtMaterial: 1
@@ -105,7 +106,7 @@ MonoBehaviour:
     minDistanceFromOtherItems: 1
     spawnType: 1
     replace: 0
-  light: {fileID: 5308823624080293511}
+  torchlight: {fileID: 5308823624080293511}
 --- !u!212 &6180454501068931032
 SpriteRenderer:
   m_ObjectHideFlags: 0
