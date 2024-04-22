@@ -33,5 +33,13 @@ public class UnityMenus
             Debug.Log("Deleted file at: " + path);
         }
     }
+
+    [MenuItem("Persistence/Copy Saved Data path to clipboard")]
+    public static void CopySavePath()
+    {
+        string path = Application.persistentDataPath;
+        Debug.Log("path: " + path + " Copyed to clipboard");
+        GUIUtility.systemCopyBuffer = path;
+    }
 #endif
 }
