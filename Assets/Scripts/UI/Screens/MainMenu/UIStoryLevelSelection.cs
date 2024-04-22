@@ -13,27 +13,49 @@ public class UIStoryLevelSelection : MonoBehaviour
     [SerializeField]
     private UISelectableGroup storyGroup;
 
+    private List<UISelectableItem> items = new List<UISelectableItem>();
+
     private void OnEnable()
     {
         PopulateLevelContainer();
     }
 
-    private void PopulateContainer<T>(List<T> selectables, UISelectableGroup customSelectableGroup, Func<T, IUISelectable> selector)
+    private void OnDisable()
     {
-        List<UISelectableItem> items = new List<UISelectableItem>();
+        storyGroup.Deactivate();
+    }
+
+    private void PopulateContainer<T>(List<T> selectables, Func<T, IUISelectable> selector)
+    {
         foreach (T selectableData in selectables)
         {
-            IUISelectable uISelectable = selector(selectableData);
-            UISelectableItem selectable = uiFactory.CreateUISelectableItem(customSelectableGroup.Container);
-            selectable.SetUp(uISelectable, SelectableItemSize.Big);
-            items.Add(selectable);
+            IUISelectable uiSelectable = selector(selectableData);
+            GetAvailableSelectable(storyGroup, uiSelectable);
         }
-        customSelectableGroup.Setup(items);
+        storyGroup.Setup(items);
+        storyGroup.Activate();
     }
 
     private void PopulateLevelContainer()
     {
         List<LevelData> selectables = levelManager.GetUnlockedLevels();
-        PopulateContainer(selectables, storyGroup, (data) => data);
+        PopulateContainer(selectables, (data) => data);
+    }
+
+    private UISelectableItem GetAvailableSelectable(UISelectableGroup group, IUISelectable uiSelectable)
+    {
+        foreach(UISelectableItem item in items)
+        {
+            if (item.IsActive) continue;
+            item.SetUp(uiSelectable, SelectableItemSize.Big);
+            item.Activate();
+            return item;
+        }
+
+        UISelectableItem selectable = uiFactory.CreateUISelectableItem(group.Container);
+        selectable.SetUp(uiSelectable, SelectableItemSize.Big);
+        selectable.Activate();
+        items.Add(selectable);
+        return selectable;
     }
 }

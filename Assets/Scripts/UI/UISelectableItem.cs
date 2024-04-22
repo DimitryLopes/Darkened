@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using Zenject;
 using TMPro;
 
-public class UISelectableItem : MonoBehaviour
+public class UISelectableItem : Activateable
 {
     [Inject]
     private SignalBus signalBus;
