@@ -37,9 +37,8 @@ public class UnlockableManager
         // Iterate through each ScriptableObject
         foreach (var scriptableObject in scriptableObjects)
         {
-            // Check if the type of the ScriptableObject implements IDataPersistence
-            var type = scriptableObject.GetType();
-            if (typeof(IUnlockable).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+            // Check if the type of the ScriptableObject implements IUnlockable
+            if (scriptableObject is IUnlockable)
             {
                 // Add the ScriptableObject to the list
                 unlockables.Add(scriptableObject as IUnlockable);

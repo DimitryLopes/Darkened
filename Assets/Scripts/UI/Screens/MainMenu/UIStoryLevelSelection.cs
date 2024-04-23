@@ -44,7 +44,7 @@ public class UIStoryLevelSelection : MonoBehaviour
 
     private UISelectableItem GetAvailableSelectable(UISelectableGroup group, IUISelectable uiSelectable)
     {
-        foreach(UISelectableItem item in items)
+        foreach (UISelectableItem item in items)
         {
             if (item.IsActive) continue;
             item.SetUp(uiSelectable, SelectableItemSize.Big);

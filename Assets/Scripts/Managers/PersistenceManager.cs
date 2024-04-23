@@ -68,8 +68,7 @@ public class PersistenceManager
         foreach (var scriptableObject in scriptableObjects)
         {
             // Check if the type of the ScriptableObject implements IDataPersistence
-            var type = scriptableObject.GetType();
-            if (typeof(IDataPersistence).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+            if (scriptableObject is IDataPersistence)
             {
                 // Add the ScriptableObject to the list
                 dataPersistenceObjects.Add(scriptableObject as IDataPersistence);

@@ -12,7 +12,7 @@ public class Item : Activateable, IItem, IInteractable
     [SerializeField]
     private Sprite itemIcon;
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
     [SerializeField]
     private MaterialType standardtMaterial;
     [SerializeField]
