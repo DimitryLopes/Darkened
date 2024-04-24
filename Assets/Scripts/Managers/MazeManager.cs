@@ -29,7 +29,7 @@ public class MazeManager
         ClearItems();
         objectiveManager.StartObjective(data.ObjectiveData);
         Debug.Log($"Generating Maze with data following data: \n Size: {data.Size} cells \n Min torches: {data.MinTorchCount} \n Max torches: {data.MaxTorchCount}");
-        mazeGenerator.CreateMaze(data, this);
+        mazeGenerator.CreateMaze(data);
     }
 
     private void OnMazeLoadStarted(OnMazeLoadStartedSignal signal)

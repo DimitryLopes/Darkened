@@ -8,10 +8,12 @@ public class MazeNode : Activateable
     //Generation
     private Coordinate coordinates;
     private bool hasTorch;
+    private bool isBeingUsed;
 
     public bool Visited { get; set; }
     public int X => coordinates.X;
     public int Y => coordinates.Y;
+    public bool IsBeingUsed => isBeingUsed;
     public int ActiveWalls { get; private set; } = 0;
     public Coordinate Coordinates => coordinates;
 
@@ -125,6 +127,14 @@ public class MazeNode : Activateable
     }
     #endregion
 
+    public void MarkAsUsed()
+    {
+        if (!IsBeingUsed)
+        {
+            isBeingUsed = true;
+        }
+    }
+
     #region Edges
     private void ClearEdge(Cardinal cardinal)
     {
@@ -149,6 +159,7 @@ public class MazeNode : Activateable
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
         ActiveWalls = 0;
         hasTorch = false;
+        isBeingUsed = false;
         Visited = false;
         coordinates = new Coordinate();
     }

@@ -6,10 +6,12 @@ public class Maze
     private MazeNode[,] nodes;
     public LevelData Data => data;
     public MazeNode[,] Nodes => nodes;
+    public List<MazeNode> UsedNodes;
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; }
 
     public Maze(LevelData data)
     {
+        UsedNodes = new();
         this.data = data;
     }
 
@@ -22,5 +24,13 @@ public class Maze
         {
             NodesByCoordinate.Add(node.Coordinates, node);
         }
+    }
+
+    public void MarkNodeAsUsed(MazeNode node)
+    {
+        if (UsedNodes.Contains(node)) return;
+
+        UsedNodes.Add(node);
+        node.MarkAsUsed();
     }
 }
