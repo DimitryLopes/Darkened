@@ -77,6 +77,20 @@ public class Objective
     public void CompleteObjective()
     {
         IsCompleted = true;
+        DeactivateAllMissionGroups();
         signalBus.Fire(new OnGameCompletedSignal(true));
+    }
+
+    public void CompleteCurrentMissionGroup()
+    {
+        CurrentMissionGroup.ForceCompleteAllMissions();
+    }
+
+    private void DeactivateAllMissionGroups()
+    {
+        foreach(MissionGroup group in MissionGroups)
+        {
+            group.Deactivate();
+        }
     }
 }

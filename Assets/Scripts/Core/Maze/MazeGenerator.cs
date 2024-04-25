@@ -411,7 +411,7 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeTorch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
-        node.AddTorch(torch);
+        currentMaze.AddTorch(node, torch);
     }
     #endregion
 

@@ -44,6 +44,15 @@ public class MissionGroup : IActivateable
         }
     }
 
+    public void ForceCompleteAllMissions()
+    {
+        foreach(IMission mission in Missions)
+        {
+            mission.ForceComplete();
+        }
+        IsComplete = true;
+    }
+
     public void Activate()
     {
         IsActive = true;

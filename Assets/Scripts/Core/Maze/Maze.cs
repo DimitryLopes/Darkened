@@ -7,11 +7,13 @@ public class Maze
     public LevelData Data => data;
     public MazeNode[,] Nodes => nodes;
     public List<MazeNode> UsedNodes;
+    public List<MazeTorch> Torches;
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; }
 
     public Maze(LevelData data)
     {
         UsedNodes = new();
+        Torches = new();
         this.data = data;
     }
 
@@ -24,6 +26,11 @@ public class Maze
         {
             NodesByCoordinate.Add(node.Coordinates, node);
         }
+    }
+
+    public void AddTorch(MazeNode node, MazeTorch torch)
+    {
+        node.AddTorch(torch);
     }
 
     public void MarkNodeAsUsed(MazeNode node)

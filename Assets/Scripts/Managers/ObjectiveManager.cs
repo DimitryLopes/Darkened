@@ -37,6 +37,16 @@ public class ObjectiveManager
         item.DisableInteraction();
     }
 
+    public void CompleteCurrentObjective()
+    {
+        CurrentObjective.CompleteObjective();
+    }
+
+    public void CompleteCurrentMission()
+    {
+        CurrentObjective.CompleteCurrentMissionGroup();
+    }
+
     private void OnMissionCompleted(OnMissionCompletedSignal signal)
     {
         CurrentObjective.CompleteMission(signal.Mission);

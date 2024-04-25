@@ -22,6 +22,11 @@ public abstract class Mission<T> : IMission where T : MissionData
         }
     }
 
+    public void ForceComplete()
+    {
+        IsCompleted = true;
+    }
+
     protected void CompleteMission()
     {
         IsCompleted = true;
