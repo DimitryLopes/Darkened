@@ -11,8 +11,11 @@ public class DifficultyData : ScriptableObject, IUISelectable
     private float minTorchRatio;
     [SerializeField, Range(0, 1), Tooltip("Maximum toch percentage based on map size")]
     private float maxTorchRatio;
+    [SerializeField, Range(0, 1), Tooltip("Ration of torches that should be lit on start")]
+    private float litTorchRatio;
 
     public float MinimumTorchRatio => minTorchRatio;
+    public float LitTorchRatio => litTorchRatio;
     public float MaximumTorchRatio => maxTorchRatio;
     public float TorchRadius => torchRadius;
     public string Title => difficultyName;

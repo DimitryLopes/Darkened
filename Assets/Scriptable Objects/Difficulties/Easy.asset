@@ -16,3 +16,4 @@ MonoBehaviour:
   torchRadius: 1.5
   minTorchRatio: 0.4
   maxTorchRatio: 0.5
+  litTorchRatio: 0.5

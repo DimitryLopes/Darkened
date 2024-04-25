@@ -79,9 +79,12 @@ public class MazeGenerator : MonoBehaviour
         IEnumerator<float> step5enumerator = AddTorches();
         LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Adding torches");
 
+        IEnumerator<float> step6enumerator = ActivateMazeTorches();
+        LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Illuminating your way");
+
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, step4, step5,
+            step1, step2, step3, step4, step5, step6
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
@@ -245,6 +248,11 @@ public class MazeGenerator : MonoBehaviour
         item.transform.rotation = transform.rotation;
     }
 
+    private void OnMazeGenerationFinish()
+    {
+        signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
+    }
+
     #endregion
 
     private List<MazeNode> GetUnvisitedNeighbors(MazeNode node)
@@ -404,10 +412,28 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private void OnMazeGenerationFinish()
+    private IEnumerator<float> ActivateMazeTorches()
     {
-        signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
+        int averageAmount = Mathf.CeilToInt(currentMaze.Torches.Count * CurrentData.DifficultyData.LitTorchRatio);
+        int torchCount = 0;
+        foreach (MazeTorch torch in currentMaze.Torches)
+        {
+            if (torch.isLit) continue;
+            torch.ActivateLights();
+            torchCount++;
+            yield return LoadingUtils.GetProgress(torchCount, averageAmount);
+
+            if (torchCount >= averageAmount)
+            {
+                break;
+            }
+        }
+
+
+        yield return 1;
     }
+
+
 
     public void PlaceTorchAt(MazeNode node)
     {
@@ -416,6 +442,7 @@ public class MazeGenerator : MonoBehaviour
         currentMaze.AddTorch(node, torch);
     }
     #endregion
+
 
     #region Pooling
     private MazeWall GetAvailableWall()

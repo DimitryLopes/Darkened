@@ -84,6 +84,7 @@ public class Objective
     public void CompleteCurrentMissionGroup()
     {
         CurrentMissionGroup.ForceCompleteAllMissions();
+        CompleteMissionGroup();
     }
 
     private void DeactivateAllMissionGroups()
