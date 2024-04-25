@@ -30,6 +30,7 @@ public class Maze
 
     public void AddTorch(MazeNode node, MazeTorch torch)
     {
+        Torches.Add(torch);
         node.AddTorch(torch);
     }
 

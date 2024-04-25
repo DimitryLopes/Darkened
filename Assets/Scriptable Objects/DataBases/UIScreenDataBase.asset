@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: UIScreenDataBase
   m_EditorClassIdentifier: 
   RegisteredScreens:
+  - {fileID: 7539356157193245616, guid: 99fba64b0b0dc4048b46fdfeb1fbfd81, type: 3}
   - {fileID: 6624343805921065310, guid: dee5e1008f43caf44bf889fe55935188, type: 3}
   - {fileID: 6624343805921065310, guid: d0101e23cfc56504c8675edc4a319eac, type: 3}
   - {fileID: 4799720729380093916, guid: 301b8568b50111749974e9aeebcdd33d, type: 3}

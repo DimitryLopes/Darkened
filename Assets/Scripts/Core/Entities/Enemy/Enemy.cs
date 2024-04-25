@@ -5,6 +5,8 @@ using Zenject;
 public abstract class Enemy : Activateable
 {
     [SerializeField]
+    private Collider2D collider;
+    [SerializeField]
     private EnemyData data;
     [SerializeField]
     private Rigidbody2D rb;
@@ -31,6 +33,16 @@ public abstract class Enemy : Activateable
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnEnemyHitSignal>(OnHit);
+    }
+
+    public void DeactivateCollider()
+    {
+        collider.enabled = false;
+    }
+
+    public void ActivateCollider()
+    {
+        collider.enabled = true;
     }
 
     public virtual void SetMaze(Maze maze)

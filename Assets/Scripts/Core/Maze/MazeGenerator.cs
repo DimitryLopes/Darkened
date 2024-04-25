@@ -14,8 +14,6 @@ public class MazeGenerator : MonoBehaviour
     private ScreenManager screenManager;
     [Inject]
     private AudioManager audioManager;
-    [Inject]
-    private MazeManager mazeManager;
 
     [SerializeField]
     private MazeWall wallPrefab;
@@ -30,6 +28,9 @@ public class MazeGenerator : MonoBehaviour
     private Transform itemsContainer;
     [SerializeField]
     private Transform torchContainer;
+
+    //for whatever reason injecting this directly creates a circular dependency
+    private MazeManager mazeManager;
 
     private List<MazeWall> instantiatedWalls = new List<MazeWall>();
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
@@ -47,8 +48,9 @@ public class MazeGenerator : MonoBehaviour
     }
 
     #region Main Generation
-    public void CreateMaze(LevelData data)
+    public void CreateMaze(LevelData data, MazeManager mazeManager)
     {
+        this.mazeManager = mazeManager;
         currentMaze = new Maze(data);
         ClearMaze();
 
