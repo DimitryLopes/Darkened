@@ -1,3 +1,6 @@
+using System.IO;
+using UnityEngine;
+
 public class DeveloperTools
 {
     private MazeManager mazeManager;
@@ -79,5 +82,16 @@ public class DeveloperTools
         mazeManager.LoadMaze(levelManager.CurrentLevelData);
     }
     #endregion
+    #region Persistence
 
+    public void ErasePlayerData()
+    {
+        string path = Constants.Save.PERSISTENCE_FILE_PATH;
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Deleted file at: " + path);
+        }
+    }
+    #endregion
 }
