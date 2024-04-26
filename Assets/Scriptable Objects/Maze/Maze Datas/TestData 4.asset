@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TestData 4
   m_EditorClassIdentifier: 
   levelName: El Amexon
-  sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
+  sizeData: {fileID: 11400000, guid: 45c8d88c8e4df2944bae2ad76a1545f7, type: 2}
   difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
   torchRatio: 0.25
   enemyType: 0
-  objective: {fileID: 11400000, guid: 2c139d5705bea60458f0ab07ff224643, type: 2}
+  objective: {fileID: 11400000, guid: b6d1fafdb3315354e8eaec23e49cc8d7, type: 2}
   unlockConditionData: {fileID: 11400000, guid: 0ade3f1579a6803438d19b07e4e5f14f, type: 2}

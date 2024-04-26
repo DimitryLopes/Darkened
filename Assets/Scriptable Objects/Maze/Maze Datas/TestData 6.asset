@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestData 6
   m_EditorClassIdentifier: 
   levelName: El Peron
-  sizeData: {fileID: 11400000, guid: f569998e1b25e2b4d9a94cd3d5315e64, type: 2}
-  difficultyData: {fileID: 11400000, guid: 9e9c10ca4f254764e8baa2ed686e8d72, type: 2}
+  sizeData: {fileID: 11400000, guid: 69f6a41bacc03d34da16c854c7e13498, type: 2}
+  difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
   torchRatio: 0.104
   enemyType: 0
   objective: {fileID: 11400000, guid: 2c139d5705bea60458f0ab07ff224643, type: 2}

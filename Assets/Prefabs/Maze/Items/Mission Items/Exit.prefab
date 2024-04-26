@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1515450181062793677}
   m_Layer: 9
   m_Name: Exit
-  m_TagString: Wall Item Replace
+  m_TagString: Node Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.025, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,9 +51,9 @@ MonoBehaviour:
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
-    minDistanceFromStart: 8
-    minDistanceFromOtherItems: 8
-    spawnType: 2
+    minDistanceFromStart: 4
+    minDistanceFromOtherItems: 1
+    spawnType: 0
     replace: 1
 --- !u!212 &1418582601741916346
 SpriteRenderer:
@@ -95,8 +95,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1300265393
   m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2dee0e88129d8c141b7f87546dbe90bd, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 21300000, guid: e34de404b5358194a8361313b5f0c326, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,7 +136,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

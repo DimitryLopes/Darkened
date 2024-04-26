@@ -1,3 +1,4 @@
+using UnityEngine.Events;
 using Zenject;
 
 public class GameManager
@@ -39,6 +40,12 @@ public class GameManager
     #region Game Start
     public void StartStoryGame()
     {
+        levelManager.StartStoryLevel();
+    }
+
+    private void StartNextStoryLevel()
+    {
+        levelManager.IncreaseLevelIndex();
         levelManager.StartStoryLevel();
     }
 
@@ -93,8 +100,9 @@ public class GameManager
         switch (levelManager.CurrentLevelType)
         {
             case LevelType.Story:
-                controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu);
+                UnityAction nextLevel = levelManager.IsLastLevel ? StartNextStoryLevel : null;
                 levelManager.OnNextLevelUnlocked();
+                controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu, nextLevel);
                 break;
             case LevelType.Random:
                 controller = new GameFinishScreenController(screenMessage, StartRandomGame, ShowMainMenu);

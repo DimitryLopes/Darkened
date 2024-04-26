@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TestData 1
   m_EditorClassIdentifier: 
   levelName: El Damascon
-  sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
-  difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
+  sizeData: {fileID: 11400000, guid: 1a93ec8ca5b582940bd9329543c130cf, type: 2}
+  difficultyData: {fileID: 11400000, guid: 584592c39458975408f633c3aa537af0, type: 2}
   torchRatio: 0.25
   enemyType: 0
   objective: {fileID: 11400000, guid: a7603fe3a4eedd244b1657da86b14617, type: 2}

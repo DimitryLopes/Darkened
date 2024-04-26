@@ -62,6 +62,8 @@ public class LevelManager
 
     #region Story Level
     private int currentStoryLevelIndex = 0;
+    public bool IsLastLevel => currentStoryLevelIndex >= levelDataBase.LevelDatas.Count - 1;
+
     public void StartStoryLevel()
     {
         if(levelDataBase.LevelDatas[currentStoryLevelIndex] != null)
@@ -72,40 +74,25 @@ public class LevelManager
 
     public void OnNextLevelUnlocked()
     {
-        if (currentStoryLevelIndex >= levelDataBase.LevelDatas.Count - 1) return;
+        if (IsLastLevel) return;
 
         UnlockLevel(levelDataBase.LevelDatas[currentStoryLevelIndex + 1]);
     }
+
+    public void IncreaseLevelIndex()
+    {
+        if (IsLastLevel) return;
+
+        currentStoryLevelIndex++;
+    }
+
     #endregion
 
     #region Custom Level
     private MazeSizeData customSizeData;
     private ObjectiveType customObjectiveType = ObjectiveType.FindExit;
     private DifficultyData customDifficultyData;
-    private void OnSelectableSelected(OnSelectableSelectedSignal signal)
-    {
-        Debug.Log(signal.Selectable.Title + " Selected");
-        switch (signal.Selectable.SelectableType)
-        {
-            case SelectableType.MazeSize:
-                MazeSizeData mazeSizeData = signal.Selectable as MazeSizeData;
-                customSizeData = mazeSizeData;
-                //currentRandomLevelWidth = data.Width;
-                return;
-            case SelectableType.Difficulty:
-                DifficultyData difficultyData = signal.Selectable as DifficultyData;
-                customDifficultyData = difficultyData;
-                return;
-            case SelectableType.Objective:
-                ObjectiveData objective = signal.Selectable as ObjectiveData;
-                customObjectiveType = objective.ObjectiveType;
-                return;
-            case SelectableType.Level:
-                LevelData levelData = signal.Selectable as LevelData;
-                currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
-                return;
-        }
-    }
+    
 
     public void StartCustomLevel()
     {
@@ -131,6 +118,30 @@ public class LevelManager
     }
 
     #endregion
+    private void OnSelectableSelected(OnSelectableSelectedSignal signal)
+    {
+        Debug.Log(signal.Selectable.Title + " Selected");
+        switch (signal.Selectable.SelectableType)
+        {
+            case SelectableType.MazeSize:
+                MazeSizeData mazeSizeData = signal.Selectable as MazeSizeData;
+                customSizeData = mazeSizeData;
+                //currentRandomLevelWidth = data.Width;
+                return;
+            case SelectableType.Difficulty:
+                DifficultyData difficultyData = signal.Selectable as DifficultyData;
+                customDifficultyData = difficultyData;
+                return;
+            case SelectableType.Objective:
+                ObjectiveData objective = signal.Selectable as ObjectiveData;
+                customObjectiveType = objective.ObjectiveType;
+                return;
+            case SelectableType.Level:
+                LevelData levelData = signal.Selectable as LevelData;
+                currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
+                return;
+        }
+    }
 
     private void LoadLevel(LevelData data, LevelType levelType)
     {

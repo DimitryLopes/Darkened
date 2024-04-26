@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TestData 7
   m_EditorClassIdentifier: 
   levelName: are you just reading the names?
-  sizeData: {fileID: 11400000, guid: aad508289acd75849b39563e6d07d417, type: 2}
-  difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
-  torchRatio: 0.22500001
+  sizeData: {fileID: 11400000, guid: 1a93ec8ca5b582940bd9329543c130cf, type: 2}
+  difficultyData: {fileID: 11400000, guid: 9e9c10ca4f254764e8baa2ed686e8d72, type: 2}
+  torchRatio: 0.065
   enemyType: 0
-  objective: {fileID: 11400000, guid: a7603fe3a4eedd244b1657da86b14617, type: 2}
+  objective: {fileID: 11400000, guid: b5b632ac2ef0d7c47ae65302edadc11a, type: 2}
   unlockConditionData: {fileID: 11400000, guid: f88d0ae16d1b5be4da280f401c1a6f6e, type: 2}

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TestData 8
   m_EditorClassIdentifier: 
   levelName: EL MOSCO BZZZZZZZZZ
-  sizeData: {fileID: 11400000, guid: 1a93ec8ca5b582940bd9329543c130cf, type: 2}
+  sizeData: {fileID: 11400000, guid: 45c8d88c8e4df2944bae2ad76a1545f7, type: 2}
   difficultyData: {fileID: 11400000, guid: 9e9c10ca4f254764e8baa2ed686e8d72, type: 2}
-  torchRatio: 0.22500001
+  torchRatio: 0.126
   enemyType: 0
-  objective: {fileID: 11400000, guid: b5b632ac2ef0d7c47ae65302edadc11a, type: 2}
+  objective: {fileID: 11400000, guid: 42ae4aaa68f51344ba1c0b9417e6c278, type: 2}
   unlockConditionData: {fileID: 11400000, guid: 2f30a5c8798ded44d88149b9ee627516, type: 2}
