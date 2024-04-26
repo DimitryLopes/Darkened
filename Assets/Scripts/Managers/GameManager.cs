@@ -100,7 +100,7 @@ public class GameManager
         switch (levelManager.CurrentLevelType)
         {
             case LevelType.Story:
-                UnityAction nextLevel = levelManager.IsLastLevel ? StartNextStoryLevel : null;
+                UnityAction nextLevel = levelManager.IsLastLevel ? null : StartNextStoryLevel;
                 levelManager.OnNextLevelUnlocked();
                 controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu, nextLevel);
                 break;
