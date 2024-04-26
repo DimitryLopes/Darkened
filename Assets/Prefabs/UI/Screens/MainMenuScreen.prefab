@@ -2160,6 +2160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0960578835f2a8e4f88a606dfcecd929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 5595784191584308314}
   screenAnimation: {fileID: 397466554443635993}
   startStoryGameButton: {fileID: 9159996671601498357}
   startCustomGameButton: {fileID: 5647235121156975167}

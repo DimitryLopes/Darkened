@@ -7,6 +7,8 @@ public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
     private SignalBus signalBus;
 
     [SerializeField]
+    private CanvasGroup canvasGroup; 
+    [SerializeField]
     private UIAnimation screenAnimation;
 
     public U Controller { get; private set; }
@@ -15,6 +17,7 @@ public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
 
     public virtual void Show<T>(T controller) where T : ScreenController
     {
+        canvasGroup.interactable = true;
         Controller = controller as U;
         gameObject.SetActive(true);
         IsShown = true;
@@ -24,6 +27,7 @@ public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
 
     public virtual void Hide()
     {
+        canvasGroup.interactable = false;
         OnBeforeHide();
         screenAnimation.DoOutAnimation(OnHideAnimationFinish);
     }

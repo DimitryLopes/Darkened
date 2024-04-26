@@ -725,6 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060bce3dd1b42e5438d6a6bb29b81f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 7081323791529490383}
   screenAnimation: {fileID: 2350996537639105144}
   buttonPrefab: {fileID: 8715445930493179455, guid: 7be7ee4f938c9ca488b413ee4c3f7254, type: 3}
   buttonContainer: {fileID: 59207073179554392}

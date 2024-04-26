@@ -464,6 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f0abedcc6d8e8499cbe03f8a83a8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 8989623437911492141}
   screenAnimation: {fileID: 2118409257771232958}
   progressText: {fileID: 4857407449970311509}
   currentTaskText: {fileID: 7234082236700007459}
@@ -480,9 +481,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4226aafa49c60774bbb1b21c78c577ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
+  inAnimationDuration: 0.5
+  outAnimationDuration: 0.5
   inEase: 18
   outEase: 17
+  loop: 0
   target: {fileID: 8989623437911492141}
   inTarget: 1
   outTarget: 0

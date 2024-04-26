@@ -1006,6 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9925cf0455d63bc48880bd03949d3a57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 7081323791529490383}
   screenAnimation: {fileID: 2350996537639105144}
   quitButton: {fileID: 733680856351108316}
   backButton: {fileID: 9142418514056590784}

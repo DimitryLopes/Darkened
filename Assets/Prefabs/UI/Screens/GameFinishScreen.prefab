@@ -995,6 +995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d33d36aead9b1c448b1526cdbe4df48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 3565016120224301357}
   screenAnimation: {fileID: 6491140326242131916}
   gameFinishedText: {fileID: 7234082236700007459}
   gameTypeText: {fileID: 4857407449970311509}
