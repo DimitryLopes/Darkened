@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: PressButtonsMission
   m_EditorClassIdentifier: 
   description: Press all buttons
-  itemData:
-    item: 3
+  itemType: 3
+  dataList:
+  - difficultyType: 0
+    amount: 1
+  - difficultyType: 1
+    amount: 2
+  - difficultyType: 2
+    amount: 3
+  - difficultyType: 3
     amount: 4

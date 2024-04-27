@@ -4,11 +4,10 @@ public abstract class Mission<T> : IMission where T : MissionData
 {
     protected SignalBus signalBus;
     protected int progress;
+    protected DifficultyType Difficulty;
 
     public string Description => Data.Description;
-    public int ProgressTarget => Data.ProgressTarget;
     protected T Data { get; set; }
-    public virtual float Progress { get; protected set; }
     public int RawProgress => progress;
     public bool IsCompleted { get; private set; }
     public bool IsActive { get; set; }
@@ -16,20 +15,31 @@ public abstract class Mission<T> : IMission where T : MissionData
     protected virtual void UpdateProgress()
     {
         signalBus.Fire(new OnMissionProgressSignal(this));
-        if (progress == Data.ProgressTarget)
+        if (progress == GetTargetProgress())
         {
             CompleteMission();
         }
     }
 
+    public int GetTargetProgress()
+    {
+        return Data.GetTargetProgress(Difficulty);
+    }
+
+    public float GetCurrentProgress()
+    {
+        return (float)progress / (float)GetTargetProgress();
+    }
+
     public void ForceComplete()
     {
         IsCompleted = true;
+        OnMissionCompleted();
     }
 
     protected void CompleteMission()
     {
-        IsCompleted = true;
+        OnMissionCompleted();
         signalBus.Fire(new OnMissionCompletedSignal(this));
     }
 
@@ -48,24 +58,29 @@ public abstract class Mission<T> : IMission where T : MissionData
         OnDeactivate();
     }
 
-    protected virtual void OnActivate() { }
+    protected virtual void OnActivate() 
+    {
+        OnMissionStarted();
+    }
 
     protected virtual void OnDeactivate() { }
+
     protected virtual void OnMissionStarted() 
     {
         progress = 0;
         IsCompleted = false;
     }
 
-    public void SetUp<U>(U data) where U : MissionData
+    protected virtual void OnMissionCompleted()
     {
-        Data = data as T;
+        progress = Data.GetTargetProgress(Difficulty);
+        IsCompleted = true;
     }
 
-    public void StartMission()
+    public void SetUp<U>(U data, DifficultyType difficulty) where U : MissionData
     {
-        Activate();
-        OnMissionStarted();
+        Data = data as T;
+        Difficulty = difficulty;
     }
 
     public Mission(SignalBus signalBus)

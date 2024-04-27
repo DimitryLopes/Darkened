@@ -5,5 +5,9 @@ public class EliminationMissionData : MissionData
 {
     [SerializeField]
     private int enemyHealth;
-    public override int ProgressTarget => enemyHealth;
+
+    public override int GetTargetProgress(DifficultyType difficultyType)
+    {
+        return enemyHealth;
+    }
 }

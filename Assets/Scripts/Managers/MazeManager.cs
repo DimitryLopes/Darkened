@@ -27,7 +27,7 @@ public class MazeManager
     public void LoadMaze(LevelData data)
     {
         ClearItems();
-        objectiveManager.StartObjective(data.ObjectiveData);
+        objectiveManager.StartObjective(data.ObjectiveData, data.DifficultyData.DifficultyType);
         Debug.Log($"Generating Maze with data following data: \n Size: {data.Size} cells \n Min torches: {data.MinTorchCount} \n Max torches: {data.MaxTorchCount}");
         mazeGenerator.CreateMaze(data, this);
     }

@@ -4,6 +4,8 @@ using UnityEngine;
 public class DifficultyData : ScriptableObject, IUISelectable
 {
     [SerializeField]
+    private DifficultyType difficulty;
+    [SerializeField]
     private string difficultyName;
     [SerializeField, Range(0, 2)]
     private float torchRadius;
@@ -19,6 +21,8 @@ public class DifficultyData : ScriptableObject, IUISelectable
     public float MaximumTorchRatio => maxTorchRatio;
     public float TorchRadius => torchRadius;
     public string Title => difficultyName;
+
+    public DifficultyType DifficultyType => difficulty;
 
     public SelectableType SelectableType => SelectableType.Difficulty;
 }

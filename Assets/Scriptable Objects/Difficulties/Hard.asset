@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7f40f83e90ce442a0630847c502e66, type: 3}
   m_Name: Hard
   m_EditorClassIdentifier: 
+  difficulty: 2
   difficultyName: Hard
   torchRadius: 0.85
   minTorchRatio: 0.2

@@ -6,19 +6,46 @@ using System;
 public class ItemMissionData : MissionData
 {
     [SerializeField]
-    private MissionItemData itemData;
-    public MissionItemData ItemData => itemData;
-    public override int ProgressTarget => itemData.Amount;
+    private ItemType itemType;
+
+    [SerializeField]
+    private List<MissionItemData> dataList;
+
+    public ItemType Item => itemType;
+    public Dictionary<DifficultyType, MissionItemData> ItemDatas = new();
+
+    public void SetUp()
+    {
+        foreach(MissionItemData data in dataList)
+        {
+            ItemDatas.Add(data.Difficulty, data);
+        }
+    }
+
+    public void Clear()
+    {
+        ItemDatas.Clear();
+    }
+
+    public MissionItemData GetCurrentItemData(DifficultyType difficulty)
+    {
+        return ItemDatas[difficulty];
+    }
+
+    public override int GetTargetProgress(DifficultyType difficulty)
+    {
+        return ItemDatas[difficulty].Amount;
+    }
 }
 
 [Serializable]
 public struct MissionItemData
 {
     [SerializeField]
-    private ItemType item;
-    [SerializeField, Range(0,100)]
+    private DifficultyType difficultyType;
+    [SerializeField]
     private int amount;
 
-    public ItemType ItemType => item;
     public int Amount => amount;
+    public DifficultyType Difficulty => difficultyType;
 }

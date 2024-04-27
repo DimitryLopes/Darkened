@@ -6,36 +6,14 @@ using UnityEngine;
 public class DifficultyDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<DifficultyDataInfo> difficulties;
+    private List<DifficultyData> difficulties;
 
-    public readonly Dictionary<DifficultyType, DifficultyData> DifficultyDictionary = new Dictionary<DifficultyType, DifficultyData>();
-    public readonly List<DifficultyData> DifficultyList = new List<DifficultyData>();
-
-    public void SetUp()
-    {
-        foreach (DifficultyDataInfo difficulty in difficulties)
-        {
-            DifficultyDictionary.Add(difficulty.Type, difficulty.Data);
-            DifficultyList.Add(difficulty.Data);
-        }
-    }
+    public List<DifficultyData> DifficultyList => difficulties;
 
     public DifficultyData GetRandomData()
     {
-        return DifficultyDictionary.GetRandom().Value;
+        return difficulties.GetRandom();
     }
-}
-
-[Serializable]
-public struct DifficultyDataInfo
-{
-    [SerializeField]
-    private DifficultyType difficultyType;
-    [SerializeField]
-    private DifficultyData difficultyData;
-
-    public DifficultyType Type => difficultyType;
-    public DifficultyData Data => difficultyData;
 }
 
 public enum DifficultyType

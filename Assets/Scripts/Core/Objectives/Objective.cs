@@ -13,7 +13,7 @@ public class Objective
     public List<MissionGroup> MissionGroups { get; private set; }
     public MissionGroup CurrentMissionGroup => MissionGroups[currentGroupIndex];
 
-    public Objective (ObjectiveData data, SignalBus signalBus)
+    public Objective (ObjectiveData data, DifficultyType difficulty, SignalBus signalBus)
     {
         SetUp(data, signalBus);
 
@@ -25,13 +25,13 @@ public class Objective
                 if (missionData is ItemMissionData itemMissionData)
                 {
                     ItemMission itemMission = new ItemMission(signalBus);
-                    itemMission.SetUp(itemMissionData);
+                    itemMission.SetUp(itemMissionData, difficulty);
                     newGroup.AddMission(itemMission);
                 }
                 else if (missionData is EliminationMissionData eliminationMissionData)
                 {
                     EliminationMission eliminationMissions = new EliminationMission(signalBus);
-                    eliminationMissions.SetUp(eliminationMissionData);
+                    eliminationMissions.SetUp(eliminationMissionData, difficulty);
                     newGroup.AddMission(eliminationMissions);
                 }
             }

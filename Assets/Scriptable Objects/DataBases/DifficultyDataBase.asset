@@ -13,11 +13,7 @@ MonoBehaviour:
   m_Name: DifficultyDataBase
   m_EditorClassIdentifier: 
   difficulties:
-  - difficultyType: 0
-    difficultyData: {fileID: 11400000, guid: 584592c39458975408f633c3aa537af0, type: 2}
-  - difficultyType: 1
-    difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
-  - difficultyType: 2
-    difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
-  - difficultyType: 3
-    difficultyData: {fileID: 11400000, guid: 9e9c10ca4f254764e8baa2ed686e8d72, type: 2}
+  - {fileID: 11400000, guid: 584592c39458975408f633c3aa537af0, type: 2}
+  - {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
+  - {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
+  - {fileID: 11400000, guid: 9e9c10ca4f254764e8baa2ed686e8d72, type: 2}

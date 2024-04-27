@@ -15,9 +15,9 @@ public class ObjectiveManager
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
     }
 
-    public void StartObjective(ObjectiveData data)
+    public void StartObjective(ObjectiveData data, DifficultyType difficulty)
     {
-        Objective objective = new Objective(data, signalBus);
+        Objective objective = new Objective(data, difficulty, signalBus);
         SetObjective(objective);
     }
 

@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: GetArrowMission
   m_EditorClassIdentifier: 
   description: Find an arrow
-  itemData:
-    item: 4
+  itemType: 4
+  dataList:
+  - difficultyType: 0
+    amount: 1
+  - difficultyType: 1
+    amount: 1
+  - difficultyType: 2
+    amount: 1
+  - difficultyType: 3
     amount: 1

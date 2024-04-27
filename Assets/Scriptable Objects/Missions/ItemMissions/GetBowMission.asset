@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: GetBowMission
   m_EditorClassIdentifier: 
   description: Find a weapon
-  itemData:
-    item: 5
+  itemType: 5
+  dataList:
+  - difficultyType: 0
+    amount: 1
+  - difficultyType: 1
+    amount: 1
+  - difficultyType: 2
+    amount: 1
+  - difficultyType: 3
     amount: 1

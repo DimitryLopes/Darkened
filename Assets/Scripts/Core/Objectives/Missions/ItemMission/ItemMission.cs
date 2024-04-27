@@ -8,8 +8,6 @@ public class ItemMission : Mission<ItemMissionData>
         signalBus.Subscribe<OnMissionItemInteractedSignal>(OnMissionProgress);
     }
 
-    public override float Progress => (float)progress / (float)Data.ItemData.Amount;
-
     public List<MissionItem> Items { get; set; } = new List<MissionItem>();
 
     public void OnMissionProgress(OnMissionItemInteractedSignal Signal)
@@ -24,11 +22,13 @@ public class ItemMission : Mission<ItemMissionData>
 
     public List<ItemType> GetRequiredItems()
     {
+        Data.Clear();
+        Data.SetUp();
         List<ItemType> items = new List<ItemType>();
 
-        for (int i = 0; i < Data.ItemData.Amount; i++)
+        for (int i = 0; i < Data.ItemDatas[Difficulty].Amount; i++)
         {
-            items.Add(Data.ItemData.ItemType);
+            items.Add(Data.Item);
         }
         return items;
     }
@@ -37,6 +37,11 @@ public class ItemMission : Mission<ItemMissionData>
     {
         base.OnMissionStarted();
         Items.Clear();
+    }
+
+    protected override void OnMissionCompleted()
+    {
+        base.OnMissionCompleted();
     }
 
     protected override void OnActivate()

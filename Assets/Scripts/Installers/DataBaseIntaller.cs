@@ -33,7 +33,6 @@ public class DataBaseIntaller : MonoInstaller
         screenDataBase.SetUp();
         materialDataBase.SetUp();
         objectivesDataBase.SetUp();
-        difficultyDataBase.SetUp();
 
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();
@@ -42,9 +41,9 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
         Container.Bind<MaterialDataBase>().FromInstance(materialDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
-        Container.Bind<DifficultyDataBase>().FromInstance(difficultyDataBase).AsSingle();
 
         Container.Bind<MazeSizeDataBase>().FromInstance(mazeSizeDataBase).AsSingle();
+        Container.Bind<DifficultyDataBase>().FromInstance(difficultyDataBase).AsSingle();
         Container.Bind<UnlockConditionDataBase>().FromInstance(unlockConditionDataBase).AsSingle();
     }
 }

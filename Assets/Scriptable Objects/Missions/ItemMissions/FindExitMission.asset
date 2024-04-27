@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: FindExitMission
   m_EditorClassIdentifier: 
   description: Find a way to leave
-  itemData:
-    item: 0
+  itemType: 0
+  dataList:
+  - difficultyType: 0
+    amount: 1
+  - difficultyType: 1
+    amount: 1
+  - difficultyType: 2
+    amount: 1
+  - difficultyType: 3
     amount: 1

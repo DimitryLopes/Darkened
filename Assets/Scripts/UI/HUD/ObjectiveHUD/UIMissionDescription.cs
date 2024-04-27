@@ -29,7 +29,7 @@ public class UIMissionDescription : Activateable
 
     public void UpdateText(IMission mission)
     {
-        progressImage.fillAmount = mission.Progress;
+        progressImage.fillAmount = mission.GetCurrentProgress();
         descrptionText.text = mission.Description;
     }
 
