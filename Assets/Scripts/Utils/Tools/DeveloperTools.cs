@@ -60,6 +60,18 @@ public class DeveloperTools
     }
     #endregion
 
+    #region Player 
+    public void ActivatePlayerTorch()
+    {
+        entityManager.GetPlayer().ActiveTorch();
+    }
+
+    public void DeactivatePlayerTorch()
+    {
+        entityManager.GetPlayer().DeactivateTorch();
+    }
+    #endregion
+
     #region Maze
     public void ActivateAllTorches()
     {
@@ -67,6 +79,7 @@ public class DeveloperTools
         {
             torch.ActivateLights();
         }
+        ActivatePlayerTorch();
     }
 
     public void DeactivateAllTorches()
@@ -75,6 +88,7 @@ public class DeveloperTools
         {
             torch.DeactivateLights();
         }
+        DeactivatePlayerTorch();
     }
 
     public void RegenerateMaze()

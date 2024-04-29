@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Zenject;
 
 public class Player : MonoBehaviour
@@ -6,6 +7,8 @@ public class Player : MonoBehaviour
     [Inject]
     private SignalBus signalBus;
 
+    [SerializeField]
+    private Light2D playerTorch;
     [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
@@ -29,5 +32,15 @@ public class Player : MonoBehaviour
         if (!value) return;
 
         movement.ResetMovement();
+    }
+
+    public void ActiveTorch()
+    {
+        playerTorch.enabled = true;
+    }
+
+    public void DeactivateTorch()
+    {
+        playerTorch.enabled = false;
     }
 }

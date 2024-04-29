@@ -15,7 +15,7 @@ MonoBehaviour:
   levelName: El Damascon
   sizeData: {fileID: 11400000, guid: 1a93ec8ca5b582940bd9329543c130cf, type: 2}
   difficultyData: {fileID: 11400000, guid: 584592c39458975408f633c3aa537af0, type: 2}
-  torchRatio: 0.25
+  torchRatio: 0.45
   enemyType: 0
-  objective: {fileID: 11400000, guid: a7603fe3a4eedd244b1657da86b14617, type: 2}
+  objective: {fileID: 11400000, guid: ec27605dde3870444aa2bbaa59e1049a, type: 2}
   unlockConditionData: {fileID: 11400000, guid: 1263f19c4fcf2244ba7d538556924bac, type: 2}

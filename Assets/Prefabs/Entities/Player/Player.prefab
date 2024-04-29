@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f249cd5645c91a84f94bd3b9cf7ce15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTorch: {fileID: 4020834806139711318}
   movement: {fileID: 6005018496085755486}
   status: {fileID: 11400000, guid: 6a372f500043d5649a41dbdfa3843e1a, type: 2}
   interaction: {fileID: 8199957351964521531}
