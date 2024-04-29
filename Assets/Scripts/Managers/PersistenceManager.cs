@@ -77,5 +77,26 @@ public class PersistenceManager
 
         return dataPersistenceObjects;
     }
+
+    public void ChangeSFXPreferences(float amount)
+    {
+        PlayerPrefs.SetFloat(Constants.Save.PLAYER_SFX_KEY, amount);
+    }
+
+    public void ChangeBGMPreferences(float amount)
+    {
+        PlayerPrefs.SetFloat(Constants.Save.PLAYER_BGM_KEY, amount);
+    }
+
+    public float GetBGMPreferences()
+    {
+        return PlayerPrefs.GetFloat(Constants.Save.PLAYER_BGM_KEY, 0.5f);
+    }
+
+    public float GetSFXPreferences()
+    {
+        return PlayerPrefs.GetFloat(Constants.Save.PLAYER_SFX_KEY, 0.5f);
+
+    }
 }
 

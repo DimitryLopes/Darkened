@@ -18,12 +18,14 @@ public class AudioManager
 
     private List<AudioSource> sfxSources = new ();
 
-    public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase, AudioMixingSettings audioMixingSettings)
+    public AudioManager(AudioFactory audioFactory, AudioDataBase audioDataBase, AudioMixingSettings audioMixingSettings,
+        PersistenceManager persistenceManager)
     {
         this.audioFactory = audioFactory;
         this.audioDataBase = audioDataBase;
         this.audioSettings = audioMixingSettings;
-
+        bgmVolume = persistenceManager.GetBGMPreferences();
+        sfxVolume = persistenceManager.GetSFXPreferences();
         CreateBGMSource();
     }
 

@@ -29,6 +29,8 @@ public static class Constants
         public static string PERSISTENCE_FILE_PATH =  Path.Combine(Application.persistentDataPath, PERSISTENCE_FILE_NAME);
         public const string PERSISTENCE_FILE_NAME = "GameData.json";
         public const string PERSISTENCE_LEVEL_KEY_FORMAT = "Level_{0}";
+        public const string PLAYER_SFX_KEY = "sfx_pref_key";
+        public const string PLAYER_BGM_KEY = "bgm_pref_key";
     }
 
     public static class LayersAndTags
