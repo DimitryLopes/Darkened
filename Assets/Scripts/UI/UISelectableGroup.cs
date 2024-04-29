@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class UISelectableGroup : Activateable, IActivateable
 {
     private const int ItemSize = 500;
-    private const int ItemOffset = 50;
 
     [SerializeField]
     private Button nextButton;
@@ -77,14 +76,30 @@ public class UISelectableGroup : Activateable, IActivateable
         ScrollTo(0);
     }
 
+    public void ScrollToLast()
+    {
+        ScrollTo(items.Count - 1);
+    }
+
     public void ScrollToNext()
     {
+        if (currentIndex >= items.Count - 1)
+        {
+            ScrollToFirst();
+            return;
+        }
         ScrollTo(currentIndex + 1);
     }
 
     public void ScrollToPrevious()
     {
+        if (currentIndex == 0)
+        {
+            ScrollToLast();
+            return;
+        }
         ScrollTo(currentIndex - 1);
+
     }
 
     private void FinishCurrentAnimation()
