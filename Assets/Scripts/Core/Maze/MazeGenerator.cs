@@ -177,7 +177,7 @@ public class MazeGenerator : MonoBehaviour
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         cardinals.Shuffle();
-
+        int wallsRemoved = 0;
         while (cardinals.Count > 0)
         {
             if (!node.GetEdge(cardinals[0]) && node.HasWall(cardinals[0]))
@@ -186,8 +186,9 @@ public class MazeGenerator : MonoBehaviour
                 if (neighboorNode != null)
                 {
                     RemoveWallsAt(node, neighboorNode);
+                    wallsRemoved++;
+                    if (wallsRemoved == 2) break;
                     yield return null;
-                    break;
                 }
                 else
                 {
