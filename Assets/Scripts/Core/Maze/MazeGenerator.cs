@@ -171,7 +171,6 @@ public class MazeGenerator : MonoBehaviour
                 {
                     backtracking = true;
                     currentNode.MarkAsDeadEnd();
-                    currentNode.DebugColor(Color.red);
                 }
             }
             yield return LoadingUtils.GetProgress(visitedNodes, CurrentNodes.Length * 2);
