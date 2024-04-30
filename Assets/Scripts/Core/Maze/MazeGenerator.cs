@@ -34,6 +34,7 @@ public class MazeGenerator : MonoBehaviour
 
     private List<MazeWall> instantiatedWalls = new List<MazeWall>();
     private List<MazeNode> instantiatedNodes = new List<MazeNode>();
+    private List<MazeNode> generationPath = new List<MazeNode>();
 
     private Maze currentMaze;
     private LevelData CurrentData => currentMaze.Data;
@@ -45,6 +46,7 @@ public class MazeGenerator : MonoBehaviour
         {
             node.Deactivate();
         }
+        generationPath.Clear();
     }
 
     #region Main Generation
@@ -114,10 +116,12 @@ public class MazeGenerator : MonoBehaviour
         currentMaze.SetNodes(nodes);
     }
 
-    private Stack<MazeNode> GetNodeStack(MazeNode[,] nodes)
+    private Stack<MazeNode> GetNodeStack()
     {
         Stack<MazeNode> stack = new Stack<MazeNode>();
-        stack.Push(nodes[mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y]);
+        Debug.Log($"Starting at: [{mazeManager.CurrentStartingNode.X}|{mazeManager.CurrentStartingNode.Y}]");
+        Coordinate coordinate = new Coordinate(mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y);
+        stack.Push(currentMaze.NodesByCoordinate[coordinate]);
 
         return stack;
     }
@@ -137,20 +141,38 @@ public class MazeGenerator : MonoBehaviour
     private IEnumerator<float> CreatePath()
     {
         float visitedNodes = 0;
-        Stack<MazeNode> stack = GetNodeStack(CurrentNodes);
+        Stack<MazeNode> stack = GetNodeStack();
+        bool backtracking = false;
+        stack.Peek().MarkAsDeadEnd();
+        stack.Peek().DebugColor(Color.red);
         while (stack.Count > 0)
         {
             MazeNode currentNode = stack.Pop();
             Debug.Log("going to Node at: [" + currentNode.X + "," + currentNode.Y + "]");
             currentNode.Visit();
+            generationPath.Add(currentNode);
             visitedNodes++;
-            List<MazeNode> neighbors = GetUnvisitedNeighbors(currentNode);
+            List<MazeNode> neighbors = GetNeighbors(currentNode, true);
             if (neighbors.Count > 0)
             {
+                if (backtracking)
+                {
+                    backtracking = false;
+                }
+
                 stack.Push(currentNode);
                 neighbors.Shuffle();
                 stack.Push(neighbors[0]);
                 RemoveWallsAt(stack.Peek(), currentNode);
+            }
+            else
+            {
+                if (!backtracking)
+                {
+                    backtracking = true;
+                    currentNode.MarkAsDeadEnd();
+                    currentNode.DebugColor(Color.red);
+                }
             }
             yield return LoadingUtils.GetProgress(visitedNodes, CurrentNodes.Length * 2);
         }
@@ -160,24 +182,14 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeNode[,] nodes = CurrentNodes.Clone() as MazeNode[,];
 
-        nodes[0, 0] = null;
-        nodes[0, CurrentData.Height - 1] = null;
-        nodes[CurrentData.Width - 1, 0] = null;
-        nodes[CurrentData.Width - 1, CurrentData.Height - 1] = null;
-
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
             {
-                if (nodes[x, y] == null) continue;
-
-                if (!nodes[x, y].IsActive) continue;
-
-                if (nodes[x,y].ActiveWalls == 3)
+                if (nodes[x, y].DeadEnd)
                 {
-                    StartCoroutine(RemoveDeadEndWalls(nodes[x,y]));
+                    StartCoroutine(RemoveDeadEndWalls(nodes[x, y]));
                 }
-
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
         }
@@ -186,6 +198,17 @@ public class MazeGenerator : MonoBehaviour
     private IEnumerator RemoveDeadEndWalls(MazeNode node)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        if (MazeUtils.IsNodeAtCorner(node, CurrentData))
+        {
+            List<MazeNode> cornerNeighbors = GetNeighbors(node, false);
+            foreach (MazeNode corner in cornerNeighbors)
+            {
+                Cardinal neighbordirection = NodeUtils.GetCardinalDirection(node, corner);
+                RemoveWall(corner, neighbordirection);
+                yield return null;
+            }
+        }
+
         cardinals.Shuffle();
         int wallsRemoved = 0;
         while (cardinals.Count > 0)
@@ -211,6 +234,7 @@ public class MazeGenerator : MonoBehaviour
             }
             yield return null;
         }
+
     }
 
     private IEnumerator<float> AddItems()
@@ -266,24 +290,23 @@ public class MazeGenerator : MonoBehaviour
 
     #endregion
 
-    private List<MazeNode> GetUnvisitedNeighbors(MazeNode node)
+    private List<MazeNode> GetNeighbors(MazeNode node, bool excludeVisited)
     {
         List<MazeNode> neighbors = new List<MazeNode>();
         MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref neighbors);
-        neighbors.RemoveAll(item => item == null);
+        neighbors.RemoveAll(item => item == null || (excludeVisited && item.Visited));
         return neighbors;
     }
 
     private MazeNode AddToNeighborsList(Cardinal direction, MazeNode node)
     {
         MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        if (neighbor != null && neighbor.Visited == false)
+        if (neighbor != null)
         {
             return neighbor;
         }
         return null;
     }
-
 
     private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
     {

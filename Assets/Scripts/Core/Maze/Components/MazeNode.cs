@@ -11,6 +11,7 @@ public class MazeNode : Activateable
     private bool isBeingUsed;
 
     public bool Visited { get; set; }
+    public bool DeadEnd  { get; set; }
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsBeingUsed => isBeingUsed;
@@ -23,6 +24,11 @@ public class MazeNode : Activateable
     public void Visit()
     {
         Visited = true;
+    }
+
+    public void MarkAsDeadEnd()
+    {
+        DeadEnd = true;
     }
 
     #region Walls
@@ -63,7 +69,6 @@ public class MazeNode : Activateable
         if (HasWall(direction))
         {
             ClearWall(direction);
-            Debug.Log("Removed wall at " + wallDictionary[direction].transform.position);
         }
         else
         {
@@ -161,6 +166,7 @@ public class MazeNode : Activateable
         hasTorch = false;
         isBeingUsed = false;
         Visited = false;
+        DeadEnd = false;
         coordinates = new Coordinate();
     }
 

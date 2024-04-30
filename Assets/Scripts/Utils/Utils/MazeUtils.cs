@@ -53,15 +53,13 @@ public class MazeUtils
         return edgeNodes;
     }
 
-    public static List<MazeNode> GetCornerNodes(MazeNode[,] nodes, LevelData data)
+    public static bool IsNodeAtCorner(MazeNode nodes, LevelData data)
     {
-        List<MazeNode> vertexNodes = new List<MazeNode>();
-
-        vertexNodes.Add(nodes[0, 0]);
-        vertexNodes.Add(nodes[0, data.Height - 1]);
-        vertexNodes.Add(nodes[data.Width - 1, 0]);
-        vertexNodes.Add(nodes[data.Width - 1, data.Height - 1]);
-        return vertexNodes;
+        bool bottomLeft = nodes.X == 0 && nodes.Y == 0;
+        bool topLeft = nodes.X == 0 && nodes.Y == data.Height - 1;
+        bool bottomRight = nodes.X == data.Width - 1 && nodes.Y == 0;
+        bool topRight = nodes.X == data.Width - 1 && nodes.Y == data.Height - 1;
+        return bottomLeft || bottomRight || topLeft || topRight;
     }
 
     public static Stack<MazeNode> GetPathFromNodeToNode(MazeNode startNode, MazeNode targetNode, Maze maze)
