@@ -160,20 +160,30 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeNode[,] nodes = CurrentNodes.Clone() as MazeNode[,];
 
+        nodes[0, 0] = null;
+        nodes[0, CurrentData.Height - 1] = null;
+        nodes[CurrentData.Width - 1, 0] = null;
+        nodes[CurrentData.Width - 1, CurrentData.Height - 1] = null;
+
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
             {
-                if (nodes[x,y].IsActive && nodes[x,y].ActiveWalls == 3)
+                if (nodes[x, y] == null) continue;
+
+                if (!nodes[x, y].IsActive) continue;
+
+                if (nodes[x,y].ActiveWalls == 3)
                 {
-                    StartCoroutine(RemoveDeadEndWall(nodes[x,y]));
+                    StartCoroutine(RemoveDeadEndWalls(nodes[x,y]));
                 }
+
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
         }
     }
 
-    private IEnumerator RemoveDeadEndWall(MazeNode node)
+    private IEnumerator RemoveDeadEndWalls(MazeNode node)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         cardinals.Shuffle();

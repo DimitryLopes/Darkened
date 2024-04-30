@@ -50,8 +50,18 @@ public class MazeUtils
                 edgeNodes.Add(node);
             }
         }
-
         return edgeNodes;
+    }
+
+    public static List<MazeNode> GetCornerNodes(MazeNode[,] nodes, LevelData data)
+    {
+        List<MazeNode> vertexNodes = new List<MazeNode>();
+
+        vertexNodes.Add(nodes[0, 0]);
+        vertexNodes.Add(nodes[0, data.Height - 1]);
+        vertexNodes.Add(nodes[data.Width - 1, 0]);
+        vertexNodes.Add(nodes[data.Width - 1, data.Height - 1]);
+        return vertexNodes;
     }
 
     public static Stack<MazeNode> GetPathFromNodeToNode(MazeNode startNode, MazeNode targetNode, Maze maze)
