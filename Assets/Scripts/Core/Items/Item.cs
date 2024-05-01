@@ -78,9 +78,7 @@ public class Item : Activateable, IItem, IInteractable
 public struct ItemGenerationData
 {
     [SerializeField, Tooltip("In nodes")]
-    private int minDistanceFromStart;
-    [SerializeField, Tooltip("In nodes")]
-    private int minDistanceFromOtherItems;
+    private int minDistanceFromThings;
     [SerializeField]
     private SpawnType spawnType;
     [SerializeField, Tooltip("wether the item will replace or not the wall/node in it's position")]
@@ -88,8 +86,7 @@ public struct ItemGenerationData
 
     public SpawnType SpawnType => spawnType;
     public bool Replace => replace;
-    public int MinDistanceFromOtherItems => minDistanceFromOtherItems;
-    public int MinDistanceFromStart => minDistanceFromStart;
+    public int MinDistanceFromThings => minDistanceFromThings;
 }
 
 public enum SpawnType

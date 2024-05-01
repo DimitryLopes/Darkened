@@ -144,7 +144,7 @@ public class MazeGenerator : MonoBehaviour
         Stack<MazeNode> stack = GetNodeStack();
         bool backtracking = false;
         stack.Peek().MarkAsDeadEnd();
-        stack.Peek().DebugColor(Color.red);
+
         while (stack.Count > 0)
         {
             MazeNode currentNode = stack.Pop();
@@ -202,7 +202,7 @@ public class MazeGenerator : MonoBehaviour
             List<MazeNode> cornerNeighbors = GetNeighbors(node, false);
             foreach (MazeNode corner in cornerNeighbors)
             {
-                Cardinal neighbordirection = NodeUtils.GetCardinalDirection(node, corner);
+                Cardinal neighbordirection = NodeUtils.GetCardinalDirection(corner, node);
                 RemoveWall(corner, neighbordirection);
                 yield return null;
             }
@@ -256,16 +256,16 @@ public class MazeGenerator : MonoBehaviour
         switch (item.GenerationData.SpawnType)
         {
             case SpawnType.Node:
-                MazeNode node = GetAvailableNodeAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromStart);
+                MazeNode node = GetAvailableNodeAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
                 transform = node.transform;
                 break;
             case SpawnType.Wall:
-                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromStart);
+                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
                 transform = wall.transform;
                 break;
             case SpawnType.EdgeWalls:
                 List<MazeNode> edgeNodes = MazeUtils.GetEdgeNodes(shuffledNodes, CurrentData);
-                MazeWall chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item.GenerationData.MinDistanceFromStart, true, item.GenerationData.Replace);
+                MazeWall chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item.GenerationData.MinDistanceFromThings, true, item.GenerationData.Replace);
                 if (chosenWall != null)
                 {
                     transform = chosenWall.transform;
@@ -310,6 +310,7 @@ public class MazeGenerator : MonoBehaviour
     private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
+        currentMaze.MarkNodeAsUsed(nodes[startingX, 0]);
         return nodes[startingX, 0];
     }
 
@@ -519,11 +520,10 @@ public class MazeGenerator : MonoBehaviour
         foreach (MazeNode node in nodes)
         {
             int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
-            Debug.Log("[" + focusNode.X + "," + focusNode.Y + "] is " + distance + " nodes distant from [" + node.X + "," + node.Y + "]");
             if (distance >= minDistance)
             {
                 Debug.Log("[" + focusNode.X + "," + focusNode.Y + "]" + " is far enough from " + "[" + node.X + "," + node.Y + "]");
-                return node; // Return the first node that meets the requirement
+                return node;
             }
             else if(distance > maxDistance)
             {
@@ -537,41 +537,40 @@ public class MazeGenerator : MonoBehaviour
 
     private MazeNode GetAvailableNodeAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance)
     {
-        int closestDistance = int.MaxValue;
-        MazeNode closestNode = null;
+        int furthestNodeAvailableDistance = 0;
+        MazeNode furthestNode = null;
+
+        int totalDistance;
+        int iterations;
 
         foreach (MazeNode node in nodes)
         {
             if (node.IsBeingUsed) continue;
 
-            int maxDistance = 0;
+            totalDistance = 0;
+            iterations = 0;
 
             foreach (MazeNode focusNode in focusNodes)
             {
+                iterations++;
                 int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
-                if (distance < minDistance)
-                {
-                    // This node is too close to at least one focus node, skip to the next node
-                    maxDistance = 0;
-                    break;
-                }
-                maxDistance = Mathf.Max(maxDistance, distance);
+                totalDistance += distance;
             }
 
-            if (maxDistance >= minDistance)
-            {
-                // This node is far enough from all focus nodes
-                return node;
-            }
+            totalDistance = totalDistance / iterations;
 
-            if (maxDistance < closestDistance)
+            if (totalDistance < minDistance) continue;            
+
+            if (totalDistance >= minDistance) return node;
+            
+            if(totalDistance > furthestNodeAvailableDistance)
             {
-                closestDistance = maxDistance;
-                closestNode = node;
+                furthestNode = node;
+                furthestNodeAvailableDistance = totalDistance;
             }
         }
 
-        return closestNode;
+        return furthestNode;
     }
 
     private MazeWall GetAvailableWallAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance, bool edge = false, bool destroyWall = false)

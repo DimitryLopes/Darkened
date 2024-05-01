@@ -51,8 +51,7 @@ MonoBehaviour:
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
-    minDistanceFromStart: 4
-    minDistanceFromOtherItems: 1
+    minDistanceFromThings: 5
     spawnType: 0
     replace: 1
 --- !u!212 &1418582601741916346

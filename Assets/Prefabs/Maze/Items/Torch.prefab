@@ -102,8 +102,7 @@ MonoBehaviour:
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
-    minDistanceFromStart: 0
-    minDistanceFromOtherItems: 1
+    minDistanceFromThings: 1
     spawnType: 1
     replace: 0
   torchlight: {fileID: 5308823624080293511}

@@ -54,25 +54,26 @@ public class NodeUtils : MonoBehaviour
     public static Cardinal GetCardinalDirection(MazeNode fromNode, MazeNode toNode)
     {
         Coordinate offset = new Coordinate(fromNode.X - toNode.X, fromNode.Y - toNode.Y);
-
+        Cardinal direction = Cardinal.North;
         if (offset.Y > 0 && Mathf.Abs(offset.Y) > Mathf.Abs(offset.X))
         {
-            return Cardinal.North;
+            direction = Cardinal.North;
         }
         else if (offset.X > 0 && Mathf.Abs(offset.X) > Mathf.Abs(offset.Y))
         {
-            return Cardinal.East;
+            direction = Cardinal.East;
         }
         else if (offset.Y < 0 && Mathf.Abs(offset.Y) > Mathf.Abs(offset.X))
         {
-            return Cardinal.South;
+            direction = Cardinal.South;
         }
         else if (offset.X < 0 && Mathf.Abs(offset.X) > Mathf.Abs(offset.Y))
         {
-            return Cardinal.West;
+            direction = Cardinal.West;
         }
 
-        return Cardinal.North; // Default to North if the nodes are in the same position
+        Debug.Log($"[{fromNode.X},{fromNode.Y}] is at {direction} of [{toNode.X},{toNode.Y}]");
+        return direction;
     }
 
     public static Cardinal GetOppositeCardinal(Cardinal cardinal)
