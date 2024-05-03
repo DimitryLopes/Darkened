@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using Zenject;
 
 public abstract class Enemy : Activateable
@@ -17,6 +16,8 @@ public abstract class Enemy : Activateable
     protected SignalBus signalBus;
     protected Player Player;
     protected Maze Maze;
+    protected bool distracted;
+
 
     public float EnhancedDetectionRange => data.EnhancedDetectionRange;
     public float DetectionRange => data.DetectionRange;
@@ -72,13 +73,24 @@ public abstract class Enemy : Activateable
         }
     }
 
-    protected virtual void OnHit()
+    protected virtual void OnHit(OnEnemyHitSignal signal)
     {
-        Deactivate();
+        switch (signal.Item.Type)
+        {
+            case ItemType.Arrow:
+                Deactivate();
+                return;
+            case ItemType.Distraction:
+                OnDistracted(signal.Item.transform.position);
+                return;
+        }
     }
 
     private void Update()
     {
         currentState.HandleState();
     }
+
+    protected virtual void OnDistracted(Vector3 position) { }
+    protected virtual void OnDistractionEnded() { }
 }

@@ -54,7 +54,7 @@ public class EntityManager
     {
         if (Enemies.ContainsKey(enemyType))
         {
-            Enemies[enemyType].Activate();
+            Enemies[enemyType].Activate(true);
         }
         else
         {

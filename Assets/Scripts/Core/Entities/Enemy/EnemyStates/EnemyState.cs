@@ -1,9 +1,13 @@
+using UnityEngine.Events;
+
 public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
 {
     protected Enemy Enemy => Data.Enemy;
     public bool IsActive { get; private set; }
     public bool IsCompleted { get; private set; }
     protected U Data { get; private set; }
+    public UnityAction OnStateEndedCallback { get; set; }
+    public UnityAction OnStateStartedCallback { get; set; }
 
 
     public EnemyState(U data)
@@ -57,10 +61,14 @@ public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
     public virtual void OnActivate() 
     {
         Data.OnActivateCallback?.Invoke();
+        OnStateStartedCallback?.Invoke();
+        OnStateStartedCallback = null;
     }
 
     public virtual void OnComplete()
     {
         Data.OnStateCompletedCallback?.Invoke();
+        OnStateEndedCallback?.Invoke();
+        OnStateEndedCallback = null;
     }
 }

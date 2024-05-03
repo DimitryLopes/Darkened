@@ -49,9 +49,9 @@ public class UIItemView : Activateable, ISelectable
         itemAmountText.text = data.Amount.ToString();
     }
 
-    public override void Activate()
+    public override void Activate(bool forced = false)
     {
-        if (active) return;
+        if (active && !forced) return;
 
         active = true;
         OnActivate();

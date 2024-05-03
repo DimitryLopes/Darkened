@@ -7,9 +7,9 @@ public class EliminationMission : Mission<EliminationMissionData>
         signalBus.Subscribe<OnEnemyHitSignal>(OnMissionProgress);
     }
 
-    public void OnMissionProgress(OnEnemyHitSignal Signal)
+    public void OnMissionProgress(OnEnemyHitSignal signal)
     {
-        if (!IsActive) return;
+        if (!IsActive || signal.Item.Type != ItemType.Arrow) return;
 
         progress++;
         UpdateProgress();

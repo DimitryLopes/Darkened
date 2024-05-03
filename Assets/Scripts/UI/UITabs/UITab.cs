@@ -2,14 +2,14 @@ public class UITab : Activateable
 {
     private bool isAnimating;
 
-    public override void Activate()
+    public override void Activate(bool forced = false)
     {
-        if (!IsActive)
-        {
-            active = true;
-            DoActivateAnimation();
-            gameObject.SetActive(true);
-        }
+        if (active && !forced) return;
+
+        active = true;
+        DoActivateAnimation();
+        gameObject.SetActive(true);
+
     }
 
     public void ForceDeactivate()

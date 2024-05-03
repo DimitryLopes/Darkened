@@ -28,6 +28,7 @@ public class WerewolfEnemy : Enemy
     private MovingTowardsTargetEnemyState wanderingState;
     private MovingTowardsTargetEnemyState investigatingState;
     private MovingTowardsTargetEnemyState trackingState;
+    private MovingTowardsTargetEnemyState distractedState;
     private ChasingEnemyState chasingState;
     private WaitingEnemyState waitingState;
 
@@ -45,6 +46,8 @@ public class WerewolfEnemy : Enemy
 
     public override void OnActivate()
     {
+        distracted = false;
+        waitingState.OnStateEndedCallback = null;
         ChangeState(waitingState);
     }
 
@@ -54,10 +57,17 @@ public class WerewolfEnemy : Enemy
         currentState.RawDeactivate();
     }
 
-    protected override void OnHit()
+    protected override void OnHit(OnEnemyHitSignal signal)
     {
         cameraManager.ForceFinishAllAnimations();
-        base.OnHit();
+        base.OnHit(signal);
+    }
+
+    protected override void OnDistracted(Vector3 position)
+    {
+        MazeNode targetNode = MazeUtils.GetClosestNodeToVector(position, Maze.Nodes);
+        distractedState.SetPath(Maze, targetNode);
+        ChangeState(distractedState);
     }
 
     public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
@@ -75,6 +85,7 @@ public class WerewolfEnemy : Enemy
         waitingState = CreateWaitingStateData(OnWaitingCompleted);
         trackingState = CreateMovingStateData(true, null, OnTrackingStarted, OnTrackingComplete);
         wanderingState = CreateMovingStateData(false, null, OnWanderingStarted, OnWanderingCompleted);
+        distractedState = CreateMovingStateData(true, OnDistractionEnded, OnDistractionStateStarted, OnDistractionStateEnded);
         investigatingState = CreateMovingStateData(false, null, OnInvestigationStarted, OnInvestigationCompleted);
     }
 
@@ -101,6 +112,8 @@ public class WerewolfEnemy : Enemy
     private void Update()
     {
         currentState.HandleState();
+
+        if (distracted) return;
 
         distanceBetweenPlayer = Vector2.Distance(transform.position, Player.transform.position);
 
@@ -210,10 +223,25 @@ public class WerewolfEnemy : Enemy
         ChangeState(waitingState);
     }
 
+    private void OnDistractionStateStarted()
+    {
+        distracted = true;
+    }
+
+    private void OnDistractionStateEnded()
+    {
+        waitingState.OnStateEndedCallback += OnDistractionEnded;
+        ChangeState(waitingState);
+    }
 
     private void OnWaitingCompleted()
     {
         ChangeState(wanderingState);
+    }
+
+    protected override void OnDistractionEnded()
+    {
+        distracted = false;
     }
     #endregion
 

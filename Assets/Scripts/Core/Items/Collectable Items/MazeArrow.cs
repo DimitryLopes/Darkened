@@ -3,7 +3,6 @@ using Zenject;
 
 public class MazeArrow : CollectableMissionItem, IProjectile
 {
-
     [SerializeField]
     private Rigidbody2D rb;
     [SerializeField]
@@ -26,7 +25,7 @@ public class MazeArrow : CollectableMissionItem, IProjectile
         }
         else if (collision.CompareTag(Constants.LayersAndTags.ENEMY_TAG))
         {
-            signalBus.Fire(new OnEnemyHitSignal());
+            signalBus.Fire(new OnEnemyHitSignal(this));
         }
     }
 

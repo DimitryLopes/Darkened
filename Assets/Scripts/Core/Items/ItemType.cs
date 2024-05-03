@@ -2,7 +2,7 @@ public enum ItemType
 {
     Exit = 0,
     Flashlight,
-    Supplies,
+    Distraction,
     Button,
     Arrow,
     Bow,

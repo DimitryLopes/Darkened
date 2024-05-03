@@ -6,9 +6,9 @@ public class Activateable : MonoBehaviour, IActivateable
 
     public bool IsActive => active;
 
-    public virtual void Activate()
+    public virtual void Activate(bool forced = false)
     {
-        if (active) return;
+        if (active && !forced) return;
 
         active = true;
         gameObject.SetActive(true);
