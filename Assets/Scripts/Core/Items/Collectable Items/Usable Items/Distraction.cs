@@ -7,19 +7,11 @@ public class Distraction : UsableItem
     private EntityManager entityManager;
     [Inject]
     private InventoryManager inventoryManager;
-    [SerializeField]
-    private float travelTime;
-    [SerializeField]
-    private float speed;
 
     [SerializeField]
     private Rigidbody2D rb;
 
     public override bool CanUse => inventoryManager.HasEnoughItem(ItemType.Distraction);
-
-    public float TravelTime => travelTime;
-
-    public float Speed => speed;
 
     public override void OnItemUsed()
     {
@@ -27,6 +19,8 @@ public class Distraction : UsableItem
 
         Player player = entityManager.GetPlayer();
         transform.position = player.transform.position;
+        Activate();
+        DisableInteraction();
 
         signalBus.Fire(new OnEnemyHitSignal(this));
     }

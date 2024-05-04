@@ -16,9 +16,10 @@ public abstract class Enemy : Activateable
     protected SignalBus signalBus;
     protected Player Player;
     protected Maze Maze;
-    protected bool distracted;
+    protected Distraction distraction;
 
 
+    protected bool IsDistracted => distraction != null;
     public float EnhancedDetectionRange => data.EnhancedDetectionRange;
     public float DetectionRange => data.DetectionRange;
     public float MovementSpeed => data.Speed;
@@ -81,7 +82,7 @@ public abstract class Enemy : Activateable
                 Deactivate();
                 return;
             case ItemType.Distraction:
-                OnDistracted(signal.Item.transform.position);
+                OnDistracted(signal.Item as Distraction);
                 return;
         }
     }
@@ -91,6 +92,6 @@ public abstract class Enemy : Activateable
         currentState.HandleState();
     }
 
-    protected virtual void OnDistracted(Vector3 position) { }
+    protected virtual void OnDistracted(Distraction distraction) { }
     protected virtual void OnDistractionEnded() { }
 }

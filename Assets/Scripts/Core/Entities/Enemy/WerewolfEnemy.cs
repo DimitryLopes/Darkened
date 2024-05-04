@@ -15,6 +15,8 @@ public class WerewolfEnemy : Enemy
     [SerializeField]
     private float waitingTime;
     [SerializeField]
+    private float distractionWaitingTime;
+    [SerializeField]
     private float raycastOffset;
 
     [SerializeField, Header("Animations")]
@@ -31,6 +33,7 @@ public class WerewolfEnemy : Enemy
     private MovingTowardsTargetEnemyState distractedState;
     private ChasingEnemyState chasingState;
     private WaitingEnemyState waitingState;
+    private WaitingEnemyState distractedWaitingEnemyState;
 
     //Updated in real time
     private RaycastHit2D leftHit;
@@ -46,7 +49,7 @@ public class WerewolfEnemy : Enemy
 
     public override void OnActivate()
     {
-        distracted = false;
+        distraction = null;
         waitingState.OnStateEndedCallback = null;
         ChangeState(waitingState);
     }
@@ -63,13 +66,6 @@ public class WerewolfEnemy : Enemy
         base.OnHit(signal);
     }
 
-    protected override void OnDistracted(Vector3 position)
-    {
-        MazeNode targetNode = MazeUtils.GetClosestNodeToVector(position, Maze.Nodes);
-        distractedState.SetPath(Maze, targetNode);
-        ChangeState(distractedState);
-    }
-
     public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
     {
         effectsRendererColor = Color.red;
@@ -82,16 +78,17 @@ public class WerewolfEnemy : Enemy
         var chasingData = new BaseEnemyStateData(this, true, OnChasingEnded, OnChasingStarted, null);
 
         chasingState = new ChasingEnemyState(chasingData);
-        waitingState = CreateWaitingStateData(OnWaitingCompleted);
+        waitingState = CreateWaitingStateData(OnWaitingCompleted, waitingTime);
+        distractedWaitingEnemyState = CreateWaitingStateData(OnDistractionEnded, distractionWaitingTime);
         trackingState = CreateMovingStateData(true, null, OnTrackingStarted, OnTrackingComplete);
         wanderingState = CreateMovingStateData(false, null, OnWanderingStarted, OnWanderingCompleted);
-        distractedState = CreateMovingStateData(true, OnDistractionEnded, OnDistractionStateStarted, OnDistractionStateEnded);
+        distractedState = CreateMovingStateData(true, null, OnDistractionStateStarted, OnDistractionStateEnded);
         investigatingState = CreateMovingStateData(false, null, OnInvestigationStarted, OnInvestigationCompleted);
     }
 
-    private WaitingEnemyState CreateWaitingStateData(UnityAction onWaitingEnded)
+    private WaitingEnemyState CreateWaitingStateData(UnityAction onWaitingEnded, float duration)
     {
-        var data = new WaitingEnemyStateData(this, false, waitingTime, null, null, onWaitingEnded);
+        var data = new WaitingEnemyStateData(this, false, duration, null, null, onWaitingEnded);
         return new WaitingEnemyState(data);
     }
 
@@ -113,7 +110,7 @@ public class WerewolfEnemy : Enemy
     {
         currentState.HandleState();
 
-        if (distracted) return;
+        if (IsDistracted) return;
 
         distanceBetweenPlayer = Vector2.Distance(transform.position, Player.transform.position);
 
@@ -223,15 +220,22 @@ public class WerewolfEnemy : Enemy
         ChangeState(waitingState);
     }
 
+    protected override void OnDistracted(Distraction distraction)
+    {
+        MazeNode targetNode = MazeUtils.GetClosestNodeToVector(distraction.transform.position, Maze.Nodes);
+        distractedState.SetPath(Maze, targetNode);
+        ChangeState(distractedState);
+        this.distraction = distraction;
+    }
+
     private void OnDistractionStateStarted()
     {
-        distracted = true;
+        PlaySFX(AudioKey.SFX_enemy_sniff);
     }
 
     private void OnDistractionStateEnded()
     {
-        waitingState.OnStateEndedCallback += OnDistractionEnded;
-        ChangeState(waitingState);
+        ChangeState(distractedWaitingEnemyState);
     }
 
     private void OnWaitingCompleted()
@@ -241,7 +245,9 @@ public class WerewolfEnemy : Enemy
 
     protected override void OnDistractionEnded()
     {
-        distracted = false;
+        ChangeState(wanderingState);
+        distraction.Deactivate();
+        distraction = null;
     }
     #endregion
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 using Zenject;
 using Unity.VisualScripting;
 
@@ -203,7 +204,8 @@ public class MazeGenerator : MonoBehaviour
             foreach (MazeNode corner in cornerNeighbors)
             {
                 Cardinal neighbordirection = NodeUtils.GetCardinalDirection(corner, node);
-                RemoveWall(corner, neighbordirection);
+                MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(neighbordirection, corner, currentMaze);
+                RemoveWallsAt(corner, neighbor);
                 yield return null;
             }
         }
@@ -238,14 +240,64 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator<float> AddItems()
     {
-        List<MissionItem> items = mazeManager.GetMissionItems();
+        List<Item> items = mazeManager.GetMissionItems();
+        int randomItemAmount = GetRandomItemAmount(CurrentData.SizeData.AverageAdditionalItemAmount);
+
+        for(int i = 0; i < randomItemAmount; i++)
+        {
+            ItemType AdditionalItem = GetRandomItem();
+            items.Add(mazeManager.GetAvailableItem(AdditionalItem));
+            yield return LoadingUtils.GetProgress(i, randomItemAmount * 2);
+        }
+
         for (int i = 0; i < items.Count; i++)
         {
             items[i].Activate();
             PositionItem(items[i]);
-            yield return LoadingUtils.GetProgress(i, items.Count);
+            yield return LoadingUtils.GetProgress(i + randomItemAmount, items.Count + randomItemAmount);
         }
     }
+
+    private int GetRandomItemAmount(float itemAverage)
+    {
+        int baseItemAmount = Mathf.FloorToInt(itemAverage);
+        float additionalItemProbability = itemAverage - baseItemAmount;
+        float randomValue = Random.Range(-additionalItemProbability, additionalItemProbability);
+        int items = Mathf.RoundToInt(itemAverage + randomValue);
+
+        return items;
+    }
+
+    public ItemType GetRandomItem()
+    {
+        List<float> normalizedProbabilities = new List<float>();
+        float totalProbability = 0f;
+        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
+        foreach (var itemData in CurrentData.DifficultyData.DifficultyItemDatas)
+        {
+            totalProbability += itemData.Probability;
+            normalizedProbabilities.Add(itemData.Probability / totalProbability);
+        }
+
+        // Generate a random value
+        float randomValue = Random.Range(0f, 1f);
+
+        // Select item based on normalized probabilities
+        float cumulativeProbability = 0f;
+        for (int i = 0; i < normalizedProbabilities.Count; i++)
+        {
+            cumulativeProbability += normalizedProbabilities[i];
+            if (randomValue <= cumulativeProbability)
+            {
+                return itemPool[i].Item;
+            }
+        }
+
+        // This should never happen unless there's an issue with the probabilities
+        Debug.LogError("Failed to select a random item. Check probability values.");
+        return default;
+    }
+
 
     private void PositionItem(Item item)
     {

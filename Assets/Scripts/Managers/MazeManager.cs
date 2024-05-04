@@ -75,9 +75,9 @@ public class MazeManager
         return newItem;
     }
 
-    public List<MissionItem> GetMissionItems()
+    public List<Item> GetMissionItems()
     {
-        List<MissionItem> items = new List<MissionItem>();
+        List<Item> items = new List<Item>();
         foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
         {
             foreach (IMission baseMission in missionGroup.Missions)

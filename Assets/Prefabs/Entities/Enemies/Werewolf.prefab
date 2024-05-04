@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ad90e37d68db044bcc439d95c634f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collider: {fileID: 0}
   data: {fileID: 11400000, guid: 22a2b9eb22b52124280cdbc9883af1ba, type: 2}
   rb: {fileID: 4829018076957723263}
   spriteRenderer: {fileID: 6402335485789434333}
@@ -108,6 +109,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   waitingTime: 1.65
+  distractionWaitingTime: 3
   raycastOffset: 9
   animationDuration: 1
   chasePostProcessingEffect: {fileID: 11400000, guid: 338d3563588a9904aa9d7781da65e89e, type: 2}

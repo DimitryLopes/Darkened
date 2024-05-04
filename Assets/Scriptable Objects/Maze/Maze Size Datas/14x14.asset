@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 14
   width: 14
+  averageAdditionalItemAmount: 1.5

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Rename Me", menuName = "Scriptable Objects/Settings/Difficulty")]
@@ -7,7 +9,7 @@ public class DifficultyData : ScriptableObject, IUISelectable
     private DifficultyType difficulty;
     [SerializeField]
     private string difficultyName;
-    [SerializeField, Range(0, 2)]
+    [SerializeField, Range(0, 2), Header("Torches")]
     private float torchRadius;
     [SerializeField, Range(0, 1), Tooltip("Minimum toch percentage based on map size")]
     private float minTorchRatio;
@@ -16,13 +18,29 @@ public class DifficultyData : ScriptableObject, IUISelectable
     [SerializeField, Range(0, 1), Tooltip("Ration of torches that should be lit on start")]
     private float litTorchRatio;
 
+    [SerializeField, Header("Items")]
+    private List<DifficultyItemData> difficultyItemDatas;
+
     public float MinimumTorchRatio => minTorchRatio;
     public float LitTorchRatio => litTorchRatio;
     public float MaximumTorchRatio => maxTorchRatio;
     public float TorchRadius => torchRadius;
     public string Title => difficultyName;
+    public List<DifficultyItemData> DifficultyItemDatas => difficultyItemDatas;
 
     public DifficultyType DifficultyType => difficulty;
 
     public SelectableType SelectableType => SelectableType.Difficulty;
+
+    [Serializable]
+    public struct DifficultyItemData
+    {
+        [SerializeField, Range(0, 1)]
+        private float probability;
+        [SerializeField]
+        private ItemType item;
+
+        public float Probability => probability;
+        public ItemType Item => item;
+    }
 }
