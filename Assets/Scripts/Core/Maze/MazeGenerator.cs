@@ -270,24 +270,22 @@ public class MazeGenerator : MonoBehaviour
 
     public ItemType GetRandomItem()
     {
-        List<float> normalizedProbabilities = new List<float>();
+        List<(float, float)> probabilities = new ();
         float totalProbability = 0f;
         List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
         foreach (var itemData in CurrentData.DifficultyData.DifficultyItemDatas)
         {
+            float oldProbability = totalProbability;
             totalProbability += itemData.Probability;
-            normalizedProbabilities.Add(itemData.Probability / totalProbability);
+            (float, float) range = (oldProbability, totalProbability);
+            probabilities.Add(range);
         }
 
-        // Generate a random value
-        float randomValue = Random.Range(0f, 1f);
+        float randomValue = Random.Range(0f, totalProbability);
 
-        // Select item based on normalized probabilities
-        float cumulativeProbability = 0f;
-        for (int i = 0; i < normalizedProbabilities.Count; i++)
+        for (int i = 0; i < probabilities.Count; i++)
         {
-            cumulativeProbability += normalizedProbabilities[i];
-            if (randomValue <= cumulativeProbability)
+            if (randomValue >= probabilities[i].Item1 && randomValue < probabilities[i].Item2)
             {
                 return itemPool[i].Item;
             }

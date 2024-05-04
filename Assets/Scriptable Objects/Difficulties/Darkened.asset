@@ -19,5 +19,7 @@ MonoBehaviour:
   maxTorchRatio: 0.2
   litTorchRatio: 0.2
   difficultyItemDatas:
-  - probability: 1
+  - probability: 0.5
     item: 2
+  - probability: 0.8
+    item: 7

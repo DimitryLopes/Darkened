@@ -7,4 +7,5 @@ public enum ItemType
     Arrow,
     Bow,
     DefaultTorch,
+    Oil,
 }

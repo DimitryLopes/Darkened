@@ -21,3 +21,5 @@ MonoBehaviour:
   difficultyItemDatas:
   - probability: 1
     item: 2
+  - probability: 0.2
+    item: 7

@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
         movement.ResetMovement();
     }
 
+    #region Torch
+
     public void ActiveTorch()
     {
         playerTorch.enabled = true;
@@ -43,4 +45,20 @@ public class Player : MonoBehaviour
     {
         playerTorch.enabled = false;
     }
+
+    public void SetBigTorch()
+    {
+        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_BIG_TORCH_SIZE;
+    }
+
+    public void SetSmallTorch()
+    {
+         playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_SMALL_TORCH_SIZE;
+    }
+
+    public void SetDefaultTorch()
+    {
+        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_DEFAULT_TORCH_SIZE;
+    }
+    #endregion
 }

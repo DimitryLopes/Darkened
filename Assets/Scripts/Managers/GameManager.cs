@@ -129,6 +129,7 @@ public class GameManager
 
         player.transform.position = mazeManager.CurrentStartingNode.transform.position;
         player.ToggleActing(true);
+        player.SetDefaultTorch();
 
         Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType);
         enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;

@@ -3,8 +3,18 @@ using UnityEngine;
 
 public static class Constants
 {
-    public const string HORIZONTAL_AXIS = "Horizontal";
-    public const string VERTICAL_AXIS = "Vertical";
+    public static class Axis
+    {
+        public const string HORIZONTAL_AXIS = "Horizontal";
+        public const string VERTICAL_AXIS = "Vertical";
+    }
+
+    public static class Player
+    {
+        public const float PLAYER_DEFAULT_TORCH_SIZE = 1;
+        public const float PLAYER_BIG_TORCH_SIZE = 1.6f;
+        public const float PLAYER_SMALL_TORCH_SIZE = 0.75f;
+    }
 
     public static class Scenes
     {
