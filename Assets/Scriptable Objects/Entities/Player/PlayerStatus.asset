@@ -20,4 +20,4 @@ MonoBehaviour:
   depletedStaminaRegenCooldown: 2.75
   depletedStaminaRegenSpeedMultiplier: 1.75
   maxStamina: 80
-  interactionDistance: 0.4
+  interactionDistance: 0.3
