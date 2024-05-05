@@ -5,21 +5,23 @@ public class EntityManager
 {
     private readonly PlayerFactory playerFactory;
     private readonly EnemyFactory enemyFactory;
+    private readonly EntityContainer container;
 
     private Dictionary<EnemyType, Enemy> Enemies = new Dictionary<EnemyType, Enemy>();
     private Player player;
 
-    public EntityManager(PlayerFactory playerFactory, EnemyFactory enemyFactory)
+    public EntityManager(PlayerFactory playerFactory, EnemyFactory enemyFactory, EntityContainer container)
     {
         this.playerFactory = playerFactory;
         this.enemyFactory = enemyFactory;
+        this.container = container;
     }
 
     public Player GetPlayer()
     {
         if (player == null)
         {
-            player = playerFactory.Create();
+            player = playerFactory.Create(container.transform);
             player.SetUp();
         }
 
@@ -33,7 +35,7 @@ public class EntityManager
             return Enemies[enemyType];
         }
 
-        Enemy enemy = enemyFactory.Create(enemyType);
+        Enemy enemy = enemyFactory.Create(enemyType, container.transform);
         Enemies.Add(enemyType, enemy);
         return enemy;
     }

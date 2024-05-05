@@ -243,9 +243,20 @@ public class MazeGenerator : MonoBehaviour
         List<Item> items = mazeManager.GetMissionItems();
         int randomItemAmount = GetRandomItemAmount(CurrentData.SizeData.AverageAdditionalItemAmount);
 
-        for(int i = 0; i < randomItemAmount; i++)
+        List<(float, float)> probabilities = new();
+        float totalProbability = 0f;
+        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
+        foreach (var itemData in CurrentData.DifficultyData.DifficultyItemDatas)
         {
-            ItemType AdditionalItem = GetRandomItem();
+            float oldProbability = totalProbability;
+            totalProbability += itemData.Probability;
+            (float, float) range = (oldProbability, totalProbability);
+            probabilities.Add(range);
+        }
+
+        for (int i = 0; i < randomItemAmount; i++)
+        {
+            ItemType AdditionalItem = GetRandomItem(totalProbability, probabilities, itemPool);
             items.Add(mazeManager.GetAvailableItem(AdditionalItem));
             yield return LoadingUtils.GetProgress(i, randomItemAmount * 2);
         }
@@ -268,19 +279,8 @@ public class MazeGenerator : MonoBehaviour
         return items;
     }
 
-    public ItemType GetRandomItem()
+    public ItemType GetRandomItem(float totalProbability, List<(float,float)> probabilities, List<DifficultyData.DifficultyItemData> itemPool)
     {
-        List<(float, float)> probabilities = new ();
-        float totalProbability = 0f;
-        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
-        foreach (var itemData in CurrentData.DifficultyData.DifficultyItemDatas)
-        {
-            float oldProbability = totalProbability;
-            totalProbability += itemData.Probability;
-            (float, float) range = (oldProbability, totalProbability);
-            probabilities.Add(range);
-        }
-
         float randomValue = Random.Range(0f, totalProbability);
 
         for (int i = 0; i < probabilities.Count; i++)

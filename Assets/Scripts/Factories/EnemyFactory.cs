@@ -1,3 +1,4 @@
+using UnityEngine;
 using Zenject;
 
 public class EnemyFactory 
@@ -11,10 +12,10 @@ public class EnemyFactory
         this.dataBase = dataBase;
     }
 
-    public Enemy Create(EnemyType type)
+    public Enemy Create(EnemyType type, Transform parent)
     {
         Enemy prefab = dataBase.EnemyData[type];
-        Enemy instance = container.InstantiatePrefabForComponent<Enemy>(prefab);
+        Enemy instance = container.InstantiatePrefabForComponent<Enemy>(prefab, parent);
 
         return instance;
     }

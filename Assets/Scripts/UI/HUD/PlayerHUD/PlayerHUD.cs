@@ -16,8 +16,6 @@ public class PlayerHUD : Activateable
         signalBus.Subscribe<OnPlayerStaminaChangedSignal>(OnPlayerStaminaChanged);
         signalBus.Subscribe<OnPlayerStaminaExaustedSignal>(OnPlayerStaminaExausted);
         signalBus.Subscribe<OnPlayerExaustedRecoveredSignal>(OnPlayerExaustionRecovered);
-
-        staminaBar.SetUp(entityManager.GetPlayer());
     }
 
     private void OnPlayerStaminaChanged(OnPlayerStaminaChangedSignal signal)
@@ -37,6 +35,7 @@ public class PlayerHUD : Activateable
 
     public override void OnActivate()
     {
+        staminaBar.SetUp(entityManager.GetPlayer());
         staminaBar.UpdateBar();
     }
 

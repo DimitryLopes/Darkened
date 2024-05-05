@@ -1,4 +1,5 @@
 using Zenject;
+using UnityEngine;
 
 public class PlayerFactory
 {
@@ -11,9 +12,9 @@ public class PlayerFactory
         this.container = container;
     }
 
-    public Player Create()
+    public Player Create(Transform parent)
     {
-        Player player = container.InstantiatePrefabForComponent<Player>(playerPrefab);
+        Player player = container.InstantiatePrefabForComponent<Player>(playerPrefab, parent);
         return player;
     }
 }
