@@ -23,3 +23,5 @@ MonoBehaviour:
     item: 2
   - probability: 0.2
     item: 7
+  - probability: 0.4
+    item: 8

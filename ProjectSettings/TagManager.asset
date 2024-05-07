@@ -54,6 +54,9 @@ TagManager:
   - name: Maze Walls
     uniqueID: 2603997533
     locked: 0
+  - name: Spectral Torch
+    uniqueID: 1564734235
+    locked: 0
   - name: Maze Items
     uniqueID: 2994701903
     locked: 0

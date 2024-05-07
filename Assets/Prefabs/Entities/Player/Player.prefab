@@ -127,7 +127,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1542965981
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c22340e383b54c44196cb7765328e79d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -169,6 +169,8 @@ MonoBehaviour:
   movement: {fileID: 6005018496085755486}
   status: {fileID: 11400000, guid: 6a372f500043d5649a41dbdfa3843e1a, type: 2}
   interaction: {fileID: 272070270571167502}
+  defaultTorchColor: {r: 1, g: 1, b: 1, a: 1}
+  spectalTorchColor: {r: 0.50980395, g: 1, b: 1, a: 1}
 --- !u!50 &9110118225361265098
 Rigidbody2D:
   serializedVersion: 4
@@ -299,8 +301,8 @@ MonoBehaviour:
   m_LocalBounds:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 0
-  m_PointLightOuterAngle: 120
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
   m_PointLightOuterRadius: 1
   m_ShapeLightParametricSides: 5

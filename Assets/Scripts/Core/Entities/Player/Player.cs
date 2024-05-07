@@ -15,6 +15,10 @@ public class Player : MonoBehaviour
     private PlayerStatus status;
     [SerializeField]
     private PlayerInteraction interaction;
+    [SerializeField]
+    private Color defaultTorchColor;
+    [SerializeField]
+    private Color spectalTorchColor;
 
     public float CurrentStamina => movement.CurrentStamina;
     public float MaxStamina => status.MaxStamina;
@@ -35,7 +39,6 @@ public class Player : MonoBehaviour
     }
 
     #region Torch
-
     public void ActiveTorch()
     {
         playerTorch.enabled = true;
@@ -59,6 +62,14 @@ public class Player : MonoBehaviour
     public void SetDefaultTorch()
     {
         playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_DEFAULT_TORCH_SIZE;
+        playerTorch.shadowsEnabled = true;
+        playerTorch.color = defaultTorchColor;
+    }
+
+    public void SetSpectralTorch()
+    {
+        playerTorch.shadowsEnabled = false;
+        playerTorch.color = spectalTorchColor;
     }
     #endregion
 }
