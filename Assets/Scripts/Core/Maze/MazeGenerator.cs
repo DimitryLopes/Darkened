@@ -243,20 +243,20 @@ public class MazeGenerator : MonoBehaviour
         List<Item> items = mazeManager.GetMissionItems();
         int randomItemAmount = GetRandomItemAmount(CurrentData.SizeData.AverageAdditionalItemAmount);
 
-        List<(float, float)> probabilities = new();
-        float totalProbability = 0f;
         List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
-        foreach (var itemData in CurrentData.DifficultyData.DifficultyItemDatas)
-        {
-            float oldProbability = totalProbability;
-            totalProbability += itemData.Probability;
-            (float, float) range = (oldProbability, totalProbability);
-            probabilities.Add(range);
-        }
-
         for (int i = 0; i < randomItemAmount; i++)
         {
-            ItemType AdditionalItem = GetRandomItem(totalProbability, probabilities, itemPool);
+            List<(float, float)> probabilities = new();
+            float totalProbability = 0f;
+            foreach (var itemData in itemPool)
+            {
+                float oldProbability = totalProbability;
+                totalProbability += itemData.Probability;
+                (float, float) range = (oldProbability, totalProbability);
+                probabilities.Add(range);
+            }
+
+            ItemType AdditionalItem = GetRandomItem(totalProbability,ref probabilities, ref itemPool);
             items.Add(mazeManager.GetAvailableItem(AdditionalItem));
             yield return LoadingUtils.GetProgress(i, randomItemAmount * 2);
         }
@@ -279,7 +279,7 @@ public class MazeGenerator : MonoBehaviour
         return items;
     }
 
-    public ItemType GetRandomItem(float totalProbability, List<(float,float)> probabilities, List<DifficultyData.DifficultyItemData> itemPool)
+    public ItemType GetRandomItem(float totalProbability,ref List<(float,float)> probabilities, ref List<DifficultyData.DifficultyItemData> itemPool)
     {
         float randomValue = Random.Range(0f, totalProbability);
 
@@ -287,6 +287,8 @@ public class MazeGenerator : MonoBehaviour
         {
             if (randomValue >= probabilities[i].Item1 && randomValue < probabilities[i].Item2)
             {
+                probabilities.RemoveAt(i);
+                itemPool.RemoveAt(i);
                 return itemPool[i].Item;
             }
         }
