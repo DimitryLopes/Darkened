@@ -6,11 +6,6 @@ public class PlayerAction : MonoBehaviour
 
     public bool CanAct { get; protected set; }
 
-    public virtual void SetUp(PlayerStatus status)
-    {
-        this.status = status;
-    }
-
     public void ToggleActing(bool value)
     {
         CanAct = value;

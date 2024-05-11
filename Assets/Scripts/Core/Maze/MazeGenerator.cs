@@ -287,9 +287,10 @@ public class MazeGenerator : MonoBehaviour
         {
             if (randomValue >= probabilities[i].Item1 && randomValue < probabilities[i].Item2)
             {
+                ItemType item = itemPool[i].Item;
                 probabilities.RemoveAt(i);
                 itemPool.RemoveAt(i);
-                return itemPool[i].Item;
+                return item;
             }
         }
 

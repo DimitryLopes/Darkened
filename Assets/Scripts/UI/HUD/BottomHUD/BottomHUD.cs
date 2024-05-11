@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,12 +13,31 @@ public class BottomHUD : Activateable
     private Button nextItemButton;
     [SerializeField]
     private Button previousItemButton;
+    [SerializeField]
+    private UIInteractionButton interactButton;
+    [SerializeField]
+    private UIToggleButton sprintButton;
+
+    public UIToggleButton SprintButton => sprintButton;
 
     private void Start()
     {
         useItemButton.onClick.AddListener(OnUseButtonClicked);
         nextItemButton.onClick.AddListener(OnNextButtonClicked);
         previousItemButton.onClick.AddListener(OnPreviousButtonClicked);
+        interactButton.Button.onClick.AddListener(OnInteractionButtonClicked);
+    }
+
+    private void OnEnable()
+    {
+        signalBus.Subscribe<OnPlayerInteractableChangedSignal>(OnInteractableChanged);
+    }
+
+    private void OnDisable()
+    {
+        signalBus.TryUnsubscribe<OnPlayerInteractableChangedSignal>(OnInteractableChanged);
+        if (!sprintButton.IsToggled) return;
+        sprintButton.Toggle();
     }
 
     public void UpdateButtonHUD(bool hasUse)
@@ -32,6 +48,22 @@ public class BottomHUD : Activateable
     public override void OnActivate()
     {
         useItemButton.interactable = false;
+    }
+
+    private void OnInteractableChanged(OnPlayerInteractableChangedSignal signal)
+    {
+        if(signal.Item != null)
+        {
+            interactButton.SetIcon(signal.Item.Icon);
+            return;
+        }
+
+        interactButton.SetIcon(null);
+    }
+
+    private void OnInteractionButtonClicked()
+    {
+        signalBus.Fire(new OnInteractionButtonClickedSignal());
     }
 
     private void OnNextButtonClicked()

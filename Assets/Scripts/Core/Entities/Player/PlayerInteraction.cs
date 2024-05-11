@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class PlayerInteraction : PlayerAction
 {
@@ -8,6 +9,16 @@ public class PlayerInteraction : PlayerAction
     private LayerMask obstructionLayer;
 
     public IInteractable currentInteractable;
+
+    private SignalBus signalBus;
+
+    public void SetUp(PlayerStatus status, SignalBus signalBus)
+    {
+        this.status = status;
+        this.signalBus = signalBus;
+
+        signalBus.Subscribe<OnInteractionButtonClickedSignal>(TryInteract);
+    }
 
     private void Update()
     {
@@ -72,6 +83,7 @@ public class PlayerInteraction : PlayerAction
         currentInteractable?.RemoveHighlight();
         currentInteractable = interactable;
         interactable?.Highlight();
+        signalBus.Fire(new OnPlayerInteractableChangedSignal(currentInteractable as Item));
     }
 
     private void TryInteract()

@@ -22,7 +22,7 @@ public class Item : Activateable, IItem, IInteractable
 
     protected ItemType type;
 
-    public Sprite Icon => itemIcon;
+    public virtual Sprite Icon => itemIcon;
     public ItemType Type => type;
 
     public ItemGenerationData GenerationData => itemGenerationData;

@@ -6,9 +6,10 @@ public class SignalInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
 
-        Container.DeclareSignal<OnNewGameStartedSignal>();
         //In Game
         Container.DeclareSignal<OnGameCompletedSignal>();
+        Container.DeclareSignal<OnNewGameStartedSignal>();
+        Container.DeclareSignal<OnPlayerInteractableChangedSignal>();
         //Missions and Objectives
         Container.DeclareSignal<OnMissionProgressSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
@@ -34,6 +35,7 @@ public class SignalInstaller : MonoInstaller
         //UI
         Container.DeclareSignal<OnSelectableSelectedSignal>();
         //HUD
+        Container.DeclareSignal<OnInteractionButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDNextButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDUseButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDPreviousButtonClickedSignal>();

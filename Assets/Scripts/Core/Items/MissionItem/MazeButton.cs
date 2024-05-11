@@ -6,6 +6,7 @@ public class MazeButton : MissionItem
     private Sprite unactiveSprite;
     [SerializeField]
     private Sprite activeSprite;
+    public override Sprite Icon => spriteRenderer.sprite;
 
     public override void OnInteractionEnabled()
     {

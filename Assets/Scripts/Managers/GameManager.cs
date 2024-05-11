@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
@@ -15,6 +16,8 @@ public class GameManager
     private readonly HUDManager hudManager;
     private readonly SignalBus signalBus;
 
+    public static bool IsOnPhone;
+
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
         PersistenceManager percistenceManager, UnlockableManager unlockableManager, SignalBus signalBus)
@@ -30,6 +33,8 @@ public class GameManager
         this.mazeManager = mazeManager;
         this.hudManager = hudManager;
         this.signalBus = signalBus;
+
+        IsOnPhone = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);

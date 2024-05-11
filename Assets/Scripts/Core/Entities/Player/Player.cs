@@ -6,6 +6,10 @@ public class Player : MonoBehaviour
 {
     [Inject]
     private SignalBus signalBus;
+    [Inject]
+    private Joystick joystick;
+    [Inject]
+    private HUD hud;
 
     [SerializeField]
     private Light2D playerTorch;
@@ -25,8 +29,8 @@ public class Player : MonoBehaviour
 
     public void SetUp()
     {
-        movement.SetUp(status, signalBus);
-        interaction.SetUp(status);
+        movement.SetUp(status, joystick, hud.BottomHUD.SprintButton, signalBus);
+        interaction.SetUp(status, signalBus);
     }
 
     public void ToggleActing(bool value)
