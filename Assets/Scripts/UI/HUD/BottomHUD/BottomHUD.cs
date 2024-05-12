@@ -45,6 +45,12 @@ public class BottomHUD : Activateable
         useItemButton.interactable = hasUse;
     }
 
+    public override void Activate(bool forced = false)
+    {
+        if (!GameManager.IsOnPhone) return;
+        base.Activate(forced);
+    }
+
     public override void OnActivate()
     {
         useItemButton.interactable = false;
@@ -78,6 +84,6 @@ public class BottomHUD : Activateable
 
     private void OnUseButtonClicked()
     {
-        signalBus.Fire(new OnBottomHUDUseButtonClickedSignal());
+        signalBus.Fire(new OnPlayerItemUsedSignal());
     }
 }

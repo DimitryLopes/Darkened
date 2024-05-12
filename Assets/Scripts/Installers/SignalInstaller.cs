@@ -37,7 +37,7 @@ public class SignalInstaller : MonoInstaller
         //HUD
         Container.DeclareSignal<OnInteractionButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDNextButtonClickedSignal>();
-        Container.DeclareSignal<OnBottomHUDUseButtonClickedSignal>();
+        Container.DeclareSignal<OnPlayerItemUsedSignal>();
         Container.DeclareSignal<OnBottomHUDPreviousButtonClickedSignal>();
         //whatever armengue shit I did
         Container.DeclareSignal<OnBindingsFinishedSignal>();

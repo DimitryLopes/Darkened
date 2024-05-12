@@ -24,6 +24,12 @@ public class PlayerInteraction : PlayerAction
     {
         if (CanAct)
         {
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                signalBus.Fire(new OnPlayerItemUsedSignal());
+            }
+
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, status.InteractionRange, interactableLayer);
 
             if (colliders.Length == 0)

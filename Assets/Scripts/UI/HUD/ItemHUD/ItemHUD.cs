@@ -20,7 +20,6 @@ public class ItemHUD : Activateable
     private List<UIItemView> instantiatedViews = new();
     public Transform ItemViewContainer => itemViewContainer;
 
-
     private void Start()
     {
         selectionIndex = 0;
@@ -36,10 +35,14 @@ public class ItemHUD : Activateable
         }
     }
 
-    public void CreateItemView(InventoryItemData data, Action<Item> onSelectCallback)
+    public void CreateItemView(InventoryItemData data)
     {
         UIItemView itemView = GetAvailableItemView();
-        itemView.UpdateView(data, true, onSelectCallback);
+        itemView.UpdateView(data);
+        if(selectedItemView == itemView)
+        {
+            selectedItemView.Select();
+        }
     }
 
     public void UpdateItemView(InventoryItemData data)
@@ -51,8 +54,7 @@ public class ItemHUD : Activateable
         }
         if (view == null) return;
 
-        view.UpdateView(data, false);
-        OnViewsChanged();
+        view.UpdateView(data);
         return;
     }
 
@@ -72,7 +74,7 @@ public class ItemHUD : Activateable
     {
         foreach(UIItemView view in instantiatedViews)
         {
-            if(view.IsActive && view.ItemType == data.Item.Type)
+            if(view.IsActive && view.Item == data.Item)
             {
                 return view;
             }
@@ -85,12 +87,11 @@ public class ItemHUD : Activateable
         for(int i = 0; i < inventorySlots; i++)
         {
             UIItemView itemView = uiFactory.CreateUIItemView(itemViewContainer);
-            itemView.UpdateView(new InventoryItemData(), false);
+            itemView.CreateView(new InventoryItemData(), OnViewSelectClickCallback, i);
             instantiatedViews.Add(itemView);
         }
         selectionIndex = 0;
         instantiatedViews[selectionIndex].Select();
-        selectedItemView = instantiatedViews[selectionIndex];
     }
 
     private void OnNextButtonClicked()
@@ -100,7 +101,7 @@ public class ItemHUD : Activateable
         {
             selectionIndex = 0;
         }
-        OnViewsChanged();
+        instantiatedViews[selectionIndex].Select();
     }
 
     private void OnPreviousButtonClicked()
@@ -110,17 +111,20 @@ public class ItemHUD : Activateable
         {
             selectionIndex = instantiatedViews.Count - 1;
         }
-        OnViewsChanged();
+        instantiatedViews[selectionIndex].Select();
     }
 
-    private void OnViewsChanged()
+    private void OnViewSelectClickCallback(UIItemView view)
     {
-        if(selectedItemView != null)
+        bool canDeselect = view != selectedItemView && selectedItemView != null;
+        if (canDeselect)
         {
             selectedItemView.Deselect();
         }
 
-        instantiatedViews[selectionIndex].Select();
+        signalBus.Fire(new OnInventoryItemSelectedSignal(view.Item));
+
+        selectionIndex = view.Index;
         selectedItemView = instantiatedViews[selectionIndex];
         hudManager.UpdateBottomHUD(instantiatedViews[selectionIndex].HasUseCallback);
     }

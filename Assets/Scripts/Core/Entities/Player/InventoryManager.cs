@@ -19,7 +19,8 @@ public class InventoryManager
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnInventoryItemGetSignal>(OnItemGet);
-        signalBus.Subscribe<OnBottomHUDUseButtonClickedSignal>(UseItem);
+        signalBus.Subscribe<OnInventoryItemSelectedSignal>(OnItemSelected);
+        signalBus.Subscribe<OnPlayerItemUsedSignal>(UseItem);
 
         hudManager.CreateItemViews(INVENTORY_SIZE);
     }
@@ -32,14 +33,7 @@ public class InventoryManager
         {
             data = new InventoryItemData(signal.Item, signal.Amount);
             inventoryItems.Add(type, data);
-            if (signal.Item is IUsable)
-            {
-                hudManager.CreateItemView(data, SelectItem);
-            }
-            else
-            {
-                hudManager.CreateItemView(data);
-            }
+            hudManager.CreateItemView(data);
         }
         else
         {
@@ -48,7 +42,7 @@ public class InventoryManager
         hudManager.UpdateItemView(inventoryItems[type]);
     }
 
-    public void UseItem(OnBottomHUDUseButtonClickedSignal signal)
+    public void UseItem(OnPlayerItemUsedSignal signal)
     {
         if (SelectedItem == null) return;
 
@@ -63,6 +57,10 @@ public class InventoryManager
         data.Amount -= amount;
         inventoryItems[type] = data;
         hudManager.UpdateItemView(inventoryItems[type]);
+
+        if (type != SelectedItem.Type || HasEnoughItem(type)) return;
+
+        SelectedItem = null;
     }
 
     public T GetItem<T>(ItemType type) where T : Item
@@ -86,13 +84,14 @@ public class InventoryManager
         else return inventoryItems[type].Amount >= amount;
     }
 
-    private void SelectItem(Item item)
+    private void OnItemSelected(OnInventoryItemSelectedSignal signal)
     {
-        if (item is IUsable)
+        if (signal.Item is IUsable)
         {
-            SelectedItem = item;
-            //signalBus.Fire(new OnInventoryItemSelectedSignal(item));
+            SelectedItem = signal.Item;
+            return;
         }
+        SelectedItem = null;
     }
 
     public void Clear()

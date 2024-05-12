@@ -28,9 +28,9 @@ public class HUDManager
         hud.ItemHUD.CreateRawViews(amount);
     }
 
-    public void CreateItemView(InventoryItemData itemData, Action<Item> onSelectCallback = null)
+    public void CreateItemView(InventoryItemData itemData)
     {
-        hud.ItemHUD.CreateItemView(itemData, onSelectCallback);
+        hud.ItemHUD.CreateItemView(itemData);
     }
 
     public void UpdateItemView(InventoryItemData data)

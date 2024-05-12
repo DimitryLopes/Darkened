@@ -33,11 +33,11 @@ public class PlayerMovement : PlayerAction
             SetSprinting();
             if (GameManager.IsOnPhone)
             {
-                HandlePCMovement();
+                HandlePhoneMovement();
             }
             else
             {
-                HandlePhoneMovement();
+                HandlePCMovement();
             }
         }
     }
