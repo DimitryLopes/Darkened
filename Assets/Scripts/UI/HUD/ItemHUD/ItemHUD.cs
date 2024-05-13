@@ -14,6 +14,8 @@ public class ItemHUD : Activateable
 
     [SerializeField]
     private Transform itemViewContainer;
+    [SerializeField]
+    private ItemHUDKeyboardSelector keyboardSelector;
 
     private UIItemView selectedItemView;
     private int selectionIndex;
@@ -25,6 +27,7 @@ public class ItemHUD : Activateable
         selectionIndex = 0;
         signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
         signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
+        keyboardSelector.gameObject.SetActive(!GameManager.IsOnPhone);
     }
 
     public void Clear()
@@ -90,6 +93,7 @@ public class ItemHUD : Activateable
             itemView.CreateView(new InventoryItemData(), OnViewSelectClickCallback, i);
             instantiatedViews.Add(itemView);
         }
+        keyboardSelector.SetViews(instantiatedViews);
         selectionIndex = 0;
         instantiatedViews[selectionIndex].Select();
     }
