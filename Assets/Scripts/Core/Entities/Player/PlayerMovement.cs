@@ -13,6 +13,7 @@ public class PlayerMovement : PlayerAction
     private bool isSprinting;
     private bool isExhausted;
     private bool isMoving;
+    private bool isRegeneratingAfterExaustion;
 
     public float CurrentStamina => currentStamina;
 
@@ -129,6 +130,12 @@ public class PlayerMovement : PlayerAction
 
     private void HandleStaminaRegeneration()
     {
+        if (isRegeneratingAfterExaustion)
+        {
+            RegenerateStamina(status.DepletedStaminaRegenSpeedMultiplier);
+            return;
+        }
+
         if (isExhausted || (isMoving && isSprinting) || currentStamina >= status.MaxStamina) return;
 
         RegenerateStamina();
@@ -136,7 +143,8 @@ public class PlayerMovement : PlayerAction
 
     private void RegenerateStamina(float speedMultiplier = 1f)
     {
-        ChangeStamina(Mathf.Min(status.StaminaRegenSpeed * Time.deltaTime * speedMultiplier, status.MaxStamina));
+        float regenAmount = Mathf.Min(status.StaminaRegenSpeed * Time.deltaTime * speedMultiplier, status.MaxStamina);
+        ChangeStamina(regenAmount);
     }
 
     private void ChangeStamina(float amount)
@@ -161,13 +169,14 @@ public class PlayerMovement : PlayerAction
 
         yield return new WaitForSeconds(status.DepletedStaminaRegenCooldown);
 
+        isRegeneratingAfterExaustion = true;
 
-        while(currentStamina < status.MaxStamina)
+        while (currentStamina < status.MaxStamina)
         {
-            RegenerateStamina(status.DepletedStaminaRegenSpeedMultiplier);
             yield return null;
         }
 
+        isRegeneratingAfterExaustion = false;
         isExhausted = false;
         signalBus.Fire<OnPlayerExaustedRecoveredSignal>();
     }

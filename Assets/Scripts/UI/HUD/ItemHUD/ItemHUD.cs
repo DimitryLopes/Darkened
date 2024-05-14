@@ -20,7 +20,6 @@ public class ItemHUD : Activateable
     private UIItemView selectedItemView;
     private int selectionIndex;
     private List<UIItemView> instantiatedViews = new();
-    public Transform ItemViewContainer => itemViewContainer;
 
     private void Start()
     {
@@ -28,6 +27,14 @@ public class ItemHUD : Activateable
         signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
         signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
         keyboardSelector.gameObject.SetActive(!GameManager.IsOnPhone);
+    }
+
+    public override void OnActivate()
+    {
+        if (instantiatedViews.Count > 0)
+            instantiatedViews[0].Select();
+
+        base.OnActivate();
     }
 
     public void Clear()
