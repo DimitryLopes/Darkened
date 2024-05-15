@@ -106,7 +106,10 @@ public class GameManager
         {
             case LevelType.Story:
                 UnityAction nextLevel = levelManager.IsLastLevel || !objectiveCompleted ? null : StartNextStoryLevel;
-                levelManager.OnNextLevelUnlocked();
+                if (objectiveCompleted)
+                {
+                    levelManager.OnNextLevelUnlocked();
+                }
                 controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu, nextLevel);
                 break;
             case LevelType.Random:
