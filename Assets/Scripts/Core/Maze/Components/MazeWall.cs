@@ -6,9 +6,12 @@ public class MazeWall : Activateable
 {
     [SerializeField]
     public float WALL_ITEM_OFFSET = 1f;
+    [SerializeField]
+    private BoxCollider2D boxCollider;
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
+    public BoxCollider2D Collider => boxCollider;
 
     public override void OnActivate()
     {

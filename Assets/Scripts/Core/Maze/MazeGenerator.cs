@@ -144,16 +144,17 @@ public class MazeGenerator : MonoBehaviour
         float visitedNodes = 0;
         Stack<MazeNode> stack = GetNodeStack();
         bool backtracking = false;
+        int targetProgress = CurrentNodes.Length * 2;
         stack.Peek().MarkAsDeadEnd();
+        List<MazeNode> neighbors;
 
         while (stack.Count > 0)
         {
             MazeNode currentNode = stack.Pop();
-            Debug.Log("going to Node at: [" + currentNode.X + "," + currentNode.Y + "]");
             currentNode.Visit();
             generationPath.Add(currentNode);
             visitedNodes++;
-            List<MazeNode> neighbors = GetNeighbors(currentNode, true);
+            neighbors = GetNeighbors(currentNode, true);
             if (neighbors.Count > 0)
             {
                 if (backtracking)
@@ -174,8 +175,13 @@ public class MazeGenerator : MonoBehaviour
                     currentNode.MarkAsDeadEnd();
                 }
             }
-            yield return LoadingUtils.GetProgress(visitedNodes, CurrentNodes.Length * 2);
+
+            if (visitedNodes % 10 == 0)
+            {
+                yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
+            }
         }
+        yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
     }
 
     public IEnumerator<float> RemoveDeadEnds()
@@ -192,6 +198,14 @@ public class MazeGenerator : MonoBehaviour
                 }
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
+        }
+        List<BoxCollider2D> colliders = new();
+
+        foreach(MazeWall wall in instantiatedWalls)
+        {
+            if (!wall.IsActive) continue;
+
+            colliders.Add(wall.Collider);
         }
     }
 
@@ -516,11 +530,8 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-
         yield return 1;
     }
-
-
 
     public void PlaceTorchAt(MazeNode node)
     {

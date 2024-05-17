@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WALL_ITEM_OFFSET: 0.17
+  boxCollider: {fileID: 9119037806584697216}
 --- !u!212 &1418582601741916346
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -171,7 +172,7 @@ MonoBehaviour:
   - {x: 1.2800001, y: -1.2800001, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 34374
+  m_InstanceId: 34892
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.2800001, y: 1.2800001, z: 0}
