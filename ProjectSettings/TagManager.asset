@@ -23,8 +23,8 @@ TagManager:
   - Enemy
   - Interactable
   - PlayerInteraction
-  - 
-  - 
+  - Light
+  - ShadowCaster
   - 
   - 
   - 

@@ -224,4 +224,29 @@ public class MazeUtils
             }
         }
     }
+    public static (Cardinal xDirection, Cardinal yDirection) GetCardinalDirections(Vector2 fromPosition, Vector2 toPosition)
+    {
+        Cardinal xDirection;
+        Cardinal yDirection;
+
+        if (toPosition.x < fromPosition.x)
+        {
+            xDirection = Cardinal.West;
+        }
+        else
+        {
+            xDirection = Cardinal.East;
+        }
+
+        if (toPosition.y > fromPosition.y)
+        {
+            yDirection = Cardinal.North;
+        }
+        else
+        {
+            yDirection = Cardinal.South;
+        }
+
+        return (xDirection, yDirection);
+    }
 }

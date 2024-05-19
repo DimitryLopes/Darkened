@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class MazeWall : Activateable
 {
@@ -8,10 +7,13 @@ public class MazeWall : Activateable
     public float WALL_ITEM_OFFSET = 1f;
     [SerializeField]
     private BoxCollider2D boxCollider;
+    [SerializeField]
+    private ShadowCaster2D shadowCaster;
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
     public BoxCollider2D Collider => boxCollider;
+    public ShadowCaster2D ShadowCaster => shadowCaster;
 
     public override void OnActivate()
     {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficulty: 1
   difficultyName: Normal
-  torchRadius: 1.25
+  torchRadius: 1
   minTorchRatio: 0.3
   maxTorchRatio: 0.4
   litTorchRatio: 0.35

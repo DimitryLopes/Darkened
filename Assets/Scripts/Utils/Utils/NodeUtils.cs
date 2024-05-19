@@ -5,6 +5,20 @@ public class NodeUtils : MonoBehaviour
 {
     public const float NODE_SIZE = 0.975f;
 
+    private static readonly Dictionary<Cardinal, (Cardinal, Cardinal)> adjacentDirections =
+        new Dictionary<Cardinal, (Cardinal, Cardinal)>
+    {
+        { Cardinal.North, (Cardinal.West, Cardinal.East) },
+        { Cardinal.East, (Cardinal.North, Cardinal.South) },
+        { Cardinal.South, (Cardinal.East, Cardinal.West) },
+        { Cardinal.West, (Cardinal.South, Cardinal.North) }
+    };
+
+    public static (Cardinal, Cardinal) GetAdjacentCardinals(Cardinal direction)
+    {
+        return adjacentDirections[direction];
+    }
+
     public static Vector2 GetWallPositionOffset(Cardinal direction)
     {
         Vector2 offset = Vector2.zero;

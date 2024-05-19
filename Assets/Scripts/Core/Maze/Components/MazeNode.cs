@@ -78,7 +78,11 @@ public class MazeNode : Activateable
 
     public MazeWall GetWall(Cardinal cardinal)
     {
-        return wallDictionary[cardinal];
+        if (wallDictionary.ContainsKey(cardinal)) 
+        {
+            return wallDictionary[cardinal];
+        }
+        return null;
     }
 
     private void PositionWall(Cardinal direction, bool isWallAtBorder)
@@ -95,6 +99,15 @@ public class MazeNode : Activateable
             wallDictionary[direction].Deactivate();
             ActiveWalls--;
         }
+    }
+
+    public (MazeWall, MazeWall) GetAdjacentWalls(Cardinal cardinal)
+    {
+        (Cardinal, Cardinal) tuple = NodeUtils.GetAdjacentCardinals(cardinal);
+        (MazeWall, MazeWall) walls;
+        walls.Item1 = GetWall(tuple.Item1);
+        walls.Item2 = GetWall(tuple.Item2);
+        return walls;
     }
 
     private void ClearWall(MazeWall wall)
@@ -129,6 +142,7 @@ public class MazeNode : Activateable
     private void AddTorchAt(MazeWall wall, MazeTorch torch)
     {
         wall.PositionObject(torch);
+        torch.SetNode(this, wall.AlignedWith);
     }
     #endregion
 

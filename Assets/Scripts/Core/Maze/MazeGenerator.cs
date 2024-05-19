@@ -538,6 +538,11 @@ public class MazeGenerator : MonoBehaviour
         MazeTorch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
         currentMaze.AddTorch(node, torch);
+
+        (MazeWall, MazeWall) walls = torch.Node.GetAdjacentWalls(torch.AlignedWith);
+        bool hasRightWall = walls.Item1 != null;
+        bool hasLefttWall = walls.Item2 != null;
+        torch.ToggleShadows(hasRightWall || hasLefttWall);
     }
     #endregion
 
