@@ -52,7 +52,7 @@ MonoBehaviour:
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
-  m_ApplyToSortingLayers: 00000000b502d78e5dd9359b4f867fb2233508a469d7189c
+  m_ApplyToSortingLayers: b502d78e4f867fb2233508a469d7189c
   m_ShapePath:
   - {x: -1.2800001, y: -1.2800001, z: 0}
   - {x: -1.2800001, y: 1.2800001, z: 0}
@@ -174,7 +174,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WALL_ITEM_OFFSET: 0.17
   boxCollider: {fileID: 9119037806584697216}
-  shadowCaster: {fileID: 7956452066625800033}
 --- !u!212 &1418582601741916346
 SpriteRenderer:
   m_ObjectHideFlags: 0
