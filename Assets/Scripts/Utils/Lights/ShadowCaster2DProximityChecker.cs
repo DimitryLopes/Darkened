@@ -28,10 +28,10 @@ public class ShadowCaster2DProximityChecker : MonoBehaviour
                     isBehindLight = helperIsAt.Item2 == Cardinal.North;
                     break;
                 case Cardinal.East:
-                    isBehindLight = helperIsAt.Item2 == Cardinal.West;
+                    isBehindLight = helperIsAt.Item1 == Cardinal.West;
                     break;
                 case Cardinal.West:
-                    isBehindLight = helperIsAt.Item2 == Cardinal.East;
+                    isBehindLight = helperIsAt.Item1 == Cardinal.East;
                     break;
             }
 
