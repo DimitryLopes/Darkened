@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 public class NodeUtils : MonoBehaviour
 {
-    public const float NODE_SIZE = 0.975f;
+    public const float NODE_SIZE = 1;
 
     private static readonly Dictionary<Cardinal, (Cardinal, Cardinal)> adjacentDirections =
         new Dictionary<Cardinal, (Cardinal, Cardinal)>

@@ -15,7 +15,6 @@ public class MazeNode : Activateable
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsBeingUsed => isBeingUsed;
-    public int ActiveWalls { get; private set; } = 0;
     public Coordinate Coordinates => coordinates;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
@@ -56,7 +55,6 @@ public class MazeNode : Activateable
             wallDictionary[direction] = wall;
             bool isWallAtBorder = edges[direction];
             PositionWall(direction, isWallAtBorder);
-            ActiveWalls++;
         }
         else
         {
@@ -97,7 +95,19 @@ public class MazeNode : Activateable
         if (wallDictionary[direction].IsActive)
         {
             wallDictionary[direction].Deactivate();
-            ActiveWalls--;
+        }
+    }
+
+    public int GetActiveWallCount()
+    {
+        int count = 0;
+        MazeUtils.ExecuteActionWithAllCardinals(CountWall);
+        return count;
+
+        void CountWall(Cardinal cardinal)
+        {
+            if (!wallDictionary[cardinal].IsActive) return;
+            count++;
         }
     }
 
@@ -113,7 +123,6 @@ public class MazeNode : Activateable
     private void ClearWall(MazeWall wall)
     {
         wall.Deactivate();
-        ActiveWalls--;
     }
 
     public MazeWall GetRandomWall()
@@ -176,7 +185,6 @@ public class MazeNode : Activateable
     {
         MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
-        ActiveWalls = 0;
         hasTorch = false;
         isBeingUsed = false;
         Visited = false;

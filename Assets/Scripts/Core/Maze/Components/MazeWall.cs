@@ -7,13 +7,13 @@ public class MazeWall : Activateable
     public float WALL_ITEM_OFFSET = 1f;
     [SerializeField]
     private BoxCollider2D boxCollider;
-    [SerializeField]
-    private ShadowCaster2D shadowCaster;
+
+    private int id;
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
     public BoxCollider2D Collider => boxCollider;
-    public ShadowCaster2D ShadowCaster => shadowCaster;
+    public int ID => id;
 
     public override void OnActivate()
     {
@@ -23,6 +23,11 @@ public class MazeWall : Activateable
     public override void OnDeactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    public void SetID(int id)
+    {
+        this.id = id;
     }
 
     public void AlignWith(Cardinal direction, bool isAtBorder)

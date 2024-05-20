@@ -54,6 +54,36 @@ TagManager:
   - name: Maze Walls
     uniqueID: 2603997533
     locked: 0
+  - name: Light Layer 1
+    uniqueID: 2608375157
+    locked: 0
+  - name: Light Layer 2
+    uniqueID: 2629185911
+    locked: 0
+  - name: Light Layer 3
+    uniqueID: 2270194175
+    locked: 0
+  - name: Light Layer 3
+    uniqueID: 1008367815
+    locked: 0
+  - name: Light Layer 4
+    uniqueID: 3570189169
+    locked: 0
+  - name: Light Layer 5
+    uniqueID: 3818520385
+    locked: 0
+  - name: Light Layer 6
+    uniqueID: 874444437
+    locked: 0
+  - name: Light Layer 7
+    uniqueID: 393030403
+    locked: 0
+  - name: Light Layer 8
+    uniqueID: 490020477
+    locked: 0
+  - name: Light Layer 9
+    uniqueID: 1023022249
+    locked: 0
   - name: Spectral Torch
     uniqueID: 1564734235
     locked: 0

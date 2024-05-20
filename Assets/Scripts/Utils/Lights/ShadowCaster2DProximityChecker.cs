@@ -23,21 +23,30 @@ public class ShadowCaster2DProximityChecker : MonoBehaviour
             {
                 case Cardinal.North:
                     isBehindLight = helperIsAt.Item2 == Cardinal.South;
-                    return;
+                    break;
                 case Cardinal.South:
                     isBehindLight = helperIsAt.Item2 == Cardinal.North;
-                    return;
+                    break;
                 case Cardinal.East:
                     isBehindLight = helperIsAt.Item2 == Cardinal.West;
-                    return;
+                    break;
                 case Cardinal.West:
                     isBehindLight = helperIsAt.Item2 == Cardinal.East;
-                    return;
+                    break;
             }
 
             if (helper.Light.shadowsEnabled && !isBehindLight)
             {
                 viableLights.Add(helper.Light);
+                helper.AffectedCasters.Add(this);
+                if(helper.AffectedCasters.Count == 1)
+                {
+                    //change layer solo
+                }
+                else
+                {
+                    //ChangeLayer default
+                }
                 UpdateLights();
             }
             return;

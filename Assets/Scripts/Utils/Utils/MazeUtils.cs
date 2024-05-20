@@ -36,30 +36,74 @@ public class MazeUtils
         }
     }
 
-    public static List<MazeNode> GetEdgeNodes(MazeNode[,] nodes, LevelData data)
+    public static void ExecuteActionWithAllNodes(Action<MazeNode> action, MazeNode[,] nodes)
     {
-        List<MazeNode> edgeNodes = new List<MazeNode>();
+        foreach(MazeNode node in nodes)
+        {
+            action.Invoke(node);
+        }
+    }
+
+    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, LevelData data)
+    {
+        Dictionary<Coordinate, MazeNode> edgeNodes = new Dictionary<Coordinate, MazeNode>();
         int height = data.Height;
         int width = data.Width;
 
-        foreach (MazeNode node in nodes)
+        for (int y = 0; y < height; y++)
         {
-            if (node.X == 0 || node.X == width - 1 ||
-                node.Y == 0 || node.Y == height - 1)
-            {
-                edgeNodes.Add(node);
-            }
+            edgeNodes.Add(nodes[0, y].Coordinates, nodes[0, y]);
+            edgeNodes.Add(nodes[width - 1, y].Coordinates, nodes[width - 1, y]);
         }
+
+        for (int x = 1; x < width - 1; x++)
+        {
+            edgeNodes.Add(nodes[x, 0].Coordinates, nodes[x, 0]);
+            edgeNodes.Add(nodes[x, height - 1].Coordinates, nodes[x, height - 1]);
+        }
+
         return edgeNodes;
     }
 
-    public static bool IsNodeAtCorner(MazeNode nodes, LevelData data)
+    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, LevelData data)
     {
-        bool bottomLeft = nodes.X == 0 && nodes.Y == 0;
-        bool topLeft = nodes.X == 0 && nodes.Y == data.Height - 1;
-        bool bottomRight = nodes.X == data.Width - 1 && nodes.Y == 0;
-        bool topRight = nodes.X == data.Width - 1 && nodes.Y == data.Height - 1;
-        return bottomLeft || bottomRight || topLeft || topRight;
+        Dictionary<Coordinate, MazeNode> corners = new Dictionary<Coordinate, MazeNode>
+        {
+            { nodes[0, 0].Coordinates, nodes[0, 0] },
+            { nodes[0, data.Height - 1].Coordinates, nodes[0, data.Height - 1] },
+            { nodes[data.Width - 1, 0].Coordinates, nodes[data.Width - 1, 0] },
+            { nodes[data.Width - 1, data.Height - 1].Coordinates, nodes[data.Width - 1, data.Height - 1] }
+        };
+        return corners;
+    }
+
+    public static int GetCantorPairing(Coordinate item1, Coordinate item2)
+    {
+        int firstPair = GetCantorPairing(item1);
+        int secondPair = GetCantorPairing(item2);
+
+        int lowest;
+        int highest;
+        if(firstPair < secondPair)
+        {
+            lowest = firstPair;
+            highest = secondPair;
+        }
+        else
+        {
+            lowest = secondPair;
+            highest = firstPair;
+        }
+
+        int pairing = GetCantorPairing(new Coordinate(lowest, highest));
+        return pairing;
+    }
+
+    public static int GetCantorPairing(Coordinate coordinate)
+    {
+        int x = coordinate.X + 1;
+        int y = coordinate.Y + 1;
+        return (x + y) * (x + y + 1) / 2 + y;
     }
 
     public static Stack<MazeNode> GetPathFromNodeToNode(MazeNode startNode, MazeNode targetNode, Maze maze)
@@ -202,11 +246,6 @@ public class MazeUtils
                 break;
         }
         return null;
-    }
-
-    public static MazeNode GetNodeAtCoordinate(Coordinate coordinate, Maze maze)
-    {
-        return maze.NodesByCoordinate[coordinate];
     }
 
     public static List<MazeNode> GetNeighborNodes(MazeNode node, Maze maze)
