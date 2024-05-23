@@ -12,7 +12,7 @@ public class MazeWall : Activateable
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
-    public BoxCollider2D Collider => boxCollider;
+    public BoxCollider2D BoxCollider => boxCollider;
     public int ID => id;
 
     public override void OnActivate()

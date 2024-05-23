@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using Zenject;
 using Unity.VisualScripting;
+using UnityEngine.Rendering.Universal;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -26,9 +27,17 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     private Transform wallsContainer;
     [SerializeField]
+    private Transform edgeWallsContainer;
+    [SerializeField]
     private Transform itemsContainer;
     [SerializeField]
     private Transform torchContainer;
+
+    [SerializeField, Header("Shadows")]
+    private CompositeCollider2D mazeCollider;
+    [SerializeField]
+    private ShadowCasterGenerator shadowCreator;
+    
 
     //for whatever reason injecting this directly creates a circular dependency
     private MazeManager mazeManager;
@@ -219,6 +228,8 @@ public class MazeGenerator : MonoBehaviour
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
         }
+
+        shadowCreator.Create(mazeCollider);
     }
 
     private IEnumerator RemoveDeadEndWalls(MazeNode node)
@@ -426,7 +437,7 @@ public class MazeGenerator : MonoBehaviour
             wallID = MazeUtils.GetCantorPairing(node.Coordinates);
             if (currentMaze.EdgeNodes.ContainsKey(node.Coordinates))
             {
-                if(direction == Cardinal.North || direction == Cardinal.South)
+                if (direction == Cardinal.North || direction == Cardinal.South)
                 {
                     wallID *= -1;
                 }
@@ -437,6 +448,11 @@ public class MazeGenerator : MonoBehaviour
 
         MazeWall wall = GetWal(wallID);
         node.AddWall(direction, wall);
+
+        if (!node.GetEdge(direction)) return;
+
+        wall.transform.SetParent(edgeWallsContainer);
+
     }
     #endregion
 
