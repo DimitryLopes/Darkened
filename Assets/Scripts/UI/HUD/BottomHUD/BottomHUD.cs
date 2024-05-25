@@ -53,6 +53,7 @@ public class BottomHUD : Activateable
 
     public override void OnActivate()
     {
+        base.OnActivate();
         useItemButton.interactable = false;
     }
 

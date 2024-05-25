@@ -81,11 +81,13 @@ public class UIItemView : Activateable, ISelectable
 
     public override void OnActivate()
     {
+        base.OnActivate();
         itemImage.gameObject.SetActive(true);
     }
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         itemImage.gameObject.SetActive(false);
         UpdateView(new InventoryItemData());
     }

@@ -57,6 +57,7 @@ public class ObjectiveHUD : Activateable
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         foreach (UIMissionDescription missionDescription in instantiatedDescriptions)
         {
             if (missionDescription.IsActive)

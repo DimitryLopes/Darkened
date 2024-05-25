@@ -51,6 +51,7 @@ public class UIMissionDescription : Activateable
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         signalBus.Unsubscribe<OnMissionProgressSignal>(OnMissionProgress);
         signalBus.Unsubscribe<OnMissionCompletedSignal>(OnMissionCompleted);
     }

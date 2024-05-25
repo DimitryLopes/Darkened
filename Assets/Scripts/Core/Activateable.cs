@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Activateable : MonoBehaviour, IActivateable
 {
     protected bool active;
 
     public bool IsActive => active;
+    public UnityEvent<Activateable> onDeactivate;
+    public UnityEvent<Activateable> onActivate;
 
     public virtual void Activate(bool forced = false)
     {
@@ -32,11 +35,11 @@ public class Activateable : MonoBehaviour, IActivateable
 
     public virtual void OnActivate()
     {
-
+        onActivate.Invoke(this);
     }
 
     public virtual void OnDeactivate()
     {
-
+        onDeactivate.Invoke(this);
     }
 }

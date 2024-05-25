@@ -409,7 +409,7 @@ public class MazeGenerator : MonoBehaviour
     #region Walls
     private MazeWall GetWal(int id)
     {
-        MazeWall wall = GetAvailableWall(id);
+        MazeWall wall = GetWall(id);
         return wall;
     }
 
@@ -601,7 +601,7 @@ public class MazeGenerator : MonoBehaviour
     #endregion
 
     #region Pooling
-    private MazeWall GetAvailableWall(int id)
+    private MazeWall GetWall(int id)
     {
         MazeWall wall;
         if (walls.ContainsKey(id))

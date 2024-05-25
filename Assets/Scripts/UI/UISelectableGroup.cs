@@ -35,6 +35,7 @@ public class UISelectableGroup : Activateable, IActivateable
     public override void OnActivate()
     {
         if(items == null) return;
+        base.OnActivate();
 
         items[currentIndex].Select();
         foreach (UISelectableItem view in items)
@@ -46,6 +47,7 @@ public class UISelectableGroup : Activateable, IActivateable
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         foreach(UISelectableItem view in items)
         {
             view.Deactivate();

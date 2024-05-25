@@ -35,12 +35,14 @@ public class PlayerHUD : Activateable
 
     public override void OnActivate()
     {
+        base.OnActivate();
         staminaBar.SetUp(entityManager.GetPlayer());
         staminaBar.UpdateBar();
     }
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         staminaBar.StopAnimations();
     }
 
