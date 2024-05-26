@@ -74,6 +74,9 @@ crashlytics-build.properties
 # Vscode metafiles
 .vscode/*
 
+# Rider
+.idea/*
+
 # ?
 UpgradeLog.htm
 Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Zenject-ReflectionBaking.csproj.meta
