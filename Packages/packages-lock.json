@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.mathijsbakker.extenject": {
-      "version": "file:C:/Users/aysla/OneDrive/Desktop/Zenject",
+      "version": "file:Zenject",
       "depth": 0,
-      "source": "local",
+      "source": "embedded",
       "dependencies": {}
     },
     "com.oss.leantween": {
