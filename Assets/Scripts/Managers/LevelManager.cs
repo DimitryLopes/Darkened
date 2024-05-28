@@ -120,7 +120,6 @@ public class LevelManager
     #endregion
     private void OnSelectableSelected(OnSelectableSelectedSignal signal)
     {
-        Debug.Log(signal.Selectable.Title + " Selected");
         switch (signal.Selectable.SelectableType)
         {
             case SelectableType.MazeSize:

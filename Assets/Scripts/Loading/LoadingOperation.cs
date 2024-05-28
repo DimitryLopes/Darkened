@@ -38,7 +38,7 @@ public class LoadingOperation : ILoadable
         while(currentIndex < steps.Count - 1 || !steps[currentIndex].IsComplete)
         {
             Progress = (steps[currentIndex].Progress + currentIndex) / steps.Count;
-            Debug.Log($"Loading Operation progress: { Progress } | Current Step Progress: {currentIndex} | Current Step: {currentIndex}");
+            //Debug.Log($"Loading Operation progress: { Progress } | Current Step Progress: {currentIndex} | Current Step: {currentIndex}");
             if (steps[currentIndex].IsComplete)
             {
                 currentIndex++;

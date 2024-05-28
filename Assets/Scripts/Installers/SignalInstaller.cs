@@ -17,10 +17,11 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnMissionGroupCompletedSignal>();
         Container.DeclareSignal<OnMissionItemInteractedSignal>();
         Container.DeclareSignal<OnEnemyHitSignal>();
-
+        //Maze Generation
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
         Container.DeclareSignal<OnMazeLoadStartedSignal>();
-
+        Container.DeclareSignal<OnDeadEndsRemovedSignal>();
+        //Player
         Container.DeclareSignal<OnPlayerExaustedRecoveredSignal>();
         Container.DeclareSignal<OnPlayerStaminaChangedSignal>();
         Container.DeclareSignal<OnPlayerStaminaExaustedSignal>();

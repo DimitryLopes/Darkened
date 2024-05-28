@@ -45,6 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d35b388a9481e846bc27f33a946bd72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   ShadowCaster: {fileID: 2591136807695023528}
 --- !u!114 &2591136807695023528
 MonoBehaviour:
@@ -64,7 +70,7 @@ MonoBehaviour:
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
-  m_ApplyToSortingLayers: 00000000b502d78e5dd9359b75a5789b7731b69cff695087c7781a3c71c3ccd441ff99e395f61e34032b6d177d1e351da914fa3c1bf3435d4f867fb2233508a469d7189c
+  m_ApplyToSortingLayers: b502d78e233508a469d7189c4f867fb25dd9359b
   m_ShapePath:
   - {x: -0.5, y: -0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
@@ -72,7 +78,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 47304
+  m_InstanceId: 68394
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}

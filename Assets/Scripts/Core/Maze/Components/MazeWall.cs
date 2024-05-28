@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using Zenject;
 
 public class MazeWall : Activateable
 {
@@ -8,12 +8,11 @@ public class MazeWall : Activateable
     [SerializeField]
     private BoxCollider2D boxCollider;
 
-    private int id;
+    private SignalBus signalBus;
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
     public BoxCollider2D BoxCollider => boxCollider;
-    public int ID => id;
 
     public override void OnActivate()
     {
@@ -23,11 +22,6 @@ public class MazeWall : Activateable
     public override void OnDeactivate()
     {
         gameObject.SetActive(false);
-    }
-
-    public void SetID(int id)
-    {
-        this.id = id;
     }
 
     public void AlignWith(Cardinal direction, bool isAtBorder)
@@ -42,6 +36,18 @@ public class MazeWall : Activateable
     {
         item.transform.rotation = transform.rotation;
         item.transform.position = transform.position + transform.right * WALL_ITEM_OFFSET;
+    }
+
+    public void OnWallCreated(SignalBus signalBus)
+    {
+        this.signalBus = signalBus;
+        signalBus.Subscribe<OnDeadEndsRemovedSignal>(AddToComposite);
+    }
+
+    private void AddToComposite()
+    {
+        boxCollider.usedByComposite = true;
+        signalBus.Unsubscribe<OnDeadEndsRemovedSignal>(AddToComposite);
     }
 
 }

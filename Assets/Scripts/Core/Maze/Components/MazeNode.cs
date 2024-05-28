@@ -142,7 +142,6 @@ public class MazeNode : Activateable
         if (!hasTorch)
         {
             MazeWall wall = GetRandomWall();
-            Debug.Log("Added torch at [" + X + "," + Y + "] at " + wall.AlignedWith + " wall");
             AddTorchAt(wall, torch);
             hasTorch = true;
         }

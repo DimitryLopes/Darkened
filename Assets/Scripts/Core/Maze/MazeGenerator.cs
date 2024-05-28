@@ -149,7 +149,6 @@ public class MazeGenerator : MonoBehaviour
     private Stack<MazeNode> GetNodeStack()
     {
         Stack<MazeNode> stack = new Stack<MazeNode>();
-        Debug.Log($"Starting at: [{mazeManager.CurrentStartingNode.X}|{mazeManager.CurrentStartingNode.Y}]");
         Coordinate coordinate = new Coordinate(mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y);
         stack.Push(currentMaze.NodesByCoordinate[coordinate]);
 
@@ -159,12 +158,10 @@ public class MazeGenerator : MonoBehaviour
     private void SetSpawnPoints(MazeNode[,] nodes)
     {
         MazeNode startNode = SetStartingPoint(nodes, CurrentData);
-        Debug.Log($"Player spawn is: [{startNode.X}|{startNode.Y}]");
         mazeManager.CurrentStartingNode = startNode;
         startNode.MarkAsUsed();
 
         MazeNode enemySpawn = GetAvailableNodeAwayFrom(startNode, nodes, CurrentData.Size);
-        Debug.Log($"Enemy spawn is: [{enemySpawn.X}|{enemySpawn.Y}]");
         mazeManager.EnemyStartingNode = enemySpawn;
     }
 
@@ -228,7 +225,7 @@ public class MazeGenerator : MonoBehaviour
                 yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
             }
         }
-
+        signalBus.Fire(new OnDeadEndsRemovedSignal()); //makes the walls part of the composite collider
         shadowCreator.Create(mazeCollider);
     }
 
@@ -416,14 +413,12 @@ public class MazeGenerator : MonoBehaviour
     private void RemoveWallsAt(MazeNode nodeA, MazeNode nodeB)
     {
         Cardinal direction = NodeUtils.GetCardinalDirection(nodeB, nodeA);
-        //Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
 
         RemoveWall(nodeA, direction);
     }
 
     private void RemoveWall(MazeNode node, Cardinal direction)
     {
-        Debug.Log($"Removing walls at [{node.X},{node.Y}] : {direction}");
         node.RemoveWall(direction);
     }
 
@@ -530,7 +525,6 @@ public class MazeGenerator : MonoBehaviour
         {
             float randomTorchValue = Random.Range(0f, 1f);
             float randomBreakChance = Random.Range(0f, 1f);
-            Debug.Log("Torches: " + torchCount + "| BreakChance: " + breakChance + " | RNG: " + randomBreakChance);
             if (torchCount < CurrentData.MinTorchCount || breakChance < randomBreakChance)
             {
                 if (randomTorchValue >= CurrentData.TorchRatio)
@@ -611,7 +605,7 @@ public class MazeGenerator : MonoBehaviour
         else
         {
             wall = Instantiate(wallPrefab, wallsContainer);
-            wall.SetID(id);
+            wall.OnWallCreated(signalBus);
             walls.Add(id, wall);
         }
         wall.Activate();
@@ -643,7 +637,6 @@ public class MazeGenerator : MonoBehaviour
             int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
             if (distance >= minDistance)
             {
-                Debug.Log("[" + focusNode.X + "," + focusNode.Y + "]" + " is far enough from " + "[" + node.X + "," + node.Y + "]");
                 return node;
             }
             else if(distance > maxDistance)

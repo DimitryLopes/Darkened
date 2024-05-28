@@ -6,7 +6,9 @@ public class Activateable : MonoBehaviour, IActivateable
     protected bool active;
 
     public bool IsActive => active;
+    [HideInInspector]
     public UnityEvent<Activateable> onDeactivate;
+    [HideInInspector]
     public UnityEvent<Activateable> onActivate;
 
     public virtual void Activate(bool forced = false)
