@@ -207,7 +207,6 @@ public class MazeUtils
     public static int GetManhatthanDistanceFromNodeToNode(MazeNode from, MazeNode to)
     {
         int distance = Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
-        Debug.Log("[" + from.X + "," + from.Y + "] is " + distance + " nodes distant from [" + to.X + "," + to.Y + "]");
         return distance;
     }
 

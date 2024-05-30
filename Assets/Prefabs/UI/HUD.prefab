@@ -443,6 +443,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 819193db45f7b684d894a631720c51f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   missionDescriptionPrefab: {fileID: 3053658518696037859, guid: b8bdff29f270bf243ae662719d293a61, type: 3}
   descriptionsContainer: {fileID: 7428051253700629372}
 --- !u!114 &7428051253700629372
@@ -535,6 +541,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61be78743d10ed14bb294aaaea31032e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   itemViewContainer: {fileID: 174362314428246533}
   keyboardSelector: {fileID: 7430533545450287076}
 --- !u!114 &7430533545450287076
@@ -844,6 +856,7 @@ RectTransform:
   m_Children:
   - {fileID: 2276320132665582134}
   - {fileID: 710338016054312283}
+  - {fileID: 6201197416715163364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1250,6 +1263,104 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3683412035926206663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6201197416715163364}
+  - component: {fileID: 3954310215280005051}
+  - component: {fileID: 1150292814950619540}
+  - component: {fileID: 5037866278404913844}
+  m_Layer: 5
+  m_Name: EnemyArrowPointer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6201197416715163364
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683412035926206663}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8144097844782735849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 139, y: 186}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3954310215280005051
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683412035926206663}
+  m_CullTransparentMesh: 1
+--- !u!114 &1150292814950619540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683412035926206663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: aec165a4c3d358149a20e7fb56421a14, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5037866278404913844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683412035926206663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8a054123871124dabd6a10e638f345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  minDistanceToBeActive: 1.5
+  maxDistanceToBeActive: 3.5
+  offset: 165
+  arrow: {fileID: 6201197416715163364}
 --- !u!1 &3757209921188530431
 GameObject:
   m_ObjectHideFlags: 0
@@ -1674,6 +1785,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb939fc1d752af49ba0d4e3aa55e106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   staminaBar: {fileID: 9188007390082615879}
 --- !u!1 &5489192278460059004
 GameObject:
@@ -1891,6 +2008,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c150e85b76330074cbcd18d3320a901e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   useItemButton: {fileID: 7183508915334718739}
   nextItemButton: {fileID: 3903305109596521796}
   previousItemButton: {fileID: 3157325393943909383}

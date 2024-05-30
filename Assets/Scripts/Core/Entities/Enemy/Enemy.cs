@@ -10,6 +10,9 @@ public abstract class Enemy : Activateable
     [SerializeField]
     private Rigidbody2D rb;
 
+    [Inject]
+    protected EnemyArrowPointer arrowPointer;
+
     protected CameraManager cameraManager;
     protected AudioManager audioManager;
     protected IEnemyState currentState;
@@ -17,7 +20,6 @@ public abstract class Enemy : Activateable
     protected Player Player;
     protected Maze Maze;
     protected Distraction distraction;
-
 
     protected bool IsDistracted => distraction != null;
     public float EnhancedDetectionRange => data.EnhancedDetectionRange;

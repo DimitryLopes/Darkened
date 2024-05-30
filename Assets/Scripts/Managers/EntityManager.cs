@@ -9,6 +9,7 @@ public class EntityManager
 
     private Dictionary<EnemyType, Enemy> Enemies = new Dictionary<EnemyType, Enemy>();
     private Player player;
+    private EnemyType currentEnemyType;
 
     public EntityManager(PlayerFactory playerFactory, EnemyFactory enemyFactory, EntityContainer container)
     {
@@ -28,8 +29,18 @@ public class EntityManager
         return player;
     }
 
-    public Enemy GetEnemy(EnemyType enemyType)
+    public Enemy GetCurrentEnemy()
     {
+        return GetEnemy(currentEnemyType);
+    }
+
+    public Enemy GetEnemy(EnemyType enemyType, bool setAsCurrent = false)
+    {
+        if (setAsCurrent)
+        {
+            currentEnemyType = enemyType;
+        }
+
         if (Enemies.ContainsKey(enemyType))
         {
             return Enemies[enemyType];

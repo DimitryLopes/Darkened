@@ -1,4 +1,3 @@
-using UnityEngine;
 using Zenject;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -13,32 +12,16 @@ public class CameraManager
     private VignetteAnimationData currentVignetteAnimationData;
     private bool IsVignetteAnimating => currentVignetteAnimationData != null;
 
-    public Camera MainCamera => Camera.main;
-    public Camera PostProcessingCamera { get; private set; }
 
     public CameraManager(Volume postProcessVolume, SignalBus signalBus)
     {
         this.postProcessVolume = postProcessVolume;
 
         signalBus.Subscribe<OnGameCompletedSignal>(ForceFinishAllAnimations);
-        signalBus.Subscribe<OnMazeLoadStartedSignal>(PositionCamera);
     }
 
 
-    private void PositionCamera(OnMazeLoadStartedSignal signal)
-    {
-        float cameraPos = signal.Maze.Data.SizeData.cameraPosition;
-        MainCamera.transform.position = new Vector3(cameraPos, cameraPos, -10);
-        MainCamera.orthographicSize = signal.Maze.Data.SizeData.cameraSize;
 
-        if(PostProcessingCamera == null)
-        {
-            PostProcessingCamera = MainCamera.transform.GetChild(0).GetComponent<Camera>();
-        }
-
-        PostProcessingCamera.orthographicSize = signal.Maze.Data.SizeData.cameraSize;
-
-    }
     #region Vignette
     public void AnimateVignette(VignetteAnimationData animationData)
     {

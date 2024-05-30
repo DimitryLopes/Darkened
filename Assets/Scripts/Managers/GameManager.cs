@@ -139,7 +139,7 @@ public class GameManager
         player.ToggleActing(true);
         player.SetDefaultTorch();
 
-        Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType);
+        Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType, true);
         enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
         entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
         enemy.SetMaze(mazeManager.CurrentMaze);

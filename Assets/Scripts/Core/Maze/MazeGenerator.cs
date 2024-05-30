@@ -97,12 +97,12 @@ public class MazeGenerator : MonoBehaviour
         IEnumerator<float> step6enumerator = AddTorches();
         LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Adding torches");
 
-        IEnumerator<float> step7enumerator = ActivateMazeTorches();
-        LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "Illuminating your way");
+        //IEnumerator<float> step7enumerator = ActivateMazeTorches();
+        //LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "Illuminating your way");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, step4, step5, step6, step7
+            step1, step2, step3, step4, step5, step6//, step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);

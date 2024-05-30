@@ -122,6 +122,7 @@ public class WerewolfEnemy : Enemy
         Debug.DrawRay(LeftRaycastOrigin, LeftRayCastDirection * DetectionRange, Color.blue);
         Debug.DrawRay(RightRaycastOrigin, RightRayCastDirection * DetectionRange, Color.blue);
 
+        arrowPointer.ToggleArrow(distanceBetweenPlayer);
         //Is not in range
         if (DetectionRange <= distanceBetweenPlayer)
         {

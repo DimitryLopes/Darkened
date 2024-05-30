@@ -86,7 +86,6 @@ public class NodeUtils : MonoBehaviour
             direction = Cardinal.West;
         }
 
-        Debug.Log($"[{fromNode.X},{fromNode.Y}] is at {direction} of [{toNode.X},{toNode.Y}]");
         return direction;
     }
 

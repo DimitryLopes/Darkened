@@ -392,8 +392,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3494852082854893270}
+  m_Children: []
   m_Father: {fileID: 207321213078882575}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6908312215011906764
@@ -838,7 +837,8 @@ Transform:
   m_LocalPosition: {x: 4.467465, y: 2.4617186, z: -0.01500503}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3494852082854893270}
   m_Father: {fileID: 207321213078882575}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3805870085520877974
@@ -855,13 +855,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hud: {fileID: 1173543662846167300}
   joystick: {fileID: 3711489532178258828}
+  enemyArrowPointer: {fileID: 123848625302089852}
 --- !u!1001 &3209891699868174176
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4467008688801757871}
+    m_TransformParent: {fileID: 6052693602778835591}
     m_Modifications:
     - target: {fileID: 922047167660856096, guid: 23795d320185675458742af9ecc11c09, type: 3}
       propertyPath: m_Name
@@ -972,6 +973,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23795d320185675458742af9ecc11c09, type: 3}
+--- !u!114 &123848625302089852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3259529526586324764, guid: 23795d320185675458742af9ecc11c09, type: 3}
+  m_PrefabInstance: {fileID: 3209891699868174176}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8a054123871124dabd6a10e638f345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1173543662846167300 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4378220945996074596, guid: 23795d320185675458742af9ecc11c09, type: 3}
