@@ -15,8 +15,8 @@ MonoBehaviour:
   difficulty: 1
   difficultyName: Normal
   torchRadius: 1
-  minTorchRatio: 0.3
-  maxTorchRatio: 0.4
+  minTorchRatio: 0.25
+  maxTorchRatio: 0.3
   litTorchRatio: 0.35
   difficultyItemDatas:
   - probability: 0.9
