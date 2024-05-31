@@ -4,7 +4,6 @@ using System.Collections;
 using System.Linq;
 using Zenject;
 using Unity.VisualScripting;
-using UnityEngine.Rendering.Universal;
 
 public class MazeGenerator : MonoBehaviour
 {
