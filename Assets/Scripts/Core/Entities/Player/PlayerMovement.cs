@@ -31,7 +31,7 @@ public class PlayerMovement : PlayerAction
         HandleStaminaRegeneration();
         if (CanAct)
         {
-            SetSprinting();
+            SetIsSprinting();
             if (GameManager.IsOnPhone)
             {
                 HandlePhoneMovement();
@@ -46,19 +46,11 @@ public class PlayerMovement : PlayerAction
     private void HandlePhoneMovement()
     {
         Vector3 movement = joystick.Direction.normalized;
-        bool isMoving = movement.magnitude >= 0.1f;
+        isMoving = movement.magnitude >= 0.1f;
 
         if (isMoving)
         {
-            if (isSprinting)
-            {
-                movement *= status.SprintingSpeedMultiplier;
-                ChangeStamina(-status.StaminaConsumptionSpeed * Time.deltaTime);
-                if (currentStamina <= 0)
-                {
-                    StartCoroutine(Exaustion());
-                }
-            }
+            movement = HandleSprinting(movement);
             HandleRotation(movement);
         }
 
@@ -104,7 +96,7 @@ public class PlayerMovement : PlayerAction
 
     private Vector3 HandleSprinting(Vector3 movement)
     {
-        if (isSprinting)
+        if (isSprinting && !isExhausted)
         {
             movement *= status.SprintingSpeedMultiplier;
             ChangeStamina(-status.StaminaConsumptionSpeed * Time.deltaTime);
@@ -123,9 +115,9 @@ public class PlayerMovement : PlayerAction
         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 
-    private void SetSprinting()
+    private void SetIsSprinting()
     {
-        isSprinting = Input.GetKey(KeyCode.LeftShift) || sprintButton.IsToggled && !isExhausted;
+        isSprinting = Input.GetKey(KeyCode.LeftShift) || sprintButton.IsToggled;
     }
 
     private void HandleStaminaRegeneration()

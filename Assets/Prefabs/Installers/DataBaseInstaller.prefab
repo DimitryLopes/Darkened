@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4882542228631886134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4018647478619879927}
+  - component: {fileID: 9175168343185863484}
+  m_Layer: 0
+  m_Name: DataBaseInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4018647478619879927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4882542228631886134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9175168343185863484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4882542228631886134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c71affe44f2b145945d413a9ca9f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenDataBase: {fileID: 11400000, guid: 238f8b350ebd9d845b0beb1b11956f75, type: 2}
+  levelDataBase: {fileID: 11400000, guid: 7f2b385226eec5446bf5bbb934fcc2ce, type: 2}
+  itemDataBase: {fileID: 11400000, guid: bf5a592e54ca8bd49bf35737e1b06ce0, type: 2}
+  objectivesDataBase: {fileID: 11400000, guid: 8be21d94500c4d642b4f245d94648660, type: 2}
+  audioDataBase: {fileID: 11400000, guid: 92cd40ce8a26cd549b43fa560900032c, type: 2}
+  mazeSizeDataBase: {fileID: 11400000, guid: 7fb23b77cbbb28a408d7b462b7f7ce5b, type: 2}
+  enemyDataBase: {fileID: 11400000, guid: 02993b5962cb26646bfc843e53053a18, type: 2}
+  difficultyDataBase: {fileID: 11400000, guid: 57618a3783942444ebaec9c763e10c23, type: 2}
+  materialDataBase: {fileID: 11400000, guid: 99e4b826739fc19419e7b6271a293568, type: 2}
+  unlockConditionDataBase: {fileID: 11400000, guid: c919c1a7f8103624a99d20c1f2f5692d, type: 2}

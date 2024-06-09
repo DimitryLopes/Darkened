@@ -7,8 +7,6 @@ public class PrefabInstaller : MonoInstaller
     [SerializeField, Header("Audio")]
     private AudioSource audioSource;
     [SerializeField, Header("UI")]
-    private MainCanvas mainCanvas;
-    [SerializeField]
     private UISelectableItem selectableItem;
     [SerializeField]
     private UIItemView itemView;
@@ -19,6 +17,5 @@ public class PrefabInstaller : MonoInstaller
         Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
         Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
         Container.Bind<UIItemView>().FromInstance(itemView).AsTransient();
-        Container.Bind<MainCanvas>().FromInstance(mainCanvas).AsSingle();
     }
 }
