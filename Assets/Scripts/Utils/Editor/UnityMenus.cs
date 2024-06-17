@@ -17,7 +17,13 @@ public class UnityMenus
         UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/{Constants.Scenes.MAIN_MENU_SCENE}.unity");
     }
 
-    [MenuItem("Debug/Go To Testing #3")]
+    [MenuItem("Debug/Go To Game #3")]
+    public static void GoToGame()
+    {
+        UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/Levels/{Constants.Scenes.GAME_SCENE}.unity");
+    }
+
+    [MenuItem("Debug/Go To Testing #4")]
     public static void GoToTesting()
     {
         UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/{Constants.Scenes.TESTING_SCENE}.unity");

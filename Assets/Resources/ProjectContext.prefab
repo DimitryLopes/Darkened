@@ -222,6 +222,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_PressedColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635102746759447981, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7761832302696390399, guid: a6aa7a1ce2963b9448845760575164ab, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0

@@ -21,5 +21,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<LevelManager>().AsSingle();
         //Needs previous managers
         Container.Bind<GameManager>().AsSingle();
+
+        SceneManager.LoadScene(Constants.Scenes.MAIN_MENU_SCENE);
     }
 }
