@@ -43,6 +43,7 @@ public class MazeGenerator : MonoBehaviour
 
     private Dictionary<Coordinate, MazeNode> instantiatedNodes = new();
     private List<MazeNode> generationPath = new List<MazeNode>();
+    private List<MazeNode> generationNeighbors = new List<MazeNode>();
     private Dictionary<int, MazeWall> walls = new();
 
     private Maze currentMaze;
@@ -377,13 +378,14 @@ public class MazeGenerator : MonoBehaviour
 
     private List<MazeNode> GetNeighbors(MazeNode node, bool excludeVisited, bool removeNulls = true)
     {
-        List<MazeNode> neighbors = new List<MazeNode>();
-        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref neighbors);
+        generationNeighbors.Clear();
+        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref generationNeighbors);
 
-        neighbors.RemoveAll(item => (item == null && removeNulls) || (excludeVisited && item.Visited));
+        generationNeighbors.RemoveAll(item => (item == null && removeNulls) || (excludeVisited && item.Visited));
 
-        return neighbors;
+        return generationNeighbors;
     }
+
 
     private MazeNode AddToNeighborsList(Cardinal direction, MazeNode node)
     {
