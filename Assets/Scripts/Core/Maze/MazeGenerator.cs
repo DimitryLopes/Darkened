@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using System.Linq;
 using Zenject;
 using Unity.VisualScripting;
 
@@ -277,10 +276,14 @@ public class MazeGenerator : MonoBehaviour
         List<Item> items = mazeManager.GetMissionItems();
         int randomItemAmount = GetRandomItemAmount(CurrentData.SizeData.AverageAdditionalItemAmount);
 
-        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas.OrderBy(o => o.Probability).ToList();
+        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas;
+        itemPool.Sort((a, b) => a.Probability.CompareTo(b.Probability));
+
+
+        List<(float, float)> probabilities = new();
         for (int i = 0; i < randomItemAmount; i++)
         {
-            List<(float, float)> probabilities = new();
+            probabilities.Clear();
             float totalProbability = 0f;
             foreach (var itemData in itemPool)
             {
@@ -426,21 +429,17 @@ public class MazeGenerator : MonoBehaviour
     private void AddNodeWall(Cardinal direction, MazeNode node)
     {
         MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        int wallID;
+        int wallID = neighbor == null
+        ? MazeUtils.GetCantorPairing(node.Coordinates)
+        : MazeUtils.GetCantorPairing(node.Coordinates, neighbor.Coordinates);
 
-        if (neighbor == null)
+        if (currentMaze.EdgeNodes.ContainsKey(node.Coordinates))
         {
-            wallID = MazeUtils.GetCantorPairing(node.Coordinates);
-            if (currentMaze.EdgeNodes.ContainsKey(node.Coordinates))
+            if (direction == Cardinal.North || direction == Cardinal.South)
             {
-                if (direction == Cardinal.North || direction == Cardinal.South)
-                {
-                    wallID *= -1;
-                }
+                wallID *= -1;
             }
         }
-        else
-            wallID = MazeUtils.GetCantorPairing(node.Coordinates, neighbor.Coordinates);
 
         MazeWall wall = GetWal(wallID);
         node.AddWall(direction, wall);
