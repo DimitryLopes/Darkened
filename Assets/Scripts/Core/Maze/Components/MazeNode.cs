@@ -15,6 +15,7 @@ public class MazeNode : Activateable
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsBeingUsed => isBeingUsed;
+    public bool IsOnCorner { get; private set; }
     public Coordinate Coordinates => coordinates;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
@@ -58,7 +59,7 @@ public class MazeNode : Activateable
         }
         else
         {
-            Debug.LogWarning("There is already a wall at X: " + X + " Y: " + Y + " " + direction.ToString());
+            Debug.LogWarning("There is already a wall at X: " + X + " Y: " + Y + " " + direction);
         }
     }
 
@@ -70,7 +71,7 @@ public class MazeNode : Activateable
         }
         else
         {
-            Debug.LogWarning("There was no a wall to remove at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction.ToString());
+            Debug.LogWarning("There was no a wall to remove at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
         }
     }
 
@@ -120,11 +121,6 @@ public class MazeNode : Activateable
         return walls;
     }
 
-    private void ClearWall(MazeWall wall)
-    {
-        wall.Deactivate();
-    }
-
     public MazeWall GetRandomWall()
     {
         return NodeUtils.GetRandomWall(this);
@@ -163,9 +159,10 @@ public class MazeNode : Activateable
     }
 
     #region Edges
-    private void ClearEdge(Cardinal cardinal)
+    private void ClearEdgeAndCorner(Cardinal cardinal)
     {
         edges[cardinal] = false;
+        IsOnCorner = false;
     }
 
     public void SetEdge(Cardinal cardinal, bool isOnEdge = false)
@@ -178,12 +175,17 @@ public class MazeNode : Activateable
         return edges[cardinal];
     }
 
+    public void SetCorner()
+    {
+        IsOnCorner = true;
+    }
+
     #endregion
 
     public override void OnDeactivate()
     {
         MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
-        MazeUtils.ExecuteActionWithAllCardinals(ClearEdge);
+        MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
         hasTorch = false;
         isBeingUsed = false;
         Visited = false;
@@ -230,6 +232,15 @@ public class MazeNode : Activateable
     #endregion
 
     #region Debug
+    public void ShowIsDeadEnd()
+    {
+        text.text = DeadEnd ? "DEAD END" : string.Empty;
+    }
+
+    public void ShowWallCount()
+    {
+        text.text = GetActiveWallCount().ToString();
+    }
     public void DebugColor(Color color)
     {
         if (color == null) return;

@@ -96,3 +96,6 @@ TagManager:
   - name: Enemy
     uniqueID: 2618873705
     locked: 0
+  - name: Debug
+    uniqueID: 2632910733
+    locked: 0

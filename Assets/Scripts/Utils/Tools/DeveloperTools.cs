@@ -95,7 +95,24 @@ public class DeveloperTools
     {
         mazeManager.LoadMaze(levelManager.CurrentLevelData);
     }
+
+    public void ShowDeadEnds()
+    {
+        foreach (MazeNode node in mazeManager.CurrentMaze.Nodes)
+        {
+            node.ShowIsDeadEnd();
+        }
+    }
+
+    public void ShowNodeWallCount()
+    {
+        foreach (MazeNode node in mazeManager.CurrentMaze.Nodes)
+        {
+            node.ShowWallCount();
+        }
+    }
     #endregion
+
     #region Persistence
 
     public void ErasePlayerData()

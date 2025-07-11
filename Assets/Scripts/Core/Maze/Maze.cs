@@ -14,7 +14,7 @@ public class Maze
 
     public List<MazeNode> UsedNodes;
     public List<MazeTorch> Torches;
-    public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; }
+    public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
     public Maze(LevelData data)
     {
@@ -26,7 +26,7 @@ public class Maze
     public void SetNodes(MazeNode[,] nodes)
     {
         this.nodes = nodes;
-        NodesByCoordinate = new Dictionary<Coordinate, MazeNode>();
+        NodesByCoordinate.Clear();
 
         foreach(MazeNode node in nodes)
         {

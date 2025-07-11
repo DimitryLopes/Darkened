@@ -5,3 +5,11 @@ public enum Cardinal
     East,
     West,
 }
+
+public enum DiagonalCardinal
+{
+    NorthEast,
+    NorthWest,
+    SouthEast,
+    SouthWest,
+}

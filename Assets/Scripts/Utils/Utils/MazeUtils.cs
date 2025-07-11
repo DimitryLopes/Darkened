@@ -79,6 +79,7 @@ public class MazeUtils
 
     public static int GetCantorPairing(Coordinate item1, Coordinate item2)
     {
+        //use both nodes to create a pairing
         int firstPair = GetCantorPairing(item1);
         int secondPair = GetCantorPairing(item2);
 
@@ -99,6 +100,7 @@ public class MazeUtils
         return pairing;
     }
 
+    //add a bool here to cck if the coordinate is on edge, if so, multiply the result by direction or forcefully add a comma
     public static int GetCantorPairing(Coordinate coordinate)
     {
         int x = coordinate.X + 1;
