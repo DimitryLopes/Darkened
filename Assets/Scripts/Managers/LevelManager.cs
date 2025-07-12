@@ -13,7 +13,7 @@ public class LevelManager
     private DifficultyDataBase difficultyDataBase;
 
     public LevelType CurrentLevelType { get; private set; }
-    public LevelData CurrentLevelData { get; private set; }
+    public RandomLevelData CurrentLevelData { get; private set; }
     
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
@@ -36,10 +36,10 @@ public class LevelManager
         return levelDataBase.LevelDatas[index].SavedData.IsUnlocked;
     }
 
-    public List<LevelData> GetUnlockedLevels()
+    public List<RandomLevelData> GetUnlockedLevels()
     {
-        List<LevelData> unlockedDatas = new();
-        foreach (LevelData data in levelDataBase.LevelDatas)
+        List<RandomLevelData> unlockedDatas = new();
+        foreach (RandomLevelData data in levelDataBase.LevelDatas)
         {
             if (!data.SavedData.IsUnlocked) continue;
 
@@ -53,7 +53,7 @@ public class LevelManager
         return unlockedDatas;
     }
 
-    private void UnlockLevel(LevelData data)
+    private void UnlockLevel(RandomLevelData data)
     {
         if (data.SavedData.IsUnlocked) return;
 
@@ -97,7 +97,7 @@ public class LevelManager
     public void StartCustomLevel()
     {
         ObjectiveData objective = GetObjectiveByType(customObjectiveType);
-        LevelData data = LevelData.CreateInstance<LevelData>();
+        RandomLevelData data = RandomLevelData.CreateInstance<RandomLevelData>();
         data.SetUp(customSizeData, objective, customDifficultyData, EnemyType.Default);
         LoadLevel(data, LevelType.Custom);
     }
@@ -112,7 +112,7 @@ public class LevelManager
         DifficultyData difficultyData = difficultyDataBase.GetRandomData();
         //MazeTorch torch = levelDataBase.Torches.GetRandom();
 
-        LevelData data = LevelData.CreateInstance<LevelData>();
+        RandomLevelData data = RandomLevelData.CreateInstance<RandomLevelData>();
         data.SetUp(mazeSizeData, objective, difficultyData, enemyDataBase.EnemyTypes.GetRandom());
         LoadLevel(data, LevelType.Random);
     }
@@ -136,13 +136,13 @@ public class LevelManager
                 customObjectiveType = objective.ObjectiveType;
                 return;
             case SelectableType.Level:
-                LevelData levelData = signal.Selectable as LevelData;
+                RandomLevelData levelData = signal.Selectable as RandomLevelData;
                 currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
                 return;
         }
     }
 
-    private void LoadLevel(LevelData data, LevelType levelType)
+    private void LoadLevel(RandomLevelData data, LevelType levelType)
     {
         CurrentLevelType = levelType;
         CurrentLevelData = data;

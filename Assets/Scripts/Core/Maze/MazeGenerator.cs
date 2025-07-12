@@ -47,7 +47,7 @@ public class MazeGenerator : MonoBehaviour
 
     private Maze currentMaze;
 
-    private LevelData CurrentData => currentMaze.Data;
+    private RandomLevelData CurrentData => currentMaze.Data;
 
     private void ClearMaze()
     {
@@ -62,7 +62,7 @@ public class MazeGenerator : MonoBehaviour
     }
 
     #region Main Generation
-    public void CreateMaze(LevelData data, MazeManager mazeManager)
+    public void CreateMaze(RandomLevelData data, MazeManager mazeManager)
     {
         this.mazeManager = mazeManager;
         ClearMaze();
@@ -278,7 +278,7 @@ public class MazeGenerator : MonoBehaviour
     {
         int baseItemAmount = Mathf.FloorToInt(itemAverage);
         float additionalItemProbability = itemAverage - baseItemAmount;
-        float randomValue = Random.Range(-additionalItemProbability, additionalItemProbability);
+        float randomValue = UnityEngine.Random.Range(-additionalItemProbability, additionalItemProbability);
         int items = Mathf.RoundToInt(itemAverage + randomValue);
 
         return items;
@@ -286,7 +286,7 @@ public class MazeGenerator : MonoBehaviour
 
     public ItemType GetRandomItem(float totalProbability,ref List<(float,float)> probabilities, List<DifficultyData.DifficultyItemData> itemPool)
     {
-        float randomValue = Random.Range(0f, totalProbability);
+        float randomValue = UnityEngine.Random.Range(0f, totalProbability);
 
         for (int i = 0; i < probabilities.Count; i++)
         {
@@ -368,7 +368,7 @@ public class MazeGenerator : MonoBehaviour
         return null;
     }
 
-    private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
+    private MazeNode SetStartingPoint(MazeNode[,] nodes, RandomLevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
         currentMaze.MarkNodeAsUsed(nodes[startingX, 0]);
@@ -447,7 +447,7 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private void SetNodeEdges(MazeNode node, LevelData data)
+    private void SetNodeEdges(MazeNode node, RandomLevelData data)
     {
         if (node.Coordinates.X == 0)
         {
@@ -500,7 +500,7 @@ public class MazeGenerator : MonoBehaviour
     {
         int minTorchCount = CurrentData.MinTorchCount;
         int maxTorchCount = CurrentData.MaxTorchCount;
-        int torchCount = Random.Range(minTorchCount, maxTorchCount + 1);
+        int torchCount = UnityEngine.Random.Range(minTorchCount, maxTorchCount + 1);
 
         // Filtra nós válidos (sem item/tocha)
         List<MazeNode> validNodes = new List<MazeNode>();

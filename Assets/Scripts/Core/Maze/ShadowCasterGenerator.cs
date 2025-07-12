@@ -41,7 +41,7 @@ public class ShadowCasterGenerator : MonoBehaviour
             }
 
             shapePathField.SetValue(shadowCaster, testPath);
-            shapePathHashField.SetValue(shadowCaster, Random.Range(int.MinValue, int.MaxValue));
+            shapePathHashField.SetValue(shadowCaster, UnityEngine.Random.Range(int.MinValue, int.MaxValue));
             meshField.SetValue(shadowCaster, new Mesh());
             generateShadowMeshMethod.Invoke(shadowCaster,
             new object[] { meshField.GetValue(shadowCaster), shapePathField.GetValue(shadowCaster) });

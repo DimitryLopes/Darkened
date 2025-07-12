@@ -4,7 +4,7 @@ public static class ArrayExtensions
 {
     public static void Shuffle<T>(this T[,] array)
     {
-        Random random = new Random();
+        System.Random random = new System.Random();
         int lengthRow = array.GetLength(1);
 
         for (int i = array.Length - 1; i > 0; i--)
@@ -24,7 +24,7 @@ public static class ArrayExtensions
 
     public static T GetRandom<T>(this T[,] array)
     {
-        Random random = new Random();
+        System.Random random = new System.Random();
         int randomX = random.Next(array.GetLength(0));
         int randomY = random.Next(array.GetLength(1));
         return array[randomX, randomY];

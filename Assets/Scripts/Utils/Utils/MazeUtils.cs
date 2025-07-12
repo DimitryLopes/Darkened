@@ -20,7 +20,7 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllCardinals(Action<Cardinal, LevelData, MazeNode> action, MazeNode data, LevelData node)
+    public static void ExecuteActionWithAllCardinals(Action<Cardinal, RandomLevelData, MazeNode> action, MazeNode data, RandomLevelData node)
     {
         foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
@@ -44,7 +44,7 @@ public class MazeUtils
         }
     }
 
-    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, LevelData data)
+    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, RandomLevelData data)
     {
         Dictionary<Coordinate, MazeNode> edgeNodes = new Dictionary<Coordinate, MazeNode>();
         int height = data.Height;
@@ -65,7 +65,7 @@ public class MazeUtils
         return edgeNodes;
     }
 
-    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, LevelData data)
+    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, RandomLevelData data)
     {
         Dictionary<Coordinate, MazeNode> corners = new Dictionary<Coordinate, MazeNode>
         {

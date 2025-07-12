@@ -4,7 +4,7 @@ using System.Linq;
 
 public static class DictionaryExtensions
 {
-    private static Random random = new Random();
+    private static System.Random random = new System.Random();
 
     public static KeyValuePair<TKey, TValue> GetRandom<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
     {

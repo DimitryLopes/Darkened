@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Maze Data")]
-public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnlockable
+[CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Random Level Data")]
+public class RandomLevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnlockable
 {
     [SerializeField]
     private string levelName;
@@ -49,7 +49,7 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnl
         this.enemyType = enemyType;
     }
 
-    public void SetUp(LevelData data, ObjectiveData objective)
+    public void SetUp(RandomLevelData data, ObjectiveData objective)
     {
         SetUp(data.sizeData, objective, difficultyData, data.enemyType);
     }

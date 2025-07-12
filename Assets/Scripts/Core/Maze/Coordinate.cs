@@ -1,6 +1,12 @@
+using UnityEngine;
+using System;
+
+[Serializable]
 public struct Coordinate 
 {
+    [SerializeField]
     private int x;
+    [SerializeField]
     private int y;
 
     public int X => x;

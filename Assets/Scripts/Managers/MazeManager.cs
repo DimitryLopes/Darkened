@@ -24,7 +24,7 @@ public class MazeManager
         signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStarted);
     }
 
-    public void LoadMaze(LevelData data)
+    public void LoadMaze(RandomLevelData data)
     {
         ClearItems();
         objectiveManager.StartObjective(data.ObjectiveData, data.DifficultyData.DifficultyType);
@@ -97,7 +97,7 @@ public class MazeManager
         return items;
     }
 
-    public MazeTorch GetMazeTorch(LevelData data)
+    public MazeTorch GetMazeTorch(RandomLevelData data)
     {
         MazeTorch torch = (MazeTorch)GetAvailableItem(ItemType.DefaultTorch);
         torch.SetLightRadius(data.DifficultyData.TorchRadius);

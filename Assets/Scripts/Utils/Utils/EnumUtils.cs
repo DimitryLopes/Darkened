@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class EnumUtils
 {
-    private static Random random = new Random();
+    private static System.Random random = new System.Random();
 
     public static T GetRandomEnumValue<T>()
     {

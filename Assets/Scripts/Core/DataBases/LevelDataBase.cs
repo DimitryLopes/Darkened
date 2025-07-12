@@ -5,14 +5,14 @@ using UnityEngine;
 public class LevelDataBase : ScriptableObject
 {
     [SerializeField]
-    private List<LevelData> levelDatas;
+    private List<RandomLevelData> levelDatas;
     [SerializeField]
     private List<MazeTorch> torches;
 
-    public List<LevelData> LevelDatas => levelDatas;
+    public List<RandomLevelData> LevelDatas => levelDatas;
     public List<MazeTorch> Torches => torches;
 
-    public int GetLevelID(LevelData data)
+    public int GetLevelID(RandomLevelData data)
     {
         for(int i = 0; i < levelDatas.Count; i++)
         {

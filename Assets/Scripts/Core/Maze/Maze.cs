@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 public class Maze
 {
-    private LevelData data;
+    private RandomLevelData data;
     private MazeNode[,] nodes;
     private Dictionary<Coordinate, MazeNode> edgeNodes;
     private Dictionary<Coordinate, MazeNode> cornerNodes;
 
-    public LevelData Data => data;
+    public RandomLevelData Data => data;
     public MazeNode[,] Nodes => nodes;
     public Dictionary<Coordinate, MazeNode> EdgeNodes => edgeNodes;
     public Dictionary<Coordinate, MazeNode> CornerNodes => cornerNodes;
@@ -16,7 +16,7 @@ public class Maze
     public List<MazeTorch> Torches;
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
-    public Maze(LevelData data)
+    public Maze(RandomLevelData data)
     {
         UsedNodes = new();
         Torches = new();

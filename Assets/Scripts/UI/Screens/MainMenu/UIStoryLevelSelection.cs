@@ -38,7 +38,7 @@ public class UIStoryLevelSelection : MonoBehaviour
 
     private void PopulateLevelContainer()
     {
-        List<LevelData> selectables = levelManager.GetUnlockedLevels();
+        List<RandomLevelData> selectables = levelManager.GetUnlockedLevels();
         PopulateContainer(selectables, (data) => data);
     }
 
