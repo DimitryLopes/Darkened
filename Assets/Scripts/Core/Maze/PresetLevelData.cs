@@ -20,8 +20,6 @@ public class PresetLevelData : ScriptableObject
     [SerializeField, Header("Core positions")]
     private Coordinate startPosition;
     [SerializeField]
-    private Coordinate endPosition;
-    [SerializeField]
     private Coordinate enemySpawnPosition;
 }
 
@@ -31,9 +29,17 @@ public struct PresetItemData
     [SerializeField]
     private Coordinate coordinate;
     [SerializeField]
-    private ItemType itemType;
+    private Item item;
+    [SerializeField, ShowIf(nameof(SpawnType), SpawnType.Wall, SpawnType.EdgeWalls)]
+    private Cardinal direction;
+
+    [SerializeField, HideInInspector]
+    private SpawnType SpawnType;
+
+
     public Coordinate Coordinate => coordinate;
-    public ItemType ItemType => itemType;
+    public Item Item => item;
+    public Cardinal Direction => direction;
 }
 
 [Serializable]

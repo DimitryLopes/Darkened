@@ -11,9 +11,11 @@ public class MazeTorch : Item
     private MazeNode node;
     private Cardinal alignedWith;
 
+    
     public bool isLit => torchlight.enabled;
     public MazeNode Node => node;
     public Cardinal AlignedWith => alignedWith;
+    public override ItemType Type => ItemType.DefaultTorch;
 
     public override void Interact()
     {
