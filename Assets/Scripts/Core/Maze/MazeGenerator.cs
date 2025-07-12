@@ -43,7 +43,7 @@ public class MazeGenerator : MonoBehaviour
     private Dictionary<Coordinate, MazeNode> instantiatedNodes = new();
     private List<MazeNode> generationPath = new List<MazeNode>();
     private List<MazeNode> generationNeighbors = new List<MazeNode>();
-    private Dictionary<int, MazeWall> walls = new();
+    private Dictionary<string, MazeWall> walls = new();
 
     private Maze currentMaze;
 
@@ -87,8 +87,8 @@ public class MazeGenerator : MonoBehaviour
         IEnumerator<float> step3enumerator = CreatePath();
         LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Generating paths");
 
-        IEnumerator<float> step4enumerator = RemoveDeadEnds();
-        LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "Removing dead ends");
+        //IEnumerator<float> step4enumerator = RemoveDeadEnds();
+        //LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "Removing dead ends");
 
         IEnumerator<float> step5enumerator = AddItems();
         LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Adding items");
@@ -101,7 +101,7 @@ public class MazeGenerator : MonoBehaviour
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, step4, step5, step6//, step7
+            step1, step2, step3, /*step4,*/ step5, step6//, step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
@@ -169,7 +169,6 @@ public class MazeGenerator : MonoBehaviour
         Stack<MazeNode> stack = GetNodeStack();
         bool backtracking = false;
         int targetProgress = currentMaze.Nodes.Length * 2;
-        stack.Peek().MarkAsDeadEnd();
         List<MazeNode> neighbors;
 
         while (stack.Count > 0)
@@ -196,7 +195,7 @@ public class MazeGenerator : MonoBehaviour
                 if (!backtracking)
                 {
                     backtracking = true;
-                    currentNode.MarkAsDeadEnd();
+                    RemoveDeadEndWalls(currentNode);
                 }
             }
 
@@ -205,30 +204,13 @@ public class MazeGenerator : MonoBehaviour
                 yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
             }
         }
-        System.Threading.Thread.Sleep(100);
+
+        signalBus.Fire(new OnDeadEndsRemovedSignal());
+        shadowCreator.Create(mazeCollider);
         yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
     }
 
-    public IEnumerator<float> RemoveDeadEnds()
-    {
-        MazeNode[,] nodes = currentMaze.Nodes;
-
-        for (int y = 0; y < CurrentData.Height; y++)
-        {
-            for (int x = 0; x < CurrentData.Width; x++)
-            {
-                if (nodes[x, y].DeadEnd)
-                {
-                    StartCoroutine(RemoveDeadEndWalls(nodes[x, y]));
-                }
-                yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, nodes.Length);
-            }
-        }
-        signalBus.Fire(new OnDeadEndsRemovedSignal()); //makes the walls part of the composite collider
-        shadowCreator.Create(mazeCollider);
-    }
-
-    private IEnumerator RemoveDeadEndWalls(MazeNode node)
+    private void RemoveDeadEndWalls(MazeNode node)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         if (node.IsOnCorner)
@@ -236,11 +218,9 @@ public class MazeGenerator : MonoBehaviour
             List<MazeNode> cornerNeighbors = GetNeighbors(node, false);
             foreach (MazeNode corner in cornerNeighbors)
             {
-                Cardinal neighbordirection = NodeUtils.GetCardinalDirection(corner, node);
-                MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(neighbordirection, corner, currentMaze);
-                RemoveWallBetween(corner, neighbor);
-                yield break;
+                RemoveWallBetween(corner, node);
             }
+            return;
         }
 
         int wallsRemoved = 0;
@@ -255,10 +235,8 @@ public class MazeGenerator : MonoBehaviour
                 MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
                 RemoveWallBetween(node, neighbor);
                 wallsRemoved++;
-                yield return null;
             }
         }
-
     }
 
     private IEnumerator<float> AddItems()
@@ -266,7 +244,7 @@ public class MazeGenerator : MonoBehaviour
         List<Item> items = mazeManager.GetMissionItems();
         int randomItemAmount = GetRandomItemAmount(CurrentData.SizeData.AverageAdditionalItemAmount);
 
-        List<DifficultyData.DifficultyItemData> itemPool = CurrentData.DifficultyData.DifficultyItemDatas;
+        List<DifficultyData.DifficultyItemData> itemPool = new List<DifficultyData.DifficultyItemData>(CurrentData.DifficultyData.DifficultyItemDatas);
         itemPool.Sort((a, b) => a.Probability.CompareTo(b.Probability));
 
 
@@ -283,7 +261,7 @@ public class MazeGenerator : MonoBehaviour
                 probabilities.Add(range);
             }
 
-            ItemType AdditionalItem = GetRandomItem(totalProbability,ref probabilities, ref itemPool);
+            ItemType AdditionalItem = GetRandomItem(totalProbability,ref probabilities, itemPool);
             items.Add(mazeManager.GetAvailableItem(AdditionalItem));
             yield return LoadingUtils.GetProgress(i, randomItemAmount * 2);
         }
@@ -306,7 +284,7 @@ public class MazeGenerator : MonoBehaviour
         return items;
     }
 
-    public ItemType GetRandomItem(float totalProbability,ref List<(float,float)> probabilities, ref List<DifficultyData.DifficultyItemData> itemPool)
+    public ItemType GetRandomItem(float totalProbability,ref List<(float,float)> probabilities, List<DifficultyData.DifficultyItemData> itemPool)
     {
         float randomValue = Random.Range(0f, totalProbability);
 
@@ -413,23 +391,8 @@ public class MazeGenerator : MonoBehaviour
     private void AddNodeWall(Cardinal direction, MazeNode node)
     {
         MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        int wallID = neighbor == null
-        ? MazeUtils.GetCantorPairing(node.Coordinates)
-        : MazeUtils.GetCantorPairing(node.Coordinates, neighbor.Coordinates);
-
-        //this is for diferentiating walls on corners as they will have the same Cantor pairing
-        if (node.IsOnCorner)
-        {
-            if(node.Coordinates.Y == 0 && direction == Cardinal.South)
-            {
-                wallID *= -1;
-            }
-            else if (node.Coordinates.Y == CurrentData.Height - 1 && direction == Cardinal.North)
-            {
-                wallID *= -1;
-            }
-        }
-
+        
+        string wallID = GetWallKey(node, direction);
         MazeWall wall = GetWall(wallID);
         node.AddWall(direction, wall);
 
@@ -437,6 +400,50 @@ public class MazeGenerator : MonoBehaviour
 
         wall.transform.SetParent(edgeWallsContainer);
 
+    }
+
+    private string GetWallKey(MazeNode node, Cardinal direction)
+    {
+        // Coordenada do nodo atual
+        int x = node.Coordinates.X;
+        int y = node.Coordinates.Y;
+
+        int nx, ny;
+        // Simular nodo vizinho
+        switch (direction)
+        {
+            case Cardinal.North:
+                nx = x;
+                ny = y + 1;
+                break;
+            case Cardinal.South:
+                nx = x;
+                ny = y - 1;
+                break;
+            case Cardinal.East:
+                nx = x + 1;
+                ny = y;
+                break;
+            case Cardinal.West:
+                nx = x - 1;
+                ny = y;
+                break;
+            default:
+                nx = x;
+                ny = y;
+                break;
+        }
+
+
+        // Ordena para garantir simetria
+        if (x > nx || (x == nx && y > ny))
+        {
+            return string.Format(Constants.Generation.WALL_ID_FORMAT, nx, ny, x, y);
+        }
+        else
+        {
+            return string.Format(Constants.Generation.WALL_ID_FORMAT, x, y, nx, ny);
+        }
     }
     #endregion
 
@@ -491,66 +498,37 @@ public class MazeGenerator : MonoBehaviour
     #region Torches
     private IEnumerator<float> AddTorches()
     {
-        int torchCount = 0;
-        float breakChance = 0f;
-        MazeNode[,] nodes = currentMaze.Nodes.Clone() as MazeNode[,];
-        nodes.Shuffle();
+        int minTorchCount = CurrentData.MinTorchCount;
+        int maxTorchCount = CurrentData.MaxTorchCount;
+        int torchCount = Random.Range(minTorchCount, maxTorchCount + 1);
 
-        IEnumerator<float> torchEnumerator = GenerateTorches(nodes, torchCount, breakChance);
-        StartCoroutine(torchEnumerator);
-
-        while (torchEnumerator.MoveNext())
+        // Filtra nós válidos (sem item/tocha)
+        List<MazeNode> validNodes = new List<MazeNode>();
+        foreach (MazeNode node in currentMaze.Nodes)
         {
-            yield return torchEnumerator.Current;
+            if (!node.IsBeingUsed && node.HasAnyWall())
+                validNodes.Add(node);
+        }
+
+        if (validNodes.Count < torchCount)
+            torchCount = validNodes.Count;
+
+        validNodes.Shuffle();
+
+        // Divide em partes para espalhar
+        float step = (float)validNodes.Count / torchCount;
+        int added = 0;
+        for (int i = 0; i < torchCount; i++)
+        {
+            int idx = Mathf.RoundToInt(i * step);
+            if (idx >= validNodes.Count) idx = validNodes.Count - 1;
+            MazeNode node = validNodes[idx];
+            PlaceTorchAt(node);
+            added++;
+            yield return LoadingUtils.GetProgress(added, torchCount);
         }
 
         yield return 1;
-    }
-
-    private IEnumerator<float> GenerateTorches(IEnumerable nodes, int torchCount, float breakChance)
-    {
-        List<MazeNode> remainingNodes = new List<MazeNode>();
-        remainingNodes.AddRange(nodes);
-        bool broken = false;
-
-        foreach (MazeNode node in nodes)
-        {
-            float randomTorchValue = Random.Range(0f, 1f);
-            float randomBreakChance = Random.Range(0f, 1f);
-            if (torchCount < CurrentData.MinTorchCount || breakChance < randomBreakChance)
-            {
-                if (randomTorchValue >= CurrentData.TorchRatio)
-                {
-                    if (node.HasAnyWall())
-                    {
-                        PlaceTorchAt(node);
-                        torchCount++;
-                        if (torchCount == CurrentData.MaxTorchCount)
-                        {
-                            break;
-                        }
-                        if (torchCount >= CurrentData.MinTorchCount)
-                        {
-                            breakChance = (float)(torchCount - CurrentData.MinTorchCount) / (CurrentData.MaxTorchCount - CurrentData.MinTorchCount);
-                        }
-                    }
-                    remainingNodes.Remove(node);
-                }
-                yield return LoadingUtils.GetProgress(torchCount, CurrentData.MaxTorchCount);
-            }
-            else
-            {
-                broken = true;
-                break;
-            }
-
-            yield return LoadingUtils.GetProgress(torchCount, CurrentData.MaxTorchCount);
-        }
-
-        if (torchCount < CurrentData.MaxTorchCount && !broken)
-        {
-            yield return GenerateTorches(remainingNodes, torchCount, breakChance).Current;
-        }
     }
 
     private IEnumerator<float> ActivateMazeTorches()
@@ -578,7 +556,6 @@ public class MazeGenerator : MonoBehaviour
         MazeTorch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
         currentMaze.AddTorch(node, torch);
-
         (MazeWall, MazeWall) walls = torch.Node.GetAdjacentWalls(torch.AlignedWith);
         bool hasRightWall = walls.Item1 != null;
         bool hasLefttWall = walls.Item2 != null;
@@ -587,7 +564,7 @@ public class MazeGenerator : MonoBehaviour
     #endregion
 
     #region Pooling
-    private MazeWall GetWall(int id)
+    private MazeWall GetWall(string id)
     {
         MazeWall wall;
         if (walls.ContainsKey(id))

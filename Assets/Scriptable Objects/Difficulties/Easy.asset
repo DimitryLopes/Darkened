@@ -19,7 +19,9 @@ MonoBehaviour:
   maxTorchRatio: 0.4
   litTorchRatio: 0.5
   difficultyItemDatas:
-  - probability: 0.61
-    item: 4
-  - probability: 1
+  - probability: 0.805
+    item: 7
+  - probability: 0.617
+    item: 8
+  - probability: 0.513
     item: 2

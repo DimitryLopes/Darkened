@@ -41,6 +41,7 @@ public class Maze
     {
         Torches.Add(torch);
         node.AddTorch(torch);
+        node.MarkAsUsed();
     }
 
     public void MarkNodeAsUsed(MazeNode node)

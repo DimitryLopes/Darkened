@@ -100,7 +100,6 @@ public class MazeUtils
         return pairing;
     }
 
-    //add a bool here to cck if the coordinate is on edge, if so, multiply the result by direction or forcefully add a comma
     public static int GetCantorPairing(Coordinate coordinate)
     {
         int x = coordinate.X + 1;

@@ -11,7 +11,6 @@ public class MazeNode : Activateable
     private bool isBeingUsed;
 
     public bool Visited { get; set; }
-    public bool DeadEnd  { get; set; }
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsBeingUsed => isBeingUsed;
@@ -24,11 +23,6 @@ public class MazeNode : Activateable
     public void Visit()
     {
         Visited = true;
-    }
-
-    public void MarkAsDeadEnd()
-    {
-        DeadEnd = true;
     }
 
     #region Walls
@@ -189,7 +183,6 @@ public class MazeNode : Activateable
         hasTorch = false;
         isBeingUsed = false;
         Visited = false;
-        DeadEnd = false;
         coordinates = new Coordinate();
     }
 
@@ -232,15 +225,11 @@ public class MazeNode : Activateable
     #endregion
 
     #region Debug
-    public void ShowIsDeadEnd()
-    {
-        text.text = DeadEnd ? "DEAD END" : string.Empty;
-    }
-
     public void ShowWallCount()
     {
         text.text = GetActiveWallCount().ToString();
     }
+
     public void DebugColor(Color color)
     {
         if (color == null) return;

@@ -12,9 +12,6 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnl
     [SerializeField, Header("Difficulty")]
     private DifficultyData difficultyData;
 
-    [SerializeField, Range(0, 1), Header("Torches")]
-    private float torchRatio;
-
     [SerializeField, Header("Enemy")]
     private EnemyType enemyType;
 
@@ -30,9 +27,14 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnl
     public MazeSizeData SizeData => sizeData;
     public DifficultyData DifficultyData => difficultyData;
 
+    /// <summary>
+    /// Will return the minimum torch count based on the difficulty data and size of the maze.
+    /// </summary>
     public int MinTorchCount => Mathf.CeilToInt(difficultyData.MinimumTorchRatio * Size);
+    /// <summary>
+    /// Will return the maximum torch count based on the difficulty data and size of the maze.
+    /// </summary>
     public int MaxTorchCount => Mathf.CeilToInt(difficultyData.MaximumTorchRatio * Size);
-    public float TorchRatio => torchRatio;
     public EnemyType EnemyType => enemyType;
     public ObjectiveData ObjectiveData => objective;
     public string Title => levelName;
@@ -44,7 +46,6 @@ public class LevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnl
         this.sizeData = sizeData;
         this.objective = objective;
         difficultyData = difficulty;
-        torchRatio = (difficultyData.MinimumTorchRatio + difficultyData.MaximumTorchRatio) / 2;
         this.enemyType = enemyType;
     }
 
