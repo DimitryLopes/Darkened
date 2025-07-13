@@ -14,11 +14,122 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeData: {fileID: 11400000, guid: 1a93ec8ca5b582940bd9329543c130cf, type: 2}
   objectiveData: {fileID: 11400000, guid: ec27605dde3870444aa2bbaa59e1049a, type: 2}
+  unlockConditionData: {fileID: 11400000, guid: 1263f19c4fcf2244ba7d538556924bac, type: 2}
+  enemyType: 0
+  difficultyData: {fileID: 11400000, guid: 584592c39458975408f633c3aa537af0, type: 2}
   wallPositions:
+  - coordinate:
+      x: 0
+      y: 1
+    direction: 2
+  - coordinate:
+      x: 0
+      y: 2
+    direction: 0
+  - coordinate:
+      x: 0
+      y: 4
+    direction: 2
+  - coordinate:
+      x: 1
+      y: 0
+    direction: 0
+  - coordinate:
+      x: 1
+      y: 2
+    direction: 2
+  - coordinate:
+      x: 1
+      y: 3
+    direction: 0
+  - coordinate:
+      x: 1
+      y: 5
+    direction: 2
+  - coordinate:
+      x: 2
+      y: 0
+    direction: 2
+  - coordinate:
+      x: 2
+      y: 3
+    direction: 2
+  - coordinate:
+      x: 2
+      y: 4
+    direction: 2
+  - coordinate:
+      x: 3
+      y: 1
+    direction: 2
+  - coordinate:
+      x: 3
+      y: 1
+    direction: 0
+  - coordinate:
+      x: 3
+      y: 3
+    direction: 0
+  - coordinate:
+      x: 4
+      y: 0
+    direction: 0
+  - coordinate:
+      x: 4
+      y: 3
+    direction: 0
+  - coordinate:
+      x: 4
+      y: 4
+    direction: 0
+  - coordinate:
+      x: 5
+      y: 1
+    direction: 0
   - coordinate:
       x: 0
       y: 0
     direction: 1
+  - coordinate:
+      x: 0
+      y: 5
+    direction: 0
+  - coordinate:
+      x: 1
+      y: 0
+    direction: 1
+  - coordinate:
+      x: 1
+      y: 5
+    direction: 0
+  - coordinate:
+      x: 2
+      y: 0
+    direction: 1
+  - coordinate:
+      x: 2
+      y: 5
+    direction: 0
+  - coordinate:
+      x: 3
+      y: 0
+    direction: 1
+  - coordinate:
+      x: 3
+      y: 5
+    direction: 0
+  - coordinate:
+      x: 4
+      y: 0
+    direction: 1
+  - coordinate:
+      x: 5
+      y: 0
+    direction: 1
+  - coordinate:
+      x: 5
+      y: 5
+    direction: 0
   - coordinate:
       x: 0
       y: 0
@@ -28,20 +139,121 @@ MonoBehaviour:
       y: 1
     direction: 3
   - coordinate:
+      x: 5
+      y: 1
+    direction: 2
+  - coordinate:
       x: 0
       y: 2
     direction: 3
+  - coordinate:
+      x: 5
+      y: 2
+    direction: 2
+  - coordinate:
+      x: 0
+      y: 3
+    direction: 3
+  - coordinate:
+      x: 0
+      y: 4
+    direction: 3
+  - coordinate:
+      x: 5
+      y: 4
+    direction: 2
+  - coordinate:
+      x: 5
+      y: 5
+    direction: 2
+  - coordinate:
+      x: 0
+      y: 5
+    direction: 3
+  - coordinate:
+      x: 5
+      y: 0
+    direction: 2
+  - coordinate:
+      x: 1
+      y: 3
+    direction: 2
+  - coordinate:
+      x: 5
+      y: 3
+    direction: 2
+  - coordinate:
+      x: 3
+      y: 2
+    direction: 2
+  - coordinate:
+      x: 4
+      y: 5
+    direction: 0
   items:
   - coordinate:
       x: 3
       y: 3
-    itemType: 7
+    item: {fileID: 1265893472881442220, guid: 7c2a121108b6cc249b373503b6a89a26, type: 3}
+    direction: 0
+    SpawnType: 0
+  - coordinate:
+      x: 3
+      y: 1
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    SpawnType: 1
+  - coordinate:
+      x: 2
+      y: 0
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    SpawnType: 1
+  - coordinate:
+      x: 0
+      y: 2
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    SpawnType: 1
+  - coordinate:
+      x: 2
+      y: 3
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    SpawnType: 1
+  - coordinate:
+      x: 4
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    SpawnType: 1
+  - coordinate:
+      x: 4
+      y: 4
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    SpawnType: 1
+  - coordinate:
+      x: 0
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    SpawnType: 1
+  - coordinate:
+      x: 5
+      y: 2
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    SpawnType: 1
+  - coordinate:
+      x: 5
+      y: 0
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    SpawnType: 1
   startPosition:
     x: 0
     y: 0
-  endPosition:
-    x: 5
-    y: 4
   enemySpawnPosition:
     x: 5
     y: 5
