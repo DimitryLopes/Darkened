@@ -76,6 +76,85 @@ public class MazeGenerator : MonoBehaviour
         signalBus.Fire(new OnMazeLoadStartedSignal(currentMaze));
     }
 
+    public void CreateMazeFromPreset(PresetLevelData preset, MazeManager mazeManager)
+    {
+        this.mazeManager = mazeManager;
+        ClearMaze();
+
+        // Cria base de nós
+        int width = preset.SizeData.Width;
+        int height = preset.SizeData.Height;
+        MazeNode[,] nodes = new MazeNode[width, height];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                MazeNode node = GetNode(new Coordinate(x, y));
+                nodes[x, y] = node;
+                node.Activate();
+                node.SetCoordinate(x, y);
+                SetNodeEdges(node, preset.SizeData);
+            }
+        }
+        currentMaze = new Maze(null); // Se necessário, crie um construtor para Maze que aceite PresetLevelData
+        currentMaze.SetNodes(nodes);
+
+        // Adiciona paredes do preset
+        var wallPositions = preset.WallPositions;
+        foreach (var wallData in wallPositions)
+        {
+            MazeNode node = nodes[wallData.Coordinate.X, wallData.Coordinate.Y];
+            string wallID = GetWallKey(node, wallData.Direction);
+            MazeWall wall = GetWall(wallID);
+            node.AddWall(wallData.Direction, wall);
+
+            if (node.GetEdge(wallData.Direction))
+                wall.transform.SetParent(edgeWallsContainer);
+            else
+                wall.transform.SetParent(wallsContainer);
+        }
+
+        // Adiciona itens do preset
+        var items = preset.Items;
+        foreach (var itemData in items)
+        {
+            Item item = itemData.Item;
+            item.Activate();
+
+            switch (itemData.Item.GenerationData.SpawnType)
+            {
+                case SpawnType.Node:
+                    MazeNode node = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    item.transform.SetParent(itemsContainer);
+                    item.transform.position = node.transform.position;
+                    break;
+                case SpawnType.Wall:
+                case SpawnType.EdgeWalls:
+                    MazeNode nodeWall = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    MazeWall wall = nodeWall.GetWall(itemData.Direction);
+                    item.transform.SetParent(itemsContainer);
+                    item.transform.position = wall.transform.position;
+                    item.transform.rotation = wall.transform.rotation;
+                    break;
+            }
+        }
+
+        // Define posições especiais
+        MazeNode startNode = nodes[preset.StartPosition.X, preset.StartPosition.Y];
+        mazeManager.CurrentStartingNode = startNode;
+        startNode.MarkAsUsed();
+
+        MazeNode enemySpawnNode = nodes[preset.EnemySpawnPosition.X, preset.EnemySpawnPosition.Y];
+        mazeManager.EnemyStartingNode = enemySpawnNode;
+
+        // Shadows e collider
+        shadowCreator.Create(mazeCollider);
+
+        // Sinaliza fim da geração
+        signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
+    }
+
     private LoadingOperation MazeLoadOperation()
     {
         IEnumerator<float> step1enumerator = CreateBase();
@@ -120,7 +199,7 @@ public class MazeGenerator : MonoBehaviour
                 nodes[x, y] = node;
                 node.Activate();
                 node.SetCoordinate(x, y);
-                SetNodeEdges(node, CurrentData);
+                SetNodeEdges(node, CurrentData.SizeData);
                 if ((y * CurrentData.Height + x) % 10 == 0)
                     yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
             }
@@ -447,7 +526,7 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private void SetNodeEdges(MazeNode node, RandomLevelData data)
+    private void SetNodeEdges(MazeNode node, MazeSizeData data)
     {
         if (node.Coordinates.X == 0)
         {

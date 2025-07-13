@@ -21,6 +21,13 @@ public class PresetLevelData : ScriptableObject
     private Coordinate startPosition;
     [SerializeField]
     private Coordinate enemySpawnPosition;
+
+    public MazeSizeData SizeData => sizeData;
+    public ObjectiveData ObjectiveData => objectiveData;
+    public List<PresetWallPositionData> WallPositions => wallPositions;
+    public List<PresetItemData> Items => items;
+    public Coordinate StartPosition => startPosition;
+    public Coordinate EnemySpawnPosition => enemySpawnPosition;
 }
 
 [Serializable]
@@ -52,4 +59,10 @@ public struct PresetWallPositionData
 
     public Coordinate Coordinate => coordinate;
     public Cardinal Direction => direction;
+
+    public PresetWallPositionData(Coordinate coordinate, Cardinal direction)
+    {
+        this.coordinate = coordinate;
+        this.direction = direction;
+    }
 }
