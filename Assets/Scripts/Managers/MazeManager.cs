@@ -97,7 +97,7 @@ public class MazeManager
         return items;
     }
 
-    public MazeTorch GetMazeTorch(RandomLevelData data)
+    public MazeTorch GetMazeTorch(LevelData data)
     {
         MazeTorch torch = (MazeTorch)GetAvailableItem(ItemType.DefaultTorch);
         torch.SetLightRadius(data.DifficultyData.TorchRadius);

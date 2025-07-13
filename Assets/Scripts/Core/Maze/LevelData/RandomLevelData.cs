@@ -1,31 +1,15 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Random Level Data")]
-public class RandomLevelData : ScriptableObject, IUISelectable, IDataPersistence, IUnlockable
+public class RandomLevelData : LevelData, IUISelectable, IDataPersistence, IUnlockable
 {
     [SerializeField]
     private string levelName;
 
-    [SerializeField, Header("Size")]
-    private MazeSizeData sizeData;
-
-    [SerializeField, Header("Difficulty")]
-    private DifficultyData difficultyData;
-
-    [SerializeField, Header("Enemy")]
-    private EnemyType enemyType;
-
-    [SerializeField, Header("Objective")]
-    private ObjectiveData objective;
 
     [SerializeField, Header("Unlock Condition")]
     private UnlockConditionData unlockConditionData;
 
-    public int Height => sizeData.Height;
-    public int Width => sizeData.Width;
-    public int Size => sizeData.Width * sizeData.Height;
-    public MazeSizeData SizeData => sizeData;
-    public DifficultyData DifficultyData => difficultyData;
 
     /// <summary>
     /// Will return the minimum torch count based on the difficulty data and size of the maze.
@@ -35,16 +19,14 @@ public class RandomLevelData : ScriptableObject, IUISelectable, IDataPersistence
     /// Will return the maximum torch count based on the difficulty data and size of the maze.
     /// </summary>
     public int MaxTorchCount => Mathf.CeilToInt(difficultyData.MaximumTorchRatio * Size);
-    public EnemyType EnemyType => enemyType;
-    public ObjectiveData ObjectiveData => objective;
     public string Title => levelName;
     public SelectableType SelectableType => SelectableType.Level;
     public int ID { get; set; }
 
-    public void SetUp(MazeSizeData sizeData, ObjectiveData objective, DifficultyData difficulty, EnemyType enemyType)
+    public void SetUp(MazeSizeData sizeData, ObjectiveData objectiveData, DifficultyData difficulty, EnemyType enemyType)
     {
         this.sizeData = sizeData;
-        this.objective = objective;
+        this.objectiveData = objectiveData;
         difficultyData = difficulty;
         this.enemyType = enemyType;
     }
@@ -59,8 +41,6 @@ public class RandomLevelData : ScriptableObject, IUISelectable, IDataPersistence
     public bool IsDirty { get; private set; }
     public UnlockableSavedData SavedData { get; private set; }
     public string PersistenceKey { get; private set; }
-
-    public UnlockConditionData UnlockConditionData => unlockConditionData;
 
     public void Unlock()
     {

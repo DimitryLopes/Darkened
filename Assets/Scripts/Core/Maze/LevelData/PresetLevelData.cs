@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MazeData", menuName = "Scriptable Objects/Datas/Preset Level Data")]
-public class PresetLevelData : ScriptableObject
+public class PresetLevelData : LevelData
 {
-    [SerializeField, Header("Size")]
-    private MazeSizeData sizeData;
-
-    [SerializeField, Header("Objective")]
-    private ObjectiveData objectiveData;
-
     [SerializeField, Header("Walls")]
     private List<PresetWallPositionData> wallPositions;
 
@@ -22,8 +16,6 @@ public class PresetLevelData : ScriptableObject
     [SerializeField]
     private Coordinate enemySpawnPosition;
 
-    public MazeSizeData SizeData => sizeData;
-    public ObjectiveData ObjectiveData => objectiveData;
     public List<PresetWallPositionData> WallPositions => wallPositions;
     public List<PresetItemData> Items => items;
     public Coordinate StartPosition => startPosition;

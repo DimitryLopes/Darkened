@@ -44,7 +44,7 @@ public class MazeUtils
         }
     }
 
-    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, RandomLevelData data)
+    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, MazeSizeData data)
     {
         Dictionary<Coordinate, MazeNode> edgeNodes = new Dictionary<Coordinate, MazeNode>();
         int height = data.Height;
@@ -65,7 +65,7 @@ public class MazeUtils
         return edgeNodes;
     }
 
-    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, RandomLevelData data)
+    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, MazeSizeData data)
     {
         Dictionary<Coordinate, MazeNode> corners = new Dictionary<Coordinate, MazeNode>
         {

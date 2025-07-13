@@ -47,7 +47,7 @@ public class MazeGenerator : MonoBehaviour
 
     private Maze currentMaze;
 
-    private RandomLevelData CurrentData => currentMaze.Data;
+    private LevelData CurrentData => currentMaze.Data;
 
     private void ClearMaze()
     {
@@ -80,6 +80,7 @@ public class MazeGenerator : MonoBehaviour
     {
         this.mazeManager = mazeManager;
         ClearMaze();
+        currentMaze = new Maze(preset);
 
         // Cria base de nós
         int width = preset.SizeData.Width;
@@ -447,7 +448,7 @@ public class MazeGenerator : MonoBehaviour
         return null;
     }
 
-    private MazeNode SetStartingPoint(MazeNode[,] nodes, RandomLevelData data)
+    private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
         currentMaze.MarkNodeAsUsed(nodes[startingX, 0]);
@@ -575,10 +576,11 @@ public class MazeGenerator : MonoBehaviour
 
 
     #region Torches
+    //THIS ONLY WORKS WITH RANDOM GENERATION
     private IEnumerator<float> AddTorches()
     {
-        int minTorchCount = CurrentData.MinTorchCount;
-        int maxTorchCount = CurrentData.MaxTorchCount;
+        int minTorchCount = (CurrentData as RandomLevelData).MinTorchCount;
+        int maxTorchCount = (CurrentData as RandomLevelData).MaxTorchCount;
         int torchCount = UnityEngine.Random.Range(minTorchCount, maxTorchCount + 1);
 
         // Filtra nós válidos (sem item/tocha)
