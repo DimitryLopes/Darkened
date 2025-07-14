@@ -12,14 +12,12 @@ public class Maze
     public Dictionary<Coordinate, MazeNode> EdgeNodes => edgeNodes;
     public Dictionary<Coordinate, MazeNode> CornerNodes => cornerNodes;
 
-    public List<MazeNode> UsedNodes;
-    public List<MazeTorch> Torches;
+    public List<MazeNode> UsedNodes = new();
+    public List<MazeTorch> Torches = new();
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
     public Maze(LevelData data)
     {
-        UsedNodes = new();
-        Torches = new();
         this.data = data;
     }
 

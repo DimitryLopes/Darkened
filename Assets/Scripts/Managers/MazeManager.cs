@@ -24,6 +24,22 @@ public class MazeManager
         signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStarted);
     }
 
+    public void LoadMaze(LevelData data)
+    {
+        ClearItems();
+        objectiveManager.StartObjective(data.ObjectiveData, data.DifficultyData.DifficultyType);
+        if(data is RandomLevelData randomData)
+        {
+            Debug.Log($"Generating Maze with data following data: \n Size: {randomData.Size} cells \n Min torches: {randomData.MinTorchCount} \n Max torches: {randomData.MaxTorchCount}");
+            mazeGenerator.CreateMaze(data as RandomLevelData, this);
+        }
+        else
+        {
+            mazeGenerator.CreateMaze(data as PresetLevelData, this);
+            Debug.Log($"Generating Maze with data following data: \n Size: {data.Size} cells");
+        }
+    }
+
     public void LoadMaze(RandomLevelData data)
     {
         ClearItems();

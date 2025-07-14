@@ -76,7 +76,7 @@ public class MazeGenerator : MonoBehaviour
         signalBus.Fire(new OnMazeLoadStartedSignal(currentMaze));
     }
 
-    public void CreateMazeFromPreset(PresetLevelData preset, MazeManager mazeManager)
+    public void CreateMaze(PresetLevelData preset, MazeManager mazeManager)
     {
         this.mazeManager = mazeManager;
         ClearMaze();
@@ -98,7 +98,6 @@ public class MazeGenerator : MonoBehaviour
                 SetNodeEdges(node, preset.SizeData);
             }
         }
-        currentMaze = new Maze(null); // Se necessário, crie um construtor para Maze que aceite PresetLevelData
         currentMaze.SetNodes(nodes);
 
         // Adiciona paredes do preset
@@ -120,7 +119,7 @@ public class MazeGenerator : MonoBehaviour
         var items = preset.Items;
         foreach (var itemData in items)
         {
-            Item item = itemData.Item;
+            Item item = mazeManager.GetAvailableItem(itemData.Item.Type);
             item.Activate();
 
             switch (itemData.Item.GenerationData.SpawnType)
@@ -134,6 +133,17 @@ public class MazeGenerator : MonoBehaviour
                 case SpawnType.EdgeWalls:
                     MazeNode nodeWall = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     MazeWall wall = nodeWall.GetWall(itemData.Direction);
+                    if(wall == null)
+                    {
+                        var neighborNode = MazeUtils.GetNodeAtCardinalFromNode(itemData.Direction, nodeWall, currentMaze);
+                        var oppositeCardinal = NodeUtils.GetOppositeCardinal(itemData.Direction);
+                        wall = neighborNode.GetWall(oppositeCardinal);
+                        if(wall == null)
+                        {
+                            Debug.LogError($"No wall found at {itemData.Coordinate} in direction {itemData.Direction}. Item will not be placed.");
+                            continue;
+                        }
+                    }
                     item.transform.SetParent(itemsContainer);
                     item.transform.position = wall.transform.position;
                     item.transform.rotation = wall.transform.rotation;
@@ -384,7 +394,6 @@ public class MazeGenerator : MonoBehaviour
         return default;
     }
 
-
     private void PositionItem(Item item)
     {
         Transform transform = null;
@@ -424,7 +433,6 @@ public class MazeGenerator : MonoBehaviour
     {
         signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
     }
-
     #endregion
 
     private List<MazeNode> GetNeighbors(MazeNode node, bool excludeVisited, bool removeNulls = true)

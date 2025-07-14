@@ -13,7 +13,7 @@ public class LevelManager
     private DifficultyDataBase difficultyDataBase;
 
     public LevelType CurrentLevelType { get; private set; }
-    public RandomLevelData CurrentLevelData { get; private set; }
+    public LevelData CurrentLevelData { get; private set; }
     
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
@@ -36,10 +36,10 @@ public class LevelManager
         return levelDataBase.LevelDatas[index].SavedData.IsUnlocked;
     }
 
-    public List<RandomLevelData> GetUnlockedLevels()
+    public List<LevelData> GetUnlockedLevels()
     {
-        List<RandomLevelData> unlockedDatas = new();
-        foreach (RandomLevelData data in levelDataBase.LevelDatas)
+        List<LevelData> unlockedDatas = new();
+        foreach (LevelData data in levelDataBase.LevelDatas)
         {
             if (!data.SavedData.IsUnlocked) continue;
 
@@ -53,7 +53,7 @@ public class LevelManager
         return unlockedDatas;
     }
 
-    private void UnlockLevel(RandomLevelData data)
+    private void UnlockLevel(LevelData data)
     {
         if (data.SavedData.IsUnlocked) return;
 
@@ -136,13 +136,13 @@ public class LevelManager
                 customObjectiveType = objective.ObjectiveType;
                 return;
             case SelectableType.Level:
-                RandomLevelData levelData = signal.Selectable as RandomLevelData;
+                LevelData levelData = signal.Selectable as LevelData;
                 currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
                 return;
         }
     }
 
-    private void LoadLevel(RandomLevelData data, LevelType levelType)
+    private void LoadLevel(LevelData data, LevelType levelType)
     {
         CurrentLevelType = levelType;
         CurrentLevelData = data;
@@ -150,7 +150,6 @@ public class LevelManager
         if(levelType == LevelType.Story)
         {
             ObjectiveData objective = GetObjectiveByType(data.ObjectiveData.ObjectiveType);
-            data.SetUp(data, objective);
         }
         mazeManager.LoadMaze(data);
     }
