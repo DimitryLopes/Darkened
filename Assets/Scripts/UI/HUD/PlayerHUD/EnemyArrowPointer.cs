@@ -25,7 +25,7 @@ public class EnemyArrowPointer : Activateable
     private void Start()
     {
         mainCamera = Camera.main;
-        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
+        signalBus.Subscribe<OnEnemySpawnedSignal>(OnEnemySpawned);
         RawDeactivate();
     }
 
@@ -49,11 +49,15 @@ public class EnemyArrowPointer : Activateable
         }
     }
 
-
-    private void OnMazeLoadFinish()
+    private void OnEnemySpawned(OnEnemySpawnedSignal signal)
     {
         player = entityManager.GetPlayer().transform;
-        enemy = entityManager.GetCurrentEnemy().transform;
+        enemy = signal.Enemy?.transform;
+        if(enemy == null)
+        {
+            Deactivate();
+            return;
+        }
         ToggleArrow();//enemy does that, but it might be good to leave this here anyway
     }
 

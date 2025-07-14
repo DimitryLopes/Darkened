@@ -1,6 +1,6 @@
 public enum EnemyType 
 {
     Default,
-    Runner,
+    None,
     DebugDefault,
 }

@@ -36,6 +36,11 @@ public class EntityManager
 
     public Enemy GetEnemy(EnemyType enemyType, bool setAsCurrent = false)
     {
+        if(enemyType == EnemyType.None)
+        {
+            return null;
+        }
+
         if (setAsCurrent)
         {
             currentEnemyType = enemyType;
@@ -53,6 +58,11 @@ public class EntityManager
 
     public void DeactivateEnemy(EnemyType enemyType)
     {
+        if (enemyType == EnemyType.None)
+        {
+            return;
+        }
+
         if (Enemies.ContainsKey(enemyType))
         {
             Enemies[enemyType].Deactivate();

@@ -90,7 +90,9 @@ public class GameManager
     {
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
+        
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
+        
         Objective currentObjective = objectiveManager.CurrentObjective;
         string screenMessage = objectiveCompleted ? currentObjective.Data.VictoryMessage : currentObjective.Data.DefeatMessage;
 
@@ -139,10 +141,14 @@ public class GameManager
         player.ToggleActing(true);
         player.SetDefaultTorch();
 
-        Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType, true);
-        enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
-        entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
-        enemy.SetMaze(mazeManager.CurrentMaze);
+        if (levelManager.CurrentLevelData.EnemyType != EnemyType.None)
+        {
+            Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType, true);
+            enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
+            entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
+            enemy.SetMaze(mazeManager.CurrentMaze);
+            signalBus.Fire(new OnEnemySpawnedSignal(enemy));
+        }
 
         audioManager.PlayBGM(AudioKey.BGM_in_game);
         hudManager.ShowHud();
