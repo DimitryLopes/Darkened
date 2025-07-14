@@ -13,13 +13,6 @@ MonoBehaviour:
   m_Name: LevelDataBase
   m_EditorClassIdentifier: 
   levelDatas:
-  - {fileID: 11400000, guid: e6cb78993013cec44bcc89ef02b59fd6, type: 2}
-  - {fileID: 11400000, guid: 94860ca0414e23c488fcc1340f5e7ceb, type: 2}
-  - {fileID: 11400000, guid: 7b8d52f29000f6b47a3f582cd815b0c4, type: 2}
-  - {fileID: 11400000, guid: 5e8283a64875de842a3369c3657ffef5, type: 2}
-  - {fileID: 11400000, guid: 36327511ae79eaa46a28c030935707f7, type: 2}
-  - {fileID: 11400000, guid: 8edd5a1e958be634788274cb120b2d14, type: 2}
-  - {fileID: 11400000, guid: bd74a2ed9a77f8a4aa3cb73bcc220568, type: 2}
-  - {fileID: 11400000, guid: 700b6d79dca32b5469b658be6fcf53a5, type: 2}
+  - {fileID: 11400000, guid: 4c33665744946604ba42fd5d14e43975, type: 2}
   torches:
   - {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}

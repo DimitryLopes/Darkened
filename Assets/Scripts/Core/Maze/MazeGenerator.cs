@@ -155,9 +155,9 @@ public class MazeGenerator : MonoBehaviour
         MazeNode startNode = nodes[preset.StartPosition.X, preset.StartPosition.Y];
         mazeManager.CurrentStartingNode = startNode;
         startNode.MarkAsUsed();
-
         MazeNode enemySpawnNode = nodes[preset.EnemySpawnPosition.X, preset.EnemySpawnPosition.Y];
         mazeManager.EnemyStartingNode = enemySpawnNode;
+        mazeManager.SetupMissions();
 
         // Shadows e collider
         shadowCreator.Create(mazeCollider);

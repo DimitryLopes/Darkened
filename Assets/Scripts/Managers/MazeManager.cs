@@ -100,6 +100,7 @@ public class MazeManager
             {
                 if (baseMission is ItemMission mission)
                 {
+                    mission.SetupMissionData();
                     List<ItemType> missionItemsInfo = mission.GetRequiredItems();
                     foreach (ItemType type in missionItemsInfo)
                     {
@@ -111,6 +112,24 @@ public class MazeManager
             }
         }
         return items;
+    }
+
+    public void SetupMissions()
+    {
+        foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
+        {
+            foreach (IMission baseMission in missionGroup.Missions)
+            {
+                switch (baseMission)
+                {
+                    case ItemMission itemMission:
+                        itemMission.SetupMissionData();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     public MazeTorch GetMazeTorch(LevelData data)

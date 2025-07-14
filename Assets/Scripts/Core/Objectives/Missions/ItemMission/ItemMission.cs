@@ -20,10 +20,14 @@ public class ItemMission : Mission<ItemMissionData>
         UpdateProgress();
     }
 
-    public List<ItemType> GetRequiredItems()
+    public void SetupMissionData()
     {
         Data.Clear();
         Data.SetUp();
+    }
+
+    public List<ItemType> GetRequiredItems()
+    {
         List<ItemType> items = new List<ItemType>();
 
         for (int i = 0; i < Data.ItemDatas[Difficulty].Amount; i++)
