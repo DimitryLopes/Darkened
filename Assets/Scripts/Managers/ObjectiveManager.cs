@@ -31,7 +31,7 @@ public class ObjectiveManager
         missionGroup.Activate();
     }
     
-    public void AddMissionToItem(MissionItem item, ItemMission mission)
+    public void AddItemToMission(MissionItem item, ItemMission mission)
     {
         mission.Items.Add(item);
         item.DisableInteraction();

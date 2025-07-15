@@ -7,7 +7,7 @@ public abstract class Mission<T> : IMission where T : MissionData
     protected DifficultyType Difficulty;
 
     public string Description => Data.Description;
-    protected T Data { get; set; }
+    public T Data { get; protected set; }
     public int RawProgress => progress;
     public bool IsCompleted { get; private set; }
     public bool IsActive { get; set; }

@@ -583,11 +583,32 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator<float> CreateItemsPreset(PresetLevelData preset, MazeNode[,] nodes)
     {
-        var items = preset.Items;
-        int totalItems = items.Count;
+        var presetItemsData = new List<PresetItemData>(preset.Items);
+        int totalItems = presetItemsData.Count;
         int currentItem = 0;
 
-        foreach (var itemData in items)
+        List<ItemPositionData> items = mazeManager.GetPresetMissionItems(preset);
+
+        foreach(ItemPositionData itemPositionData in items)
+        {
+            switch (itemPositionData.Item.GenerationData.SpawnType)
+            {
+                case SpawnType.Node:
+                    MazeNode node = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    itemPositionData.Item.transform.position = node.transform.position;
+                    break;
+                case SpawnType.Wall:
+                case SpawnType.EdgeWalls:
+                    MazeNode edgeNode = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemPositionData.PresetData.Direction, currentMaze);
+                    itemPositionData.Item.transform.position = wall.transform.position;
+                    itemPositionData.Item.transform.rotation = wall.transform.rotation;
+                    break;
+            }
+            presetItemsData.Remove(itemPositionData.PresetData);
+        }
+
+        foreach (var itemData in presetItemsData)
         {
             if(itemData.Item.Type == ItemType.DefaultTorch)
             {
@@ -597,20 +618,19 @@ public class MazeGenerator : MonoBehaviour
                 continue;
             }
             Item item = mazeManager.GetAvailableItem(itemData.Item.Type);
+            item.transform.SetParent(itemsContainer);
             item.Activate();
 
             switch (itemData.Item.GenerationData.SpawnType)
             {
                 case SpawnType.Node:
                     MazeNode node = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
-                    item.transform.SetParent(itemsContainer);
                     item.transform.position = node.transform.position;
                     break;
                 case SpawnType.Wall:
                 case SpawnType.EdgeWalls:
                     MazeNode edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemData.Direction, currentMaze);
-                    item.transform.SetParent(itemsContainer);
                     item.transform.position = wall.transform.position;
                     item.transform.rotation = wall.transform.rotation;
                     break;
@@ -816,4 +836,15 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
+}
+
+public struct ItemPositionData
+{
+    public Item Item;
+    public PresetItemData PresetData;
+    public ItemPositionData(Item item, PresetItemData presetData)
+    {
+        Item = item;
+        PresetData = presetData;
+    }
 }

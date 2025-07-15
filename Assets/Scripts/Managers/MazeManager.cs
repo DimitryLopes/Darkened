@@ -106,8 +106,43 @@ public class MazeManager
                     {
                         MissionItem missionItem = (MissionItem)GetAvailableItem(type);
                         items.Add(missionItem);
-                        objectiveManager.AddMissionToItem(missionItem, mission);
+                        objectiveManager.AddItemToMission(missionItem, mission);
                     }
+                }
+            }
+        }
+        return items;
+    }
+
+    public List<ItemPositionData> GetPresetMissionItems(PresetLevelData preset)
+    {
+        List<ItemPositionData> items = new List<ItemPositionData>();
+
+        // Obtém todas as missões de item do objetivo atual
+        var itemMissions = new List<ItemMission>();
+        foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
+        {
+            foreach (IMission baseMission in missionGroup.Missions)
+            {
+                if (baseMission is ItemMission mission)
+                {
+                    mission.SetupMissionData();
+                    itemMissions.Add(mission);
+                }
+            }
+        }
+
+        // Para cada item do preset, verifica se pertence a alguma missão
+        foreach (var presetItemData in preset.Items)
+        {
+            foreach (var mission in itemMissions)
+            {
+                if (presetItemData.Item.Type == mission.Data.Item)
+                {
+                    // Instancia o item e associa à missão
+                    MissionItem missionItem = (MissionItem)GetAvailableItem(presetItemData.Item.Type);
+                    items.Add(new ItemPositionData(missionItem, presetItemData));
+                    objectiveManager.AddItemToMission(missionItem, mission);
                 }
             }
         }

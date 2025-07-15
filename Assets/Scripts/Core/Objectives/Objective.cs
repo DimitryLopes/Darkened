@@ -20,7 +20,7 @@ public class Objective
         for (int i = 0; i < Data.MissionGroups.Count; i++)
         {
             MissionGroup newGroup = new MissionGroup(Data.MissionGroups[i], signalBus);
-            foreach (MissionData missionData in Data.MissionGroups[i].Datas)
+            foreach (MissionData missionData in Data.MissionGroups[i].MissionDatas)
             {
                 if (missionData is ItemMissionData itemMissionData)
                 {
