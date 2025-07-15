@@ -44,11 +44,6 @@ public class MazeTorch : Item
         DeactivateLights();
     }
 
-    public void ToggleShadows(bool enabled)
-    {
-        torchlight.shadowsEnabled = enabled;
-    }
-
     public void SetLightRadius(float radius)
     {
         torchlight.pointLightOuterRadius = radius;

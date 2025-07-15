@@ -241,7 +241,10 @@ public class MazeUtils
                 if (node.Coordinates.X > 0)
                 {
                     coordinate = new Coordinate(node.Coordinates.X - 1, node.Coordinates.Y);
-                    return maze.NodesByCoordinate[coordinate];
+                    if(maze.NodesByCoordinate.ContainsKey(coordinate))
+                        return maze.NodesByCoordinate[coordinate];
+                    else
+                        Debug.LogWarning($"Node at {coordinate} not found in maze nodes dictionary.");
                 }
                 break;
         }

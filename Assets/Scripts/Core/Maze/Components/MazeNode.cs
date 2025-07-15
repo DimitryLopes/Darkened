@@ -133,14 +133,14 @@ public class MazeNode : Activateable
         {
             MazeWall wall = GetRandomWall();
             AddTorchAt(wall, torch);
-            hasTorch = true;
         }
     }
 
-    private void AddTorchAt(MazeWall wall, MazeTorch torch)
+    public void AddTorchAt(MazeWall wall, MazeTorch torch)
     {
         wall.PositionObject(torch);
         torch.SetNode(this, wall.AlignedWith);
+        hasTorch = true;
     }
     #endregion
 

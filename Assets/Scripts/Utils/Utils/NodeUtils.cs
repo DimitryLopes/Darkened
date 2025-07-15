@@ -122,4 +122,21 @@ public class NodeUtils : MonoBehaviour
         }
         return null;
     }
+
+    public static MazeWall GetWallAt(MazeNode node, Cardinal direction, Maze maze)
+    {
+        MazeWall wall = node.GetWall(direction);
+        if (wall == null)
+        {
+            var neighborNode = MazeUtils.GetNodeAtCardinalFromNode(direction, node, maze);
+            var oppositeCardinal = GetOppositeCardinal(direction);
+            wall = neighborNode.GetWall(oppositeCardinal);
+            if (wall == null)
+            {
+                Debug.LogError($"No wall found at {direction} in direction {direction}. Item will not be placed.");
+                return null;
+            }
+        }
+        return wall;
+    }
 }

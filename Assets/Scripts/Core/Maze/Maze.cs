@@ -35,10 +35,18 @@ public class Maze
         cornerNodes = MazeUtils.GetCornerNodes(nodes, data.SizeData);
     }
 
-    public void AddTorch(MazeNode node, MazeTorch torch)
+    public void AddTorch(MazeNode node, MazeTorch torch, bool preset = false, Cardinal direction = Cardinal.North)
     {
         Torches.Add(torch);
-        node.AddTorch(torch);
+        if (preset)
+        {
+            MazeWall wall = NodeUtils.GetWallAt(node, direction, this);
+            node.AddTorchAt(wall, torch);
+        }
+        else
+        {
+            node.AddTorch(torch);
+        }
         node.MarkAsUsed();
     }
 
