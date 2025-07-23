@@ -57,7 +57,7 @@ public class ShadowCasterGenerator : MonoBehaviour
             return helper.ShadowCaster;
         }
 
-        var newHelper = Instantiate<ShadowCasterHelper>(helperPrefab, shadowContainer);
+        var newHelper = Instantiate(helperPrefab, shadowContainer);
         newHelper.Activate();
         Helpers.Add(newHelper);
         return newHelper.ShadowCaster;

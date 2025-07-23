@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -180,8 +179,8 @@ public class MazeGenerator : MonoBehaviour
             {
                 currentNode = currentMaze.Nodes[x,y];
                 MazeUtils.ExecuteActionWithAllCardinals(AddNodeWall, currentNode);
-                yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, lenght);
             }
+            yield return LoadingUtils.GetProgress(y * CurrentData.Height, lenght);
         }
     }
 

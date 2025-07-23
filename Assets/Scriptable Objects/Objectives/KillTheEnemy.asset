@@ -18,10 +18,10 @@ MonoBehaviour:
   defeatMessage: The monster got Clebinho
   objectiveType: 2
   missionGroups:
-  - Datas:
+  - MissionDatas:
     - {fileID: 11400000, guid: 5257f1f0a043c814086e0b7f1415b3d4, type: 2}
     - {fileID: 11400000, guid: e99cf4875f1f10541bc5143e37e6fc41, type: 2}
-  - Datas:
+  - MissionDatas:
     - {fileID: 11400000, guid: 9afc2368d9ce9eb478fd9777929297e7, type: 2}
-  - Datas:
+  - MissionDatas:
     - {fileID: 11400000, guid: da94ce8750b1e774f991de4b17e8c1ae, type: 2}
