@@ -24,90 +24,26 @@ MonoBehaviour:
     direction: 2
   - coordinate:
       x: 0
-      y: 1
-    direction: 0
-  - coordinate:
-      x: 0
-      y: 2
-    direction: 2
-  - coordinate:
-      x: 0
-      y: 2
-    direction: 0
-  - coordinate:
-      x: 0
-      y: 3
-    direction: 2
-  - coordinate:
-      x: 0
       y: 3
     direction: 0
-  - coordinate:
-      x: 0
-      y: 4
-    direction: 2
-  - coordinate:
-      x: 1
-      y: 0
-    direction: 2
   - coordinate:
       x: 1
       y: 0
     direction: 0
   - coordinate:
       x: 1
-      y: 1
-    direction: 2
-  - coordinate:
-      x: 1
-      y: 1
-    direction: 0
-  - coordinate:
-      x: 1
-      y: 2
-    direction: 2
-  - coordinate:
-      x: 1
-      y: 2
-    direction: 0
-  - coordinate:
-      x: 1
-      y: 3
-    direction: 2
-  - coordinate:
-      x: 1
       y: 3
     direction: 0
   - coordinate:
       x: 1
       y: 4
-    direction: 2
-  - coordinate:
-      x: 1
-      y: 4
     direction: 0
-  - coordinate:
-      x: 1
-      y: 5
-    direction: 2
   - coordinate:
       x: 2
       y: 0
     direction: 2
   - coordinate:
       x: 2
-      y: 0
-    direction: 0
-  - coordinate:
-      x: 2
-      y: 1
-    direction: 2
-  - coordinate:
-      x: 2
-      y: 1
-    direction: 0
-  - coordinate:
-      x: 2
       y: 2
     direction: 2
   - coordinate:
@@ -117,30 +53,6 @@ MonoBehaviour:
   - coordinate:
       x: 2
       y: 3
-    direction: 2
-  - coordinate:
-      x: 2
-      y: 3
-    direction: 0
-  - coordinate:
-      x: 2
-      y: 4
-    direction: 2
-  - coordinate:
-      x: 2
-      y: 4
-    direction: 0
-  - coordinate:
-      x: 2
-      y: 5
-    direction: 2
-  - coordinate:
-      x: 3
-      y: 0
-    direction: 2
-  - coordinate:
-      x: 3
-      y: 0
     direction: 0
   - coordinate:
       x: 3
@@ -149,14 +61,6 @@ MonoBehaviour:
   - coordinate:
       x: 3
       y: 1
-    direction: 0
-  - coordinate:
-      x: 3
-      y: 2
-    direction: 2
-  - coordinate:
-      x: 3
-      y: 2
     direction: 0
   - coordinate:
       x: 3
@@ -169,62 +73,18 @@ MonoBehaviour:
   - coordinate:
       x: 3
       y: 4
-    direction: 2
-  - coordinate:
-      x: 3
-      y: 4
     direction: 0
-  - coordinate:
-      x: 3
-      y: 5
-    direction: 2
-  - coordinate:
-      x: 4
-      y: 0
-    direction: 2
   - coordinate:
       x: 4
       y: 0
     direction: 0
   - coordinate:
       x: 4
-      y: 1
-    direction: 2
-  - coordinate:
-      x: 4
-      y: 1
-    direction: 0
-  - coordinate:
-      x: 4
       y: 2
-    direction: 2
-  - coordinate:
-      x: 4
-      y: 2
-    direction: 0
-  - coordinate:
-      x: 4
-      y: 3
-    direction: 2
-  - coordinate:
-      x: 4
-      y: 3
-    direction: 0
-  - coordinate:
-      x: 4
-      y: 4
     direction: 2
   - coordinate:
       x: 4
       y: 4
-    direction: 0
-  - coordinate:
-      x: 5
-      y: 1
-    direction: 0
-  - coordinate:
-      x: 5
-      y: 2
     direction: 0
   - coordinate:
       x: 5
@@ -326,6 +186,10 @@ MonoBehaviour:
       x: 5
       y: 5
     direction: 2
+  - coordinate:
+      x: 1
+      y: 2
+    direction: 0
   items:
   - coordinate:
       x: 3
@@ -340,7 +204,7 @@ MonoBehaviour:
     direction: 1
     SpawnType: 1
   startPosition:
-    x: 0
+    x: 2
     y: 0
   enemySpawnPosition:
     x: 4
