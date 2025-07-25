@@ -1,3 +1,5 @@
+// File: PresetLevelDataEditor.cs
+
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -14,7 +16,6 @@ public class PresetLevelDataEditor : Editor
         var sizeDataField = typeof(PresetLevelData).GetField("sizeData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
-        // Sincroniza SpawnType antes de desenhar o Inspector
         var itemsField = typeof(PresetLevelData).GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var items = (System.Collections.IList)itemsField.GetValue(preset);
 
@@ -29,7 +30,6 @@ public class PresetLevelDataEditor : Editor
                 var item = itemField.GetValue(itemData);
                 if (item == null)
                 {
-                    // Desenha campo padrão vazio no Inspector
                     EditorGUILayout.LabelField($"Item {i}", "Vazio");
                     continue;
                 }
@@ -40,16 +40,16 @@ public class PresetLevelDataEditor : Editor
                 var spawnType = spawnTypeProp.GetValue(generationData);
 
                 spawnTypeField.SetValue(itemData, spawnType);
-                items[i] = itemData; // Atualiza o struct na lista
+                items[i] = itemData;
             }
         }
 
-        EditorGUI.BeginChangeCheck();
         DrawDefaultInspector();
-        if (EditorGUI.EndChangeCheck())
+
+        if (GUILayout.Button("Regenerate Walls From Size"))
         {
             var mazeSizeData = (MazeSizeData)sizeDataField.GetValue(preset);
-            if (mazeSizeData != null && mazeSizeData != lastSizeData)
+            if (mazeSizeData != null)
             {
                 FillAllWalls(preset, mazeSizeData);
                 EditorUtility.SetDirty(preset);
@@ -57,41 +57,32 @@ public class PresetLevelDataEditor : Editor
             }
         }
 
-        if (preset == null || preset.GetType().GetField("sizeData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(preset) == null)
+        if (preset == null || sizeDataField.GetValue(preset) == null)
             return;
 
-        // Obtém tamanho do labirinto
-        var sizeData = (MazeSizeData)preset.GetType().GetField("sizeData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
+        var sizeData = (MazeSizeData)sizeDataField.GetValue(preset);
         int width = sizeData.Width;
         int height = sizeData.Height;
 
         GUILayout.Space(10);
         GUILayout.Label("Maze Preview", EditorStyles.boldLabel);
 
-        // Cria textura para preview
         Texture2D preview = new Texture2D(width * CellSize, height * CellSize);
         Color bgColor = new Color(0.85f, 0.85f, 0.85f);
 
-        // Preenche fundo
         for (int y = 0; y < height * CellSize; y++)
             for (int x = 0; x < width * CellSize; x++)
                 preview.SetPixel(x, y, bgColor);
 
-        // Desenha paredes
-        var wallPositions = (List<PresetWallPositionData>)preset.GetType().GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
+        var wallPositions = (List<PresetWallPositionData>)wallPositionsField.GetValue(preset);
         foreach (var wall in wallPositions)
-        {
             DrawWall(preview, wall.Coordinate.X, wall.Coordinate.Y, wall.Direction, width, height);
-        }
 
-        // Desenha itens
-        var itemsList = (List<PresetItemData>)preset.GetType().GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
+        var itemsList = (List<PresetItemData>)itemsField.GetValue(preset);
         foreach (var presetItem in itemsList)
         {
-            // Verifica se o item é nulo antes de acessar suas propriedades
             if (presetItem.Item == null)
             {
-                // Desenha uma célula padrão para itens nulos (opcional)
                 DrawCell(preview, presetItem.Coordinate.X, presetItem.Coordinate.Y, Color.gray, width, height);
                 continue;
             }
@@ -106,18 +97,16 @@ public class PresetLevelDataEditor : Editor
             switch (presetItem.Item.GenerationData.SpawnType)
             {
                 case SpawnType.Wall:
-                    DrawSmallCell(preview, presetItem.Coordinate.X, presetItem.Coordinate.Y, itemColor, width, height, presetItem.Direction);
-                    break;
                 case SpawnType.EdgeWalls:
                     DrawSmallCell(preview, presetItem.Coordinate.X, presetItem.Coordinate.Y, itemColor, width, height, presetItem.Direction);
                     break;
                 default:
                     DrawCell(preview, presetItem.Coordinate.X, presetItem.Coordinate.Y, itemColor, width, height);
                     break;
-            };
+            }
+            ;
         }
 
-        // Desenha posições especiais
         var startPosition = (Coordinate)preset.GetType().GetField("startPosition", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
         DrawCell(preview, startPosition.X, startPosition.Y, Color.green, width, height);
 
@@ -127,12 +116,9 @@ public class PresetLevelDataEditor : Editor
         preview.Apply();
 
         GUILayout.Space(10);
-
-        // Reserva espaço fixo para o preview
         Rect previewRect = GUILayoutUtility.GetRect(new GUIContent(""), GUIStyle.none, GUILayout.Width(width * CellSize), GUILayout.Height(height * CellSize));
         GUI.DrawTexture(previewRect, preview);
 
-        // Detecta clique no preview
         if (Event.current.type == EventType.MouseDown && previewRect.Contains(Event.current.mousePosition))
         {
             int gridX = (int)((Event.current.mousePosition.x - previewRect.x) / CellSize);
@@ -150,34 +136,29 @@ public class PresetLevelDataEditor : Editor
             for (int py = 2; py < CellSize - 2; py++)
                 tex.SetPixel(x * CellSize + px, y * CellSize + py, color);
     }
-    
+
     private void DrawSmallCell(Texture2D tex, int x, int y, Color color, int width, int height, Cardinal dir)
     {
         int cellSize = CellSize / 4;
-        int offset = CellSize / 16; // Menor offset para encostar melhor na borda
-
+        int offset = CellSize / 16;
         int startX = x * CellSize;
         int startY = y * CellSize;
 
         switch (dir)
         {
             case Cardinal.North:
-                // Encosta no topo da célula
                 startY += CellSize - cellSize - offset;
                 startX += (CellSize - cellSize) / 2;
                 break;
             case Cardinal.South:
-                // Encosta na base da célula
                 startY += offset;
                 startX += (CellSize - cellSize) / 2;
                 break;
             case Cardinal.East:
-                // Encosta na direita da célula
                 startX += CellSize - cellSize - offset;
                 startY += (CellSize - cellSize) / 2;
                 break;
             case Cardinal.West:
-                // Encosta na esquerda da célula
                 startX += offset;
                 startY += (CellSize - cellSize) / 2;
                 break;
@@ -191,7 +172,6 @@ public class PresetLevelDataEditor : Editor
     private void FillAllWalls(PresetLevelData preset, MazeSizeData sizeData)
     {
         var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        wallPositionsField.SetValue(preset, null);
         var wallPositions = new List<PresetWallPositionData>();
 
         int width = sizeData.Width;
@@ -201,16 +181,13 @@ public class PresetLevelDataEditor : Editor
         {
             for (int y = 0; y < height; y++)
             {
-                // Parede East (direita) de cada célula, exceto na borda direita
                 if (x < width - 1)
                     wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.East));
-                // Parede North (topo) de cada célula, exceto na borda superior
                 if (y < height - 1)
                     wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.North));
             }
         }
 
-        // Agora adiciona as bordas externas
         for (int x = 0; x < width; x++)
         {
             wallPositions.Add(new PresetWallPositionData(new Coordinate(x, 0), Cardinal.South));
