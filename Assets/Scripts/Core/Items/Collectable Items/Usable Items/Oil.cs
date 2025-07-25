@@ -7,7 +7,7 @@ public class Oil : UsableItem
     [Inject]
     private InventoryManager inventoryManager;
 
-    public override ItemType Type => base.Type;
+    public override ItemType Type => ItemType.Oil;
     public override bool CanUse => inventoryManager.HasEnoughItem(Type);
 
     public override void OnItemUsed()
