@@ -91,6 +91,10 @@ public class PresetLevelDataEditor : Editor
             {
                 ItemType.DefaultTorch => new Color(1f, 0.4f, 0, 1),
                 ItemType.Exit => Color.black,
+                ItemType.Button => new Color(1f, 0.75f, 0, 1),
+                ItemType.Wisp => Color.cyan,
+                ItemType.Oil => Color.yellow,
+                ItemType.Distraction => new Color(0.5f, 0.2f, 0, 1),
                 _ => Color.cyan
             };
 

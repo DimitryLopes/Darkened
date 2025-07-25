@@ -7,6 +7,8 @@ public class Wisp : UsableItem
     [Inject]
     private InventoryManager inventoryManager;
 
+    public override ItemType Type => ItemType.Wisp;
+
     public override bool CanUse => inventoryManager.HasEnoughItem(Type);
 
     public override void OnItemUsed()

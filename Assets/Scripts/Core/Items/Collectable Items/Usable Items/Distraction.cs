@@ -11,6 +11,8 @@ public class Distraction : UsableItem
     [SerializeField]
     private Rigidbody2D rb;
 
+    public override ItemType Type => ItemType.Distraction;
+
     public override bool CanUse => inventoryManager.HasEnoughItem(Type);
 
     public override void OnItemUsed()
