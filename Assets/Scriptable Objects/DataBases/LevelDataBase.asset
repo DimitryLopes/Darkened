@@ -14,5 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelDatas:
   - {fileID: 11400000, guid: 4c33665744946604ba42fd5d14e43975, type: 2}
+  - {fileID: 11400000, guid: bc2bc785f7fdbde4cb15702d258e4894, type: 2}
+  - {fileID: 11400000, guid: b540d8ad8515eeb4cb6822182bc750b3, type: 2}
+  - {fileID: 11400000, guid: 69c94eb5771ffca458743d0564e3f19a, type: 2}
+  - {fileID: 11400000, guid: c2c44c67b38ee1749983f81b7f5cc48d, type: 2}
+  - {fileID: 11400000, guid: 2fd02ee40b0a19e40babe5ed1a352b41, type: 2}
+  - {fileID: 11400000, guid: a252e093974c23b4684200d4d2f5c447, type: 2}
   torches:
   - {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
