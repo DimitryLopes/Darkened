@@ -29,7 +29,7 @@ public class LevelDataBase : ScriptableObject
     {
         for (int i = 0; i < levelDatas.Count; i++)
         {
-            levelDatas[i].ID = i;
+            levelDatas[i].ID = i + 1;
             levelDatas[i].SetPersistenceKey();
         }
     }
