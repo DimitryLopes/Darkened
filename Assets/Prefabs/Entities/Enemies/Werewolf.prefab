@@ -106,7 +106,7 @@ MonoBehaviour:
   onActivate:
     m_PersistentCalls:
       m_Calls: []
-  collider: {fileID: 6934716329174473029}
+  enemyCollider: {fileID: 6934716329174473029}
   data: {fileID: 11400000, guid: 22a2b9eb22b52124280cdbc9883af1ba, type: 2}
   rb: {fileID: 4829018076957723263}
   spriteRenderer: {fileID: 6402335485789434333}

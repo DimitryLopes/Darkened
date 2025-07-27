@@ -562,9 +562,15 @@ public class MazeGenerator : MonoBehaviour
         foreach (var wallData in wallPositions)
         {
             MazeNode node = nodes[wallData.Coordinate.X, wallData.Coordinate.Y];
+            MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(wallData.Direction, node, currentMaze);
+
             string wallID = GetWallKey(node, wallData.Direction);
             MazeWall wall = GetWall(wallID);
             node.AddWall(wallData.Direction, wall);
+            if (neighbor)
+            {
+                neighbor.AddWall(NodeUtils.GetOppositeCardinal(wallData.Direction), wall);
+            }
 
             if (node.GetEdge(wallData.Direction))
                 wall.transform.SetParent(edgeWallsContainer);

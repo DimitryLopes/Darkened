@@ -128,7 +128,7 @@ public class MazeUtils
             openSet.Remove(current);
             closedSet.Add(current);
 
-            List<MazeNode> neighbors = GetNeighborNodes(current, maze);
+            List<MazeNode> neighbors = GetAccessibleNeighbors(current, maze);
             foreach (MazeNode neighbor in neighbors)
             {
                 if (closedSet.Contains(neighbor))
@@ -251,7 +251,7 @@ public class MazeUtils
         return null;
     }
 
-    public static List<MazeNode> GetNeighborNodes(MazeNode node, Maze maze)
+    public static List<MazeNode> GetAccessibleNeighbors(MazeNode node, Maze maze)
     {
         List<MazeNode> availableNodes = new List<MazeNode>();
         ExecuteActionWithAllCardinals(AddToAvailableNodes);

@@ -87,10 +87,10 @@ public class MazeNode : Activateable
 
     private void ClearWall(Cardinal direction)
     {
-        if (wallDictionary[direction].IsActive)
-        {
-            wallDictionary[direction].Deactivate();
-        }
+        if (wallDictionary[direction] == null || !wallDictionary[direction].IsActive) return;
+
+        wallDictionary[direction].Deactivate();
+
     }
 
     public int GetActiveWallCount()

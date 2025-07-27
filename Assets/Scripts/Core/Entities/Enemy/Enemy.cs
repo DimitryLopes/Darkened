@@ -4,7 +4,7 @@ using Zenject;
 public abstract class Enemy : Activateable
 {
     [SerializeField]
-    private Collider2D collider;
+    private Collider2D enemyCollider;
     [SerializeField]
     private EnemyData data;
     [SerializeField]
@@ -41,12 +41,12 @@ public abstract class Enemy : Activateable
 
     public void DeactivateCollider()
     {
-        collider.enabled = false;
+        enemyCollider.enabled = false;
     }
 
     public void ActivateCollider()
     {
-        collider.enabled = true;
+        enemyCollider.enabled = true;
     }
 
     public virtual void SetMaze(Maze maze)

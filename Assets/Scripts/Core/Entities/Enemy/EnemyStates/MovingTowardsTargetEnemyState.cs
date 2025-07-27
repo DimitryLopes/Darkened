@@ -20,8 +20,15 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
     public virtual void SetPath(Maze maze, MazeNode target = null)
     {
         SetclosestNode(maze);
+        Debug.Log("Closest Node: " + closestNode.Coordinates);
         currentTarget = target != null ? target : maze.Nodes.GetRandom();
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, maze);
+        string pathString = "Path: ";
+        foreach (MazeNode node in path)
+        {
+            pathString += "[" + node.Coordinates.X + ","+ node.Coordinates.Y + "]" + " -> ";
+        }
+        Debug.Log(pathString + "End");
         path.Pop();
     }
 

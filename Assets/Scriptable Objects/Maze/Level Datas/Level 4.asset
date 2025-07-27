@@ -241,6 +241,12 @@ MonoBehaviour:
     item: {fileID: -3978960078456675431, guid: 034db5d1f8a992848a18ee13a15846fe, type: 3}
     direction: 0
     SpawnType: 0
+  - coordinate:
+      x: 5
+      y: 0
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    SpawnType: 1
   startPosition:
     x: 4
     y: 0
