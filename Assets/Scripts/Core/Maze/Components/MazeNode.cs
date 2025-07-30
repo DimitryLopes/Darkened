@@ -93,19 +93,6 @@ public class MazeNode : Activateable
 
     }
 
-    public int GetActiveWallCount()
-    {
-        int count = 0;
-        MazeUtils.ExecuteActionWithAllCardinals(CountWall);
-        return count;
-
-        void CountWall(Cardinal cardinal)
-        {
-            if (!wallDictionary[cardinal].IsActive) return;
-            count++;
-        }
-    }
-
     public (MazeWall, MazeWall) GetAdjacentWalls(Cardinal cardinal)
     {
         (Cardinal, Cardinal) tuple = NodeUtils.GetAdjacentCardinals(cardinal);
@@ -127,7 +114,7 @@ public class MazeNode : Activateable
     #endregion
 
     #region Torches
-    public void AddTorch(MazeTorch torch)
+    public void AddTorch(Torch torch)
     {
         if (!hasTorch)
         {
@@ -136,7 +123,7 @@ public class MazeNode : Activateable
         }
     }
 
-    public void AddTorchAt(MazeWall wall, MazeTorch torch)
+    public void AddTorchAt(MazeWall wall, Torch torch)
     {
         wall.PositionObject(torch);
         torch.SetNode(this, wall.AlignedWith);
@@ -225,10 +212,6 @@ public class MazeNode : Activateable
     #endregion
 
     #region Debug
-    public void ShowWallCount()
-    {
-        text.text = GetActiveWallCount().ToString();
-    }
 
     public void DebugColor(Color color)
     {

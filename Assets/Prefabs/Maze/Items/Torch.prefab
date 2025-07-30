@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 235955571069073806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de410a4dae5672740b2835510699e56a, type: 3}
+  m_Script: {fileID: 11500000, guid: 879dd79c008bff140bcd33a1a5385768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onDeactivate:
@@ -58,7 +58,7 @@ MonoBehaviour:
   standardtMaterial: 0
   highlightedtMaterial: 1
   itemGenerationData:
-    minDistanceFromThings: 1
+    minDistanceFromThings: 0
     spawnType: 1
     replace: 0
   torchlight: {fileID: 1586879128320769873}

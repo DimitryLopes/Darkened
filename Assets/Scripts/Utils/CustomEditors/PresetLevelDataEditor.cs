@@ -95,6 +95,8 @@ public class PresetLevelDataEditor : Editor
                 ItemType.Wisp => Color.cyan,
                 ItemType.Oil => Color.yellow,
                 ItemType.Distraction => new Color(0.5f, 0.2f, 0, 1),
+                ItemType.Orb => new Color(0, 1, 0.6f, 1),
+                ItemType.Altar => new Color(0.4f, 0.4f, 0.4f, 1),
                 _ => Color.cyan
             };
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class MazeTorch : Item
+public class Torch : Item
 {
     [SerializeField]
     private Light2D torchlight;

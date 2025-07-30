@@ -4,7 +4,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Light2DHelper : MonoBehaviour
 {
-    public MazeTorch Torch;
+    public Torch Torch;
     public Light2D Light;
     public List<ShadowCaster2DProximityChecker> AffectedCasters = new();
 

@@ -28,7 +28,8 @@ public class SignalInstaller : MonoInstaller
         //Enemy
         Container.DeclareSignal<OnEnemySpawnedSignal>();
         //Items
-        Container.DeclareSignal<OnInventoryItemSelectedSignal>();
+        Container.DeclareSignal<OnPlayerUsedItemSignal>();
+        Container.DeclareSignal<OnPlayerTryToUseItemSignal>();
         Container.DeclareSignal<OnInventoryItemGetSignal>();
         //Screens
         Container.DeclareSignal<OnScreenAfterHideSignal>();
@@ -40,7 +41,6 @@ public class SignalInstaller : MonoInstaller
         //HUD
         Container.DeclareSignal<OnInteractionButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDNextButtonClickedSignal>();
-        Container.DeclareSignal<OnPlayerItemUsedSignal>();
         Container.DeclareSignal<OnBottomHUDPreviousButtonClickedSignal>();
         //whatever armengue shit I did
         Container.DeclareSignal<OnBindingsFinishedSignal>();

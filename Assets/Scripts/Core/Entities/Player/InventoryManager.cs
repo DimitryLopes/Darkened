@@ -9,8 +9,6 @@ public class InventoryManager
     private HUDManager hudManager;
     private SignalBus signalBus;
 
-    public Item SelectedItem { get; private set; }
-
     private Dictionary<ItemType, InventoryItemData> inventoryItems = new();
 
     public InventoryManager(SignalBus signalBus, HUDManager hudManager)
@@ -19,8 +17,7 @@ public class InventoryManager
         this.signalBus = signalBus;
 
         signalBus.Subscribe<OnInventoryItemGetSignal>(OnItemGet);
-        signalBus.Subscribe<OnInventoryItemSelectedSignal>(OnItemSelected);
-        signalBus.Subscribe<OnPlayerItemUsedSignal>(UseItem);
+        signalBus.Subscribe<OnPlayerUsedItemSignal>(UseItem);
 
         hudManager.CreateItemViews(INVENTORY_SIZE);
     }
@@ -42,11 +39,9 @@ public class InventoryManager
         hudManager.UpdateItemView(inventoryItems[type]);
     }
 
-    public void UseItem(OnPlayerItemUsedSignal signal)
+    public void UseItem(OnPlayerUsedItemSignal signal)
     {
-        if (SelectedItem == null) return;
-
-        (SelectedItem as IUsable).Use();
+        signal.Item.Use();
     }
 
     public void DecreaseItemAmount(ItemType type, int amount = 1)
@@ -57,10 +52,6 @@ public class InventoryManager
         data.Amount -= amount;
         inventoryItems[type] = data;
         hudManager.UpdateItemView(inventoryItems[type]);
-
-        if (type != SelectedItem.Type || HasEnoughItem(type)) return;
-
-        SelectedItem = null;
     }
 
     public T GetItem<T>(ItemType type) where T : Item
@@ -84,20 +75,9 @@ public class InventoryManager
         else return inventoryItems[type].Amount >= amount;
     }
 
-    private void OnItemSelected(OnInventoryItemSelectedSignal signal)
-    {
-        if (signal.Item is IUsable)
-        {
-            SelectedItem = signal.Item;
-            return;
-        }
-        SelectedItem = null;
-    }
-
     public void Clear()
     {
         inventoryItems.Clear();
-        SelectedItem = null;
     }
 }
 

@@ -75,7 +75,7 @@ public class DeveloperTools
     #region Maze
     public void ActivateAllTorches()
     {
-        foreach (MazeTorch torch in mazeManager.CurrentMaze.Torches)
+        foreach (Torch torch in mazeManager.CurrentMaze.Torches)
         {
             torch.ActivateLights();
         }
@@ -84,7 +84,7 @@ public class DeveloperTools
 
     public void DeactivateAllTorches()
     {
-        foreach (MazeTorch torch in mazeManager.CurrentMaze.Torches)
+        foreach (Torch torch in mazeManager.CurrentMaze.Torches)
         {
             torch.DeactivateLights();
         }
@@ -96,13 +96,6 @@ public class DeveloperTools
         mazeManager.LoadMaze(levelManager.CurrentLevelData);
     }
 
-    public void ShowNodeWallCount()
-    {
-        foreach (MazeNode node in mazeManager.CurrentMaze.Nodes)
-        {
-            node.ShowWallCount();
-        }
-    }
     #endregion
 
     #region Persistence

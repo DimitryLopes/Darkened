@@ -26,7 +26,15 @@ public class ItemHUD : Activateable
         selectionIndex = 0;
         signalBus.Subscribe<OnBottomHUDNextButtonClickedSignal>(OnNextButtonClicked);
         signalBus.Subscribe<OnBottomHUDPreviousButtonClickedSignal>(OnPreviousButtonClicked);
+        signalBus.Subscribe<OnPlayerTryToUseItemSignal>(OnPlayerTryToUseItem);
         keyboardSelector.gameObject.SetActive(!GameManager.IsOnPhone);
+    }
+
+    private void OnPlayerTryToUseItem()
+    {
+        if (selectedItemView == null || !selectedItemView.HasUseCallback) return;
+
+        signalBus.Fire(new OnPlayerUsedItemSignal(selectedItemView.Item as UsableItem));
     }
 
     public override void OnActivate()
@@ -73,7 +81,7 @@ public class ItemHUD : Activateable
         foreach (UIItemView view in instantiatedViews) 
         {
             if (view.IsActive) continue;
-            view.Activate();
+                view.Activate();
             return view;
         }
 
@@ -102,7 +110,6 @@ public class ItemHUD : Activateable
         }
         keyboardSelector.SetViews(instantiatedViews);
         selectionIndex = 0;
-        instantiatedViews[selectionIndex].Select();
     }
 
     private void OnNextButtonClicked()
@@ -132,8 +139,6 @@ public class ItemHUD : Activateable
         {
             selectedItemView.Deselect();
         }
-
-        signalBus.Fire(new OnInventoryItemSelectedSignal(view.Item));
 
         selectionIndex = view.Index;
         selectedItemView = instantiatedViews[selectionIndex];

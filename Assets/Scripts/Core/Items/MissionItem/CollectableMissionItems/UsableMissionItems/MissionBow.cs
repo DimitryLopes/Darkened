@@ -1,6 +1,6 @@
 using Zenject;
 
-public class MazeBow : UsableMissionItem
+public class MissionBow : UsableMissionItem
 {
     [Inject]
     private EntityManager entityManager;
@@ -11,7 +11,7 @@ public class MazeBow : UsableMissionItem
 
     public override void OnItemUsed()
     {
-        MazeArrow arrow = inventoryManager.GetItem<MazeArrow>(ItemType.Arrow);
+        MissionArrow arrow = inventoryManager.GetItem<MissionArrow>(ItemType.Arrow);
         if (arrow == null) return;
 
         inventoryManager.DecreaseItemAmount(ItemType.Arrow);

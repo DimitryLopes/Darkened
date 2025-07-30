@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class MazeArrow : CollectableMissionItem, IProjectile
+public class MissionArrow : CollectableMissionItem, IProjectile
 {
     [SerializeField]
     private Rigidbody2D rb;

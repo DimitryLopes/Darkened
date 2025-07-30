@@ -27,11 +27,6 @@ public class ItemMissionData : MissionData
         ItemDatas.Clear();
     }
 
-    public MissionItemData GetCurrentItemData(DifficultyType difficulty)
-    {
-        return ItemDatas[difficulty];
-    }
-
     public override int GetTargetProgress(DifficultyType difficulty)
     {
         return ItemDatas[difficulty].Amount;

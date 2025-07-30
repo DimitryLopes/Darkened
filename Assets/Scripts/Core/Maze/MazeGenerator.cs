@@ -698,7 +698,7 @@ public class MazeGenerator : MonoBehaviour
     {
         int averageAmount = Mathf.CeilToInt(currentMaze.Torches.Count * CurrentData.DifficultyData.LitTorchRatio);
         int torchCount = 0;
-        foreach (MazeTorch torch in currentMaze.Torches)
+        foreach (Torch torch in currentMaze.Torches)
         {
             if (torch.isLit) continue;
             torch.ActivateLights();
@@ -716,7 +716,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void PlaceTorchAt(MazeNode node, bool preset = false, Cardinal direction = Cardinal.North)
     {
-        MazeTorch torch = mazeManager.GetMazeTorch(CurrentData);
+        Torch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
         currentMaze.AddTorch(node, torch, preset, direction);
     }

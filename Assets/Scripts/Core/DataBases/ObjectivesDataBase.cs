@@ -40,4 +40,5 @@ public enum ObjectiveType
     PressButtons,
     KillMonster,
     Survive,
+    FinishAltar,
 }

@@ -7,10 +7,10 @@ public class LevelDataBase : ScriptableObject
     [SerializeField]
     private List<LevelData> levelDatas;
     [SerializeField]
-    private List<MazeTorch> torches;
+    private List<Torch> torches;
 
     public List<LevelData> LevelDatas => levelDatas;
-    public List<MazeTorch> Torches => torches;
+    public List<Torch> Torches => torches;
 
     public int GetLevelID(LevelData data)
     {

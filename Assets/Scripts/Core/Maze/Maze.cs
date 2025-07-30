@@ -13,7 +13,7 @@ public class Maze
     public Dictionary<Coordinate, MazeNode> CornerNodes => cornerNodes;
 
     public List<MazeNode> UsedNodes = new();
-    public List<MazeTorch> Torches = new();
+    public List<Torch> Torches = new();
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
     public Maze(LevelData data)
@@ -35,7 +35,7 @@ public class Maze
         cornerNodes = MazeUtils.GetCornerNodes(nodes, data.SizeData);
     }
 
-    public void AddTorch(MazeNode node, MazeTorch torch, bool preset = false, Cardinal direction = Cardinal.North)
+    public void AddTorch(MazeNode node, Torch torch, bool preset = false, Cardinal direction = Cardinal.North)
     {
         Torches.Add(torch);
         if (preset)

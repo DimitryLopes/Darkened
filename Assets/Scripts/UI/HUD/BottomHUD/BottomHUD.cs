@@ -85,6 +85,6 @@ public class BottomHUD : Activateable
 
     private void OnUseButtonClicked()
     {
-        signalBus.Fire(new OnPlayerItemUsedSignal());
+        signalBus.Fire(new OnPlayerTryToUseItemSignal());
     }
 }

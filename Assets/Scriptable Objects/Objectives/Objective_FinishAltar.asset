@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a561bcb37c87841af16f24a6e6cd35, type: 3}
+  m_Name: Objective_FinishAltar
+  m_EditorClassIdentifier: 
+  title: Altar
+  description: Finish the altar to escape
+  victoryMessage: You escaped
+  defeatMessage: The monster got Clebinho
+  objectiveType: 4
+  missionGroups:
+  - MissionDatas:
+    - {fileID: 11400000, guid: 9f1dd03517efed3409aea3d8cb6067d6, type: 2}
+    - {fileID: 11400000, guid: 98eac612389f42e46a94594493f8038a, type: 2}
+  - MissionDatas:
+    - {fileID: 11400000, guid: da94ce8750b1e774f991de4b17e8c1ae, type: 2}

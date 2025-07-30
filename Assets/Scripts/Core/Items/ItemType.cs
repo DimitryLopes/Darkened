@@ -9,4 +9,6 @@ public enum ItemType
     DefaultTorch,
     Oil,
     Wisp,
+    Orb,
+    Altar,
 }
