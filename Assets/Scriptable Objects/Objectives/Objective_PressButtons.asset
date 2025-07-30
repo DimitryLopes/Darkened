@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97a561bcb37c87841af16f24a6e6cd35, type: 3}
-  m_Name: PressButtons
+  m_Name: Objective_PressButtons
   m_EditorClassIdentifier: 
   title: Buttons
   description: Press all buttons to open the exit

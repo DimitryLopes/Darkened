@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -109,3 +110,4 @@ public class NodeEditorWindow : EditorWindow
         selectedItemIndex = -1;
     }
 }
+#endif // UNITY_EDITOR

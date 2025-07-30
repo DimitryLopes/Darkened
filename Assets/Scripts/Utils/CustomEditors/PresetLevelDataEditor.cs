@@ -1,4 +1,4 @@
-// File: PresetLevelDataEditor.cs
+#if UNITY_EDITOR
 
 using UnityEditor;
 using UnityEngine;
@@ -235,3 +235,4 @@ public class PresetLevelDataEditor : Editor
         }
     }
 }
+#endif // UNITY_EDITOR

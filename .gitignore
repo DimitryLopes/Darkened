@@ -82,3 +82,5 @@ UpgradeLog.htm
 Assets/Plugins/Zenject/OptionalExtras/ReflectionBaking/Zenject-ReflectionBaking.csproj.meta
 Assets/Plugins/Zenject/OptionalExtras/Signals/Zenject-Signals.csproj.meta
 Assets/Plugins/Zenject/Source/Zenject.csproj.meta
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+Assets/Settings/URPAsset.asset
