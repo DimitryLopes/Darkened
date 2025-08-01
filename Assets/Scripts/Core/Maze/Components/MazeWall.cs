@@ -8,7 +8,7 @@ public class MazeWall : Activateable
     [SerializeField]
     private BoxCollider2D boxCollider;
 
-    private SignalBus signalBus;
+    protected SignalBus signalBus;
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
@@ -38,16 +38,16 @@ public class MazeWall : Activateable
         item.transform.position = transform.position + transform.right * WALL_ITEM_OFFSET;
     }
 
-    public void OnWallCreated(SignalBus signalBus)
+    public virtual void OnWallCreated(SignalBus signalBus)
     {
         this.signalBus = signalBus;
-        signalBus.Subscribe<OnDeadEndsRemovedSignal>(AddToComposite);
+        signalBus.Subscribe<OnItemsLoadFinishSignal>(AddToComposite);
     }
 
     private void AddToComposite()
     {
         boxCollider.usedByComposite = true;
-        signalBus.Unsubscribe<OnDeadEndsRemovedSignal>(AddToComposite);
+        signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
     }
 
 }

@@ -9,13 +9,14 @@ public class MazeSizeData : ScriptableObject, IUISelectable
     private int width;
     [SerializeField, Header("Items")]
     private float averageAdditionalItemAmount;
+    [SerializeField, Header("Gates")]
+    private int averageGateAmount;
 
     public int Width => width;
     public int Height => height;
 
 
-    public float cameraPosition => Height / 2 - 0.5f;
-    public float cameraSize => Height;
+    public float AverageGateAmount => averageGateAmount;
     public float AverageAdditionalItemAmount => averageAdditionalItemAmount;
 
     public SelectableType SelectableType => SelectableType.MazeSize;

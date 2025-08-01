@@ -12,7 +12,8 @@ public class Maze
     public Dictionary<Coordinate, MazeNode> EdgeNodes => edgeNodes;
     public Dictionary<Coordinate, MazeNode> CornerNodes => cornerNodes;
 
-    public List<MazeNode> UsedNodes = new();
+    public List<MazeNode> FreeNodes { get; set; } = new();
+    public List<MazeNode> UsedNodes { get; set; } = new();
     public List<Torch> Torches = new();
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
@@ -28,6 +29,7 @@ public class Maze
 
         foreach(MazeNode node in nodes)
         {
+            FreeNodes.Add(node);
             NodesByCoordinate.Add(node.Coordinates, node);
         }
 
@@ -47,14 +49,19 @@ public class Maze
         {
             node.AddTorch(torch);
         }
-        node.MarkAsUsed();
+        UsedNodes.Add(node);
+        FreeNodes.Remove(node);
     }
 
     public void MarkNodeAsUsed(MazeNode node)
     {
-        if (UsedNodes.Contains(node)) return;
+        if (!FreeNodes.Contains(node))
+        {
+            UnityEngine.Debug.Log($"Node {node.Coordinates} is already used or not found in FreeNodes.");
+            return;
+        }
 
         UsedNodes.Add(node);
-        node.MarkAsUsed();
+        FreeNodes.Remove(node);
     }
 }

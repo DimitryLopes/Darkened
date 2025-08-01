@@ -20,7 +20,7 @@ public class SignalInstaller : MonoInstaller
         //Maze Generation
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
         Container.DeclareSignal<OnMazeLoadStartedSignal>();
-        Container.DeclareSignal<OnDeadEndsRemovedSignal>();
+        Container.DeclareSignal<OnItemsLoadFinishSignal>();
         //Player
         Container.DeclareSignal<OnPlayerExaustedRecoveredSignal>();
         Container.DeclareSignal<OnPlayerStaminaChangedSignal>();

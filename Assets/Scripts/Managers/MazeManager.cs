@@ -11,6 +11,7 @@ public class MazeManager
     public MazeNode CurrentStartingNode { get; set; }
     public MazeNode EnemyStartingNode { get; set; }
     public Maze CurrentMaze { get; set; }
+    public MazeGenerator MazeGenerator => mazeGenerator;
 
     public Dictionary<ItemType, List<Item>> ItemDictionary = new Dictionary<ItemType, List<Item>>();
 

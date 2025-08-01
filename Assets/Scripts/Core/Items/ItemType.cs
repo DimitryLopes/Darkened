@@ -11,4 +11,5 @@ public enum ItemType
     Wisp,
     Orb,
     Altar,
+    Switch,
 }

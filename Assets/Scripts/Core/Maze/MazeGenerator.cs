@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +17,8 @@ public class MazeGenerator : MonoBehaviour
 
     [SerializeField]
     private MazeWall wallPrefab;
+    [SerializeField]
+    private Gate gatePrefab;
     [SerializeField]
     private MazeNode nodePrefab;
 
@@ -43,6 +46,7 @@ public class MazeGenerator : MonoBehaviour
     private List<MazeNode> generationPath = new List<MazeNode>();
     private List<MazeNode> generationNeighbors = new List<MazeNode>();
     private Dictionary<string, MazeWall> walls = new();
+    private List<Gate> gates = new List<Gate>();
 
     private Maze currentMaze;
 
@@ -113,8 +117,8 @@ public class MazeGenerator : MonoBehaviour
         IEnumerator<float> step6enumerator = AddTorches();
         LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Adding torches");
 
-        //IEnumerator<float> step7enumerator = ActivateMazeTorches();
-        //LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "Illuminating your way");
+        IEnumerator<float> step7enumerator = AddGates();
+        LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "Blocking your way");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
@@ -197,7 +201,7 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeNode startNode = SetStartingPoint(nodes, CurrentData);
         mazeManager.CurrentStartingNode = startNode;
-        startNode.MarkAsUsed();
+        currentMaze.FreeNodes.Remove(startNode);
 
         MazeNode enemySpawn = GetAvailableNodeAwayFrom(startNode, nodes, CurrentData.Size);
         mazeManager.EnemyStartingNode = enemySpawn;
@@ -244,9 +248,6 @@ public class MazeGenerator : MonoBehaviour
                 yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
             }
         }
-
-        signalBus.Fire(new OnDeadEndsRemovedSignal());
-        shadowCreator.Create(mazeCollider);
         yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
     }
 
@@ -347,7 +348,7 @@ public class MazeGenerator : MonoBehaviour
     private void PositionItem(Item item)
     {
         Transform transform = null;
-        MazeNode[,] shuffledNodes = currentMaze.Nodes.Clone() as MazeNode[,];
+        List<MazeNode> shuffledNodes = new(currentMaze.FreeNodes);
         shuffledNodes.Shuffle();
 
         switch (item.GenerationData.SpawnType)
@@ -357,7 +358,7 @@ public class MazeGenerator : MonoBehaviour
                 transform = node.transform;
                 break;
             case SpawnType.Wall:
-                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
+                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings, false, item.GenerationData.Replace);
                 transform = wall.transform;
                 break;
             case SpawnType.EdgeWalls:
@@ -377,6 +378,36 @@ public class MazeGenerator : MonoBehaviour
         item.transform.SetParent(itemsContainer);
         item.transform.position = transform.position;
         item.transform.rotation = transform.rotation;
+    }
+
+    private IEnumerator<float> AddGates()
+    {
+        int gateCount =  Mathf.FloorToInt(currentMaze.Data.SizeData.AverageGateAmount);
+        float additionalGateChance = currentMaze.Data.SizeData.AverageGateAmount - gateCount;
+        float random = Random.Range(0, 1f);
+        if(random < additionalGateChance)
+        {
+            gateCount++;
+        }
+
+        for (int i = 0; i < gateCount; i++)
+        {
+            MazeNode availableNode = GetAvailableNode(true);
+            MazeWall wall = availableNode.GetRandomWall();
+
+            Gate gate = GetGate();
+            Switch switchItem = mazeManager.GetAvailableItem(ItemType.Switch) as Switch;
+            gate.Setup(availableNode, wall.AlignedWith);
+            switchItem.Associate(gate);
+            PositionItem(switchItem);
+            
+            yield return LoadingUtils.GetProgress(i + 1, gateCount);
+        }
+
+
+        signalBus.Fire(new OnItemsLoadFinishSignal());
+        shadowCreator.Create(mazeCollider);
+        yield return 1;
     }
 
     private void OnMazeGenerationFinish()
@@ -421,23 +452,43 @@ public class MazeGenerator : MonoBehaviour
         RemoveWall(nodeA, direction);
     }
 
-    private void RemoveWall(MazeNode node, Cardinal direction)
+    public void RemoveWall(MazeNode node, Cardinal direction)
     {
+        Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
+        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
         node.RemoveWall(direction);
+
+        if (neighbor == null) return;
+
+        neighbor.RemoveWall(oppositeDirection);
     }
 
     private void AddNodeWall(Cardinal direction, MazeNode node)
     {
-        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        
         string wallID = GetWallKey(node, direction);
         MazeWall wall = GetWall(wallID);
+
         node.AddWall(direction, wall);
 
         if (!node.GetEdge(direction)) return;
 
         wall.transform.SetParent(edgeWallsContainer);
+    }
 
+    public void AddGate(MazeNode node, Cardinal direction, Gate gate = null)
+    {
+        Gate gateToAdd = gate;
+        if (gate == null)
+        {
+            gateToAdd = GetGate();
+        }
+
+        node.AddWall(direction, gate); 
+        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+        if(neighbor != null)
+        {
+            neighbor.AddWall(NodeUtils.GetOppositeCardinal(direction), gate);
+        }
     }
 
     private string GetWallKey(MazeNode node, Cardinal direction)
@@ -581,7 +632,7 @@ public class MazeGenerator : MonoBehaviour
             yield return LoadingUtils.GetProgress(currentWall, totalWalls);
         }
 
-        signalBus.Fire(new OnDeadEndsRemovedSignal());
+        signalBus.Fire(new OnItemsLoadFinishSignal());
         shadowCreator.Create(mazeCollider);
         yield return LoadingUtils.GetProgress(1, 1);
     }
@@ -649,7 +700,7 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeNode startNode = nodes[preset.StartPosition.X, preset.StartPosition.Y];
         mazeManager.CurrentStartingNode = startNode;
-        startNode.MarkAsUsed();
+
         MazeNode enemySpawnNode = nodes[preset.EnemySpawnPosition.X, preset.EnemySpawnPosition.Y];
         mazeManager.EnemyStartingNode = enemySpawnNode;
         mazeManager.SetupMissions();
@@ -663,13 +714,13 @@ public class MazeGenerator : MonoBehaviour
     {
         int minTorchCount = (CurrentData as RandomLevelData).MinTorchCount;
         int maxTorchCount = (CurrentData as RandomLevelData).MaxTorchCount;
-        int torchCount = UnityEngine.Random.Range(minTorchCount, maxTorchCount + 1);
+        int torchCount = Random.Range(minTorchCount, maxTorchCount + 1);
 
         // Filtra nós válidos (sem item/tocha)
         List<MazeNode> validNodes = new List<MazeNode>();
-        foreach (MazeNode node in currentMaze.Nodes)
+        foreach (MazeNode node in currentMaze.FreeNodes)
         {
-            if (!node.IsBeingUsed && node.HasAnyWall())
+            if (node.HasAnyWall())
                 validNodes.Add(node);
         }
 
@@ -755,6 +806,22 @@ public class MazeGenerator : MonoBehaviour
         instantiatedNodes.Add(coordinate, newNode);
         return newNode;
     }
+
+    public Gate GetGate()
+    {
+        foreach (Gate gate in gates)
+        {
+            if (!gate.IsActive) return gate;
+        }
+
+        Gate newGate;
+        newGate = Instantiate(gatePrefab, itemsContainer);
+        newGate.OnWallCreated(signalBus);
+
+        newGate.Activate();
+        gates.Add(newGate);
+        return newGate;
+    }
     #endregion
 
     #region Utils
@@ -791,8 +858,6 @@ public class MazeGenerator : MonoBehaviour
 
         foreach (MazeNode node in nodes)
         {
-            if (node.IsBeingUsed) continue;
-
             totalDistance = 0;
             iterations = 0;
 
@@ -816,6 +881,7 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
+        currentMaze.MarkNodeAsUsed(furthestNode);
         return furthestNode;
     }
 
@@ -838,6 +904,33 @@ public class MazeGenerator : MonoBehaviour
         }
 
         return wall;
+    }
+
+    private MazeNode GetAvailableNode(bool forWall = false)
+    {
+        List<MazeNode> freeNodes = new List<MazeNode>(currentMaze.FreeNodes);
+        freeNodes.Shuffle();
+        MazeNode node = null;
+        if (forWall)
+        {
+            while (freeNodes.Count > 0)
+            {
+                node = freeNodes.GetRandom();
+                freeNodes.Remove(node);
+
+                if (node.HasAnyWall())
+                {
+                    currentMaze.MarkNodeAsUsed(node);
+                    return node;
+                }
+            }
+        }
+        else
+        {
+            node = freeNodes.GetRandom();
+        }
+        currentMaze.MarkNodeAsUsed(node);
+        return node;
     }
     #endregion
 

@@ -9,7 +9,7 @@ public static class ListExtensions
         while (n > 1)
         {
             n--;
-            int k = UnityEngine.Random.Range(0, n + 1);
+            int k = Random.Range(0, n + 1);
             T value = list[k];
             list[k] = list[n];
             list[n] = value;
@@ -24,7 +24,7 @@ public static class ListExtensions
 
     public static T GetRandom<T>(this IList<T> list)
     {
-        int randomIndex = UnityEngine.Random.Range(0, list.Count - 1);
+        int randomIndex = Random.Range(0, list.Count - 1);
         return list[randomIndex];
     }
 }
