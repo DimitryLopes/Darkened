@@ -23,9 +23,12 @@ public class DataBaseIntaller : MonoInstaller
     private MaterialDataBase materialDataBase;
     [SerializeField]
     private UnlockConditionDataBase unlockConditionDataBase;
+    [SerializeField]
+    private WallDatabase wallDatabase;
 
     public override void InstallBindings()
     {
+        wallDatabase.SetUp();
         itemDataBase.SetUp();
         levelDataBase.SetUp();
         enemyDataBase.SetUp();
@@ -34,6 +37,7 @@ public class DataBaseIntaller : MonoInstaller
         materialDataBase.SetUp();
         objectivesDataBase.SetUp();
 
+        Container.Bind<WallDatabase>().FromInstance(wallDatabase).AsSingle();
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
         Container.Bind<LevelDataBase>().FromInstance(levelDataBase).AsSingle();
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();

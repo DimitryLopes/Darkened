@@ -47,7 +47,6 @@ public class Torch : Item
     public void SetLightRadius(float radius)
     {
         torchlight.pointLightOuterRadius = radius;
-        lightCollider.radius = radius;
     }
 
     public void DeactivateLights()

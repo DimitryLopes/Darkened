@@ -1,22 +1,22 @@
 #if UNITY_EDITOR
 
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 
 [CustomEditor(typeof(PresetLevelData))]
 public class PresetLevelDataEditor : Editor
 {
     private const int CellSize = 20;
-    private MazeSizeData lastSizeData;
 
     public override void OnInspectorGUI()
     {
         PresetLevelData preset = (PresetLevelData)target;
-        var sizeDataField = typeof(PresetLevelData).GetField("sizeData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var sizeDataField = typeof(PresetLevelData).GetField("sizeData", BindingFlags.NonPublic | BindingFlags.Instance);
+        var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        var itemsField = typeof(PresetLevelData).GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var itemsField = typeof(PresetLevelData).GetField("items", BindingFlags.NonPublic | BindingFlags.Instance);
         var items = (System.Collections.IList)itemsField.GetValue(preset);
 
         if (items != null)
@@ -24,8 +24,9 @@ public class PresetLevelDataEditor : Editor
             for (int i = 0; i < items.Count; i++)
             {
                 var itemData = items[i];
-                var itemField = itemData.GetType().GetField("item", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var spawnTypeField = itemData.GetType().GetField("SpawnType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var itemField = itemData.GetType().GetField("item", BindingFlags.NonPublic | BindingFlags.Instance);
+                var spawnTypeField = itemData.GetType().GetField("SpawnType", BindingFlags.NonPublic | BindingFlags.Instance);
+                var itemTypeField = itemData.GetType().GetField("ItemType", BindingFlags.NonPublic | BindingFlags.Instance);
 
                 var item = itemField.GetValue(itemData);
                 if (item == null)
@@ -34,12 +35,14 @@ public class PresetLevelDataEditor : Editor
                     continue;
                 }
 
-                var generationDataProp = item.GetType().GetProperty("GenerationData", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                var generationDataProp = item.GetType().GetProperty("GenerationData", BindingFlags.Public | BindingFlags.Instance);
                 var generationData = generationDataProp.GetValue(item);
-                var spawnTypeProp = generationData.GetType().GetProperty("SpawnType", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                var spawnTypeProp = generationData.GetType().GetProperty("SpawnType", BindingFlags.Public | BindingFlags.Instance);
                 var spawnType = spawnTypeProp.GetValue(generationData);
-
+                var itemTyperProp = item.GetType().GetProperty("Type", BindingFlags.Public | BindingFlags.Instance);
+                var itemType = itemTyperProp.GetValue(item);
                 spawnTypeField.SetValue(itemData, spawnType);
+                itemTypeField.SetValue(itemData, itemType);
                 items[i] = itemData;
             }
         }
@@ -53,7 +56,6 @@ public class PresetLevelDataEditor : Editor
             {
                 FillAllWalls(preset, mazeSizeData);
                 EditorUtility.SetDirty(preset);
-                lastSizeData = mazeSizeData;
             }
         }
 
@@ -76,7 +78,7 @@ public class PresetLevelDataEditor : Editor
 
         var wallPositions = (List<PresetWallPositionData>)wallPositionsField.GetValue(preset);
         foreach (var wall in wallPositions)
-            DrawWall(preview, wall.Coordinate.X, wall.Coordinate.Y, wall.Direction, width, height);
+            DrawWall(preview, wall.Coordinate.X, wall.Coordinate.Y, wall.Direction, width, height, wall.WallType);
 
         var itemsList = (List<PresetItemData>)itemsField.GetValue(preset);
         foreach (var presetItem in itemsList)
@@ -113,10 +115,10 @@ public class PresetLevelDataEditor : Editor
             ;
         }
 
-        var startPosition = (Coordinate)preset.GetType().GetField("startPosition", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
+        var startPosition = (Coordinate)preset.GetType().GetField("startPosition", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(preset);
         DrawCell(preview, startPosition.X, startPosition.Y, Color.green, width, height);
 
-        var enemySpawnPosition = (Coordinate)preset.GetType().GetField("enemySpawnPosition", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(preset);
+        var enemySpawnPosition = (Coordinate)preset.GetType().GetField("enemySpawnPosition", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(preset);
         DrawCell(preview, enemySpawnPosition.X, enemySpawnPosition.Y, Color.red, width, height);
 
         preview.Apply();
@@ -177,7 +179,7 @@ public class PresetLevelDataEditor : Editor
 
     private void FillAllWalls(PresetLevelData preset, MazeSizeData sizeData)
     {
-        var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", BindingFlags.NonPublic | BindingFlags.Instance);
         var wallPositions = new List<PresetWallPositionData>();
 
         int width = sizeData.Width;
@@ -188,31 +190,36 @@ public class PresetLevelDataEditor : Editor
             for (int y = 0; y < height; y++)
             {
                 if (x < width - 1)
-                    wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.East));
+                    wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.East, WallType.wall));
                 if (y < height - 1)
-                    wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.North));
+                    wallPositions.Add(new PresetWallPositionData(new Coordinate(x, y), Cardinal.North, WallType.wall));
             }
         }
 
         for (int x = 0; x < width; x++)
         {
-            wallPositions.Add(new PresetWallPositionData(new Coordinate(x, 0), Cardinal.South));
-            wallPositions.Add(new PresetWallPositionData(new Coordinate(x, height - 1), Cardinal.North));
+            wallPositions.Add(new PresetWallPositionData(new Coordinate(x, 0), Cardinal.South, WallType.wall));
+            wallPositions.Add(new PresetWallPositionData(new Coordinate(x, height - 1), Cardinal.North, WallType.wall));
         }
         for (int y = 0; y < height; y++)
         {
-            wallPositions.Add(new PresetWallPositionData(new Coordinate(0, y), Cardinal.West));
-            wallPositions.Add(new PresetWallPositionData(new Coordinate(width - 1, y), Cardinal.East));
+            wallPositions.Add(new PresetWallPositionData(new Coordinate(0, y), Cardinal.West, WallType.wall));
+            wallPositions.Add(new PresetWallPositionData(new Coordinate(width - 1, y), Cardinal.East, WallType.wall));
         }
 
         wallPositionsField.SetValue(preset, wallPositions);
     }
 
-    private void DrawWall(Texture2D tex, int x, int y, Cardinal dir, int width, int height)
+    private void DrawWall(Texture2D tex, int x, int y, Cardinal dir, int width, int height, WallType wallType)
     {
         int px = x * CellSize;
         int py = y * CellSize;
-        Color wallColor = Color.black;
+        Color wallColor = wallType switch
+        {
+            WallType.gate => Color.white,
+            _ => Color.clear
+        };
+
 
         switch (dir)
         {

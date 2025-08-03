@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -50,6 +51,7 @@ public class WerewolfEnemy : Enemy
     public override void OnActivate()
     {
         distraction = null;
+        signalBus.Subscribe<OnMazeChangedDinamicallySignal>(OnMazeChangedDinamically);
         waitingState.OnStateEndedCallback = null;
         ChangeState(waitingState);
     }
@@ -57,6 +59,7 @@ public class WerewolfEnemy : Enemy
     public override void OnDeactivate()
     {
         base.OnDeactivate();
+        signalBus.Unsubscribe<OnMazeChangedDinamicallySignal>(OnMazeChangedDinamically);
         currentState.RawDeactivate();
     }
 
@@ -166,7 +169,91 @@ public class WerewolfEnemy : Enemy
     {
         MazeNode playerNode = MazeUtils.GetClosestNodeToVector(Player.transform.position, Maze.Nodes);
         return playerNode;
+
+        
     }
+
+    private void OnMazeChangedDinamically(OnMazeChangedDinamicallySignal signal)
+    {
+        if (currentState is not MovingTowardsTargetEnemyState movingState) return;
+
+        var path = movingState.Path;
+        if (path == null || path.Count == 0) return;
+
+        MazeNode changedNode = signal.Node;
+        MazeWall changedWall = signal.Wall;
+
+        MazeNode adjacentWallNode1 = changedWall?.AdjacentNodes.Item1;
+        MazeNode adjacentWallNode2 = changedWall?.AdjacentNodes.Item2;
+
+        bool isWallInPath = false;
+        if (adjacentWallNode1 != null)
+        {
+            if (path.Contains(adjacentWallNode1))
+            {
+                if (adjacentWallNode2 != null)
+                {
+                    if (path.Contains(adjacentWallNode2))
+                    {
+                        isWallInPath = true;
+                    }
+                }
+            }
+        }
+
+        MazeNode targetNode = changedNode;
+
+        if (isWallInPath)
+        {
+            foreach(MazeNode node in path)
+            {
+                if (node == adjacentWallNode1 || node == adjacentWallNode2)
+                {
+                     targetNode = node;
+                    break;
+                }
+            }
+        }
+
+
+        if (!path.Contains(targetNode)) return;
+
+        // Check if enemy is touching the target node
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("MazeNode"));
+        MazeNode touchingNode = hit?.GetComponent<MazeNode>();
+
+        bool isTouchingChangedNode = touchingNode == targetNode;
+
+        // Convert path to array (top of stack is last in array)
+        MazeNode[] pathArray = path.ToArray();
+        MazeNode previousNode = null;
+
+        for (int i = 0; i < pathArray.Length - 1; i++)
+        {
+            if (pathArray[i] == targetNode)
+            {
+                previousNode = pathArray[i + 1]; // previous in logical path
+                break;
+            }
+        }
+
+        // Bounce back if currently on the changed node
+        if (isTouchingChangedNode && previousNode != null)
+        {
+            transform.position = previousNode.transform.position;
+            ChangeState(waitingState);
+            return;
+        }
+
+        // Stop before target
+        if (!isTouchingChangedNode && targetNode != null)
+        {
+            transform.position = previousNode != null ? previousNode.transform.position : targetNode.transform.position;
+            ChangeState(waitingState);
+        }
+    }
+
+
 
     #region Callbacks
     private void OnChasingStarted()

@@ -31,9 +31,13 @@ public struct PresetItemData
     private Item item;
     [SerializeField, ShowIf(nameof(SpawnType), SpawnType.Wall, SpawnType.EdgeWalls)]
     private Cardinal direction;
+    [SerializeField, ShowIf(nameof(ItemType), ItemType.Switch)]
+    public string AssociateWith;
 
     [SerializeField, HideInInspector]
     private SpawnType SpawnType;
+    [SerializeField, HideInInspector]
+    private ItemType ItemType;
 
 
     public Coordinate Coordinate => coordinate;
@@ -48,13 +52,17 @@ public struct PresetWallPositionData
     private Coordinate coordinate;
     [SerializeField]
     private Cardinal direction;
+    [SerializeField]
+    private WallType wallType;
 
     public Coordinate Coordinate => coordinate;
     public Cardinal Direction => direction;
+    public WallType WallType => wallType;
 
-    public PresetWallPositionData(Coordinate coordinate, Cardinal direction)
+    public PresetWallPositionData(Coordinate coordinate, Cardinal direction, WallType wallType)
     {
         this.coordinate = coordinate;
         this.direction = direction;
+        this.wallType = wallType;
     }
 }

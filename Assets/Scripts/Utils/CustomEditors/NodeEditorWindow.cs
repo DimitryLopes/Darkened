@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class NodeEditorWindow : EditorWindow
 {
@@ -10,9 +10,9 @@ public class NodeEditorWindow : EditorWindow
 
     // Para seleção de direção de parede
     private Dictionary<Cardinal, bool> wallStates = new();
+    private Dictionary<Cardinal, WallType> wallTypes = new();
     // Para seleção de item
     private Item selectedItem;
-    private int selectedItemIndex = -1;
     private string[] itemTypeNames;
 
     public static void Open(Coordinate node, PresetLevelData preset)
@@ -21,61 +21,47 @@ public class NodeEditorWindow : EditorWindow
         window.node = node;
         window.preset = preset;
         window.InitWallStates();
-        window.InitItemSelection();
         window.Show();
     }
 
     private void InitWallStates()
     {
         wallStates.Clear();
+        wallTypes.Clear();
         var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var wallPositions = (List<PresetWallPositionData>)wallPositionsField.GetValue(preset);
 
         foreach (Cardinal dir in System.Enum.GetValues(typeof(Cardinal)))
         {
-            wallStates[dir] = wallPositions.Exists(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir);
-        }
-    }
+            var wall = wallPositions.Find(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir);
+            bool exists = wallPositions.Exists(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir);
 
-    private void InitItemSelection()
-    {
-        var itemsField = typeof(PresetLevelData).GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var items = (List<PresetItemData>)itemsField.GetValue(preset);
-
-        var itemOnNode = items.Find(i => i.Coordinate.X == node.X && i.Coordinate.Y == node.Y);
-        selectedItem = itemOnNode.Item;
-        selectedItemIndex = -1;
-
-        // Prepara lista de tipos de item (exemplo: pode ser adaptado para sua lista real)
-        itemTypeNames = System.Enum.GetNames(typeof(ItemType));
-        if (selectedItem != null)
-        {
-            for (int i = 0; i < itemTypeNames.Length; i++)
-            {
-                if (selectedItem.Type.ToString() == itemTypeNames[i])
-                {
-                    selectedItemIndex = i;
-                    break;
-                }
-            }
+            wallStates[dir] = exists;
+            wallTypes[dir] = exists ? wall.WallType : WallType.wall;
         }
     }
 
     private void OnGUI()
     {
-        GUILayout.Label($"Editando Nó: ({node.X}, {node.Y})", EditorStyles.boldLabel);
+        GUILayout.Label($"Editing Node: ({node.X}, {node.Y})", EditorStyles.boldLabel);
 
         // Edita paredes
-        GUILayout.Label("Paredes:");
+        GUILayout.Label("Walls:");
         foreach (Cardinal dir in System.Enum.GetValues(typeof(Cardinal)))
         {
+            EditorGUILayout.BeginHorizontal();
+
             bool prev = wallStates[dir];
-            bool next = GUILayout.Toggle(prev, dir.ToString());
-            if (next != prev)
+            bool next = GUILayout.Toggle(prev, dir.ToString(), GUILayout.Width(70));
+            WallType currentType = wallTypes.ContainsKey(dir) ? wallTypes[dir] : WallType.wall;
+            WallType selectedType = (WallType)EditorGUILayout.EnumPopup(currentType, GUILayout.Width(100));
+            if (next != prev || selectedType != currentType)
             {
                 wallStates[dir] = next;
-                UpdateWall(dir, next);
+                wallTypes[dir] = selectedType;
+                UpdateWall(dir, next, selectedType);
             }
+            EditorGUILayout.EndHorizontal();
         }
 
         GUILayout.Space(10);
@@ -83,31 +69,19 @@ public class NodeEditorWindow : EditorWindow
         EditorUtility.SetDirty(preset);
     }
 
-    private void UpdateWall(Cardinal dir, bool add)
+    private void UpdateWall(Cardinal dir, bool add, WallType wallType)
     {
         var wallPositionsField = typeof(PresetLevelData).GetField("wallPositions", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var wallPositions = (List<PresetWallPositionData>)wallPositionsField.GetValue(preset);
 
+        wallPositions.RemoveAll(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir);
+
         if (add)
         {
-            if (!wallPositions.Exists(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir))
-                wallPositions.Add(new PresetWallPositionData(new Coordinate(node.X, node.Y), dir));
+            wallPositions.Add(new PresetWallPositionData(new Coordinate(node.X, node.Y), dir, wallType));
         }
-        else
-        {
-            wallPositions.RemoveAll(w => w.Coordinate.X == node.X && w.Coordinate.Y == node.Y && w.Direction == dir);
-        }
+
         wallPositionsField.SetValue(preset, wallPositions);
-    }
-
-    private void RemoveItem()
-    {
-        var itemsField = typeof(PresetLevelData).GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var items = (List<PresetItemData>)itemsField.GetValue(preset);
-
-        items.RemoveAll(i => i.Coordinate.X == node.X && i.Coordinate.Y == node.Y);
-        itemsField.SetValue(preset, items);
-        selectedItemIndex = -1;
     }
 }
 #endif // UNITY_EDITOR

@@ -8,6 +8,9 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
 
     protected Stack<MazeNode> path;
 
+    public Stack<MazeNode> Path => path;
+    
+
     public MovingTowardsTargetEnemyState(BaseEnemyStateData data) : base(data)
     {
     }

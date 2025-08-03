@@ -26,5 +26,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f19927cae1335e34490800441cefce7f, type: 2}
   - {fileID: 11400000, guid: e06867de1b5e8a344bb52a902b489f87, type: 2}
   - {fileID: 11400000, guid: e29f0f3c7198d4a4cbfd3df8542c7e84, type: 2}
+  - {fileID: 11400000, guid: 679d126caac452b4da77fd01e092490d, type: 2}
+  - {fileID: 11400000, guid: 2561f6facaeaca8498bef7f0a8d8343f, type: 2}
+  - {fileID: 11400000, guid: 88161b17d683a0c4bb8771c0f1e447ce, type: 2}
+  - {fileID: 11400000, guid: 356eaefc78cbc174282283a9b95b7b4a, type: 2}
   torches:
   - {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}

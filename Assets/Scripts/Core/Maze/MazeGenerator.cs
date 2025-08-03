@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Zenject;
 
@@ -14,11 +13,10 @@ public class MazeGenerator : MonoBehaviour
     private ScreenManager screenManager;
     [Inject]
     private AudioManager audioManager;
+    //wall database is directly injected because walls are not created by a factory
+    [Inject]
+    private WallDatabase wallDatabase;
 
-    [SerializeField]
-    private MazeWall wallPrefab;
-    [SerializeField]
-    private Gate gatePrefab;
     [SerializeField]
     private MazeNode nodePrefab;
 
@@ -355,22 +353,23 @@ public class MazeGenerator : MonoBehaviour
         {
             case SpawnType.Node:
                 MazeNode node = GetAvailableNodeAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
+                currentMaze.MarkNodeAsUsed(node, item);
                 transform = node.transform;
                 break;
             case SpawnType.Wall:
-                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings, false, item.GenerationData.Replace);
+                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item, false);
                 transform = wall.transform;
                 break;
             case SpawnType.EdgeWalls:
                 List<MazeNode> edgeNodes = currentMaze.EdgeNodes.Values.ToList();
-                MazeWall chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item.GenerationData.MinDistanceFromThings, true, item.GenerationData.Replace);
+                MazeWall chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item, true);
                 if (chosenWall != null)
                 {
                     transform = chosenWall.transform;
                 }
                 else
                 {
-                    chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, 0, true, item.GenerationData.Replace);
+                    chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item, true);
                     transform = chosenWall.transform;
                 }
                 break;
@@ -392,10 +391,12 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < gateCount; i++)
         {
+            Gate gate = GetGate();
+
             MazeNode availableNode = GetAvailableNode(true);
+            currentMaze.MarkNodeAsUsed(availableNode, gate);
             MazeWall wall = availableNode.GetRandomWall();
 
-            Gate gate = GetGate();
             Switch switchItem = mazeManager.GetAvailableItem(ItemType.Switch) as Switch;
             gate.Setup(availableNode, wall.AlignedWith);
             switchItem.Associate(gate);
@@ -440,7 +441,7 @@ public class MazeGenerator : MonoBehaviour
     private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
-        currentMaze.MarkNodeAsUsed(nodes[startingX, 0]);
+        currentMaze.MarkNodeAsUsed(nodes[startingX, 0], null);
         return nodes[startingX, 0];
     }
 
@@ -469,7 +470,8 @@ public class MazeGenerator : MonoBehaviour
         MazeWall wall = GetWall(wallID);
 
         node.AddWall(direction, wall);
-
+        Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
+        wall.AddNode(node, oppositeDirection);
         if (!node.GetEdge(direction)) return;
 
         wall.transform.SetParent(edgeWallsContainer);
@@ -614,9 +616,18 @@ public class MazeGenerator : MonoBehaviour
         {
             MazeNode node = nodes[wallData.Coordinate.X, wallData.Coordinate.Y];
             MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(wallData.Direction, node, currentMaze);
-
-            string wallID = GetWallKey(node, wallData.Direction);
-            MazeWall wall = GetWall(wallID);
+            MazeWall wall;
+            switch (wallData.WallType)
+            {
+                default:
+                    string wallID = GetWallKey(node, wallData.Direction);
+                    wall = GetWall(wallID);
+                    break;
+                case WallType.gate:
+                    wall = GetGate();
+                    break;
+            }
+            
             node.AddWall(wallData.Direction, wall);
             if (neighbor)
             {
@@ -676,6 +687,34 @@ public class MazeGenerator : MonoBehaviour
             Item item = mazeManager.GetAvailableItem(itemData.Item.Type);
             item.transform.SetParent(itemsContainer);
             item.Activate();
+
+            if (item.Type == ItemType.Switch)
+            {
+                string[] links = itemData.AssociateWith.Split('|');
+                foreach (string link in links)
+                {
+                    if (link == string.Empty) continue;
+
+                    Switch switchItem = item as Switch;
+
+                    MazeNode node = nodes[int.Parse(link.Split(',')[0]), int.Parse(link.Split(',')[1])];
+                    if(link.Length > 3)
+                    {
+                        string cardinal = link.Substring(3);
+                        if(System.Enum.TryParse<Cardinal>(cardinal, out var result)) 
+                        {
+                            MazeWall wall = NodeUtils.GetWallAt(node, result, currentMaze);
+                            if(wall is IToggable toggableWall)
+                            {
+                                switchItem.Associate(toggableWall);
+                                continue;
+                            }
+                        }
+                    }
+                    switchItem.Associate(node.UsedBy as IToggable);
+                    continue;
+                }
+            }
 
             switch (itemData.Item.GenerationData.SpawnType)
             {
@@ -783,7 +822,7 @@ public class MazeGenerator : MonoBehaviour
         }
         else
         {
-            wall = Instantiate(wallPrefab, wallsContainer);
+            wall = Instantiate(wallDatabase.Walls[WallType.wall], wallsContainer);
             wall.OnWallCreated(signalBus);
             wall.name = $"Wall {id}";
             walls.Add(id, wall);
@@ -815,7 +854,7 @@ public class MazeGenerator : MonoBehaviour
         }
 
         Gate newGate;
-        newGate = Instantiate(gatePrefab, itemsContainer);
+        newGate = Instantiate(wallDatabase.Walls[WallType.gate] as Gate, itemsContainer);
         newGate.OnWallCreated(signalBus);
 
         newGate.Activate();
@@ -873,22 +912,20 @@ public class MazeGenerator : MonoBehaviour
             if (totalDistance < minDistance) continue;
 
             if (totalDistance >= minDistance) return node;
-            
-            if(totalDistance > furthestNodeAvailableDistance)
+
+            if (totalDistance > furthestNodeAvailableDistance)
             {
                 furthestNode = node;
                 furthestNodeAvailableDistance = totalDistance;
             }
         }
-
-        currentMaze.MarkNodeAsUsed(furthestNode);
         return furthestNode;
     }
 
-    private MazeWall GetAvailableWallAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance, bool edge = false, bool destroyWall = false)
+    private MazeWall GetAvailableWallAwayFrom(IEnumerable focusNodes, IEnumerable nodes, Item item, bool edge = false)
     {
         MazeWall wall;
-        MazeNode availableNode = GetAvailableNodeAwayFrom(focusNodes, nodes, minDistance);
+        MazeNode availableNode = GetAvailableNodeAwayFrom(focusNodes, nodes, item.GenerationData.MinDistanceFromThings);
         if (edge)
         {
             wall = availableNode.GetRandomWallOnEdge();
@@ -898,11 +935,11 @@ public class MazeGenerator : MonoBehaviour
             wall = availableNode.GetRandomWall();
         }
         //TODO: if we manage to take this outside the method would be great
-        if (destroyWall)
+        if (item.GenerationData.Replace)
         {
             RemoveWall(availableNode, wall.AlignedWith);
         }
-
+        currentMaze.MarkNodeAsUsed(availableNode, item);
         return wall;
     }
 
@@ -920,7 +957,6 @@ public class MazeGenerator : MonoBehaviour
 
                 if (node.HasAnyWall())
                 {
-                    currentMaze.MarkNodeAsUsed(node);
                     return node;
                 }
             }
@@ -929,7 +965,6 @@ public class MazeGenerator : MonoBehaviour
         {
             node = freeNodes.GetRandom();
         }
-        currentMaze.MarkNodeAsUsed(node);
         return node;
     }
     #endregion

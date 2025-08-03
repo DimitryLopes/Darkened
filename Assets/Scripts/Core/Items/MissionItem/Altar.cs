@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using Zenject;
 
-public class MissionAltar : MissionItem
+public class Altar : MissionItem
 {
     [Inject]
     private InventoryManager inventoryManager;
@@ -10,8 +11,9 @@ public class MissionAltar : MissionItem
     private ObjectiveManager objectiveManager;
 
     [SerializeField]
+    private Light2D altarLight;
+    [SerializeField]
     private Image altarFillImage;
-
 
     protected override void OnInteract()
     {
@@ -21,6 +23,7 @@ public class MissionAltar : MissionItem
             return;
         }
 
+        altarLight.enabled = true;
         signalBus.Fire(new OnMissionItemInteractedSignal(this));
         inventoryManager.DecreaseItemAmount(ItemType.Orb);
         var missions = objectiveManager.CurrentObjective.CurrentMissionGroup.Missions;
@@ -32,10 +35,18 @@ public class MissionAltar : MissionItem
                 {
                     float progress = itemMission.GetCurrentProgress();
                     altarFillImage.fillAmount = progress;
+                    altarLight.pointLightOuterRadius = progress * 2f;
                 }
             }
-        }
-        
+        }        
+    }
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        altarLight.pointLightOuterRadius = 0;
+        altarLight.enabled = false;
+        altarFillImage.fillAmount = 0;
     }
 
     public override ItemType Type => ItemType.Altar;

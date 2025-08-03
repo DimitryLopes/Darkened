@@ -15,6 +15,7 @@ public class Maze
     public List<MazeNode> FreeNodes { get; set; } = new();
     public List<MazeNode> UsedNodes { get; set; } = new();
     public List<Torch> Torches = new();
+    public List<IToggable> Toggables { get; set; } = new();
     public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
 
     public Maze(LevelData data)
@@ -49,11 +50,10 @@ public class Maze
         {
             node.AddTorch(torch);
         }
-        UsedNodes.Add(node);
-        FreeNodes.Remove(node);
+        MarkNodeAsUsed(node, torch);
     }
 
-    public void MarkNodeAsUsed(MazeNode node)
+    public void MarkNodeAsUsed(MazeNode node, object usedBy)
     {
         if (!FreeNodes.Contains(node))
         {

@@ -13,6 +13,7 @@ public class MazeNode : Activateable
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsOnCorner { get; private set; }
+    public object UsedBy { get; set; }
     public Coordinate Coordinates => coordinates;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
@@ -157,6 +158,7 @@ public class MazeNode : Activateable
     {
         MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
+        UsedBy = null;
         hasTorch = false;
         Visited = false;
         coordinates = new Coordinate();

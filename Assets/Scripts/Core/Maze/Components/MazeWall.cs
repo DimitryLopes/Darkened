@@ -12,7 +12,24 @@ public class MazeWall : Activateable
 
     public bool IsAtBorder { get; private set; }
     public Cardinal AlignedWith { get; private set; }
-    public BoxCollider2D BoxCollider => boxCollider;
+
+    public (MazeNode, MazeNode) AdjacentNodes;
+
+    public void AddNode(MazeNode node)
+    {
+        if(AdjacentNodes.Item1 == null || AdjacentNodes.Item1 == node)
+        {
+            AdjacentNodes.Item1 = node;
+        }
+        else if (AdjacentNodes.Item2 == null || AdjacentNodes.Item2 == node)
+        {
+            AdjacentNodes.Item2 = node;
+        }
+        else
+        {
+            Debug.LogError("Cannot add more than two adjacent nodes to a wall.");
+        }
+    }
 
     public override void OnActivate()
     {
