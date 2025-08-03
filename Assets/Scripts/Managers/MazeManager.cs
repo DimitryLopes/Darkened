@@ -7,9 +7,10 @@ public class MazeManager
     private readonly MazeGenerator mazeGenerator;
     private readonly ItemFactory itemFactory;
     private readonly ObjectiveManager objectiveManager;
+    private readonly SignalBus signalbus;
 
-    public MazeNode CurrentStartingNode { get; set; }
-    public MazeNode EnemyStartingNode { get; set; }
+    public Node CurrentStartingNode { get; set; }
+    public Node EnemyStartingNode { get; set; }
     public Maze CurrentMaze { get; set; }
     public MazeGenerator MazeGenerator => mazeGenerator;
 
@@ -21,6 +22,7 @@ public class MazeManager
         this.objectiveManager = objectiveManager;
         this.mazeGenerator = mazeGenerator;
         this.itemFactory = itemFactory;
+        this.signalbus = signalBus;
 
         signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStarted);
     }

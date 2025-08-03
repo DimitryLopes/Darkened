@@ -165,9 +165,9 @@ public class WerewolfEnemy : Enemy
         trackingState.SetPath(Maze, GetPlayerNode());
     }
 
-    private MazeNode GetPlayerNode()
+    private Node GetPlayerNode()
     {
-        MazeNode playerNode = MazeUtils.GetClosestNodeToVector(Player.transform.position, Maze.Nodes);
+        Node playerNode = MazeUtils.GetClosestNodeToVector(Player.transform.position, Maze.Nodes);
         return playerNode;
 
         
@@ -180,11 +180,11 @@ public class WerewolfEnemy : Enemy
         var path = movingState.Path;
         if (path == null || path.Count == 0) return;
 
-        MazeNode changedNode = signal.Node;
+        Node changedNode = signal.Node;
         MazeWall changedWall = signal.Wall;
 
-        MazeNode adjacentWallNode1 = changedWall?.AdjacentNodes.Item1;
-        MazeNode adjacentWallNode2 = changedWall?.AdjacentNodes.Item2;
+        Node adjacentWallNode1 = changedWall?.AdjacentNodes.Item1;
+        Node adjacentWallNode2 = changedWall?.AdjacentNodes.Item2;
 
         bool isWallInPath = false;
         if (adjacentWallNode1 != null)
@@ -201,11 +201,11 @@ public class WerewolfEnemy : Enemy
             }
         }
 
-        MazeNode targetNode = changedNode;
+        Node targetNode = changedNode;
 
         if (isWallInPath)
         {
-            foreach(MazeNode node in path)
+            foreach(Node node in path)
             {
                 if (node == adjacentWallNode1 || node == adjacentWallNode2)
                 {
@@ -220,13 +220,13 @@ public class WerewolfEnemy : Enemy
 
         // Check if enemy is touching the target node
         Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("MazeNode"));
-        MazeNode touchingNode = hit?.GetComponent<MazeNode>();
+        Node touchingNode = hit?.GetComponent<Node>();
 
         bool isTouchingChangedNode = touchingNode == targetNode;
 
         // Convert path to array (top of stack is last in array)
-        MazeNode[] pathArray = path.ToArray();
-        MazeNode previousNode = null;
+        Node[] pathArray = path.ToArray();
+        Node previousNode = null;
 
         for (int i = 0; i < pathArray.Length - 1; i++)
         {
@@ -310,7 +310,7 @@ public class WerewolfEnemy : Enemy
 
     protected override void OnDistracted(Distraction distraction)
     {
-        MazeNode targetNode = MazeUtils.GetClosestNodeToVector(distraction.transform.position, Maze.Nodes);
+        Node targetNode = MazeUtils.GetClosestNodeToVector(distraction.transform.position, Maze.Nodes);
         distractedState.SetPath(Maze, targetNode);
         ChangeState(distractedState);
         this.distraction = distraction;

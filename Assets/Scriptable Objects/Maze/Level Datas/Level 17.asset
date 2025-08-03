@@ -380,8 +380,8 @@ MonoBehaviour:
     wallType: 0
   items:
   - coordinate:
-      x: 0
-      y: 7
+      x: 6
+      y: 0
     item: {fileID: 1265893472881442220, guid: 7c2a121108b6cc249b373503b6a89a26, type: 3}
     direction: 0
     AssociateWith: 
@@ -491,6 +491,14 @@ MonoBehaviour:
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
+  - coordinate:
+      x: 2
+      y: 3
+    item: {fileID: -6265309428430385331, guid: 78ac1cbbfa9812447a5a39af1e46ffd3, type: 3}
+    direction: 0
+    AssociateWith: 5,0east
+    SpawnType: 1
+    ItemType: 11
   startPosition:
     x: 5
     y: 0

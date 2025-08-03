@@ -8,12 +8,10 @@ public class Torch : Item
     [SerializeField]
     private CircleCollider2D lightCollider;
 
-    private MazeNode node;
     private Cardinal alignedWith;
 
     
     public bool isLit => torchlight.enabled;
-    public MazeNode Node => node;
     public Cardinal AlignedWith => alignedWith;
     public override ItemType Type => ItemType.DefaultTorch;
 
@@ -32,9 +30,8 @@ public class Torch : Item
         }
     }
 
-    public void SetNode(MazeNode node, Cardinal cardinal)
+    public void Setup(Cardinal cardinal)
     {
-        this.node = node;
         alignedWith = cardinal;
     }
 

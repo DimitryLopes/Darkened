@@ -38,6 +38,7 @@ public class GameManager
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
+        signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStart);
         signalBus.Subscribe<OnNewGameStartedSignal>(OnNewGameStarted);
     }
 
@@ -131,6 +132,15 @@ public class GameManager
     private void OnObjectiveCompleted(OnGameCompletedSignal signal)
     {
         FinishGame(signal.Won);
+    }
+
+    private void OnMazeLoadStart(OnMazeLoadStartedSignal signal)
+    {
+        if (entityManager.CurrentEnemyType != EnemyType.None)
+        {
+            Enemy enemy = entityManager.GetCurrentEnemy();
+            enemy.Deactivate();
+        }
     }
 
     private void OnMazeLoadFinish()

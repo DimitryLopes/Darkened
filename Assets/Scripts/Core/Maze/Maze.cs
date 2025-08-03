@@ -3,32 +3,32 @@ using System.Collections.Generic;
 public class Maze
 {
     private LevelData data;
-    private MazeNode[,] nodes;
-    private Dictionary<Coordinate, MazeNode> edgeNodes;
-    private Dictionary<Coordinate, MazeNode> cornerNodes;
+    private Node[,] nodes;
+    private Dictionary<Coordinate, Node> edgeNodes;
+    private Dictionary<Coordinate, Node> cornerNodes;
 
     public LevelData Data => data;
-    public MazeNode[,] Nodes => nodes;
-    public Dictionary<Coordinate, MazeNode> EdgeNodes => edgeNodes;
-    public Dictionary<Coordinate, MazeNode> CornerNodes => cornerNodes;
+    public Node[,] Nodes => nodes;
+    public Dictionary<Coordinate, Node> EdgeNodes => edgeNodes;
+    public Dictionary<Coordinate, Node> CornerNodes => cornerNodes;
 
-    public List<MazeNode> FreeNodes { get; set; } = new();
-    public List<MazeNode> UsedNodes { get; set; } = new();
+    public List<Node> FreeNodes { get; set; } = new();
+    public List<Node> UsedNodes { get; set; } = new();
     public List<Torch> Torches = new();
     public List<IToggable> Toggables { get; set; } = new();
-    public Dictionary<Coordinate, MazeNode> NodesByCoordinate { get; private set; } = new();
+    public Dictionary<Coordinate, Node> NodesByCoordinate { get; private set; } = new();
 
     public Maze(LevelData data)
     {
         this.data = data;
     }
 
-    public void SetNodes(MazeNode[,] nodes)
+    public void SetNodes(Node[,] nodes)
     {
         this.nodes = nodes;
         NodesByCoordinate.Clear();
 
-        foreach(MazeNode node in nodes)
+        foreach(Node node in nodes)
         {
             FreeNodes.Add(node);
             NodesByCoordinate.Add(node.Coordinates, node);
@@ -38,23 +38,20 @@ public class Maze
         cornerNodes = MazeUtils.GetCornerNodes(nodes, data.SizeData);
     }
 
-    public void AddTorch(MazeNode node, Torch torch, bool preset = false, Cardinal direction = Cardinal.North)
+    public void AddTorch(Node node, Torch torch, Cardinal direction)
     {
         Torches.Add(torch);
-        if (preset)
-        {
-            MazeWall wall = NodeUtils.GetWallAt(node, direction, this);
-            node.AddTorchAt(wall, torch);
-        }
-        else
-        {
-            node.AddTorch(torch);
-        }
+        MazeWall wall = NodeUtils.GetWallAt(node, direction, this);
+        wall.PositionObject(torch, direction);
+        torch.Setup(direction);
         MarkNodeAsUsed(node, torch);
     }
 
-    public void MarkNodeAsUsed(MazeNode node, object usedBy)
+    public void MarkNodeAsUsed(Node node, object usedBy)
     {
+        
+            UnityEngine.Debug.Log($"Node {node.name} is being marked as used by {usedBy}");
+
         if (!FreeNodes.Contains(node))
         {
             UnityEngine.Debug.Log($"Node {node.Coordinates} is already used or not found in FreeNodes.");

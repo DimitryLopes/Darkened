@@ -65,7 +65,7 @@ public class NodeUtils : MonoBehaviour
         return rotation;
     }
 
-    public static Cardinal GetCardinalDirection(MazeNode fromNode, MazeNode toNode)
+    public static Cardinal GetCardinalDirection(Node fromNode, Node toNode)
     {
         Coordinate offset = new Coordinate(fromNode.X - toNode.X, fromNode.Y - toNode.Y);
         Cardinal direction = Cardinal.North;
@@ -105,29 +105,30 @@ public class NodeUtils : MonoBehaviour
         return Cardinal.North;
     }
 
-    public static MazeWall GetRandomWall(MazeNode node, bool edgeOnly = false)
+    public static (MazeWall, Cardinal) GetAnyDefaultWall(Node node, bool edgeOnly = false)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         cardinals.Shuffle();
         foreach (Cardinal cardinal in cardinals)
         {
-            if (node.HasWall(cardinal) && (!edgeOnly || node.GetEdge(cardinal)))
+            if (node.HasWall(cardinal) && (!edgeOnly || node.IsOnEdge(cardinal)))
             {
-                if (edgeOnly)
-                {
-                    Debug.Log("Got edge wall at " + cardinal.ToString());
-                }
-                return node.GetWall(cardinal);
+                MazeWall wall = node.GetWall(cardinal);
+                if (wall.GetType().IsSubclassOf(typeof(MazeWall)))
+                    continue;
+
+                return (node.GetWall(cardinal),cardinal);
             }
         }
-        return null;
+        return (null, Cardinal.North);
     }
 
-    public static MazeWall GetWallAt(MazeNode node, Cardinal direction, Maze maze)
+    public static MazeWall GetWallAt(Node node, Cardinal direction, Maze maze)
     {
         MazeWall wall = node.GetWall(direction);
         if (wall == null)
         {
+            Debug.LogWarning($"No wall found at {direction} for node {node.Coordinates}. Attempting to find neighbor node.");
             var neighborNode = MazeUtils.GetNodeAtCardinalFromNode(direction, node, maze);
             var oppositeCardinal = GetOppositeCardinal(direction);
             wall = neighborNode.GetWall(oppositeCardinal);

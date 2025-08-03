@@ -10,6 +10,7 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnGameCompletedSignal>();
         Container.DeclareSignal<OnNewGameStartedSignal>();
         Container.DeclareSignal<OnPlayerInteractableChangedSignal>();
+        Container.DeclareSignal<OnMazeChangedDinamicallySignal>();
         //Missions and Objectives
         Container.DeclareSignal<OnMissionProgressSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();

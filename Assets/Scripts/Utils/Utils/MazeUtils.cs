@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MazeUtils 
@@ -12,7 +13,7 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllCardinals(Action<Cardinal, MazeNode> action, MazeNode node)
+    public static void ExecuteActionWithAllCardinals(Action<Cardinal, Node> action, Node node)
     {
         foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
@@ -20,7 +21,7 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllCardinals(Action<Cardinal, RandomLevelData, MazeNode> action, MazeNode data, RandomLevelData node)
+    public static void ExecuteActionWithAllCardinals(Action<Cardinal, RandomLevelData, Node> action, Node data, RandomLevelData node)
     {
         foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
@@ -28,7 +29,7 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllCardinals(Func<Cardinal, MazeNode, MazeNode> action, MazeNode node, ref List<MazeNode> nodes)
+    public static void ExecuteActionWithAllCardinals(Func<Cardinal, Node, Node> action, Node node, ref List<Node> nodes)
     {
         foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
         {
@@ -36,17 +37,17 @@ public class MazeUtils
         }
     }
 
-    public static void ExecuteActionWithAllNodes(Action<MazeNode> action, MazeNode[,] nodes)
+    public static void ExecuteActionWithAllNodes(Action<Node> action, Node[,] nodes)
     {
-        foreach(MazeNode node in nodes)
+        foreach(Node node in nodes)
         {
             action.Invoke(node);
         }
     }
 
-    public static Dictionary<Coordinate, MazeNode> GetEdgeNodes(MazeNode[,] nodes, MazeSizeData data)
+    public static Dictionary<Coordinate, Node> GetEdgeNodes(Node[,] nodes, MazeSizeData data)
     {
-        Dictionary<Coordinate, MazeNode> edgeNodes = new Dictionary<Coordinate, MazeNode>();
+        Dictionary<Coordinate, Node> edgeNodes = new Dictionary<Coordinate, Node>();
         int height = data.Height;
         int width = data.Width;
 
@@ -65,9 +66,9 @@ public class MazeUtils
         return edgeNodes;
     }
 
-    public static Dictionary<Coordinate,MazeNode> GetCornerNodes(MazeNode[,] nodes, MazeSizeData data)
+    public static Dictionary<Coordinate,Node> GetCornerNodes(Node[,] nodes, MazeSizeData data)
     {
-        Dictionary<Coordinate, MazeNode> corners = new Dictionary<Coordinate, MazeNode>
+        Dictionary<Coordinate, Node> corners = new Dictionary<Coordinate, Node>
         {
             { nodes[0, 0].Coordinates, nodes[0, 0] },
             { nodes[0, data.Height - 1].Coordinates, nodes[0, data.Height - 1] },
@@ -107,11 +108,11 @@ public class MazeUtils
         return (x + y) * (x + y + 1) / 2 + y;
     }
 
-    public static Stack<MazeNode> GetPathFromNodeToNode(MazeNode startNode, MazeNode targetNode, Maze maze)
+    public static Stack<Node> GetPathFromNodeToNode(Node startNode, Node targetNode, Maze maze)
     {
-        HashSet<MazeNode> openSet = new HashSet<MazeNode>();
-        HashSet<MazeNode> closedSet = new HashSet<MazeNode>();
-        Dictionary<MazeNode, MazeNode> cameFrom = new Dictionary<MazeNode, MazeNode>();
+        HashSet<Node> openSet = new HashSet<Node>();
+        HashSet<Node> closedSet = new HashSet<Node>();
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
 
         openSet.Add(startNode);
         startNode.gScore = 0;
@@ -119,7 +120,7 @@ public class MazeUtils
 
         while (openSet.Count > 0)
         {
-            MazeNode current = GetLowestFScoreNode(openSet);
+            Node current = GetLowestFScoreNode(openSet);
             if (current == targetNode)
             {
                 return ReconstructPath(cameFrom, current);
@@ -128,8 +129,8 @@ public class MazeUtils
             openSet.Remove(current);
             closedSet.Add(current);
 
-            List<MazeNode> neighbors = GetAccessibleNeighbors(current, maze);
-            foreach (MazeNode neighbor in neighbors)
+            List<Node> neighbors = GetAccessibleNeighbors(current, maze);
+            foreach (Node neighbor in neighbors)
             {
                 if (closedSet.Contains(neighbor))
                 {
@@ -154,9 +155,9 @@ public class MazeUtils
 
         return null;
 
-        Stack<MazeNode> ReconstructPath(Dictionary<MazeNode, MazeNode> cameFrom, MazeNode currentNode)
+        Stack<Node> ReconstructPath(Dictionary<Node, Node> cameFrom, Node currentNode)
         {
-            Stack<MazeNode> path = new Stack<MazeNode>();
+            Stack<Node> path = new Stack<Node>();
             path.Push(currentNode);
 
             while (cameFrom.ContainsKey(currentNode))
@@ -168,12 +169,12 @@ public class MazeUtils
             return path;
         }
 
-        MazeNode GetLowestFScoreNode(HashSet<MazeNode> openSet)
+        Node GetLowestFScoreNode(HashSet<Node> openSet)
         {
-            MazeNode lowestNode = null;
+            Node lowestNode = null;
             float lowestFScore = float.MaxValue;
 
-            foreach (MazeNode node in openSet)
+            foreach (Node node in openSet)
             {
                 if (node.fScore < lowestFScore)
                 {
@@ -186,11 +187,11 @@ public class MazeUtils
         }
     }
 
-    public static MazeNode GetClosestNodeToVector(Vector2 position, MazeNode[,] nodes)
+    public static Node GetClosestNodeToVector(Vector2 position, Node[,] nodes)
     {
         float closest = float.MaxValue;
-        MazeNode closestNode = null;
-        foreach (MazeNode node in nodes)
+        Node closestNode = null;
+        foreach (Node node in nodes)
         {
             if (node.IsActive)
             {
@@ -205,13 +206,13 @@ public class MazeUtils
         return closestNode;
     }
 
-    public static int GetManhatthanDistanceFromNodeToNode(MazeNode from, MazeNode to)
+    public static int GetManhatthanDistanceFromNodeToNode(Node from, Node to)
     {
         int distance = Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
         return distance;
     }
 
-    public static MazeNode GetNodeAtCardinalFromNode(Cardinal direction, MazeNode node, Maze maze)
+    public static Node GetNodeAtCardinalFromNode(Cardinal direction, Node node, Maze maze)
     {
         Coordinate coordinate = new();
         switch (direction)
@@ -248,17 +249,17 @@ public class MazeUtils
         return null;
     }
 
-    public static List<MazeNode> GetAccessibleNeighbors(MazeNode node, Maze maze)
+    public static List<Node> GetAccessibleNeighbors(Node node, Maze maze)
     {
-        List<MazeNode> availableNodes = new List<MazeNode>();
+        List<Node> availableNodes = new List<Node>();
         ExecuteActionWithAllCardinals(AddToAvailableNodes);
         return availableNodes;
 
         void AddToAvailableNodes(Cardinal cardinal)
         {
-            if (!node.HasWall(cardinal) && !node.GetEdge(cardinal))
+            if (!node.HasWall(cardinal) && !node.IsOnEdge(cardinal))
             {
-                MazeNode neighbour = GetNodeAtCardinalFromNode(cardinal, node, maze);
+                Node neighbour = GetNodeAtCardinalFromNode(cardinal, node, maze);
                 availableNodes.Add(neighbour);
             }
         }

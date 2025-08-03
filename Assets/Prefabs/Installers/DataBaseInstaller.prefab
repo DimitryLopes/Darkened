@@ -54,3 +54,4 @@ MonoBehaviour:
   difficultyDataBase: {fileID: 11400000, guid: 57618a3783942444ebaec9c763e10c23, type: 2}
   materialDataBase: {fileID: 11400000, guid: 99e4b826739fc19419e7b6271a293568, type: 2}
   unlockConditionDataBase: {fileID: 11400000, guid: c919c1a7f8103624a99d20c1f2f5692d, type: 2}
+  wallDatabase: {fileID: 11400000, guid: fe891efd93cb54e45bfb43351b8f5dd4, type: 2}

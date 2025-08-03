@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +20,7 @@ public class MazeGenerator : MonoBehaviour
     private WallDatabase wallDatabase;
 
     [SerializeField]
-    private MazeNode nodePrefab;
+    private Node nodePrefab;
 
     [SerializeField, Header("Containers")]
     private Transform nodeContainer;
@@ -40,9 +42,9 @@ public class MazeGenerator : MonoBehaviour
     //for whatever reason injecting this directly creates a circular dependency
     private MazeManager mazeManager;
 
-    private Dictionary<Coordinate, MazeNode> instantiatedNodes = new();
-    private List<MazeNode> generationPath = new List<MazeNode>();
-    private List<MazeNode> generationNeighbors = new List<MazeNode>();
+    private Dictionary<Coordinate, Node> instantiatedNodes = new();
+    private List<Node> generationPath = new List<Node>();
+    private List<Node> generationNeighbors = new List<Node>();
     private Dictionary<string, MazeWall> walls = new();
     private List<Gate> gates = new List<Gate>();
 
@@ -54,7 +56,7 @@ public class MazeGenerator : MonoBehaviour
     {
         if(currentMaze != null)
         {
-            foreach (MazeNode node in currentMaze.Nodes)
+            foreach (Node node in currentMaze.Nodes)
             {
                 node.Deactivate();
             }
@@ -85,7 +87,7 @@ public class MazeGenerator : MonoBehaviour
 
         int width = preset.SizeData.Width;
         int height = preset.SizeData.Height;
-        MazeNode[,] nodes = new MazeNode[width, height];
+        Node[,] nodes = new Node[width, height];
 
         LoadingOperation mazeLoadingOperation = MazeLoadOperationPreset(preset, nodes);
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish, audioManager);
@@ -98,36 +100,36 @@ public class MazeGenerator : MonoBehaviour
     private LoadingOperation MazeLoadOperation()
     {
         IEnumerator<float> step1enumerator = CreateBase();
-        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Creating floor");
+        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Sweeping the floor, badly");
 
         IEnumerator<float> step2enumerator = CreateWalls();
-        LoadingStep step2 = new LoadingStep(step2enumerator, coroutiner, "Creating Walls");
+        LoadingStep step2 = new LoadingStep(step2enumerator, coroutiner, "Making the duck proud");
 
         IEnumerator<float> step3enumerator = CreatePath();
-        LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Generating paths");
+        LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Sneaking in");
 
         //IEnumerator<float> step4enumerator = RemoveDeadEnds();
         //LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "Removing dead ends");
 
         IEnumerator<float> step5enumerator = AddItems();
-        LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Adding items");
+        LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Forcing your build");
 
-        IEnumerator<float> step6enumerator = AddTorches();
-        LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Adding torches");
+        IEnumerator<float> step6enumerator = AddGates();
+        LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Open sezame");
 
-        IEnumerator<float> step7enumerator = AddGates();
-        LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "Blocking your way");
+        IEnumerator<float> step7enumerator = AddTorches();
+        LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "adicionando lá iluminación");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, /*step4,*/ step5, step6//, step7
+            step1, step2, step3, /*step4,*/ step5, step6, step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
         return operation;
     }
 
-    private LoadingOperation MazeLoadOperationPreset(PresetLevelData preset, MazeNode[,] nodes)
+    private LoadingOperation MazeLoadOperationPreset(PresetLevelData preset, Node[,] nodes)
     {
         IEnumerator<float> step1enumerator = CreateNodesPreset(preset, nodes);
         LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Creating floor");
@@ -152,8 +154,8 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator<float> CreateBase()
     {
-        MazeNode[,] nodes = new MazeNode[CurrentData.Width, CurrentData.Height];
-        MazeNode node;
+        Node[,] nodes = new Node[CurrentData.Width, CurrentData.Height];
+        Node node;
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
@@ -174,7 +176,7 @@ public class MazeGenerator : MonoBehaviour
     private IEnumerator<float> CreateWalls()
     {
         int lenght = currentMaze.Nodes.Length;
-        MazeNode currentNode;
+        Node currentNode;
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
@@ -186,36 +188,36 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private Stack<MazeNode> GetNodeStack()
+    private Stack<Node> GetNodeStack()
     {
-        Stack<MazeNode> stack = new Stack<MazeNode>();
+        Stack<Node> stack = new Stack<Node>();
         Coordinate coordinate = new Coordinate(mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y);
         stack.Push(currentMaze.NodesByCoordinate[coordinate]);
 
         return stack;
     }
 
-    private void SetSpawnPoints(MazeNode[,] nodes)
+    private void SetSpawnPoints(Node[,] nodes)
     {
-        MazeNode startNode = SetStartingPoint(nodes, CurrentData);
+        Node startNode = SetStartingPoint(nodes, CurrentData);
         mazeManager.CurrentStartingNode = startNode;
         currentMaze.FreeNodes.Remove(startNode);
 
-        MazeNode enemySpawn = GetAvailableNodeAwayFrom(startNode, nodes, CurrentData.Size);
+        Node enemySpawn = GetAvailableNodeAwayFrom(startNode, nodes, CurrentData.Size);
         mazeManager.EnemyStartingNode = enemySpawn;
     }
 
     private IEnumerator<float> CreatePath()
     {
         float visitedNodes = 0;
-        Stack<MazeNode> stack = GetNodeStack();
+        Stack<Node> stack = GetNodeStack();
         bool backtracking = false;
         int targetProgress = currentMaze.Nodes.Length * 2;
-        List<MazeNode> neighbors;
+        List<Node> neighbors;
 
         while (stack.Count > 0)
         {
-            MazeNode currentNode = stack.Pop();
+            Node currentNode = stack.Pop();
             currentNode.Visit();
             generationPath.Add(currentNode);
             visitedNodes++;
@@ -249,13 +251,13 @@ public class MazeGenerator : MonoBehaviour
         yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
     }
 
-    private void RemoveDeadEndWalls(MazeNode node)
+    private void RemoveDeadEndWalls(Node node)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
         if (node.IsOnCorner)
         {
-            List<MazeNode> cornerNeighbors = GetNeighbors(node, false);
-            foreach (MazeNode corner in cornerNeighbors)
+            List<Node> cornerNeighbors = GetNeighbors(node, false);
+            foreach (Node corner in cornerNeighbors)
             {
                 RemoveWallBetween(corner, node);
             }
@@ -269,9 +271,9 @@ public class MazeGenerator : MonoBehaviour
             var direction = cardinals[0];
             cardinals.RemoveAt(0);
 
-            if (!node.GetEdge(direction) && node.HasWall(direction))
+            if (!node.IsOnEdge(direction) && node.HasWall(direction))
             {
-                MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+                Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
                 RemoveWallBetween(node, neighbor);
                 wallsRemoved++;
             }
@@ -345,38 +347,28 @@ public class MazeGenerator : MonoBehaviour
 
     private void PositionItem(Item item)
     {
-        Transform transform = null;
-        List<MazeNode> shuffledNodes = new(currentMaze.FreeNodes);
+        List<Node> shuffledNodes = new(currentMaze.FreeNodes);
         shuffledNodes.Shuffle();
 
         switch (item.GenerationData.SpawnType)
         {
             case SpawnType.Node:
-                MazeNode node = GetAvailableNodeAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
+                Node node = GetAvailableNodeAwayFrom(currentMaze.UsedNodes, shuffledNodes, item.GenerationData.MinDistanceFromThings);
                 currentMaze.MarkNodeAsUsed(node, item);
-                transform = node.transform;
+
+                item.transform.position = node.transform.position;
+                item.transform.rotation = node.transform.rotation;
                 break;
             case SpawnType.Wall:
-                MazeWall wall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item, false);
-                transform = wall.transform;
+                (MazeWall, Cardinal) wallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item, false);
+                wallCardinal.Item1.PositionObject(item, wallCardinal.Item2);
                 break;
             case SpawnType.EdgeWalls:
-                List<MazeNode> edgeNodes = currentMaze.EdgeNodes.Values.ToList();
-                MazeWall chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item, true);
-                if (chosenWall != null)
-                {
-                    transform = chosenWall.transform;
-                }
-                else
-                {
-                    chosenWall = GetAvailableWallAwayFrom(currentMaze.UsedNodes, edgeNodes, item, true);
-                    transform = chosenWall.transform;
-                }
+                (MazeWall, Cardinal) edgewallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, currentMaze.EdgeNodes.Values, item, true);
+                edgewallCardinal.Item1.PositionObject(item, edgewallCardinal.Item2);
                 break;
         }
         item.transform.SetParent(itemsContainer);
-        item.transform.position = transform.position;
-        item.transform.rotation = transform.rotation;
     }
 
     private IEnumerator<float> AddGates()
@@ -393,15 +385,20 @@ public class MazeGenerator : MonoBehaviour
         {
             Gate gate = GetGate();
 
-            MazeNode availableNode = GetAvailableNode(true);
-            currentMaze.MarkNodeAsUsed(availableNode, gate);
-            MazeWall wall = availableNode.GetRandomWall();
+            Node availableNode = GetAvailableNode(true, true);
+            (MazeWall,Cardinal) wallCardinal = availableNode.GetAnyWall();
+            Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(wallCardinal.Item2, availableNode, currentMaze);
+            
+            neighbor.ReplaceWall(NodeUtils.GetOppositeCardinal(wallCardinal.Item2), gate);
+            availableNode.ReplaceWall(wallCardinal.Item2, gate);
+            wallCardinal.Item1.Deactivate();
 
             Switch switchItem = mazeManager.GetAvailableItem(ItemType.Switch) as Switch;
-            gate.Setup(availableNode, wall.AlignedWith);
+            gate.Setup((availableNode, neighbor), wallCardinal.Item1);
             switchItem.Associate(gate);
             PositionItem(switchItem);
-            
+            walls[GetWallKey(availableNode, wallCardinal.Item2)] = gate;
+
             yield return LoadingUtils.GetProgress(i + 1, gateCount);
         }
 
@@ -417,7 +414,7 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private List<MazeNode> GetNeighbors(MazeNode node, bool excludeVisited, bool removeNulls = true)
+    private List<Node> GetNeighbors(Node node, bool excludeVisited, bool removeNulls = true)
     {
         generationNeighbors.Clear();
         MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref generationNeighbors);
@@ -427,10 +424,9 @@ public class MazeGenerator : MonoBehaviour
         return generationNeighbors;
     }
 
-
-    private MazeNode AddToNeighborsList(Cardinal direction, MazeNode node)
+    private Node AddToNeighborsList(Cardinal direction, Node node)
     {
-        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+        Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
         if (neighbor != null)
         {
             return neighbor;
@@ -438,46 +434,58 @@ public class MazeGenerator : MonoBehaviour
         return null;
     }
 
-    private MazeNode SetStartingPoint(MazeNode[,] nodes, LevelData data)
+    private Node SetStartingPoint(Node[,] nodes, LevelData data)
     {
-        int startingX = UnityEngine.Random.Range(0, data.Width);
+        int startingX = Random.Range(0, data.Width);
         currentMaze.MarkNodeAsUsed(nodes[startingX, 0], null);
         return nodes[startingX, 0];
     }
 
     #region Walls
-    private void RemoveWallBetween(MazeNode nodeA, MazeNode nodeB)
+    public void RemoveWallBetween(Node nodeA, Node nodeB)
     {
         Cardinal direction = NodeUtils.GetCardinalDirection(nodeB, nodeA);
-
-        RemoveWall(nodeA, direction);
+        //This deactivates the wall in nodeA, B and in the wall dictionary
+        nodeA.RemoveWall(direction);
     }
 
-    public void RemoveWall(MazeNode node, Cardinal direction)
+    public void ActivateWallBetween(Node nodeA, Node nodeB)
     {
-        Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
-        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        node.RemoveWall(direction);
-
-        if (neighbor == null) return;
-
-        neighbor.RemoveWall(oppositeDirection);
+        Cardinal direction = NodeUtils.GetCardinalDirection(nodeB, nodeA);
+        //This activates the wall in nodeA, B and in the wall dictionary
+        nodeA.ActivateWall(direction);
     }
 
-    private void AddNodeWall(Cardinal direction, MazeNode node)
+    public void RemoveWall(Node node, Cardinal direction)
+    {
+        node.RemoveWall(direction);
+    }
+
+    private void AddNodeWall(Cardinal direction, Node node)
     {
         string wallID = GetWallKey(node, direction);
         MazeWall wall = GetWall(wallID);
+        MazeWall currentWall = node.GetWall(direction);
+
+        if (currentWall != null)
+        {
+            if (currentWall != wall)
+            {
+                node.ReplaceWall(direction, wall);
+                return;
+            }
+            node.ActivateWall(direction);
+            return;
+        }
 
         node.AddWall(direction, wall);
-        Cardinal oppositeDirection = NodeUtils.GetOppositeCardinal(direction);
-        wall.AddNode(node, oppositeDirection);
-        if (!node.GetEdge(direction)) return;
+        wall.AddNode(node);
+        if (!node.IsOnEdge(direction)) return;
 
         wall.transform.SetParent(edgeWallsContainer);
     }
 
-    public void AddGate(MazeNode node, Cardinal direction, Gate gate = null)
+    public void AddGate(Node node, Cardinal direction, Gate gate = null)
     {
         Gate gateToAdd = gate;
         if (gate == null)
@@ -486,14 +494,14 @@ public class MazeGenerator : MonoBehaviour
         }
 
         node.AddWall(direction, gate); 
-        MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+        Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
         if(neighbor != null)
         {
             neighbor.AddWall(NodeUtils.GetOppositeCardinal(direction), gate);
         }
     }
 
-    private string GetWallKey(MazeNode node, Cardinal direction)
+    private string GetWallKey(Node node, Cardinal direction)
     {
         // Coordenada do nodo atual
         int x = node.Coordinates.X;
@@ -538,7 +546,7 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private void SetNodeEdges(MazeNode node, MazeSizeData data)
+    private void SetNodeEdges(Node node, MazeSizeData data)
     {
         if (node.Coordinates.X == 0)
         {
@@ -586,7 +594,7 @@ public class MazeGenerator : MonoBehaviour
     }
 
     #region Preset Generation
-    private IEnumerator<float> CreateNodesPreset(PresetLevelData preset, MazeNode[,] nodes)
+    private IEnumerator<float> CreateNodesPreset(PresetLevelData preset, Node[,] nodes)
     {
         int width = preset.SizeData.Width;
         int height = preset.SizeData.Height;
@@ -595,7 +603,7 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                MazeNode node = GetNode(new Coordinate(x, y));
+                Node node = GetNode(new Coordinate(x, y));
                 nodes[x, y] = node;
                 node.Activate();
                 node.SetCoordinate(x, y);
@@ -606,7 +614,7 @@ public class MazeGenerator : MonoBehaviour
         currentMaze.SetNodes(nodes);
     }
 
-    private IEnumerator<float> CreateWallsPreset(PresetLevelData preset, MazeNode[,] nodes)
+    private IEnumerator<float> CreateWallsPreset(PresetLevelData preset, Node[,] nodes)
     {
         var wallPositions = preset.WallPositions;
         int totalWalls = wallPositions.Count;
@@ -614,8 +622,8 @@ public class MazeGenerator : MonoBehaviour
 
         foreach (var wallData in wallPositions)
         {
-            MazeNode node = nodes[wallData.Coordinate.X, wallData.Coordinate.Y];
-            MazeNode neighbor = MazeUtils.GetNodeAtCardinalFromNode(wallData.Direction, node, currentMaze);
+            Node node = nodes[wallData.Coordinate.X, wallData.Coordinate.Y];
+            Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(wallData.Direction, node, currentMaze);
             MazeWall wall;
             switch (wallData.WallType)
             {
@@ -634,7 +642,7 @@ public class MazeGenerator : MonoBehaviour
                 neighbor.AddWall(NodeUtils.GetOppositeCardinal(wallData.Direction), wall);
             }
 
-            if (node.GetEdge(wallData.Direction))
+            if (node.IsOnEdge(wallData.Direction))
                 wall.transform.SetParent(edgeWallsContainer);
             else
                 wall.transform.SetParent(wallsContainer);
@@ -648,7 +656,7 @@ public class MazeGenerator : MonoBehaviour
         yield return LoadingUtils.GetProgress(1, 1);
     }
 
-    private IEnumerator<float> CreateItemsPreset(PresetLevelData preset, MazeNode[,] nodes)
+    private IEnumerator<float> CreateItemsPreset(PresetLevelData preset, Node[,] nodes)
     {
         var presetItemsData = new List<PresetItemData>(preset.Items);
         int totalItems = presetItemsData.Count;
@@ -661,12 +669,12 @@ public class MazeGenerator : MonoBehaviour
             switch (itemPositionData.Item.GenerationData.SpawnType)
             {
                 case SpawnType.Node:
-                    MazeNode node = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    Node node = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
                     itemPositionData.Item.transform.position = node.transform.position;
                     break;
                 case SpawnType.Wall:
                 case SpawnType.EdgeWalls:
-                    MazeNode edgeNode = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    Node edgeNode = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemPositionData.PresetData.Direction, currentMaze);
                     itemPositionData.Item.transform.position = wall.transform.position;
                     itemPositionData.Item.transform.rotation = wall.transform.rotation;
@@ -679,7 +687,7 @@ public class MazeGenerator : MonoBehaviour
         {
             if(itemData.Item.Type == ItemType.DefaultTorch)
             {
-                PlaceTorchAt(nodes[itemData.Coordinate.X, itemData.Coordinate.Y], true, itemData.Direction);
+                PlaceTorchAt(nodes[itemData.Coordinate.X, itemData.Coordinate.Y], itemData.Direction);
                 currentItem++;
                 yield return LoadingUtils.GetProgress(currentItem, totalItems);
                 continue;
@@ -697,7 +705,7 @@ public class MazeGenerator : MonoBehaviour
 
                     Switch switchItem = item as Switch;
 
-                    MazeNode node = nodes[int.Parse(link.Split(',')[0]), int.Parse(link.Split(',')[1])];
+                    Node node = nodes[int.Parse(link.Split(',')[0]), int.Parse(link.Split(',')[1])];
                     if(link.Length > 3)
                     {
                         string cardinal = link.Substring(3);
@@ -719,12 +727,12 @@ public class MazeGenerator : MonoBehaviour
             switch (itemData.Item.GenerationData.SpawnType)
             {
                 case SpawnType.Node:
-                    MazeNode node = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    Node node = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     item.transform.position = node.transform.position;
                     break;
                 case SpawnType.Wall:
                 case SpawnType.EdgeWalls:
-                    MazeNode edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    Node edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemData.Direction, currentMaze);
                     item.transform.position = wall.transform.position;
                     item.transform.rotation = wall.transform.rotation;
@@ -735,12 +743,12 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    private IEnumerator<float> SetPositionsPreset(PresetLevelData preset, MazeNode[,] nodes)
+    private IEnumerator<float> SetPositionsPreset(PresetLevelData preset, Node[,] nodes)
     {
-        MazeNode startNode = nodes[preset.StartPosition.X, preset.StartPosition.Y];
+        Node startNode = nodes[preset.StartPosition.X, preset.StartPosition.Y];
         mazeManager.CurrentStartingNode = startNode;
 
-        MazeNode enemySpawnNode = nodes[preset.EnemySpawnPosition.X, preset.EnemySpawnPosition.Y];
+        Node enemySpawnNode = nodes[preset.EnemySpawnPosition.X, preset.EnemySpawnPosition.Y];
         mazeManager.EnemyStartingNode = enemySpawnNode;
         mazeManager.SetupMissions();
         yield return 1;
@@ -756,10 +764,10 @@ public class MazeGenerator : MonoBehaviour
         int torchCount = Random.Range(minTorchCount, maxTorchCount + 1);
 
         // Filtra nós válidos (sem item/tocha)
-        List<MazeNode> validNodes = new List<MazeNode>();
-        foreach (MazeNode node in currentMaze.FreeNodes)
+        List<Node> validNodes = new List<Node>();
+        foreach (Node node in currentMaze.FreeNodes)
         {
-            if (node.HasAnyWall())
+            if (node.HasAnyDefaultWall())
                 validNodes.Add(node);
         }
 
@@ -775,8 +783,9 @@ public class MazeGenerator : MonoBehaviour
         {
             int idx = Mathf.RoundToInt(i * step);
             if (idx >= validNodes.Count) idx = validNodes.Count - 1;
-            MazeNode node = validNodes[idx];
-            PlaceTorchAt(node);
+            Node node = validNodes[idx];
+            (MazeWall, Cardinal) wallToPlaceTorchOn = node.GetAnyDefaultWall();
+            PlaceTorchAt(node, wallToPlaceTorchOn.Item2);
             added++;
             yield return LoadingUtils.GetProgress(added, torchCount);
         }
@@ -804,11 +813,11 @@ public class MazeGenerator : MonoBehaviour
         yield return 1;
     }
 
-    public void PlaceTorchAt(MazeNode node, bool preset = false, Cardinal direction = Cardinal.North)
+    public void PlaceTorchAt(Node node, Cardinal direction)
     {
         Torch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
-        currentMaze.AddTorch(node, torch, preset, direction);
+        currentMaze.AddTorch(node, torch, direction);
     }
     #endregion
 
@@ -831,14 +840,14 @@ public class MazeGenerator : MonoBehaviour
         return wall;
     }
 
-    private MazeNode GetNode(Coordinate coordinate)
+    private Node GetNode(Coordinate coordinate)
     {
         if (instantiatedNodes.ContainsKey(coordinate))
         {
             return instantiatedNodes[coordinate];
         }
 
-        MazeNode newNode = Instantiate(nodePrefab, nodeContainer);
+        Node newNode = Instantiate(nodePrefab, nodeContainer);
         newNode.DebugColor(Color.grey);
         newNode.name = $"Node {coordinate.X},{coordinate.Y}";
         newNode.transform.localPosition = new Vector2(coordinate.X, coordinate.Y);
@@ -865,12 +874,12 @@ public class MazeGenerator : MonoBehaviour
 
     #region Utils
 
-    private MazeNode GetAvailableNodeAwayFrom(MazeNode focusNode, IEnumerable nodes, int minDistance)
+    private Node GetAvailableNodeAwayFrom(Node focusNode, IEnumerable nodes, int minDistance)
     {
         int maxDistance = 0;
-        MazeNode fallbackNode = null;
+        Node fallbackNode = null;
 
-        foreach (MazeNode node in nodes)
+        foreach (Node node in nodes)
         {
             int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
             if (distance >= minDistance)
@@ -887,20 +896,27 @@ public class MazeGenerator : MonoBehaviour
         return fallbackNode;
     }
 
-    private MazeNode GetAvailableNodeAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance)
+    private Node GetAvailableNodeAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance)
     {
+
+        if(focusNodes == null || !focusNodes.Cast<Node>().Any())
+        {
+            return nodes.Cast<Node>().First();
+        }
+
         int furthestNodeAvailableDistance = 0;
-        MazeNode furthestNode = null;
+        Node furthestNode = null;
 
         int totalDistance;
         int iterations;
 
-        foreach (MazeNode node in nodes)
+
+        foreach (Node node in nodes)
         {
             totalDistance = 0;
             iterations = 0;
 
-            foreach (MazeNode focusNode in focusNodes)
+            foreach (Node focusNode in focusNodes)
             {
                 iterations++;
                 int distance = MazeUtils.GetManhatthanDistanceFromNodeToNode(focusNode, node);
@@ -922,32 +938,34 @@ public class MazeGenerator : MonoBehaviour
         return furthestNode;
     }
 
-    private MazeWall GetAvailableWallAwayFrom(IEnumerable focusNodes, IEnumerable nodes, Item item, bool edge = false)
+    private (MazeWall, Cardinal) GetAvailableWallAwayFrom(IEnumerable focusNodes, IEnumerable nodes, Item item, bool edge = false)
     {
-        MazeWall wall;
-        MazeNode availableNode = GetAvailableNodeAwayFrom(focusNodes, nodes, item.GenerationData.MinDistanceFromThings);
+        (MazeWall, Cardinal) wallCardinal;
+        Node availableNode = GetAvailableNodeAwayFrom(focusNodes, nodes, item.GenerationData.MinDistanceFromThings);
         if (edge)
         {
-            wall = availableNode.GetRandomWallOnEdge();
+            wallCardinal = availableNode.GetRandomWallOnEdge();
         }
         else
         {
-            wall = availableNode.GetRandomWall();
+            wallCardinal = availableNode.GetAnyDefaultWall();
         }
-        //TODO: if we manage to take this outside the method would be great
-        if (item.GenerationData.Replace)
-        {
-            RemoveWall(availableNode, wall.AlignedWith);
-        }
+        
         currentMaze.MarkNodeAsUsed(availableNode, item);
-        return wall;
+        return wallCardinal;
     }
 
-    private MazeNode GetAvailableNode(bool forWall = false)
+    private Node GetAvailableNode(bool forWall = false, bool excludeBorders = false)
     {
-        List<MazeNode> freeNodes = new List<MazeNode>(currentMaze.FreeNodes);
+        List<Node> freeNodes = new List<Node>(currentMaze.FreeNodes);
+        if (excludeBorders)
+        {
+            var borderSet = new HashSet<Node>(currentMaze.EdgeNodes.Values);
+            freeNodes.RemoveAll(n => borderSet.Contains(n));
+        }
+
         freeNodes.Shuffle();
-        MazeNode node = null;
+        Node node = null;
         if (forWall)
         {
             while (freeNodes.Count > 0)

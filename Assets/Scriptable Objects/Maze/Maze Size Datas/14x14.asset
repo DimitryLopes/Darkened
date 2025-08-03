@@ -15,3 +15,4 @@ MonoBehaviour:
   height: 14
   width: 14
   averageAdditionalItemAmount: 3
+  averageGateAmount: 1.9

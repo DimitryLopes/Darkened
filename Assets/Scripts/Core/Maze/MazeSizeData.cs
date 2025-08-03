@@ -10,7 +10,7 @@ public class MazeSizeData : ScriptableObject, IUISelectable
     [SerializeField, Header("Items")]
     private float averageAdditionalItemAmount;
     [SerializeField, Header("Gates")]
-    private int averageGateAmount;
+    private float averageGateAmount;
 
     public int Width => width;
     public int Height => height;

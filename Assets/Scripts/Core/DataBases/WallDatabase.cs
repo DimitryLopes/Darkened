@@ -2,22 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "ItemDataBase", menuName = "Scriptable Objects/Data Bases/Item Data Base")]
+[CreateAssetMenu(fileName = "WallDataBase", menuName = "Scriptable Objects/Data Bases/Wall Data Base")]
 public class WallDatabase : ScriptableObject
 {
     [SerializeField]
-    private List<WallTypeData> itemDataBase;
+    private List<WallTypeData> wallDatabase;
 
-    private Dictionary<WallType, MazeWall> itemDatas;
+    private Dictionary<WallType, MazeWall> wallDatas;
 
-    public Dictionary<WallType, MazeWall> Walls => itemDatas;
+    public Dictionary<WallType, MazeWall> Walls => wallDatas;
 
     public void SetUp()
     {
-        itemDatas = new Dictionary<WallType, MazeWall>();
-        foreach (WallTypeData data in itemDataBase)
+        wallDatas = new Dictionary<WallType, MazeWall>();
+        foreach (WallTypeData data in wallDatabase)
         {
-            itemDatas.Add(data.Type, data.Wall);
+            wallDatas.Add(data.Type, data.Wall);
         }
     }
 }

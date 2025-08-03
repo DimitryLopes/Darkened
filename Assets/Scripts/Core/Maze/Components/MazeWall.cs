@@ -1,21 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 public class MazeWall : Activateable
 {
     [SerializeField]
-    public float WALL_ITEM_OFFSET = 1f;
-    [SerializeField]
     private BoxCollider2D boxCollider;
 
     protected SignalBus signalBus;
 
-    public bool IsAtBorder { get; private set; }
-    public Cardinal AlignedWith { get; private set; }
+    public bool IsAtBorder { get; protected set; }
 
-    public (MazeNode, MazeNode) AdjacentNodes;
+    public (Node, Node) AdjacentNodes;
 
-    public void AddNode(MazeNode node)
+    public void AddNode(Node node)
     {
         if(AdjacentNodes.Item1 == null || AdjacentNodes.Item1 == node)
         {
@@ -41,18 +40,19 @@ public class MazeWall : Activateable
         gameObject.SetActive(false);
     }
 
-    public void AlignWith(Cardinal direction, bool isAtBorder)
+    public virtual void AlignWith(Cardinal direction, bool isAtBorder)
     {
         IsAtBorder = isAtBorder;
-        AlignedWith = direction;
         float rotation = NodeUtils.GetWallRotationByCardinal(direction);
         transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
-    public void PositionObject(Item item)
+    public void PositionObject(Item item, Cardinal direction)
     {
-        item.transform.rotation = transform.rotation;
-        item.transform.position = transform.position + transform.right * WALL_ITEM_OFFSET;
+        Debug.Log($"Positioning item {item.name} at {name} in direction {direction}.");
+        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
+        item.transform.rotation = Quaternion.Euler(0, 0, rotation);
+        item.transform.position = transform.position;
     }
 
     public virtual void OnWallCreated(SignalBus signalBus)

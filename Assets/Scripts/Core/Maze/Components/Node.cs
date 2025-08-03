@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
-public class MazeNode : Activateable
+public class Node : Activateable
 {
     //Generation
     private Coordinate coordinates;
-    private bool hasTorch;
 
     public bool Visited { get; set; }
     public int X => coordinates.X;
@@ -42,6 +42,18 @@ public class MazeNode : Activateable
         return false;
     }
 
+    public bool HasAnyDefaultWall()
+    {
+        foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
+        {
+            if (wallDictionary[cardinal].IsActive && !wallDictionary[cardinal].GetType().IsSubclassOf(typeof(MazeWall)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddWall(Cardinal direction, MazeWall wall)
     {
         if (!HasWall(direction))
@@ -65,6 +77,32 @@ public class MazeNode : Activateable
         else
         {
             Debug.LogWarning("There was no a wall to remove at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
+        }
+    }
+
+    public void ReplaceWall(Cardinal direction, MazeWall wall)
+    {
+        if (HasWall(direction))
+        {
+            bool isWallAtBorder = edges[direction];
+            PositionWall(direction, isWallAtBorder);
+            wallDictionary[direction] = wall;
+        }
+        else
+        {
+            Debug.LogWarning("There was no a wall to replace at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
+        }
+    }
+
+    public void ActivateWall(Cardinal direction)
+    {
+        if (wallDictionary.ContainsKey(direction) && wallDictionary[direction] != null)
+        {
+            wallDictionary[direction].Activate();
+        }
+        else
+        {
+            Debug.LogWarning("There is no wall to activate at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
         }
     }
 
@@ -92,41 +130,44 @@ public class MazeNode : Activateable
 
     }
 
-    public (MazeWall, MazeWall) GetAdjacentWalls(Cardinal cardinal)
+    /// <summary>
+    /// this can also return special walls
+    /// </summary>
+    /// <returns></returns>
+    public (MazeWall,Cardinal) GetAnyWall()
     {
-        (Cardinal, Cardinal) tuple = NodeUtils.GetAdjacentCardinals(cardinal);
-        (MazeWall, MazeWall) walls;
-        walls.Item1 = GetWall(tuple.Item1);
-        walls.Item2 = GetWall(tuple.Item2);
-        return walls;
-    }
-
-    public MazeWall GetRandomWall()
-    {
-        return NodeUtils.GetRandomWall(this);
-    }
-
-    public MazeWall GetRandomWallOnEdge()
-    {
-        return NodeUtils.GetRandomWall(this, true);
-    }
-    #endregion
-
-    #region Torches
-    public void AddTorch(Torch torch)
-    {
-        if (!hasTorch)
+        List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        cardinals.Shuffle();
+        foreach (Cardinal cardinal in cardinals)
         {
-            MazeWall wall = GetRandomWall();
-            AddTorchAt(wall, torch);
+            if (HasWall(cardinal))
+            {
+                return (GetWall(cardinal), cardinal);
+            }
         }
+        return (null, Cardinal.North);
+    }
+    /// <summary>
+    /// this will only returns a wall
+    /// </summary>
+    /// <returns></returns>
+    public (MazeWall, Cardinal) GetAnyDefaultWall()
+    {
+        return NodeUtils.GetAnyDefaultWall(this);
     }
 
-    public void AddTorchAt(MazeWall wall, Torch torch)
+    public (MazeWall, Cardinal) GetRandomWallOnEdge()
     {
-        wall.PositionObject(torch);
-        torch.SetNode(this, wall.AlignedWith);
-        hasTorch = true;
+        List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        cardinals.Shuffle();
+        foreach (Cardinal cardinal in cardinals)
+        {
+            if (HasWall(cardinal) && IsOnEdge(cardinal))
+            {
+                return (GetWall(cardinal), cardinal);
+            }
+        }
+        return (null, Cardinal.North);
     }
     #endregion
 
@@ -142,7 +183,7 @@ public class MazeNode : Activateable
         edges[cardinal] = isOnEdge;
     }
 
-    public bool GetEdge(Cardinal cardinal)
+    public bool IsOnEdge(Cardinal cardinal)
     {
         return edges[cardinal];
     }
@@ -159,7 +200,6 @@ public class MazeNode : Activateable
         MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
         UsedBy = null;
-        hasTorch = false;
         Visited = false;
         coordinates = new Coordinate();
     }
@@ -196,7 +236,7 @@ public class MazeNode : Activateable
     public float gScore { get; set; }
     public float fScore { get; set; }
 
-    public float GetHeuristic(MazeNode node)
+    public float GetHeuristic(Node node)
     {
         return Vector3.Distance(transform.position, node.transform.position);
     }

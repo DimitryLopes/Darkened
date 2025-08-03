@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
 {
-    protected MazeNode currentTarget;
-    protected MazeNode closestNode;
+    protected Node currentTarget;
+    protected Node closestNode;
 
-    protected Stack<MazeNode> path;
+    protected Stack<Node> path;
 
-    public Stack<MazeNode> Path => path;
+    public Stack<Node> Path => path;
     
 
     public MovingTowardsTargetEnemyState(BaseEnemyStateData data) : base(data)
@@ -20,14 +20,14 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
         closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, maze.Nodes);
     }
 
-    public virtual void SetPath(Maze maze, MazeNode target = null)
+    public virtual void SetPath(Maze maze, Node target = null)
     {
         SetclosestNode(maze);
         Debug.Log("Closest Node: " + closestNode.Coordinates);
         currentTarget = target != null ? target : maze.Nodes.GetRandom();
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, maze);
         string pathString = "Path: ";
-        foreach (MazeNode node in path)
+        foreach (Node node in path)
         {
             pathString += "[" + node.Coordinates.X + ","+ node.Coordinates.Y + "]" + " -> ";
         }
@@ -49,7 +49,7 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
 
     protected void HandleMovement()
     {
-        MazeNode nextNode = path.Peek();
+        Node nextNode = path.Peek();
         Vector3 targetDirection = nextNode.transform.position;
         Vector3 direction = targetDirection - Enemy.transform.position;
 
