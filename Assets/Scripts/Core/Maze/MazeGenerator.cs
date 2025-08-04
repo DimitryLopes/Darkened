@@ -664,7 +664,26 @@ public class MazeGenerator : MonoBehaviour
         int totalItems = presetItemsData.Count;
         int currentItem = 0;
 
-        mazeManager.GetPresetMissionItems(preset);
+        List<ItemPositionData> items = mazeManager.GetPresetMissionItems(preset);
+
+        foreach (ItemPositionData itemPositionData in items)
+        {
+            switch (itemPositionData.Item.GenerationData.SpawnType)
+            {
+                case SpawnType.Node:
+                    Node node = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    itemPositionData.Item.transform.position = node.transform.position;
+                    break;
+                case SpawnType.Wall:
+                case SpawnType.EdgeWalls:
+                    Node edgeNode = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
+                    MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemPositionData.PresetData.Direction, currentMaze);
+                    itemPositionData.Item.transform.position = wall.transform.position;
+                    itemPositionData.Item.transform.rotation = wall.transform.rotation;
+                    break;
+            }
+            presetItemsData.Remove(itemPositionData.PresetData);
+        }
 
         foreach (var itemData in presetItemsData)
         {
