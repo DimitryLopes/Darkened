@@ -7,14 +7,16 @@ public class DeveloperTools
     private EntityManager entityManager;
     private ObjectiveManager objectiveManager;
     private LevelManager levelManager;
+    private PersistenceManager persistenceManager;
 
     public DeveloperTools(MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
-        LevelManager levelManager)
+        LevelManager levelManager, PersistenceManager persistenceManager)
     {
         this.mazeManager = mazeManager;
         this.objectiveManager = objectiveManager;
         this.entityManager = entityManager;
         this.levelManager = levelManager;
+        this.persistenceManager = persistenceManager;
     }
 
     #region Enemy
@@ -108,6 +110,18 @@ public class DeveloperTools
             File.Delete(path);
             Debug.Log("Deleted file at: " + path);
         }
+    }
+
+    public void UnlockEverything()
+    {
+        foreach(var persistence in persistenceManager.FindAllPersistences())
+        {
+            if(persistence is IUnlockable unlockable)
+            {
+                unlockable.Unlock();
+            }
+        }
+        persistenceManager.SaveGame();
     }
     #endregion
 }

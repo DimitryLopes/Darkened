@@ -25,6 +25,12 @@ public class Switch : Item, IToggable
         spriteRenderer.sprite = OffSpire;
     }
 
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        toggles.Clear();
+    }
+
     protected override void OnInteract()
     {
         Toggle(mazeManager);

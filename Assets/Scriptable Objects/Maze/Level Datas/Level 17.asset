@@ -388,8 +388,8 @@ MonoBehaviour:
     SpawnType: 0
     ItemType: 0
   - coordinate:
-      x: 4
-      y: 0
+      x: 5
+      y: 1
     item: {fileID: 7417710853789476702, guid: ee9cebe4ab362004d8de3880dfb342fe, type: 3}
     direction: 0
     AssociateWith: 
@@ -469,9 +469,9 @@ MonoBehaviour:
     ItemType: 6
   - coordinate:
       x: 5
-      y: 1
+      y: 0
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 0
+    direction: 1
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
@@ -493,15 +493,15 @@ MonoBehaviour:
     ItemType: 6
   - coordinate:
       x: 2
-      y: 3
+      y: 4
     item: {fileID: -6265309428430385331, guid: 78ac1cbbfa9812447a5a39af1e46ffd3, type: 3}
     direction: 0
-    AssociateWith: 5,0east
+    AssociateWith: wall east [5,0]
     SpawnType: 1
     ItemType: 11
   startPosition:
-    x: 5
-    y: 0
+    x: 4
+    y: 1
   enemySpawnPosition:
     x: 2
     y: 6

@@ -1,7 +1,7 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Zenject;
 
@@ -633,6 +633,8 @@ public class MazeGenerator : MonoBehaviour
                     break;
                 case WallType.gate:
                     wall = GetGate();
+
+                    (wall as Gate).Setup((node, neighbor));
                     break;
             }
             
@@ -662,30 +664,11 @@ public class MazeGenerator : MonoBehaviour
         int totalItems = presetItemsData.Count;
         int currentItem = 0;
 
-        List<ItemPositionData> items = mazeManager.GetPresetMissionItems(preset);
-
-        foreach(ItemPositionData itemPositionData in items)
-        {
-            switch (itemPositionData.Item.GenerationData.SpawnType)
-            {
-                case SpawnType.Node:
-                    Node node = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
-                    itemPositionData.Item.transform.position = node.transform.position;
-                    break;
-                case SpawnType.Wall:
-                case SpawnType.EdgeWalls:
-                    Node edgeNode = nodes[itemPositionData.PresetData.Coordinate.X, itemPositionData.PresetData.Coordinate.Y];
-                    MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemPositionData.PresetData.Direction, currentMaze);
-                    itemPositionData.Item.transform.position = wall.transform.position;
-                    itemPositionData.Item.transform.rotation = wall.transform.rotation;
-                    break;
-            }
-            presetItemsData.Remove(itemPositionData.PresetData);
-        }
+        mazeManager.GetPresetMissionItems(preset);
 
         foreach (var itemData in presetItemsData)
         {
-            if(itemData.Item.Type == ItemType.DefaultTorch)
+            if (itemData.Item.Type == ItemType.DefaultTorch)
             {
                 PlaceTorchAt(nodes[itemData.Coordinate.X, itemData.Coordinate.Y], itemData.Direction);
                 currentItem++;
@@ -698,31 +681,9 @@ public class MazeGenerator : MonoBehaviour
 
             if (item.Type == ItemType.Switch)
             {
-                string[] links = itemData.AssociateWith.Split('|');
-                foreach (string link in links)
-                {
-                    if (link == string.Empty) continue;
-
-                    Switch switchItem = item as Switch;
-
-                    Node node = nodes[int.Parse(link.Split(',')[0]), int.Parse(link.Split(',')[1])];
-                    if(link.Length > 3)
-                    {
-                        string cardinal = link.Substring(3);
-                        if(System.Enum.TryParse<Cardinal>(cardinal, out var result)) 
-                        {
-                            MazeWall wall = NodeUtils.GetWallAt(node, result, currentMaze);
-                            if(wall is IToggable toggableWall)
-                            {
-                                switchItem.Associate(toggableWall);
-                                continue;
-                            }
-                        }
-                    }
-                    switchItem.Associate(node.UsedBy as IToggable);
-                    continue;
-                }
+                SetupSwitchPreset(nodes, itemData, item);
             }
+
 
             switch (itemData.Item.GenerationData.SpawnType)
             {
@@ -734,12 +695,70 @@ public class MazeGenerator : MonoBehaviour
                 case SpawnType.EdgeWalls:
                     Node edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemData.Direction, currentMaze);
-                    item.transform.position = wall.transform.position;
-                    item.transform.rotation = wall.transform.rotation;
+                    wall.PositionObject(itemData.Item, itemData.Direction);
                     break;
             }
             currentItem++;
             yield return LoadingUtils.GetProgress(currentItem, totalItems);
+        }
+
+        void SetupSwitchPreset(Node[,] nodes, PresetItemData itemData, Item item)
+        {
+            Switch switchItem = item as Switch;
+            string raw = itemData.AssociateWith;
+
+            string[] parts = raw.Split('&');
+
+            foreach (string part in parts)
+            {
+                string link = part.Trim();
+                if (string.IsNullOrEmpty(link)) continue;
+
+                if (link.StartsWith("wall", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    // Format: wall north [8,5]
+                    int bracketIndex = link.IndexOf('[');
+                    if (bracketIndex == -1) continue;
+
+                    string dirString = link.Substring(5, bracketIndex - 5).Trim();
+                    string coordString = link.Substring(bracketIndex).Trim(); // [x,y]
+
+                    if (!System.Enum.TryParse<Cardinal>(dirString, true, out var dir)) continue;
+                    if (!TryParseCoordinate(coordString, out Coordinate coord)) continue;
+
+                    Node node = nodes[coord.X, coord.Y];
+                    MazeWall wall = node.GetWall(dir);
+                    if (wall is IToggable toggableWall)
+                        switchItem.Associate(toggableWall);
+                }
+                else
+                {
+                    // Format: [x,y]
+                    if (!TryParseCoordinate(link, out Coordinate coord)) continue;
+
+                    Node node = nodes[coord.X, coord.Y];
+                    if (node.UsedBy is IToggable toggableItem)
+                        switchItem.Associate(toggableItem);
+                }
+            }
+
+            bool TryParseCoordinate(string input, out Coordinate result)
+            {
+                result = default;
+
+                if (!input.StartsWith("[") || !input.EndsWith("]")) return false;
+
+                string[] parts = input.Substring(1, input.Length - 2).Split(',');
+                if (parts.Length != 2) return false;
+
+                if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                {
+                    result = new Coordinate(x, y);
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 

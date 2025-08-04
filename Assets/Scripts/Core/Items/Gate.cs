@@ -20,9 +20,14 @@ public class Gate : MazeWall, IToggable
         this.signalBus = signalBus;
     }
 
-    internal void Setup((Node, Node) availableNode, MazeWall subistitute)
+    public void Setup((Node,Node) nodes)
     {
-        nodes = availableNode;
+        this.nodes = nodes;
+    }
+
+    public void Setup((Node, Node) nodes, MazeWall subistitute)
+    {
+        Setup(nodes);
         IsAtBorder = subistitute.IsAtBorder;
         transform.position = subistitute.transform.position;
         transform.rotation = subistitute.transform.rotation;

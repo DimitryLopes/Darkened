@@ -23,7 +23,6 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
     public virtual void SetPath(Maze maze, Node target = null)
     {
         SetclosestNode(maze);
-        Debug.Log("Closest Node: " + closestNode.Coordinates);
         currentTarget = target != null ? target : maze.Nodes.GetRandom();
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, maze);
         string pathString = "Path: ";
