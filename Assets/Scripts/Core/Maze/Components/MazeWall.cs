@@ -47,14 +47,6 @@ public class MazeWall : Activateable
         transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
-    public void PositionObject(Item item, Cardinal direction)
-    {
-        Debug.Log($"Positioning item {item.name} at {name} in direction {direction}.");
-        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
-        item.transform.rotation = Quaternion.Euler(0, 0, rotation);
-        item.transform.position = transform.position;
-    }
-
     public virtual void OnWallCreated(SignalBus signalBus)
     {
         this.signalBus = signalBus;

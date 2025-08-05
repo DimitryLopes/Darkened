@@ -361,11 +361,11 @@ public class MazeGenerator : MonoBehaviour
                 break;
             case SpawnType.Wall:
                 (MazeWall, Cardinal) wallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item, false);
-                wallCardinal.Item1.PositionObject(item, wallCardinal.Item2);
+                PlaceObjectOnWall(item, wallCardinal.Item2, wallCardinal.Item1);
                 break;
             case SpawnType.EdgeWalls:
                 (MazeWall, Cardinal) edgewallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, currentMaze.EdgeNodes.Values, item, true);
-                edgewallCardinal.Item1.PositionObject(item, edgewallCardinal.Item2);
+                PlaceObjectOnWall(item, edgewallCardinal.Item2, edgewallCardinal.Item1);
                 break;
         }
         item.transform.SetParent(itemsContainer);
@@ -483,22 +483,6 @@ public class MazeGenerator : MonoBehaviour
         if (!node.IsOnEdge(direction)) return;
 
         wall.transform.SetParent(edgeWallsContainer);
-    }
-
-    public void AddGate(Node node, Cardinal direction, Gate gate = null)
-    {
-        Gate gateToAdd = gate;
-        if (gate == null)
-        {
-            gateToAdd = GetGate();
-        }
-
-        node.AddWall(direction, gate); 
-        Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        if(neighbor != null)
-        {
-            neighbor.AddWall(NodeUtils.GetOppositeCardinal(direction), gate);
-        }
     }
 
     private string GetWallKey(Node node, Cardinal direction)
@@ -704,17 +688,19 @@ public class MazeGenerator : MonoBehaviour
             }
 
 
-            switch (itemData.Item.GenerationData.SpawnType)
+            switch (item.GenerationData.SpawnType)
             {
                 case SpawnType.Node:
                     Node node = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    currentMaze.MarkNodeAsUsed(node, item);
                     item.transform.position = node.transform.position;
                     break;
                 case SpawnType.Wall:
                 case SpawnType.EdgeWalls:
                     Node edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
+                    currentMaze.MarkNodeAsUsed(edgeNode, item);
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemData.Direction, currentMaze);
-                    wall.PositionObject(itemData.Item, itemData.Direction);
+                    PlaceObjectOnWall(item, itemData.Direction, wall);
                     break;
             }
             currentItem++;
@@ -793,6 +779,13 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
+    public void PlaceObjectOnWall(Item item, Cardinal direction, MazeWall wall)
+    {
+        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
+        item.transform.SetPositionAndRotation(wall.transform.position, Quaternion.Euler(0, 0, rotation));
+        Debug.Log($"Positioning item {item.name} at {name} in direction {direction} \n position = {item.transform.position} \n rotation: {item.transform.rotation}.");
+    }
+
     #region Torches
     //THIS ONLY WORKS WITH RANDOM GENERATION
     private IEnumerator<float> AddTorches()
@@ -802,12 +795,7 @@ public class MazeGenerator : MonoBehaviour
         int torchCount = Random.Range(minTorchCount, maxTorchCount + 1);
 
         // Filtra nós válidos (sem item/tocha)
-        List<Node> validNodes = new List<Node>();
-        foreach (Node node in currentMaze.FreeNodes)
-        {
-            if (node.HasAnyDefaultWall())
-                validNodes.Add(node);
-        }
+        List<Node> validNodes = new List<Node>(currentMaze.FreeNodes);
 
         if (validNodes.Count < torchCount)
             torchCount = validNodes.Count;
@@ -855,6 +843,8 @@ public class MazeGenerator : MonoBehaviour
     {
         Torch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
+        MazeWall wall = NodeUtils.GetWallAt(node, direction, currentMaze);
+        PlaceObjectOnWall(torch, direction, wall);
         currentMaze.AddTorch(node, torch, direction);
     }
     #endregion
@@ -897,7 +887,11 @@ public class MazeGenerator : MonoBehaviour
     {
         foreach (Gate gate in gates)
         {
-            if (!gate.IsActive) return gate;
+            if (!gate.IsActive)
+            {
+                gate.Activate();
+                return gate;
+            } 
         }
 
         Gate newGate;

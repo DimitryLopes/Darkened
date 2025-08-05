@@ -41,8 +41,6 @@ public class Maze
     public void AddTorch(Node node, Torch torch, Cardinal direction)
     {
         Torches.Add(torch);
-        MazeWall wall = NodeUtils.GetWallAt(node, direction, this);
-        wall.PositionObject(torch, direction);
         torch.Setup(direction);
         MarkNodeAsUsed(node, torch);
     }

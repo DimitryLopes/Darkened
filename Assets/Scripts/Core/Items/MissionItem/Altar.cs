@@ -24,7 +24,6 @@ public class Altar : MissionItem
         }
 
         altarLight.enabled = true;
-        signalBus.Fire(new OnMissionItemInteractedSignal(this));
         inventoryManager.DecreaseItemAmount(ItemType.Orb);
         var missions = objectiveManager.CurrentObjective.CurrentMissionGroup.Missions;
         foreach(IMission mission in missions)
@@ -39,6 +38,7 @@ public class Altar : MissionItem
                 }
             }
         }        
+        signalBus.Fire(new OnMissionItemInteractedSignal(this));
     }
 
     public override void OnActivate()

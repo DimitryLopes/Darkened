@@ -4,12 +4,11 @@ public class Gate : MazeWall, IToggable
 {
     private (Node,Node) nodes;
 
-    public bool Toggled { get; private set; }
+    public bool Toggled => IsActive;
 
     public void Toggle(MazeManager mazeManager)
     {
-        Toggled = !Toggled;
-        if(!Toggled)
+        if(Toggled)
         mazeManager.MazeGenerator.RemoveWallBetween(nodes.Item1, nodes.Item2);
         else
         mazeManager.MazeGenerator.ActivateWallBetween(nodes.Item1, nodes.Item2);
