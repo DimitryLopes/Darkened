@@ -61,7 +61,11 @@ public abstract class LevelData : ScriptableObject , IUISelectable, IDataPersist
 
     public void LoadData(GameData data)
     {
-        SavedData = data.GetLevelSavedData(PersistenceKey);
+        var savedData = data.GetLevelSavedData(PersistenceKey);
+        if (savedData != null)
+        {
+            SavedData = savedData;
+        }
     }
 
     public void SaveData(ref GameData data)
