@@ -43,6 +43,16 @@ public struct PresetItemData
     public Coordinate Coordinate => coordinate;
     public Item Item => item;
     public Cardinal Direction => direction;
+
+    public PresetItemData(Coordinate coordinate, Cardinal direction, SpawnType spawnType, ItemType itemType, Item item = null, string associateWith = null)
+    {
+        this.coordinate = coordinate;
+        this.direction = direction;
+        this.SpawnType = spawnType;
+        this.ItemType = itemType;
+        this.item = item;
+        this.AssociateWith = associateWith;
+    }
 }
 
 [Serializable]

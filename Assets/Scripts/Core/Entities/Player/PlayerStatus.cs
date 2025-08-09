@@ -38,23 +38,23 @@ public class PlayerStatus
     }
 
     #region Status Effects
-    public void ApplyStatusEffect(StatusEffect effect)
+    public void ApplyStatusEffect(float multiplier, StatusKey status, float duration)
     {
-        string effectKey = GetStatusEffectKey(effect);
+        string effectKey = GetStatusEffectKey(multiplier, status, duration);
         if(statusEffects.ContainsKey(effectKey))
         {
             statusEffects[effectKey].Reaply();
         }
         else
         {
+            StatusEffect effect = new StatusEffect(status, multiplier, duration, this);
             statusEffects.Add(effectKey, effect);
         }
     }
 
-    public string GetStatusEffectKey(StatusEffect effect)
+    private string GetStatusEffectKey(float multiplier, StatusKey status, float duration)
     {
-        return string.Format(Constants.Player.STATUS_EFFECTS_KEY_FORMAT, effect.Stat, effect.Duration, effect.Value);
-        
+        return string.Format(Constants.Player.STATUS_EFFECTS_KEY_FORMAT, status, duration, multiplier);
     }
 
     public void UpdateStatusEffects(float deltaTime)
@@ -64,6 +64,17 @@ public class PlayerStatus
             if (kvp.Value.IsActive)
             {
                 kvp.Value.Tick(deltaTime);
+            }
+        }
+    }
+
+    public void ClearStatusEffects()
+    {
+        foreach (var kvp in statusEffects)
+        {
+            if (kvp.Value.IsActive)
+            {
+                kvp.Value.Deactivate();
             }
         }
     }

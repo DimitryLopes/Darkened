@@ -49,15 +49,14 @@ public class Player : MonoBehaviour
         interaction.ToggleActing(value);
     }
 
-    public void AddStatusEffect(float multiplier, StatusKey key, float duration)
+    public void ApplyStatusEffect(StatusEffectData data)
     {
-        StatusEffect effect = new StatusEffect(key, multiplier, duration);
-        status.ApplyStatusEffect(effect);
+        status.ApplyStatusEffect(data.Multiplier, data.Stat, data.Duration);
     }
 
     private void Update()
     {
-        status.UpdateStatusEffects();
+        status.UpdateStatusEffects(Time.deltaTime);
     }
 
     #region Torch

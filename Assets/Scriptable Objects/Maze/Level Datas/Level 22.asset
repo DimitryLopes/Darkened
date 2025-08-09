@@ -16,7 +16,7 @@ MonoBehaviour:
   objectiveData: {fileID: 11400000, guid: b6d1fafdb3315354e8eaec23e49cc8d7, type: 2}
   unlockConditionData: {fileID: 11400000, guid: f9c4d37ffd4e48742b6e837efde38cbb, type: 2}
   enemyType: 0
-  difficultyData: {fileID: 11400000, guid: a5ddeac173fe2844f9f73ee503f66318, type: 2}
+  difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
   wallPositions:
   - coordinate:
       x: 0
@@ -573,6 +573,150 @@ MonoBehaviour:
     AssociateWith: wall east [1,4] &wall east [2,6]&wall east [7,4] &wall east [6,6]
     SpawnType: 0
     ItemType: 7
+  - coordinate:
+      x: 6
+      y: 6
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 4
+      y: 1
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 9
+      y: 1
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 0
+      y: 0
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 3
+      y: 1
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 1
+      y: 3
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 0
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 4
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 2
+      y: 8
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 0
+      y: 9
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 4
+      y: 8
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 8
+      y: 8
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 9
+      y: 6
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 7
+      y: 4
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 7
+      y: 0
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 5
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 5
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 7
+      y: 2
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 3
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
   startPosition:
     x: 1
     y: 5

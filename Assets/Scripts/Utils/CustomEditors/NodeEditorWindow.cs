@@ -11,9 +11,6 @@ public class NodeEditorWindow : EditorWindow
     // Para seleção de direção de parede
     private Dictionary<Cardinal, bool> wallStates = new();
     private Dictionary<Cardinal, WallType> wallTypes = new();
-    // Para seleção de item
-    private Item selectedItem;
-    private string[] itemTypeNames;
 
     public static void Open(Coordinate node, PresetLevelData preset)
     {
@@ -41,31 +38,47 @@ public class NodeEditorWindow : EditorWindow
         }
     }
 
+    private Cardinal torchDirection = Cardinal.North;
+
     private void OnGUI()
     {
         GUILayout.Label($"Editing Node: ({node.X}, {node.Y})", EditorStyles.boldLabel);
 
-        // Edita paredes
+        // Walls
         GUILayout.Label("Walls:");
         foreach (Cardinal dir in System.Enum.GetValues(typeof(Cardinal)))
         {
             EditorGUILayout.BeginHorizontal();
 
-            bool prev = wallStates[dir];
-            bool next = GUILayout.Toggle(prev, dir.ToString(), GUILayout.Width(70));
-            WallType currentType = wallTypes.ContainsKey(dir) ? wallTypes[dir] : WallType.wall;
+            bool prevWallState = wallStates[dir];
+            bool nextWallState = GUILayout.Toggle(prevWallState, dir.ToString(), GUILayout.Width(70));
+
+            WallType currentType = wallTypes[dir];
             WallType selectedType = (WallType)EditorGUILayout.EnumPopup(currentType, GUILayout.Width(100));
-            if (next != prev || selectedType != currentType)
+
+            // Torch checkbox
+            bool hasTorch = HasTorchOnWall(dir);
+            bool torchToggle = GUILayout.Toggle(hasTorch, "Torch", GUILayout.Width(60));
+
+            // Update wall state
+            if (nextWallState != prevWallState || selectedType != currentType)
             {
-                wallStates[dir] = next;
+                wallStates[dir] = nextWallState;
                 wallTypes[dir] = selectedType;
-                UpdateWall(dir, next, selectedType);
+                UpdateWall(dir, nextWallState, selectedType);
             }
+
+            // Torch handling
+            if (torchToggle != hasTorch)
+            {
+                if (torchToggle)
+                    AddTorchOnWall(dir);
+                else
+                    RemoveTorchFromWall(dir);
+            }
+
             EditorGUILayout.EndHorizontal();
         }
-
-        GUILayout.Space(10);
-
         EditorUtility.SetDirty(preset);
     }
 
@@ -83,5 +96,57 @@ public class NodeEditorWindow : EditorWindow
 
         wallPositionsField.SetValue(preset, wallPositions);
     }
+
+    private void AddTorchOnWall(Cardinal dir)
+    {
+        var itemsField = typeof(PresetLevelData).GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var itemsList = (List<PresetItemData>)itemsField.GetValue(preset);
+
+        string torchPath = "Assets/Prefabs/Maze/Items/Torch.prefab";
+        GameObject torchPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(torchPath);
+        var torchItem = torchPrefab.GetComponent<Item>();
+        var torch = new PresetItemData(
+            new Coordinate(node.X, node.Y),
+            dir,
+            SpawnType.Wall,
+            ItemType.DefaultTorch,
+            torchItem
+        );
+
+        itemsList.Add(torch);
+        itemsField.SetValue(preset, itemsList);
+    }
+    private bool HasTorchOnWall(Cardinal dir)
+    {
+        var itemsField = typeof(PresetLevelData)
+            .GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var itemsList = (List<PresetItemData>)itemsField.GetValue(preset);
+
+        return itemsList.Exists(i =>
+            i.Coordinate.X == node.X &&
+            i.Coordinate.Y == node.Y &&
+            i.Item.GenerationData.SpawnType == SpawnType.Wall &&
+            i.Direction == dir &&
+            i.Item.Type == ItemType.DefaultTorch
+        );
+    }
+
+    private void RemoveTorchFromWall(Cardinal dir)
+    {
+        var itemsField = typeof(PresetLevelData)
+            .GetField("items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var itemsList = (List<PresetItemData>)itemsField.GetValue(preset);
+
+        itemsList.RemoveAll(i =>
+            i.Coordinate.X == node.X &&
+            i.Coordinate.Y == node.Y &&
+            i.Item.GenerationData.SpawnType == SpawnType.Wall &&
+            i.Direction == dir &&
+            i.Item.Type == ItemType.DefaultTorch
+        );
+
+        itemsField.SetValue(preset, itemsList);
+    }
+
 }
 #endif // UNITY_EDITOR

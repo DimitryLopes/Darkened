@@ -14,10 +14,6 @@ public class Item : Activateable, IItem, IInteractable
     [SerializeField]
     protected SpriteRenderer spriteRenderer;
     [SerializeField]
-    private MaterialType standardtMaterial;
-    [SerializeField]
-    private MaterialType highlightedtMaterial;
-    [SerializeField]
     private ItemGenerationData itemGenerationData;
 
     protected ItemType type;
@@ -60,7 +56,7 @@ public class Item : Activateable, IItem, IInteractable
     {
         if (canInteract)
         {
-            spriteRenderer.material = materialManager.GetMaterial(highlightedtMaterial);
+            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
         }
     }
 
@@ -68,7 +64,7 @@ public class Item : Activateable, IItem, IInteractable
     {
         if (canInteract)
         {
-            spriteRenderer.material = materialManager.GetMaterial(standardtMaterial);
+            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Outline);
         }
     }
 

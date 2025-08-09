@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTorch: {fileID: 4020834806139711318}
   movement: {fileID: 6005018496085755486}
-  status: {fileID: 11400000, guid: 6a372f500043d5649a41dbdfa3843e1a, type: 2}
+  statusSO: {fileID: 11400000, guid: 35facf83647770f4cbdb5485958d0b04, type: 2}
   interaction: {fileID: 272070270571167502}
   defaultTorchColor: {r: 1, g: 1, b: 1, a: 1}
   spectalTorchColor: {r: 0.50980395, g: 1, b: 1, a: 1}
@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ComponentVersion: 1
+  IsStatic: 0
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.25
