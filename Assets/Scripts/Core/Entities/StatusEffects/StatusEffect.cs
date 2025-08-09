@@ -7,6 +7,7 @@ public class StatusEffect
     public float Duration { get; private set; }
     public bool IsActive { get; private set; }
     public float MaxDuration { get; private set; }
+    private float increment;
     private PlayerStatus Status { get; set; }
 
     public StatusEffect(StatusKey key, float value, float duration, PlayerStatus status)
@@ -37,13 +38,16 @@ public class StatusEffect
     public void Deactivate()
     {
         IsActive = false;
-        Status.StatusDictionary[Stat] /= Multiplier;
+        Status.StatusDictionary[Stat] -= increment;
     }
 
     public void Activate()
     {
         IsActive = true;
-        Status.StatusDictionary[Stat] *= Multiplier;
+        float baseValue = Status.BaseStatusDictionary[Stat];
+        float modifiedValue = baseValue * Multiplier;
+        increment = modifiedValue - baseValue;
+        Status.StatusDictionary[Stat] += increment;
     }
 }
 [Serializable]

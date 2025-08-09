@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Color spectalTorchColor;
 
-    private PlayerStatus status;
+    private PlayerStatus status = new PlayerStatus();
     public float CurrentStamina => movement.CurrentStamina;
     public float MaxStamina => status.MaxStamina;
 

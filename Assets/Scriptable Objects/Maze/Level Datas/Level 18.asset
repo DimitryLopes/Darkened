@@ -439,11 +439,6 @@ MonoBehaviour:
     direction: 0
     wallType: 0
   - coordinate:
-      x: 8
-      y: 5
-    direction: 0
-    wallType: 0
-  - coordinate:
       x: 7
       y: 5
     direction: 0
@@ -484,14 +479,6 @@ MonoBehaviour:
   - coordinate:
       x: 7
       y: 3
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 0
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 8
-      y: 5
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 0
     AssociateWith: 
@@ -558,6 +545,38 @@ MonoBehaviour:
       y: 7
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 2
+      y: 7
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 1
+      y: 7
+    item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 3
+  - coordinate:
+      x: 0
+      y: 3
+    item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 3
+  - coordinate:
+      x: 7
+      y: 5
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
     AssociateWith: 
     SpawnType: 1
     ItemType: 6

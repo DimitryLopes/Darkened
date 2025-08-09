@@ -26,6 +26,7 @@ public class PlayerStatus
 
     public void ResetStatus()
     {
+        ClearStatusEffects();
         foreach (var kvp in BaseStatusDictionary)
         {
             ResetStat(kvp.Key);

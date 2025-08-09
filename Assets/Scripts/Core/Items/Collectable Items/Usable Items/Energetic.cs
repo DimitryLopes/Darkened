@@ -10,7 +10,7 @@ public class Energetic : UsableItem
     [SerializeField]
     public StatusEffectData StatusEffectData;
 
-    public override ItemType Type => ItemType.Wisp;
+    public override ItemType Type => ItemType.Energetic;
 
     public override bool CanUse => inventoryManager.HasEnoughItem(Type);
 

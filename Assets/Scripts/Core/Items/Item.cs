@@ -56,7 +56,7 @@ public class Item : Activateable, IItem, IInteractable
     {
         if (canInteract)
         {
-            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
+            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Outline);
         }
     }
 
@@ -64,7 +64,7 @@ public class Item : Activateable, IItem, IInteractable
     {
         if (canInteract)
         {
-            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Outline);
+            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
         }
     }
 
