@@ -101,7 +101,7 @@ public class Node : Activateable
         }
         else
         {
-            Debug.LogWarning("There is no wall to activate at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
+            Debug.LogWarning($"There is no wall to activate at X: { coordinates.X } Y: { coordinates.Y }  {direction}");
         }
     }
 

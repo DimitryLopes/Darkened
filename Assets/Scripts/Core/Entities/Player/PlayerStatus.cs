@@ -1,36 +1,71 @@
-using UnityEngine;
+using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "Player Status", menuName = "Scriptable Objects/Player Status")]
-public class PlayerStatus : ScriptableObject
+public class PlayerStatus
 {
-    [SerializeField, Header("Movement")]
-    private float rotationSpeed;
-    [SerializeField]
-    private float movementSpeed;
-    [SerializeField]
-    private float sprintingSpeedMultiplier;
+    public Dictionary<StatusKey, float> StatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
+    public Dictionary<StatusKey, float> BaseStatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
+    private Dictionary<string,StatusEffect> statusEffects = new();
 
-    [SerializeField, Header("Stamina")]
-    private float staminaRegenSpeed;
-    [SerializeField]
-    private float staminaConsumptionSpeed;
-    [SerializeField]
-    private float depletedStaminaRegenCooldown;
-    [SerializeField]
-    private float depletedStaminaRegenSpeedMultiplier;
-    [SerializeField]
-    private float maxStamina;
+    public float DepletedStaminaRegenSpeedMultiplier => StatusDictionary[StatusKey.DepletedStaminaRegenSpeedMultiplier];
+    public float DepletedStaminaRegenCooldown => StatusDictionary[StatusKey.DepletedStaminaRegenCooldown];
+    public float SprintingSpeedMultiplier => StatusDictionary[StatusKey.SprintingSpeedMultiplier];
+    public float StaminaConsumptionSpeed => StatusDictionary[StatusKey.StaminaConsumptionSpeed];
+    public float StaminaRegenSpeed => StatusDictionary[StatusKey.StaminaRegenSpeed];
+    public float InteractionRange => StatusDictionary[StatusKey.InteractionRange];
+    public float MovementSpeed => StatusDictionary[StatusKey.MovementSpeed];
+    public float MaxStamina => StatusDictionary[StatusKey.MaxStamina];
 
-    [SerializeField, Header("Interaction")]
-    private float interactionDistance;
+    public void Setup(PlayerStatusSO baseStats)
+    {
+        foreach (Status status in baseStats.Statuses)
+        {
+            StatusDictionary.Add(status.Key, status.Value);
+            BaseStatusDictionary.Add(status.Key, status.Value);
+        }
+    }
 
-    public float DepletedStaminaRegenCooldown => depletedStaminaRegenCooldown;
-    public float DepletedStaminaRegenSpeedMultiplier => depletedStaminaRegenSpeedMultiplier;
-    public float StaminaConsumptionSpeed => staminaConsumptionSpeed;
-    public float InteractionRange => interactionDistance;
-    public float StaminaRegenSpeed  => staminaRegenSpeed;
-    public float SprintingSpeedMultiplier => sprintingSpeedMultiplier;
-    public float MovementSpeed => movementSpeed;
-    public float RotationSpeed => rotationSpeed;
-    public float MaxStamina => maxStamina;
+    public void ResetStatus()
+    {
+        foreach (var kvp in BaseStatusDictionary)
+        {
+            ResetStat(kvp.Key);
+        }
+    }
+
+    public void ResetStat(StatusKey key)
+    {
+        StatusDictionary[key] = BaseStatusDictionary[key];
+    }
+
+    #region Status Effects
+    public void ApplyStatusEffect(StatusEffect effect)
+    {
+        string effectKey = GetStatusEffectKey(effect);
+        if(statusEffects.ContainsKey(effectKey))
+        {
+            statusEffects[effectKey].Reaply();
+        }
+        else
+        {
+            statusEffects.Add(effectKey, effect);
+        }
+    }
+
+    public string GetStatusEffectKey(StatusEffect effect)
+    {
+        return string.Format(Constants.Player.STATUS_EFFECTS_KEY_FORMAT, effect.Stat, effect.Duration, effect.Value);
+        
+    }
+
+    public void UpdateStatusEffects(float deltaTime)
+    {
+        foreach (var kvp in statusEffects)
+        {
+            if (kvp.Value.IsActive)
+            {
+                kvp.Value.Tick(deltaTime);
+            }
+        }
+    }
+    #endregion
 }

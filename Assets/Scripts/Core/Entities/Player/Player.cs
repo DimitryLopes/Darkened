@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
-    private PlayerStatus status;
+    private PlayerStatusSO statusSO;
     [SerializeField]
     private PlayerInteraction interaction;
     [SerializeField]
@@ -24,22 +24,40 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Color spectalTorchColor;
 
+    private PlayerStatus status;
     public float CurrentStamina => movement.CurrentStamina;
     public float MaxStamina => status.MaxStamina;
 
     public void SetUp()
     {
+        status.Setup(statusSO);
         movement.SetUp(status, joystick, hud.BottomHUD.SprintButton, signalBus);
         interaction.SetUp(status, signalBus);
+    }
+
+    public void ResetPlayer()
+    {
+        movement.ResetMovement();
+        ToggleActing(true);
+        SetDefaultTorch();
+        status.ResetStatus();
     }
 
     public void ToggleActing(bool value)
     {
         movement.ToggleActing(value);
         interaction.ToggleActing(value);
-        if (!value) return;
+    }
 
-        movement.ResetMovement();
+    public void AddStatusEffect(float multiplier, StatusKey key, float duration)
+    {
+        StatusEffect effect = new StatusEffect(key, multiplier, duration);
+        status.ApplyStatusEffect(effect);
+    }
+
+    private void Update()
+    {
+        status.UpdateStatusEffects();
     }
 
     #region Torch

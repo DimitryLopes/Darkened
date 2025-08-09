@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593b3d3c695f1f648b9a313431447889, type: 3}
   m_Name: PlayerStatus
   m_EditorClassIdentifier: 
-  rotationSpeed: 0.1
-  movementSpeed: 1
-  sprintingSpeedMultiplier: 1.7
-  staminaRegenSpeed: 10
-  staminaConsumptionSpeed: 16
-  depletedStaminaRegenCooldown: 2.75
-  depletedStaminaRegenSpeedMultiplier: 1.75
-  maxStamina: 80
-  interactionDistance: 0.3
+  statuses:
+  - key: 0
+    value: 1
+  - key: 1
+    value: 2.75
+  - key: 2
+    value: 1.75
+  - key: 3
+    value: 16
+  - key: 4
+    value: 0.3
+  - key: 5
+    value: 10
+  - key: 6
+    value: 1.7
+  - key: 7
+    value: 80
