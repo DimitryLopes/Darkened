@@ -1020,17 +1020,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7539356157193245616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4226aafa49c60774bbb1b21c78c577ba, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAnimationDuration: 0
-  outAnimationDuration: 0.5
-  inEase: 18
-  outEase: 17
-  loop: 0
-  target: {fileID: 7081323791529490383}
-  inTarget: 1
-  outTarget: 0
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!225 &7081323791529490383
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -131,14 +131,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4226231996876182067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55a34e3da0019241bd3b12ce85bb0f6, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
-  inEase: 18
-  outEase: 17
-  inTarget: {x: 0, y: 0, z: 0}
-  outTarget: {x: 0, y: 0, z: 0}
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5801725545272756183
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,14 +277,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 5801725545272756183}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55a34e3da0019241bd3b12ce85bb0f6, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 0.5
-  inEase: 18
-  outEase: 17
-  inTarget: {x: 0, y: 0, z: 0}
-  outTarget: {x: 0, y: 0, z: 0}
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6238125014070357198
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,6 +487,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9b839b645bec14da70310b314e9880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   smallContainer: {fileID: 4226231996876182067}
   smallTitle: {fileID: 560714378084229564}
   bigContainer: {fileID: 5801725545272756183}

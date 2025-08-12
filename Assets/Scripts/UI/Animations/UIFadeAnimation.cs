@@ -2,26 +2,20 @@ using UnityEngine;
 
 public class UIFadeAnimation : UIAnimation
 {
-    [SerializeField]
-    private CanvasGroup target;
-    [SerializeField]
-    private float inTarget = 1;
-    [SerializeField]
-    private float outTarget = 0;
+    [SerializeField] private float startAlpha = 0f;
+    [SerializeField] private float endAlpha = 1f;
+    [SerializeField] private CanvasGroup canvasGroup;
 
-    protected override void InAnimation()
+    protected override void DoAnimation(GameObject target)
     {
-        target.alpha = 0;
-        currentTween = target.LeanAlpha(inTarget, inAnimationDuration)
-            .setEase(inEase)
-            .setOnComplete(OnAnimationFinish);
-    }
+        if (canvasGroup == null)
+        {
+            canvasGroup = target.AddComponent<CanvasGroup>();
+            Debug.LogWarning(target.name + "had no canvas group. Adding one as a fallback. please add one!");
+        }
 
-    protected override void OutAnimation()
-    {
-        target.alpha = 1;
-        currentTween = target.LeanAlpha(outTarget, outAnimationDuration)
-            .setEase(outEase)
-            .setOnComplete(OnAnimationFinish);
+        canvasGroup.alpha = startAlpha;
+        tween = LeanTween.alphaCanvas(canvasGroup, endAlpha, duration)
+            .setEase(easeType);
     }
 }

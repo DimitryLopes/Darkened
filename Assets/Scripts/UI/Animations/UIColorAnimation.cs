@@ -1,35 +1,52 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIColorAnimation : UIAnimation
 {
-    [SerializeField]
-    private Color inColor;
-    [SerializeField]
-    private Color outColor;
-    [SerializeField]
-    private Image target;
+    public enum TargetType { Image, Text }
 
+    [SerializeField]
+    private TargetType targetType = TargetType.Image;
 
-    private Color rendererColor;
+    [SerializeField, ShowIf(nameof(targetType), TargetType.Image)]
+    private Image targetImage;
 
-    protected override void InAnimation()
+    [SerializeField, ShowIf(nameof(targetType), TargetType.Text)]
+    private TextMeshProUGUI targetText;
+
+    [SerializeField]
+    private Color targetColor = Color.white;
+
+    protected override void DoAnimation(GameObject target)
     {
-        target.color.TweenColorTo(inColor, inAnimationDuration, gameObject, ChangeImageColor, OnAnimationFinish);
+        if (targetType == TargetType.Image && targetImage != null)
+        {
+            tween = LeanTween.value(target, targetImage.color, targetColor, duration)
+                     .setEase(easeType)
+                     .setOnUpdate((Color value) => targetImage.color = value);
+        }
+        else if (targetType == TargetType.Text && targetText != null)
+        {
+            tween = LeanTween.value(target, targetText.color, targetColor, duration)
+                     .setEase(easeType)
+                     .setOnUpdate((Color value) => targetText.color = value);
+        }
+        else
+        {
+            Debug.LogError($"UIColorAnimation: {target.name} is missing a {targetType} component");
+        }
     }
 
-    protected override void OutAnimation()
+    protected override void FirstShowSetup()
     {
-        target.color.TweenColorTo(outColor, outAnimationDuration, gameObject, ChangeImageColor, OnAnimationFinish);
-    }
-
-    private void ChangeImageColor(Color color)
-    {
-        target.color = color;
-    }
-
-    public override void CancelCurrentAnimation()
-    {
-        TweenUtils.CancelTween(gameObject, false);
+        if (targetType == TargetType.Image && !targetImage)
+        {
+            targetImage = animationTarget.GetComponent<Image>();
+        }
+        else if (targetType == TargetType.Text && !targetText)
+        {
+            targetText = animationTarget.GetComponent<TextMeshProUGUI>();
+        }
     }
 }

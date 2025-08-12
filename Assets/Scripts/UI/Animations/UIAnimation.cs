@@ -1,69 +1,120 @@
 using System;
 using UnityEngine;
 
-public class UIAnimation : MonoBehaviour
+[Serializable]
+public abstract class UIAnimation
 {
+    [Header("Basic Settings")]
+    [SerializeReference] protected float duration = 1f;
+    [SerializeReference] protected int priority = 0;
+    [SerializeReference] protected LeanTweenType easeType = LeanTweenType.easeOutQuart;
 
-    [SerializeField]
-    protected float inAnimationDuration = 0.5f;
-    [SerializeField]
-    protected float outAnimationDuration = 0.5f;
-    [SerializeField]
-    protected LeanTweenType inEase = LeanTweenType.easeOutExpo;
-    [SerializeField]
-    protected LeanTweenType outEase = LeanTweenType.easeInExpo;
-    [SerializeField]
-    private bool loop;
+    [Header("Custom Animation Curve")]
+    [SerializeReference] private bool useCustomCurve = false;
+    [SerializeReference] [ShowIf("useCustomCurve")] protected AnimationCurve customCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-    protected Vector3 originalPosition;
-    protected Action onFinishCallback;
-    protected LTDescr currentTween;
+    [Header("Loop Settings")]
+    [SerializeReference, Tooltip("-1 for infinite loop, 0 for no loop")]
+    protected int loopCount = 0;
 
-    private void Start()
+    [Header("Timing Settings")]
+    [SerializeReference, Tooltip("Delay before animation starts")]
+    protected float startDelay = 0f;
+    [SerializeReference] protected bool ignoreTimeScale = false;
+
+
+    protected LTDescr tween;
+    protected Action callback;
+    protected GameObject animationTarget;
+    private bool isPlaying;
+
+    public GameObject AnimationTarget => animationTarget;
+    public LTDescr Tween => tween;
+    public bool IsPlaying => isPlaying;
+    public int Priority => priority;
+  
+
+    private bool isFirstPlayDone = false;
+    private UIAnimationManager animationManager;
+
+    public float Duration => duration;
+
+
+    /// <summary>
+    /// Called once, before the first time the animation plays. Override this method in child classes to fetch necessary components.
+    /// </summary>
+    protected virtual void FirstShowSetup()
     {
-        originalPosition = transform.position;
     }
 
-    public void DoInAnimation(Action onFinishCallback = null)
+    /// <summary>
+    /// Start the animation on the provided GameObject with an optional callback.
+    /// </summary>
+    /// <param name="target">GameObject to animate</param>
+    /// <param name="callback">Callback function on completion</param>
+    public virtual void Animate(GameObject target, Action callback = null, bool debug = false)
     {
-        this.onFinishCallback = onFinishCallback;
-        if (loop)
+        if (target == null)
         {
-            this.onFinishCallback += () => { DoOutAnimation(); };
+            Debug.LogError("Target GameObject is null! Animation cannot be performed.");
+            return;
         }
-        CancelCurrentAnimation();
-        InAnimation();
-    }
 
-
-    public void DoOutAnimation(Action onFinishCallback = null)
-    {
-        this.onFinishCallback = onFinishCallback;
-        if (loop)
+        animationTarget = target;
+        this.callback = callback;
+        // Call FirstPlay once, before the first time the animation runs
+        if (!isFirstPlayDone)
         {
-            this.onFinishCallback += () => { DoInAnimation(); };
+            animationManager = UIAnimationManager.Instance;
+            FirstShowSetup();
+            isFirstPlayDone = true;
         }
-        CancelCurrentAnimation();
-        OutAnimation();
-    }
 
-    public virtual void CancelCurrentAnimation()
-    {
-        if (currentTween != null)
+        if (!debug)
         {
-            LeanTween.cancel(currentTween.uniqueId, !loop);
+            animationManager.Cancel(this, priority);
         }
+
+        // Start the actual animation
+        DoAnimation(target);
+        isPlaying = true;
+        if (!debug)
+        {
+            animationManager.AddAnimation(this);
+        }
+
+        tween.setDelay(startDelay)
+             .setIgnoreTimeScale(ignoreTimeScale);
+
+        // Apply either the custom curve or the predefined ease type
+        if (useCustomCurve)
+        {
+            tween.setEase(customCurve);
+        }
+        else
+        {
+            tween.setEase(easeType);
+        }
+
+        // Handle looping
+        if (loopCount != 0)
+        {
+            tween.setLoopCount(loopCount);
+        }
+
+        // Set the completion logic
+        tween.setOnComplete(() =>
+        {
+            isPlaying = false;
+
+            animationManager.RemoveAnimation(this);
+            tween = null;
+            this.callback?.Invoke();
+        });
     }
 
-    protected void OnAnimationFinish()
-    {
-        Action action = onFinishCallback;
-        onFinishCallback = null;
-        currentTween = null;
-        action?.Invoke();
-    }
-
-    protected virtual void InAnimation() { }
-
-    protected virtual void OutAnimation() { }
+    /// <summary>
+    /// Must be implemented by derived classes to perform the actual animation.
+    /// </summary>
+    protected abstract void DoAnimation(GameObject target);
 }

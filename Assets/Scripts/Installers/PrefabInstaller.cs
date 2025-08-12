@@ -10,6 +10,8 @@ public class PrefabInstaller : MonoInstaller
     private UISelectableItem selectableItem;
     [SerializeField]
     private UIItemView itemView;
+    [SerializeField]
+    private FloatingText floatingText;
 
     public override void InstallBindings()
     {
@@ -17,5 +19,6 @@ public class PrefabInstaller : MonoInstaller
         Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
         Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
         Container.Bind<UIItemView>().FromInstance(itemView).AsTransient();
+        Container.Bind<FloatingText>().FromInstance(floatingText).AsTransient();
     }
 }

@@ -12,6 +12,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<MaterialManager>().AsSingle();
         Container.Bind<ObjectiveManager>().AsSingle();
         Container.Bind<PersistenceManager>().AsSingle();
+        Container.Bind<FloatingTextManager>().AsSingle();
         //Needs previous managers
         Container.Bind<HUDManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();

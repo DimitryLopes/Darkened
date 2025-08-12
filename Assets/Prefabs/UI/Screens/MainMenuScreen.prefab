@@ -159,6 +159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &11580239580067602
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +363,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &383480696229558723
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +695,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4247952145292167857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,6 +1192,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &633492195226045554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1870,6 +1894,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7214374960501538942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,17 +2487,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4799720729380093916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4226aafa49c60774bbb1b21c78c577ba, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAnimationDuration: 0
-  outAnimationDuration: 0.5
-  inEase: 18
-  outEase: 17
-  loop: 0
-  target: {fileID: 5595784191584308314}
-  inTarget: 1
-  outTarget: 0
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!225 &5595784191584308314
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2532,6 +2566,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6680088817362212706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3239,6 +3279,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddae6df053a2fcf4aa4076b87d7852c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6338946664823328309
 GameObject:
   m_ObjectHideFlags: 0

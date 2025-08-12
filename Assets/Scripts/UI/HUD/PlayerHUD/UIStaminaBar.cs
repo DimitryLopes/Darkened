@@ -7,9 +7,9 @@ public class UIStaminaBar : MonoBehaviour
     private Image barImage;
 
     [SerializeField, Header("Animation")]
-    private UIColorAnimation exaustedAnimation;
+    private UIAnimationComponent exaustedAnimation;
     [SerializeField]
-    private UIColorAnimation recoveredAnimation;
+    private UIAnimationComponent recoveredAnimation;
 
     private Player player;
 
@@ -25,23 +25,23 @@ public class UIStaminaBar : MonoBehaviour
 
     public void DoExaustedAnimation()
     {
-        exaustedAnimation.DoInAnimation();
+        exaustedAnimation.PlayInAnimations();
     }
 
     public void DoStaminaRecoveredAnimation()
     {
-        exaustedAnimation.CancelCurrentAnimation();
-        recoveredAnimation.DoInAnimation(DoRecoveryOutAnimation);
+        exaustedAnimation.StopCurrentAnimations();
+        recoveredAnimation.PlayInAnimations(DoRecoveryOutAnimation);
     }
 
     private void DoRecoveryOutAnimation()
     {
-        recoveredAnimation.DoOutAnimation();
+        recoveredAnimation.PlayOutAnimations();
     }
 
     public void StopAnimations()
     {
-        exaustedAnimation.CancelCurrentAnimation();
-        recoveredAnimation.CancelCurrentAnimation();
+        exaustedAnimation.StopCurrentAnimations();
+        recoveredAnimation.StopCurrentAnimations();
     }
 }

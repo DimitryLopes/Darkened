@@ -12,7 +12,7 @@ public class UISelectableItem : Activateable
     private GameObject smallContainer;
     [SerializeField]
     private TextMeshProUGUI smallTitle;
-    [SerializeField]
+    [SerializeField, Header("Big")]
     private GameObject bigContainer;
     [SerializeField]
     private TextMeshProUGUI bigTitle;

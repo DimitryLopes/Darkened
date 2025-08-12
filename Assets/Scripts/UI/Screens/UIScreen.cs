@@ -9,7 +9,7 @@ public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
     [SerializeField]
     private CanvasGroup canvasGroup; 
     [SerializeField]
-    private UIAnimation screenAnimation;
+    private UIAnimationComponent screenAnimation;
 
     public U Controller { get; private set; }
 
@@ -22,14 +22,14 @@ public class UIScreen<U> : MonoBehaviour, IScreen where U : ScreenController
         gameObject.SetActive(true);
         IsShown = true;
         OnBeforeShow();
-        screenAnimation.DoInAnimation(OnAfterShow);
+        screenAnimation.PlayInAnimations(OnAfterShow);
     }
 
     public virtual void Hide()
     {
         canvasGroup.interactable = false;
         OnBeforeHide();
-        screenAnimation.DoOutAnimation(OnHideAnimationFinish);
+        screenAnimation.PlayOutAnimations(OnHideAnimationFinish);
     }
 
     private void OnHideAnimationFinish()
