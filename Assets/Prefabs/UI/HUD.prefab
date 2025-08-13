@@ -45,17 +45,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 202196641402510449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc30b1081910534418a2abaac92bcaef, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAnimationDuration: 0.3
-  outAnimationDuration: 0.3
-  inEase: 1
-  outEase: 1
-  loop: 1
-  inColor: {r: 0.7058824, g: 0.60784316, b: 0.3921569, a: 0.43137255}
-  outColor: {r: 0.7058824, g: 0.60784316, b: 0.3921569, a: 1}
-  target: {fileID: 8427846001913862512}
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &310043620733222204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,17 +1620,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4297709350554639133}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc30b1081910534418a2abaac92bcaef, type: 3}
+  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAnimationDuration: 0
-  outAnimationDuration: 0.2
-  inEase: 1
-  outEase: 1
-  loop: 0
-  inColor: {r: 1, g: 1, b: 1, a: 1}
-  outColor: {r: 0.7058824, g: 0.60784316, b: 0.3921569, a: 1}
-  target: {fileID: 8427846001913862512}
+  inAnimations: []
+  outAnimations: []
+  componentPriority: 0
+  animationTarget: {fileID: 0}
+  deactivateOnHide: 1
+  activateOnShow: 1
+  playAllAtOnce: 0
+  affectedByGetComponent: 1
+  overrideOtherAnimationsWhenPlayed: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4877489057585974400
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,14 +11,14 @@ public class PauseScreenListener : MonoBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.Escape) || screenManager.IsShowingScreen) return;
 
-        UIPauseScreen scrren = screenManager.GetScreen<UIPauseScreen>();
-        if (scrren.IsShown)
+        UIPauseScreen screen = screenManager.GetScreen<UIPauseScreen>();
+        if (screen.IsShown)
         {
-            scrren.Hide();
+            screen.Hide();
         }
         else
         {
-            scrren.Show(new PauseScreenController());
+            screenManager.Show<UIPauseScreen>(new PauseScreenController());
         }
     }
 }

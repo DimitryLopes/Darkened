@@ -18,7 +18,6 @@ public class DeveloperToolsTrigger : MonoBehaviour
     }
     private void OnButtonClicked()
     {
-
-        screenManager.GetScreen<UIDevScreen>().Show(new DevScreenController(developerTools));
+        screenManager.Show<UIDevScreen>(new DevScreenController(developerTools));
     }
 }

@@ -73,8 +73,7 @@ public class MazeGenerator : MonoBehaviour
 
         LoadingOperation mazeLoadingOperation = MazeLoadOperation();
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish, audioManager);
-        UILoadingScreen screen = screenManager.GetScreen<UILoadingScreen>();
-        screen.Show(controller);
+        screenManager.Show<UILoadingScreen>(controller);
 
         signalBus.Fire(new OnMazeLoadStartedSignal(currentMaze));
     }
@@ -91,8 +90,7 @@ public class MazeGenerator : MonoBehaviour
 
         LoadingOperation mazeLoadingOperation = MazeLoadOperationPreset(preset, nodes);
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish, audioManager);
-        UILoadingScreen screen = screenManager.GetScreen<UILoadingScreen>();
-        screen.Show(controller);
+        screenManager.Show<UILoadingScreen>(controller);
 
         signalBus.Fire(new OnMazeLoadStartedSignal(currentMaze));
     }

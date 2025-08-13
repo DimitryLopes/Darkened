@@ -44,15 +44,19 @@ public class GameManager
 
 
     #region Game Start
-    public void StartStoryGame()
+    public void StartStoryGame(PresetLevelData data)
     {
-        levelManager.StartStoryLevel();
+        levelManager.StartStoryLevel(data);
+    }
+
+    public void ReplayStoryLevel()
+    {
+        levelManager.StartStoryLevel(levelManager.CurrentStoryLevel);
     }
 
     private void StartNextStoryLevel()
     {
-        levelManager.IncreaseLevelIndex();
-        levelManager.StartStoryLevel();
+        levelManager.StartNextStoryLevel();
     }
 
     public void StartCustomGame()
@@ -82,9 +86,13 @@ public class GameManager
         objectiveManager.SetObjective(null);
         audioManager.PlayBGM(AudioKey.BGM_main_menu);
 
-        var screen = screenManager.GetScreen<MainMenuScreen>();
-        var controller = new MainMenuScreenController();
-        screen.Show(controller);
+        var controller = new MainMenuScreenController(levelManager.LevelDataBase, OnLevelViewClicked);
+        screenManager.Show<MainMenuScreen>(controller);
+    }
+
+    private void OnLevelViewClicked(PresetLevelData data)
+    {
+        levelManager.StartStoryLevel(data);
     }
 
     public void FinishGame(bool objectiveCompleted, bool isForced = true)
@@ -102,18 +110,17 @@ public class GameManager
 
         if (!isForced) return;
 
-        var screen = screenManager.GetScreen<UIGameFinishScreen>();
         GameFinishScreenController controller;
 
         switch (levelManager.CurrentLevelType)
         {
             case LevelType.Story:
-                UnityAction nextLevel = levelManager.IsLastLevel || !objectiveCompleted ? null : StartNextStoryLevel;
+                UnityAction nextLevel = levelManager.IsLastLevel(levelManager.CurrentStoryLevel.ID) || !objectiveCompleted ? null : StartNextStoryLevel;
                 if (objectiveCompleted)
                 {
                     levelManager.OnNextLevelUnlocked();
                 }
-                controller = new GameFinishScreenController(screenMessage, StartStoryGame, ShowMainMenu, nextLevel);
+                controller = new GameFinishScreenController(screenMessage, ReplayStoryLevel, ShowMainMenu, nextLevel);
                 break;
             case LevelType.Random:
                 controller = new GameFinishScreenController(screenMessage, StartRandomGame, ShowMainMenu);
@@ -126,7 +133,7 @@ public class GameManager
                 break;
         }
 
-        screen.Show(controller);
+        screenManager.Show<UIGameFinishScreen>(controller);
     }
 
     private void OnObjectiveCompleted(OnGameCompletedSignal signal)

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
 {
@@ -8,9 +10,16 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
     private LevelView levelViewPrefab;
     [SerializeField]
     private GameObject levelViewContainer;
+    [SerializeField]
+    private Button backButton;
 
     private List<LevelView> levelViews = new List<LevelView>();
-    private System.Action<LevelData> OnLevelViewClickCallback;
+    private PresetLevelData selectedLevelData;
+
+    private void Start()
+    {
+        backButton.onClick.AddListener(Hide);
+    }
 
     protected override void OnBeforeShow()
     {
@@ -23,9 +32,20 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
 
     }
 
+    protected override void OnAfterHide()
+    {
+        base.OnAfterHide();
+        if (selectedLevelData != null)
+        {
+            Controller.OnLevelSelected?.Invoke(selectedLevelData);
+            selectedLevelData = null;
+        }
+    }
+
     private void OnLevelViewClicked(PresetLevelData levelData)
     {
-        Controller.OnLevelSelected?.Invoke(levelData);
+        selectedLevelData = levelData;
+        Hide();
     }
 
     private LevelView GetAvailableLevelView()

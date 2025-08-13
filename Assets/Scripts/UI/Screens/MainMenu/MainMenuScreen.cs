@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -6,9 +7,11 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
 {
     [Inject]
     private GameManager gameManager;
+    [Inject]
+    private ScreenManager screenManager;
 
     [SerializeField]
-    private Button startStoryGameButton;
+    private Button storyModeButton;
     [SerializeField]
     private Button startCustomGameButton;
     [SerializeField]
@@ -16,18 +19,34 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
     [SerializeField]
     private Button quitButton;
 
+    private Action onAfterHideCallback;
+
     private void Start()
     {
-        startStoryGameButton.onClick.AddListener(StartStoryGame);
         startCustomGameButton.onClick.AddListener(StartCustomGame);
         startRandomGameButton.onClick.AddListener(StartRandomGame);
+        storyModeButton.onClick.AddListener(OnStoryModeButtonClicked);
         quitButton.onClick.AddListener(Quit);
     }
 
-    public void StartStoryGame()
+    private void OnStoryModeButtonClicked()
     {
-        gameManager.StartStoryGame();
+        onAfterHideCallback = ShowLevelSelectionScreen;
+        Hide();
     }
+
+    private void ShowLevelSelectionScreen()
+    {
+        LevelSelectionScreenController controller = new LevelSelectionScreenController(Controller.LevelDataBase.LevelDatas, Controller.OnLevelViewClicked);
+        screenManager.Show<UILevelSelectionScreen>(controller);
+    }
+
+    protected override void OnAfterHide()
+    {
+        base.OnAfterHide();
+        onAfterHideCallback?.Invoke();
+    }
+
     public void StartCustomGame()
     {
         gameManager.StartCustomGame();

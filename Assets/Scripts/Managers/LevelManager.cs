@@ -14,7 +14,8 @@ public class LevelManager
 
     public LevelType CurrentLevelType { get; private set; }
     public LevelData CurrentLevelData { get; private set; }
-    
+    public LevelDataBase LevelDataBase => levelDataBase;
+
     public LevelManager(MazeManager mazeManager, LevelDataBase levelDataBase,
         ObjectivesDataBase objectivesDataBase, MazeSizeDataBase mazeSizeDataBase,
         SignalBus signalBus, EnemyDataBase enemyDataBase, DifficultyDataBase difficultyDataBase,
@@ -61,29 +62,37 @@ public class LevelManager
     }
 
     #region Story Level
-    private int currentStoryLevelIndex = 0;
-    public bool IsLastLevel => currentStoryLevelIndex >= levelDataBase.LevelDatas.Count - 1;
-
-    public void StartStoryLevel()
+    public PresetLevelData CurrentStoryLevel { get; private set; }
+    public bool IsLastLevel(int levelID)
     {
-        if(levelDataBase.LevelDatas[currentStoryLevelIndex] != null)
+        return levelID >= levelDataBase.LevelDatas.Count - 1;
+    }
+
+    public void StartStoryLevel(PresetLevelData data)
+    {
+        if(data != null)
         {
-            LoadLevel(levelDataBase.LevelDatas[currentStoryLevelIndex], LevelType.Story);
+            LoadLevel(data, LevelType.Story);
+            CurrentStoryLevel = data;
         }
     }
 
     public void OnNextLevelUnlocked()
     {
-        if (IsLastLevel) return;
+        if (IsLastLevel(CurrentStoryLevel.ID)) return;
 
-        UnlockLevel(levelDataBase.LevelDatas[currentStoryLevelIndex + 1]);
+        UnlockLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID + 1]);
     }
 
-    public void IncreaseLevelIndex()
+    public void StartNextStoryLevel()
     {
-        if (IsLastLevel) return;
+        if (IsLastLevel(CurrentStoryLevel.ID))
+        {
+            Debug.LogError("No more levels to load, hide the button developer");
+            return;
+        }
 
-        currentStoryLevelIndex++;
+        StartStoryLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID + 1] as PresetLevelData);
     }
 
     #endregion
@@ -134,10 +143,6 @@ public class LevelManager
             case SelectableType.Objective:
                 ObjectiveData objective = signal.Selectable as ObjectiveData;
                 customObjectiveType = objective.ObjectiveType;
-                return;
-            case SelectableType.Level:
-                LevelData levelData = signal.Selectable as LevelData;
-                currentStoryLevelIndex = levelDataBase.GetLevelID(levelData);
                 return;
         }
     }

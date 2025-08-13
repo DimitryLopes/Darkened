@@ -7,78 +7,123 @@ public class ScreenManager
 {
     private readonly UIScreenDataBase screenDataBase;
     private readonly ScreenFactory screenFactory;
-    private Dictionary<Type, IScreen> instantiatedScreens = new Dictionary<Type, IScreen>();
-    private IScreen currentScreen;
 
-    public bool IsShowingScreen => currentScreen != null;
+
+    private readonly Dictionary<Type, IScreen> instantiatedScreens = new();
+    private readonly Stack<IScreen> screenStack = new();
+    private (IScreen, ScreenController) enqueuedScreen = new();
+
+    public IScreen ActiveScreen => screenStack.Peek();
+    public bool IsShowingScreen => screenStack.Count > 0;
+
 
     public ScreenManager(UIScreenDataBase screenDataBase, ScreenFactory screenFactory, SignalBus signalBus)
     {
         this.screenDataBase = screenDataBase;
         this.screenFactory = screenFactory;
 
-        signalBus.Subscribe<OnScreenBeforeHideSignal>(OnScreenBeforeHideSignal);
-        signalBus.Subscribe<OnScreenBeforeShowSignal>(OnScreenBeforeShowSignal);
-        signalBus.Subscribe<OnScreenAfterHideSignal>(OnScreenAfterHideSignal);
-        signalBus.Subscribe<OnScreenAfterShowSignal>(OnScreenAfterShowSignal);
+        signalBus.Subscribe<OnScreenBeforeShowSignal>(OnScreenShown);
+        signalBus.Subscribe<OnScreenAfterHideSignal>(OnScreenHidden);
     }
 
-    public T GetScreen<T>() where T : IScreen
+    private void OnScreenShown(OnScreenBeforeShowSignal signal)
     {
-        Type type = typeof(T);
-        if (screenDataBase.UIScreens.ContainsKey(type))
+        if (enqueuedScreen.Item1 != null)
         {
-            T screen;
-            if (instantiatedScreens.ContainsKey(type))
+            if (enqueuedScreen.Item1 == signal.Screen)
             {
-                screen = (T)instantiatedScreens[type];
+                screenStack.Push(enqueuedScreen.Item1);
+                enqueuedScreen.Item2 = null;
+                enqueuedScreen.Item1 = null;
+            }
+        }
+    }
+
+    private void OnScreenHidden(OnScreenAfterHideSignal signal)
+    {
+        if (ActiveScreen == signal.Screen)
+        {
+            if (enqueuedScreen.Item1 != null)
+            {
+                enqueuedScreen.Item1.Show(enqueuedScreen.Item2);
+                //Debug.Log($"[ScreenManager] Showing enqueued screen {screen}");
+            }
+            else if (screenStack.Count > 1)
+            {
+                screenStack.Pop();
+                ActiveScreen.Show();
+                //Debug.Log($"[ScreenManager] No screens enqueued, showing first in stack {screen}");
             }
             else
             {
-                screen = GetNewScreen<T>(type);
+                screenStack.Pop();
             }
-            return screen;
+            return;
         }
-        Debug.Log($"Screen database doesn't contain a screen of type {type}!");
-        return default(T);
+        //Debug.LogError($"[ScreenManager] Hid {screen} but it was not the first in stack.");
     }
 
-    private T GetNewScreen<T>(Type type) where T : IScreen
+    public void Show<TScreen>(ScreenController controller) where TScreen : IScreen
     {
-        T screen;
-        T newScreen = (T)screenFactory.Create<T>();
+        var newScreen = GetScreen<TScreen>();
+        if (newScreen == null || newScreen.IsShown) return;
+
+        //Debug.Log($"[ScreenManager] Attempting to show {typeof(TScreen)}");
+
+        if (screenStack.Count > 0)
+        {
+            //Debug.Log($"[ScreenManager] Hiding active screen {ActiveScreen.GetType()}");
+            enqueuedScreen = (newScreen, controller);
+            //Debug.Log($"[ScreenManager] Enqueing requestd screen {typeof(TScreen)}");
+            ActiveScreen.Hide();
+            return;
+        }
+
+        ShowScreen(newScreen, controller);
+    }
+
+    private void ShowScreen(IScreen screen, ScreenController controller)
+    {
+        //Debug.Log($"[ScreenManager] Showing {screen.GetType().Name}");
+        screen.Show(controller);
+        screenStack.Push(screen);
+
+    }
+
+    public void HideAll()
+    {
+        IScreen screen = ActiveScreen;
+        screenStack.Clear();
+        screenStack.Push(screen);
+        screen.Hide();
+    }
+
+    public void ClearStack()
+    {
+        IScreen screen = ActiveScreen;
+        screenStack.Clear();
+        screenStack.Push(screen);
+    }
+
+    #region Screen Retrieving
+    public TScreen GetScreen<TScreen>() where TScreen : IScreen
+    {
+        Type type = typeof(TScreen);
+        if (instantiatedScreens.TryGetValue(type, out var screen))
+        {
+            return (TScreen)screen;
+        }
+
+        return InstantiateScreen<TScreen>();
+    }
+
+    private TScreen InstantiateScreen<TScreen>() where TScreen : IScreen
+    {
+        Type type = typeof(TScreen);
+        TScreen newScreen = (TScreen)screenFactory.Create<TScreen>();
         if (newScreen != null)
-        {
             instantiatedScreens.Add(type, newScreen);
-        }
-        screen = newScreen;
-        return screen;
+        return newScreen;
     }
-
-    private void OnScreenAfterShowSignal(OnScreenAfterShowSignal signal)
-    {
-
-    }
-
-    private void OnScreenAfterHideSignal(OnScreenAfterHideSignal signal)
-    {
-        if (currentScreen == signal.Screen)
-        {
-            currentScreen = null;
-        }
-    }
-
-    private void OnScreenBeforeShowSignal(OnScreenBeforeShowSignal signal)
-    {
-        if(currentScreen != null)
-        {
-            currentScreen.Hide();
-        }
-        currentScreen = signal.Screen;
-    }
-
-    private void OnScreenBeforeHideSignal(OnScreenBeforeHideSignal signal)
-    {
-        
-    }
+    #endregion
 }

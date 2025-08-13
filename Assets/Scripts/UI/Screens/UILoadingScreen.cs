@@ -28,11 +28,13 @@ public class UILoadingScreen : UIScreen<LoadingScreenController>
 
     protected override void OnAfterShow()
     {
+        base.OnAfterShow();
         operation.Load();
     }
 
     protected override void OnBeforeHide()
     {
+        base.OnBeforeHide();
         Controller.OnLoadingFinish?.Invoke();
     }
 
