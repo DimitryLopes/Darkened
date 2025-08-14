@@ -63,13 +63,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984568756575314109}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7505434977742495109}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 175, y: -30}
@@ -622,8 +622,8 @@ MonoBehaviour:
   - rid: 6247092227678666757
   componentPriority: 0
   animationTarget: {fileID: 6492270613763828983}
-  deactivateOnHide: 1
-  activateOnShow: 1
+  deactivateOnHide: 0
+  activateOnShow: 0
   playAllAtOnce: 0
   affectedByGetComponent: 1
   overrideOtherAnimationsWhenPlayed: 1
@@ -633,9 +633,9 @@ MonoBehaviour:
     - rid: 6247092227678666756
       type: {class: UIPositionAnimation, ns: , asm: Assembly-CSharp}
       data:
-        duration: 1
+        duration: 0.8
         priority: 0
-        easeType: 9
+        easeType: 16
         useCustomCurve: 0
         customCurve:
           serializedVersion: 2
@@ -695,9 +695,9 @@ MonoBehaviour:
     - rid: 6247092227678666757
       type: {class: UIPositionAnimation, ns: , asm: Assembly-CSharp}
       data:
-        duration: 1
+        duration: 0.8
         priority: 0
-        easeType: 9
+        easeType: 16
         useCustomCurve: 0
         customCurve:
           serializedVersion: 2
@@ -780,13 +780,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4906412216108997045}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7505434977742495109}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 200, y: -35}

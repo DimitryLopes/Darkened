@@ -43,10 +43,6 @@ public class UIAnimationComponent : MonoBehaviour
     }
 
     
-
-    /// <summary>
-    /// Play the 'In' animations to show the UI element.
-    /// </summary>
     public void PlayInAnimations(Action onComplete, bool debug = false)
     {
         if (activateOnShow && !animationTarget.activeSelf)
@@ -62,9 +58,7 @@ public class UIAnimationComponent : MonoBehaviour
         PlayInAnimations(null);
     }
 
-    /// <summary>
-    /// Play the 'Out' animations to hide the UI element.
-    /// </summary>
+
     public void PlayOutAnimations(Action onComplete, bool debug = false)
     {
         onComplete += OnHideAnimationsFinished;

@@ -26,8 +26,6 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
     private UIAnimationComponent instantChangeAnimation;
 
     private List<LevelView> levelViews = new List<LevelView>();
-    private List<LevelView> previouslevelViews = new List<LevelView>();
-    private List<LevelView> nextlevelViews = new List<LevelView>();
     private PresetLevelData selectedLevelData;
     private int currentPageStartingLevelIndex = 0;
 
@@ -54,25 +52,16 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
 
     private void PlayNextPageAnimation()
     {
-        foreach (LevelView levelView in previouslevelViews)
-        {
-            levelView.Deactivate();
-        }
+        pageChangeAnimation.PlayInAnimations(OnNextPageAnimationFinish);
         currentPageStartingLevelIndex += Controller.LevelsPerPage;
         currentPageStartingLevelIndex = currentPageStartingLevelIndex > Controller.LevelDatas.Count - 1 ? 0 : currentPageStartingLevelIndex;
-        pageChangeAnimation.PlayInAnimations(OnNextPageAnimationFinish);
     }
 
     private void PlayPreviousPageAnimation()
     {
-        foreach (LevelView levelView in nextlevelViews)
-        {
-            levelView.Deactivate();
-        }
-
-        currentPageStartingLevelIndex -= Controller.LevelsPerPage;
-        currentPageStartingLevelIndex = currentPageStartingLevelIndex < 0 ? currentPageStartingLevelIndex : Controller.LevelDatas.Count - 1;
         pageChangeAnimation.PlayOutAnimations(OnPreviousPageAnimationFinish);
+        currentPageStartingLevelIndex -= Controller.LevelsPerPage;
+        currentPageStartingLevelIndex = currentPageStartingLevelIndex < 0 ? Controller.LevelDatas.Count - 1 : currentPageStartingLevelIndex ;
     }
 
     private void OnNextPageAnimationFinish()
