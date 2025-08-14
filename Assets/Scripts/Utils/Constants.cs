@@ -9,6 +9,12 @@ public static class Constants
         public const string VERTICAL_AXIS = "Vertical";
     }
 
+    public static class UI 
+    {
+        public const int LEVEL_SELECTION_SCREEN_LEVEL_COUNT_PER_PAGE =10;
+    }
+
+
     public static class Player
     {
         public const float PLAYER_DEFAULT_TORCH_SIZE = 1;

@@ -7,9 +7,7 @@ public class UIStaminaBar : MonoBehaviour
     private Image barImage;
 
     [SerializeField, Header("Animation")]
-    private UIAnimationComponent exaustedAnimation;
-    [SerializeField]
-    private UIAnimationComponent recoveredAnimation;
+    private UIAnimationComponent staminaAnimation;
 
     private Player player;
 
@@ -23,25 +21,19 @@ public class UIStaminaBar : MonoBehaviour
         barImage.fillAmount = player.CurrentStamina / player.MaxStamina;
     }
 
-    public void DoExaustedAnimation()
+    public void PlayExaustedAnimation()
     {
-        exaustedAnimation.PlayInAnimations();
+        staminaAnimation.PlayInAnimations(PlayExaustedAnimation);
     }
 
-    public void DoStaminaRecoveredAnimation()
+    public void PlayStaminaRecoveredAnimation()
     {
-        exaustedAnimation.StopCurrentAnimations();
-        recoveredAnimation.PlayInAnimations(DoRecoveryOutAnimation);
-    }
-
-    private void DoRecoveryOutAnimation()
-    {
-        recoveredAnimation.PlayOutAnimations();
+        staminaAnimation.StopCurrentAnimations();
+        staminaAnimation.PlayOutAnimations();
     }
 
     public void StopAnimations()
     {
-        exaustedAnimation.StopCurrentAnimations();
-        recoveredAnimation.StopCurrentAnimations();
+        staminaAnimation.StopCurrentAnimations();
     }
 }

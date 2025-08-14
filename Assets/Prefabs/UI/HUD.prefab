@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1570974318986289141}
   - component: {fileID: 5489465040362081969}
   m_Layer: 5
-  m_Name: ExaustedAnimation
+  m_Name: StaminaAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,18 +48,174 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inAnimations: []
-  outAnimations: []
+  inAnimations:
+  - rid: 6247092227678666752
+  - rid: 6247092227678666753
+  outAnimations:
+  - rid: 6247092227678666754
+  - rid: 6247092227678666755
   componentPriority: 0
-  animationTarget: {fileID: 0}
-  deactivateOnHide: 1
-  activateOnShow: 1
+  animationTarget: {fileID: 4877489057585974400}
+  deactivateOnHide: 0
+  activateOnShow: 0
   playAllAtOnce: 0
   affectedByGetComponent: 1
   overrideOtherAnimationsWhenPlayed: 1
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6247092227678666752
+      type: {class: UIColorAnimation, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 0.3
+        priority: 0
+        easeType: 1
+        useCustomCurve: 0
+        customCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        loopCount: 0
+        startDelay: 0
+        ignoreTimeScale: 0
+        targetType: 0
+        targetImage: {fileID: 8427846001913862512}
+        targetText: {fileID: 0}
+        targetColor: {r: 0.3433962, g: 0.318997, b: 0.24037732, a: 0.5686275}
+    - rid: 6247092227678666753
+      type: {class: UIColorAnimation, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 0.3
+        priority: 0
+        easeType: 1
+        useCustomCurve: 0
+        customCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        loopCount: 0
+        startDelay: 0
+        ignoreTimeScale: 0
+        targetType: 0
+        targetImage: {fileID: 8427846001913862512}
+        targetText: {fileID: 0}
+        targetColor: {r: 0.7058824, g: 0.60784316, b: 0.38823533, a: 1}
+    - rid: 6247092227678666754
+      type: {class: UIColorAnimation, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 0.1
+        priority: 0
+        easeType: 1
+        useCustomCurve: 0
+        customCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        loopCount: 0
+        startDelay: 0
+        ignoreTimeScale: 0
+        targetType: 0
+        targetImage: {fileID: 8427846001913862512}
+        targetText: {fileID: 0}
+        targetColor: {r: 1, g: 1, b: 1, a: 1}
+    - rid: 6247092227678666755
+      type: {class: UIColorAnimation, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 0.3
+        priority: 0
+        easeType: 1
+        useCustomCurve: 0
+        customCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        loopCount: 0
+        startDelay: 0
+        ignoreTimeScale: 0
+        targetType: 0
+        targetImage: {fileID: 8427846001913862512}
+        targetText: {fileID: 0}
+        targetColor: {r: 0.7058824, g: 0.60784316, b: 0.38823533, a: 1}
 --- !u!1 &310043620733222204
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,8 +510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barImage: {fileID: 8427846001913862512}
-  exaustedAnimation: {fileID: 5489465040362081969}
-  recoveredAnimation: {fileID: 8399098598273533248}
+  staminaAnimation: {fileID: 5489465040362081969}
 --- !u!1 &1034477310220632764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,66 +1730,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &4297709350554639133
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 69667874725844762}
-  - component: {fileID: 8399098598273533248}
-  m_Layer: 5
-  m_Name: RecoveryAnimation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &69667874725844762
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297709350554639133}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5311456144546514784}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 831.501, y: -726.5997}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8399098598273533248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297709350554639133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a204e89eb3a6bf345a47a171efca9ef2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inAnimations: []
-  outAnimations: []
-  componentPriority: 0
-  animationTarget: {fileID: 0}
-  deactivateOnHide: 1
-  activateOnShow: 1
-  playAllAtOnce: 0
-  affectedByGetComponent: 1
-  overrideOtherAnimationsWhenPlayed: 1
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &4877489057585974400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,7 +1761,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1570974318986289141}
-  - {fileID: 69667874725844762}
   m_Father: {fileID: 1633636862539406342}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

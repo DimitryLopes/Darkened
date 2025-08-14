@@ -25,12 +25,12 @@ public class PlayerHUD : Activateable
 
     private void OnPlayerStaminaExausted()
     {
-        staminaBar.DoExaustedAnimation();
+        staminaBar.PlayExaustedAnimation();
     }
 
     private void OnPlayerExaustionRecovered()
     {
-        staminaBar.DoStaminaRecoveredAnimation();
+        staminaBar.PlayStaminaRecoveredAnimation();
     }
 
     public override void OnActivate()

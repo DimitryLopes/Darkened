@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +30,16 @@ public class LevelView : Activateable
 
     private void OnButtonClick()
     {
-        clickAnimation.PlayInAnimations();
+        clickAnimation.PlayInAnimations(PlayOutAnimation);
+    }
+
+    private void PlayOutAnimation()
+    {
+        clickAnimation.PlayOutAnimations(OnAnimationFinished);
+    }
+
+    private void OnAnimationFinished()
+    {
         onViewClickedCallback?.Invoke(LevelData);
     }
 }
