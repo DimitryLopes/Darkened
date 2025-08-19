@@ -19,6 +19,8 @@ public class DifficultyData : ScriptableObject, IUISelectable
     private float litTorchRatio;
 
     [SerializeField, Header("Items")]
+    private float spiritMovementSpeedModifier;
+    [SerializeField]
     private List<DifficultyItemData> difficultyItemDatas;
 
     public float MinimumTorchRatio => minTorchRatio;
@@ -31,6 +33,7 @@ public class DifficultyData : ScriptableObject, IUISelectable
     public DifficultyType DifficultyType => difficulty;
 
     public SelectableType SelectableType => SelectableType.Difficulty;
+    public float SpiritMovementSpeedModifier => spiritMovementSpeedModifier;
 
     [Serializable]
     public struct DifficultyItemData

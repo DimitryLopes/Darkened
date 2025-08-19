@@ -41,4 +41,5 @@ public enum ObjectiveType
     KillMonster,
     Survive,
     FinishAltar,
+    CatchSpirits,
 }

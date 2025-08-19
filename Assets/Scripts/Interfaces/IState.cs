@@ -1,4 +1,4 @@
-public interface IEnemyState : IActivateable
+public interface IState : IActivateable
 {
     void RawDeactivate();
     void HandleState();

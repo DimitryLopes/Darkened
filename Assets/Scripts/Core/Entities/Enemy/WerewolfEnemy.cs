@@ -28,10 +28,10 @@ public class WerewolfEnemy : Enemy
     [SerializeField]
     private VignetteAnimationData trackingPostProcessingEffect;
 
-    private MovingTowardsTargetEnemyState wanderingState;
-    private MovingTowardsTargetEnemyState investigatingState;
-    private MovingTowardsTargetEnemyState trackingState;
-    private MovingTowardsTargetEnemyState distractedState;
+    private MovingTowardsTargetState wanderingState;
+    private MovingTowardsTargetState investigatingState;
+    private MovingTowardsTargetState trackingState;
+    private MovingTowardsTargetState distractedState;
     private ChasingEnemyState chasingState;
     private WaitingEnemyState waitingState;
     private WaitingEnemyState distractedWaitingEnemyState;
@@ -78,7 +78,7 @@ public class WerewolfEnemy : Enemy
 
     private void CreateDatas()
     {
-        var chasingData = new BaseEnemyStateData(this, true, OnChasingEnded, OnChasingStarted, null);
+        var chasingData = new BaseStateData(this, true, OnChasingEnded, OnChasingStarted, null);
 
         chasingState = new ChasingEnemyState(chasingData);
         waitingState = CreateWaitingStateData(OnWaitingCompleted, waitingTime);
@@ -91,14 +91,14 @@ public class WerewolfEnemy : Enemy
 
     private WaitingEnemyState CreateWaitingStateData(UnityAction onWaitingEnded, float duration)
     {
-        var data = new WaitingEnemyStateData(this, false, duration, null, null, onWaitingEnded);
+        var data = new WaitingStateData(this, false, duration, null, null, onWaitingEnded);
         return new WaitingEnemyState(data);
     }
 
-    private MovingTowardsTargetEnemyState CreateMovingStateData(bool isSprinting, UnityAction onStateDeactivated, UnityAction onStateActivated, UnityAction onStateCompleted)
+    private MovingTowardsTargetState CreateMovingStateData(bool isSprinting, UnityAction onStateDeactivated, UnityAction onStateActivated, UnityAction onStateCompleted)
     {
-        var data = new BaseEnemyStateData(this, isSprinting, onStateDeactivated, onStateActivated, onStateCompleted);
-        return new MovingTowardsTargetEnemyState(data);
+        var data = new BaseStateData(this, isSprinting, onStateDeactivated, onStateActivated, onStateCompleted);
+        return new MovingTowardsTargetState(data);
     }
 
 
@@ -175,7 +175,7 @@ public class WerewolfEnemy : Enemy
 
     private void OnMazeChangedDinamically(OnMazeChangedDinamicallySignal signal)
     {
-        if (currentState is not MovingTowardsTargetEnemyState movingState) return;
+        if (currentState is not MovingTowardsTargetState movingState) return;
 
         var path = movingState.Path;
         if (path == null || path.Count == 0) return;

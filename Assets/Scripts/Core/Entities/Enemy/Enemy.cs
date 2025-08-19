@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class Enemy : Activateable
+public abstract class Enemy : Activateable, IStateUser
 {
     [SerializeField]
     private Collider2D enemyCollider;
@@ -15,7 +15,7 @@ public abstract class Enemy : Activateable
 
     protected CameraManager cameraManager;
     protected AudioManager audioManager;
-    protected IEnemyState currentState;
+    protected IState currentState;
     protected SignalBus signalBus;
     protected Player Player;
     protected Maze Maze;
@@ -26,6 +26,7 @@ public abstract class Enemy : Activateable
     public float DetectionRange => data.DetectionRange;
     public float MovementSpeed => data.Speed;
     public float SprintingSpeed => data.Speed * data.SprintingSpeedMultiplier;
+    public Transform Transform => transform;
 
     [Inject]
     public virtual void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager,
@@ -54,7 +55,7 @@ public abstract class Enemy : Activateable
         Maze = maze;
     }
 
-    protected virtual void ChangeState(IEnemyState state)
+    protected virtual void ChangeState(IState state)
     {
         if (state == currentState) return;
 

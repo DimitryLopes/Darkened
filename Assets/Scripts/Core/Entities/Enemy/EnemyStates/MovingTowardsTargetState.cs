@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
+public class MovingTowardsTargetState : State<BaseStateData>
 {
     protected Node currentTarget;
     protected Node closestNode;
@@ -11,13 +11,13 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
     public Stack<Node> Path => path;
     
 
-    public MovingTowardsTargetEnemyState(BaseEnemyStateData data) : base(data)
+    public MovingTowardsTargetState(BaseStateData data) : base(data)
     {
     }
 
     private void SetclosestNode(Maze maze)
     {
-        closestNode = MazeUtils.GetClosestNodeToVector(Enemy.transform.position, maze.Nodes);
+        closestNode = MazeUtils.GetClosestNodeToVector(Transform.transform.position, maze.Nodes);
     }
 
     public virtual void SetPath(Maze maze, Node target = null)
@@ -25,12 +25,6 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
         SetclosestNode(maze);
         currentTarget = target != null ? target : maze.Nodes.GetRandom();
         path = MazeUtils.GetPathFromNodeToNode(closestNode, currentTarget, maze);
-        string pathString = "Path: ";
-        foreach (Node node in path)
-        {
-            pathString += "[" + node.Coordinates.X + ","+ node.Coordinates.Y + "]" + " -> ";
-        }
-        Debug.Log(pathString + "End");
         path.Pop();
     }
 
@@ -50,10 +44,10 @@ public class MovingTowardsTargetEnemyState : EnemyState<BaseEnemyStateData>
     {
         Node nextNode = path.Peek();
         Vector3 targetDirection = nextNode.transform.position;
-        Vector3 direction = targetDirection - Enemy.transform.position;
+        Vector3 direction = targetDirection - Transform.position;
 
-        Enemy.Move(direction, Data.IsSprinting);
-        float distance = Vector3.Distance(Enemy.transform.position, nextNode.transform.position);
+        Data.User.Move(direction, Data.IsSprinting);
+        float distance = Vector3.Distance(Transform.position, nextNode.transform.position);
         if (distance < 0.25f)
         {
             path.Pop();

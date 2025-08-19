@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class WaitingEnemyState : EnemyState<WaitingEnemyStateData>
+public class WaitingEnemyState : State<WaitingStateData>
 {
     private float timeRemaining;
 
-    public WaitingEnemyState(WaitingEnemyStateData data) : base(data)
+    public WaitingEnemyState(WaitingStateData data) : base(data)
     {
     }
 
@@ -12,7 +12,6 @@ public class WaitingEnemyState : EnemyState<WaitingEnemyStateData>
     {
         base.OnActivate();
         timeRemaining = Data.WaitingTime;
-        Enemy.Move(Vector3.zero);
     }
 
     public override void HandleState()

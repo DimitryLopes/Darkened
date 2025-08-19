@@ -18,6 +18,7 @@ MonoBehaviour:
   minTorchRatio: 0.3
   maxTorchRatio: 0.4
   litTorchRatio: 0.5
+  spiritMovementSpeedModifier: 0.8
   difficultyItemDatas:
   - probability: 0.805
     item: 7

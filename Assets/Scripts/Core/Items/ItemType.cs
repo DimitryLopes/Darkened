@@ -13,4 +13,6 @@ public enum ItemType
     Altar,
     Switch,
     Energetic,
+    Spirit,
+    FakeSpirit,
 }

@@ -1,8 +1,9 @@
+using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
+public abstract class State<U> : IState where U : BaseStateData
 {
-    protected Enemy Enemy => Data.Enemy;
+    protected Transform Transform => Data.User.Transform;
     public bool IsActive { get; private set; }
     public bool IsCompleted { get; private set; }
     protected U Data { get; private set; }
@@ -10,7 +11,7 @@ public abstract class EnemyState<U> : IEnemyState where U : BaseEnemyStateData
     public UnityAction OnStateStartedCallback { get; set; }
 
 
-    public EnemyState(U data)
+    public State(U data)
     {
         Data = data;
     }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class ChasingEnemyState : EnemyState<BaseEnemyStateData>
+public class ChasingEnemyState : State<BaseStateData>
 {
     protected Transform currentTarget;
-    public ChasingEnemyState(BaseEnemyStateData data) : base(data)
+    public ChasingEnemyState(BaseStateData data) : base(data)
     {
     }
 
@@ -14,6 +14,6 @@ public class ChasingEnemyState : EnemyState<BaseEnemyStateData>
 
     public override void HandleState()
     {
-        Enemy.Move(currentTarget.position - Enemy.transform.position, true);
+        Data.User.Move(currentTarget.position - Transform.transform.position, true);
     }
 }
