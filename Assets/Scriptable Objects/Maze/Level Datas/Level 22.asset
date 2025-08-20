@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeData: {fileID: 11400000, guid: 45c8d88c8e4df2944bae2ad76a1545f7, type: 2}
   objectiveData: {fileID: 11400000, guid: ec27605dde3870444aa2bbaa59e1049a, type: 2}
-  unlockConditionData: {fileID: 11400000, guid: f9c4d37ffd4e48742b6e837efde38cbb, type: 2}
+  unlockConditionData: {fileID: 11400000, guid: 427464a7bb552454e87acf9e70334f3e, type: 2}
   enemyType: 0
   difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
   wallPositions:

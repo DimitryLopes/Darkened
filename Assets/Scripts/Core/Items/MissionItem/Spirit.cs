@@ -8,8 +8,6 @@ public class Spirit : MissionItem, IStateUser
 
     [SerializeField]
     private Rigidbody2D rb;
-    [SerializeField]
-    private float movementSpeed;
 
     public override ItemType Type => ItemType.Spirit;
 
@@ -32,7 +30,7 @@ public class Spirit : MissionItem, IStateUser
     public void Move(Vector3 target, bool isSprinting = false)
     {
         Vector3 direction = target.normalized;
-        rb.velocity = direction * movementSpeed * mazeManager.CurrentMaze.Data.DifficultyData.SpiritMovementSpeedModifier;
+        rb.velocity = direction * mazeManager.CurrentMaze.Data.DifficultyData.SpiritMovementSpeedModifier;
 
         if (target != Vector3.zero)
         {
