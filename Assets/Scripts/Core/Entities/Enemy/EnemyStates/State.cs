@@ -7,8 +7,6 @@ public abstract class State<U> : IState where U : BaseStateData
     public bool IsActive { get; private set; }
     public bool IsCompleted { get; private set; }
     protected U Data { get; private set; }
-    public UnityAction OnStateEndedCallback { get; set; }
-    public UnityAction OnStateStartedCallback { get; set; }
 
 
     public State(U data)
@@ -43,8 +41,8 @@ public abstract class State<U> : IState where U : BaseStateData
         if (!IsCompleted)
         {
             IsCompleted = true;
-            OnComplete();
             Deactivate();
+            OnComplete();
         }
     }
 
@@ -62,14 +60,10 @@ public abstract class State<U> : IState where U : BaseStateData
     public virtual void OnActivate() 
     {
         Data.OnActivateCallback?.Invoke();
-        OnStateStartedCallback?.Invoke();
-        OnStateStartedCallback = null;
     }
 
     public virtual void OnComplete()
     {
         Data.OnStateCompletedCallback?.Invoke();
-        OnStateEndedCallback?.Invoke();
-        OnStateEndedCallback = null;
     }
 }

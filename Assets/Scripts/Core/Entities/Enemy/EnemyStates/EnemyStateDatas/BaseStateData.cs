@@ -15,7 +15,6 @@ public class BaseStateData
 
     public IStateUser User { get; private set; }
     public bool IsSprinting { get; private set; }
-
     public UnityAction OnDeactivateCallback { get; private set; }
     public UnityAction OnActivateCallback { get; private set; }
     public UnityAction OnStateCompletedCallback { get; private set; }

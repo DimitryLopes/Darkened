@@ -100,11 +100,6 @@ MonoBehaviour:
     wallType: 0
   - coordinate:
       x: 2
-      y: 7
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 2
       y: 8
     direction: 2
     wallType: 0

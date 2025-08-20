@@ -17,7 +17,7 @@ public class MovingTowardsTargetState : State<BaseStateData>
 
     private void SetclosestNode(Maze maze)
     {
-        closestNode = MazeUtils.GetClosestNodeToVector(Transform.transform.position, maze.Nodes);
+        closestNode = MazeUtils.GetClosestNodeToVector(Transform.position, maze.Nodes);
     }
 
     public virtual void SetPath(Maze maze, Node target = null)

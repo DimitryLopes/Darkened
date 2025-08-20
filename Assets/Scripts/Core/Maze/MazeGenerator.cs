@@ -307,8 +307,8 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < items.Count; i++)
         {
-            items[i].Activate();
             PositionItem(items[i]);
+            items[i].Activate();
             yield return LoadingUtils.GetProgress(i + randomItemAmount, items.Count + randomItemAmount);
         }
     }
@@ -678,7 +678,6 @@ public class MazeGenerator : MonoBehaviour
             }
             Item item = mazeManager.GetAvailableItem(itemData.Item.Type);
             item.transform.SetParent(itemsContainer);
-            item.Activate();
 
             if (item.Type == ItemType.Switch)
             {
@@ -701,6 +700,8 @@ public class MazeGenerator : MonoBehaviour
                     PlaceObjectOnWall(item, itemData.Direction, wall);
                     break;
             }
+
+            item.Activate();
             currentItem++;
             yield return LoadingUtils.GetProgress(currentItem, totalItems);
         }
@@ -781,7 +782,6 @@ public class MazeGenerator : MonoBehaviour
     {
         float rotation = NodeUtils.GetWallRotationByCardinal(direction);
         item.transform.SetPositionAndRotation(wall.transform.position, Quaternion.Euler(0, 0, rotation));
-        Debug.Log($"Positioning item {item.name} at {name} in direction {direction} \n position = {item.transform.position} \n rotation: {item.transform.rotation}.");
     }
 
     #region Torches

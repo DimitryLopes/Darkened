@@ -17,26 +17,26 @@ public class FakeSpirit : Item, IStateUser
     public override void OnActivate()
     {
         base.OnActivate();
-        BaseStateData data = new BaseStateData(this, false, MoveToAnotherNode, null, MoveToAnotherNode);
+        BaseStateData data = new BaseStateData(this, false, MoveToNode, null, null);
         movingTowardsTargetState = new MovingTowardsTargetState(data);
-        movingTowardsTargetState.Activate();
+        MoveToNode();
     }
 
-    private void MoveToAnotherNode()
+    private void Update()
+    {
+        movingTowardsTargetState.HandleState();
+    }
+
+    private void MoveToNode()
     {
         movingTowardsTargetState.SetPath(mazeManager.CurrentMaze);
+        movingTowardsTargetState.Activate();
     }
 
     public void Move(Vector3 target, bool isSprinting = false)
     {
         Vector3 direction = target.normalized;
         rb.velocity = direction * mazeManager.CurrentMaze.Data.DifficultyData.SpiritMovementSpeedModifier;
-
-        if (target != Vector3.zero)
-        {
-            float angle = Mathf.Atan2(-direction.x, direction.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
-        }
     }
 
     public override void Interact()

@@ -52,7 +52,6 @@ public class WerewolfEnemy : Enemy
     {
         distraction = null;
         signalBus.Subscribe<OnMazeChangedDinamicallySignal>(OnMazeChangedDinamically);
-        waitingState.OnStateEndedCallback = null;
         ChangeState(waitingState);
     }
 
