@@ -3,6 +3,7 @@ using Zenject;
 public class Gate : MazeWall, IToggable
 {
     private (Node,Node) nodes;
+    public ShadowCasterHelper ShadowHelper { get; set; }
 
     public bool Toggled => IsActive;
 
@@ -12,11 +13,8 @@ public class Gate : MazeWall, IToggable
         mazeManager.MazeGenerator.RemoveWallBetween(nodes.Item1, nodes.Item2);
         else
         mazeManager.MazeGenerator.ActivateWallBetween(nodes.Item1, nodes.Item2);
-    }
 
-    public override void OnWallCreated(SignalBus signalBus)
-    {
-        this.signalBus = signalBus;
+        signalBus.Fire(new OnMazeChangedDinamicallySignal(null, this));
     }
 
     public void Setup((Node,Node) nodes)

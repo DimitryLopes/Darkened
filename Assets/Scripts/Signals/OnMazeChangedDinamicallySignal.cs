@@ -3,9 +3,9 @@ public class OnMazeChangedDinamicallySignal
     public Node Node { get; private set; }
     public MazeWall Wall { get; private set; }
 
-    public OnMazeChangedDinamicallySignal(Node node, MazeWall isWall)
+    public OnMazeChangedDinamicallySignal(Node node, MazeWall wall)
     {
         Node = node;
-        Wall = isWall;
+        Wall = wall;
     }
 }

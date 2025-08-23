@@ -11,6 +11,7 @@ TagManager:
   - Node Item
   - Wall Item Replace
   - Node Item Replace
+  - Gate
   layers:
   - Default
   - TransparentFX
