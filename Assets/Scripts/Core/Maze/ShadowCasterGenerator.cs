@@ -129,7 +129,7 @@ public class ShadowCasterGenerator : MonoBehaviour
         switch (addedPaths.Count)
         {
             case 0:
-                return; // No changes, nothing to do
+                break; // No changes, nothing to do
             case 1:
                 UpdatePath(addedPaths[0]);
                 break;
@@ -137,7 +137,8 @@ public class ShadowCasterGenerator : MonoBehaviour
                 UpdatePath(addedPaths[0]);
                 UpdatePath(addedPaths[1]);
                 break;
-        }        
+        }   
+        lastPaths = newPaths;
     }
 
     private void UpdatePath(Vector2[] path)
