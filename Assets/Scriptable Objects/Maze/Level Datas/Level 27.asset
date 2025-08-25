@@ -589,7 +589,7 @@ MonoBehaviour:
       y: 9
     item: {fileID: -6265309428430385331, guid: 78ac1cbbfa9812447a5a39af1e46ffd3, type: 3}
     direction: 2
-    AssociateWith: wall north [8,4], wall north [7,7]
+    AssociateWith: wall north [8,4]& wall north [7,7]
     SpawnType: 1
     ItemType: 11
   - coordinate:

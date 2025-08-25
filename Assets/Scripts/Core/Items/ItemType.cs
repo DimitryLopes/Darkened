@@ -15,4 +15,7 @@ public enum ItemType
     Energetic,
     Spirit,
     FakeSpirit,
+    PressurePlate,
+    PoisonDartTrap,
+    PoisonDart,
 }
