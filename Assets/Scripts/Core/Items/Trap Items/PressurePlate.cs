@@ -10,6 +10,8 @@ public class PressurePlate : TrapItem, IToggable
     [SerializeField]
     private Sprite deactivatedSprite;
 
+    public override ItemType Type => ItemType.PressurePlate;
+
     public bool Toggled { get; private set; }
 
     public void Toggle(MazeManager mazeManager)

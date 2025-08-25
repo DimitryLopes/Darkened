@@ -101,7 +101,10 @@ public class PresetLevelDataEditor : Editor
                 ItemType.Altar => new Color(0.4f, 0.4f, 0.4f, 1),
                 ItemType.Spirit => new Color(1, 0, 0.3f, 1),
                 ItemType.FakeSpirit => new Color(1, 0.2f, 0.3f, 1),
-                _ => Color.cyan
+                ItemType.PressurePlate => new Color(0.7f, 0.7f, 0.7f, 1),
+                ItemType.PoisonDartTrap => new Color(0.1f, 0.8f, 0.1f, 1),
+                ItemType.Energetic => Color.magenta,
+                _ => Color.white
             };
 
             switch (presetItem.Item.GenerationData.SpawnType)

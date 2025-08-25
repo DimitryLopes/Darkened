@@ -18,6 +18,8 @@ public class PoisonDart : TrapItem, IProjectile
     public float TravelTime => travelTime;
     public float Speed => speed;
 
+    public override ItemType Type => ItemType.PoisonDart;
+
     public void OnHit(Collider2D collision)
     {
         if (collision.CompareTag(Constants.LayersAndTags.PLAYER_TAG))

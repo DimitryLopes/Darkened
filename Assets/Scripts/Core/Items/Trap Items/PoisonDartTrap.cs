@@ -15,6 +15,9 @@ public class PoisonDartTrap : TrapItem
     private float triggerCooldown = 2;
     private float internalCooldown = 0;
 
+    public override ItemType Type => ItemType.PoisonDartTrap;
+
+
     private void Update()
     {
         if (internalCooldown > 0)

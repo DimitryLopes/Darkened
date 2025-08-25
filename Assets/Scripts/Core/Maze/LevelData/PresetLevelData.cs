@@ -31,7 +31,7 @@ public struct PresetItemData
     private Item item;
     [SerializeField, ShowIf(nameof(SpawnType), SpawnType.Wall, SpawnType.EdgeWalls)]
     private Cardinal direction;
-    [SerializeField, ShowIf(nameof(ItemType), ItemType.Switch)]
+    [SerializeField, ShowIf(nameof(ItemType), ItemType.Switch, ItemType.PressurePlate)]
     public string AssociateWith;
 
     [SerializeField, HideInInspector]
