@@ -65,7 +65,7 @@ public class DeveloperTools
     #region Player 
     public void ActivatePlayerTorch()
     {
-        entityManager.GetPlayer().ActiveTorch();
+        entityManager.GetPlayer().ActivateTorch();
     }
 
     public void DeactivatePlayerTorch()

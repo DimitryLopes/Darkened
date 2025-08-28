@@ -167,9 +167,7 @@ public class WerewolfEnemy : Enemy
     private Node GetPlayerNode()
     {
         Node playerNode = MazeUtils.GetClosestNodeToVector(Player.transform.position, Maze.Nodes);
-        return playerNode;
-
-        
+        return playerNode;        
     }
 
     private void OnMazeChangedDinamically(OnMazeChangedDinamicallySignal signal)
@@ -252,8 +250,6 @@ public class WerewolfEnemy : Enemy
         }
     }
 
-
-
     #region Callbacks
     private void OnChasingStarted()
     {
@@ -287,7 +283,6 @@ public class WerewolfEnemy : Enemy
 
     private void OnInvestigationStarted()
     {
-
         PlaySFX(AudioKey.SFX_enemy_sniff);
         investigatingState.SetPath(Maze, GetPlayerNode());
     }

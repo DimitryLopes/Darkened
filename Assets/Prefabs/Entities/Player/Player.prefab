@@ -165,12 +165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f249cd5645c91a84f94bd3b9cf7ce15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTorch: {fileID: 4020834806139711318}
   movement: {fileID: 6005018496085755486}
   statusSO: {fileID: 11400000, guid: 35facf83647770f4cbdb5485958d0b04, type: 2}
   interaction: {fileID: 272070270571167502}
-  defaultTorchColor: {r: 1, g: 1, b: 1, a: 1}
-  spectalTorchColor: {r: 0.50980395, g: 1, b: 1, a: 1}
+  torch: {fileID: 6540329509454438479}
 --- !u!50 &9110118225361265098
 Rigidbody2D:
   serializedVersion: 4
@@ -245,6 +243,7 @@ GameObject:
   - component: {fileID: 4020834806139711318}
   - component: {fileID: 2784344638494727278}
   - component: {fileID: 3488212282827469860}
+  - component: {fileID: 6540329509454438479}
   m_Layer: 11
   m_Name: PlayerTorch
   m_TagString: Untagged
@@ -380,3 +379,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!114 &6540329509454438479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4766857817605680351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b695d13015a13c40a5c1360a4a61944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTorch: {fileID: 4020834806139711318}
+  defaultTorchColor: {r: 0.90188676, g: 0.8665146, b: 0.692581, a: 1}
+  spectalTorchColor: {r: 0.35283017, g: 1, b: 0.9837409, a: 1}

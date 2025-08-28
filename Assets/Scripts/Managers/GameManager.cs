@@ -37,7 +37,7 @@ public class GameManager
         IsOnPhone = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
-        signalBus.Subscribe<OnGameCompletedSignal>(OnObjectiveCompleted);
+        signalBus.Subscribe<OnGameCompletedSignal>(OnGameCompleted);
         signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStart);
         signalBus.Subscribe<OnNewGameStartedSignal>(OnNewGameStarted);
     }
@@ -136,7 +136,7 @@ public class GameManager
         screenManager.Show<UIGameFinishScreen>(controller);
     }
 
-    private void OnObjectiveCompleted(OnGameCompletedSignal signal)
+    private void OnGameCompleted(OnGameCompletedSignal signal)
     {
         FinishGame(signal.Won);
     }
@@ -156,6 +156,8 @@ public class GameManager
 
         player.transform.position = mazeManager.CurrentStartingNode.transform.position;
         player.ResetPlayer();
+
+        signalBus.Fire(new OnPlayerSpawnedSignal(player));
 
         if (levelManager.CurrentLevelData.EnemyType != EnemyType.None)
         {

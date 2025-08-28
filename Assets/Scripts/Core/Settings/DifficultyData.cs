@@ -18,6 +18,14 @@ public class DifficultyData : ScriptableObject, IUISelectable
     [SerializeField, Range(0, 1), Tooltip("Ration of torches that should be lit on start")]
     private float litTorchRatio;
 
+    [SerializeField, Header("Core")]
+    private float maxDarknessTime;
+
+    [SerializeField, Header("Player")]
+    private float playerTorchBurnSpeedModifier;
+    [SerializeField, Tooltip("In seconds")]
+    private float playerTorchLifeTime;
+
     [SerializeField, Header("Items")]
     private float spiritMovementSpeedModifier;
     [SerializeField]
@@ -29,9 +37,10 @@ public class DifficultyData : ScriptableObject, IUISelectable
     public float TorchRadius => torchRadius;
     public string Title => difficultyName;
     public List<DifficultyItemData> DifficultyItemDatas => difficultyItemDatas;
-
+    public float PlayerTorchBurnSpeedModifier => playerTorchBurnSpeedModifier;
+    public float PlayerTorchLifeTime => playerTorchLifeTime;
+    public float MaxDarknessTime => maxDarknessTime;
     public DifficultyType DifficultyType => difficulty;
-
     public SelectableType SelectableType => SelectableType.Difficulty;
     public float SpiritMovementSpeedModifier => spiritMovementSpeedModifier;
 

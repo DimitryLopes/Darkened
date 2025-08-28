@@ -9,7 +9,6 @@ public class Torch : Item
     private CircleCollider2D lightCollider;
 
     private Cardinal alignedWith;
-
     
     public bool isLit => torchlight.enabled;
     public Cardinal AlignedWith => alignedWith;
@@ -22,6 +21,8 @@ public class Torch : Item
             if(isLit)
             {
                 DeactivateLights();
+                signalBus.Fire(new OnTorchAbsorbedSignal(this));
+                canInteract = false;
             }
             else
             {
@@ -38,6 +39,7 @@ public class Torch : Item
     public override void OnActivate()
     {
         base.OnActivate();
+        canInteract = true;
         DeactivateLights();
     }
 

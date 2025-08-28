@@ -3,17 +3,10 @@ using UnityEngine;
 
 public static class Constants
 {
-    public static class Axis
-    {
-        public const string HORIZONTAL_AXIS = "Horizontal";
-        public const string VERTICAL_AXIS = "Vertical";
-    }
-
     public static class UI 
     {
         public const int LEVEL_SELECTION_SCREEN_LEVEL_COUNT_PER_PAGE =10;
     }
-
 
     public static class Player
     {
@@ -60,6 +53,7 @@ public static class Constants
         public const string WALL_TAG = "Wall";
         public const string PLAYER_TAG = "Player";
         public const string ENEMY_TAG = "Enemy";
+        public const string TORCH_TAG = "Torch";
         public const string WALL_ITEM_TAG = "Wall Item";
         public const string NODE_ITEM_TAG = "Node Item";
         public const string WALL_ITEM_REPLACE_TAG = "Wall Item Replace";

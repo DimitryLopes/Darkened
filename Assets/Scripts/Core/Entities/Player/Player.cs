@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using Zenject;
 
 public class Player : MonoBehaviour
@@ -12,27 +12,28 @@ public class Player : MonoBehaviour
     private HUD hud;
 
     [SerializeField]
-    private Light2D playerTorch;
-    [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
     private PlayerStatusSO statusSO;
     [SerializeField]
     private PlayerInteraction interaction;
     [SerializeField]
-    private Color defaultTorchColor;
-    [SerializeField]
-    private Color spectalTorchColor;
+    private PlayerTorch torch;
 
     private PlayerStatus status = new PlayerStatus();
     public float CurrentStamina => movement.CurrentStamina;
     public float MaxStamina => status.MaxStamina;
+    public PlayerTorch Torch => torch;
+
+    private List<Torch> TorchesInRange = new();
+    public bool IsNearTorch => TorchesInRange.Count > 0;
 
     public void SetUp()
     {
         status.Setup(statusSO);
         movement.SetUp(status, joystick, hud.BottomHUD.SprintButton, signalBus);
         interaction.SetUp(status, signalBus);
+        torch.Setup(signalBus);
     }
 
     public void ResetPlayer()
@@ -59,38 +60,52 @@ public class Player : MonoBehaviour
         status.UpdateStatusEffects(Time.deltaTime);
     }
 
-    #region Torch
-    public void ActiveTorch()
-    {
-        playerTorch.enabled = true;
-    }
-
-    public void DeactivateTorch()
-    {
-        playerTorch.enabled = false;
-    }
-
-    public void SetBigTorch()
-    {
-        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_BIG_TORCH_SIZE;
-    }
-
-    public void SetSmallTorch()
-    {
-         playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_SMALL_TORCH_SIZE;
-    }
-
     public void SetDefaultTorch()
     {
-        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_DEFAULT_TORCH_SIZE;
-        playerTorch.shadowsEnabled = true;
-        playerTorch.color = defaultTorchColor;
+        torch.SetDefaultTorch();
     }
 
     public void SetSpectralTorch()
     {
-        playerTorch.shadowsEnabled = false;
-        playerTorch.color = spectalTorchColor;
+        torch.SetSpectralTorch();
     }
-    #endregion
+
+    public void ActivateTorch()
+    {
+        torch.ActiveTorch();
+    }
+
+    public void DeactivateTorch()
+    {
+        torch.DeactivateTorch();
+    }
+
+    public void SetBigTorch()
+    {
+        torch.SetBigTorch();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag(Constants.LayersAndTags.TORCH_TAG))
+        {
+            Torch torch = collision.GetComponent<Torch>();
+            if (torch != null && !TorchesInRange.Contains(torch))
+            {
+                TorchesInRange.Add(torch);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Constants.LayersAndTags.TORCH_TAG))
+        {
+            Torch torch = collision.GetComponent<Torch>();
+            if (torch != null && TorchesInRange.Contains(torch))
+            {
+                TorchesInRange.Remove(torch);
+            }
+        }
+    }
 }
