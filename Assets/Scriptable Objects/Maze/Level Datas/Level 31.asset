@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e104d3ca4a997144b85cbb19c409e8f5, type: 3}
-  m_Name: Level 30
+  m_Name: Level 31
   m_EditorClassIdentifier: 
-  sizeData: {fileID: 11400000, guid: 45c8d88c8e4df2944bae2ad76a1545f7, type: 2}
-  objectiveData: {fileID: 11400000, guid: 188051cadc11c8944a4df80b25d2b177, type: 2}
-  unlockConditionData: {fileID: 11400000, guid: 40276b6b9b4681f4d9f5ffce21ef923d, type: 2}
+  sizeData: {fileID: 11400000, guid: b70843d92107e3f42b25f9876077d027, type: 2}
+  objectiveData: {fileID: 11400000, guid: b6d1fafdb3315354e8eaec23e49cc8d7, type: 2}
+  unlockConditionData: {fileID: 11400000, guid: 0d9d78f8c103630469c55b4f27ae2d86, type: 2}
   enemyType: 0
   difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
   wallPositions:
@@ -26,11 +26,11 @@ MonoBehaviour:
   - coordinate:
       x: 0
       y: 2
-    direction: 2
+    direction: 0
     wallType: 0
   - coordinate:
       x: 0
-      y: 3
+      y: 4
     direction: 2
     wallType: 0
   - coordinate:
@@ -39,14 +39,14 @@ MonoBehaviour:
     direction: 2
     wallType: 0
   - coordinate:
-      x: 1
-      y: 0
+      x: 0
+      y: 7
     direction: 0
     wallType: 0
   - coordinate:
       x: 1
-      y: 2
-    direction: 2
+      y: 1
+    direction: 0
     wallType: 0
   - coordinate:
       x: 1
@@ -55,7 +55,12 @@ MonoBehaviour:
     wallType: 0
   - coordinate:
       x: 1
-      y: 6
+      y: 3
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 1
+      y: 5
     direction: 2
     wallType: 0
   - coordinate:
@@ -69,6 +74,11 @@ MonoBehaviour:
     direction: 0
     wallType: 0
   - coordinate:
+      x: 1
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
       x: 2
       y: 0
     direction: 0
@@ -76,32 +86,42 @@ MonoBehaviour:
   - coordinate:
       x: 2
       y: 1
-    direction: 0
+    direction: 2
     wallType: 0
   - coordinate:
       x: 2
-      y: 7
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 2
-      y: 8
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 3
-      y: 0
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 3
-      y: 1
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 3
       y: 3
     direction: 2
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 4
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 5
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 6
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 9
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 3
+      y: 0
+    direction: 0
     wallType: 0
   - coordinate:
       x: 3
@@ -116,7 +136,7 @@ MonoBehaviour:
   - coordinate:
       x: 3
       y: 6
-    direction: 2
+    direction: 0
     wallType: 0
   - coordinate:
       x: 3
@@ -126,42 +146,122 @@ MonoBehaviour:
   - coordinate:
       x: 3
       y: 8
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 5
-      y: 3
     direction: 2
     wallType: 0
   - coordinate:
-      x: 5
-      y: 6
+      x: 3
+      y: 9
     direction: 2
     wallType: 0
   - coordinate:
-      x: 6
+      x: 4
       y: 0
     direction: 0
     wallType: 0
   - coordinate:
-      x: 6
+      x: 4
       y: 1
     direction: 0
     wallType: 0
   - coordinate:
-      x: 6
+      x: 4
+      y: 2
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 4
       y: 3
     direction: 0
     wallType: 0
   - coordinate:
-      x: 6
+      x: 4
+      y: 4
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 4
       y: 5
     direction: 0
     wallType: 0
   - coordinate:
-      x: 6
+      x: 4
+      y: 6
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 4
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 0
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 1
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 2
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 5
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 7
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 5
       y: 7
     direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 8
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 0
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 1
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 3
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 3
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 4
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 6
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 8
+    direction: 2
     wallType: 0
   - coordinate:
       x: 6
@@ -170,8 +270,8 @@ MonoBehaviour:
     wallType: 0
   - coordinate:
       x: 7
-      y: 0
-    direction: 0
+      y: 1
+    direction: 2
     wallType: 0
   - coordinate:
       x: 7
@@ -186,7 +286,12 @@ MonoBehaviour:
   - coordinate:
       x: 7
       y: 3
-    direction: 2
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 7
+      y: 4
+    direction: 0
     wallType: 0
   - coordinate:
       x: 7
@@ -194,39 +299,19 @@ MonoBehaviour:
     direction: 2
     wallType: 0
   - coordinate:
-      x: 7
-      y: 7
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 7
-      y: 7
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 7
-      y: 8
-    direction: 0
-    wallType: 0
-  - coordinate:
       x: 8
       y: 0
-    direction: 0
+    direction: 2
     wallType: 0
   - coordinate:
       x: 8
       y: 1
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 8
-      y: 2
     direction: 2
     wallType: 0
   - coordinate:
       x: 8
       y: 3
-    direction: 2
+    direction: 0
     wallType: 0
   - coordinate:
       x: 8
@@ -241,132 +326,7 @@ MonoBehaviour:
   - coordinate:
       x: 8
       y: 8
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 8
-      y: 8
     direction: 0
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 1
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 1
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 2
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 2
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 3
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 3
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 4
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 4
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 5
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 5
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 6
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 6
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 7
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 7
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 8
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 8
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 9
-      y: 0
-    direction: 1
-    wallType: 0
-  - coordinate:
-      x: 9
-      y: 9
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 9
-      y: 0
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 1
-    direction: 3
-    wallType: 0
-  - coordinate:
-      x: 9
-      y: 1
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 2
-    direction: 3
     wallType: 0
   - coordinate:
       x: 9
@@ -374,49 +334,24 @@ MonoBehaviour:
     direction: 2
     wallType: 0
   - coordinate:
-      x: 0
-      y: 3
-    direction: 3
+      x: 9
+      y: 2
+    direction: 0
     wallType: 0
   - coordinate:
       x: 9
       y: 3
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 4
-    direction: 3
+    direction: 0
     wallType: 0
   - coordinate:
       x: 9
       y: 4
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 5
-    direction: 3
+    direction: 0
     wallType: 0
   - coordinate:
       x: 9
       y: 5
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 6
-    direction: 3
-    wallType: 0
-  - coordinate:
-      x: 9
-      y: 6
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 0
-      y: 7
-    direction: 3
+    direction: 0
     wallType: 0
   - coordinate:
       x: 9
@@ -429,74 +364,284 @@ MonoBehaviour:
     direction: 2
     wallType: 0
   - coordinate:
-      x: 0
-      y: 9
-    direction: 3
-    wallType: 0
-  - coordinate:
       x: 9
-      y: 9
-    direction: 2
+      y: 8
+    direction: 0
     wallType: 0
   - coordinate:
-      x: 0
-      y: 0
-    direction: 3
-    wallType: 0
-  - coordinate:
-      x: 4
-      y: 4
-    direction: 2
-    wallType: 0
-  - coordinate:
-      x: 4
+      x: 10
       y: 4
     direction: 0
     wallType: 0
   - coordinate:
-      x: 5
-      y: 5
-    direction: 3
-    wallType: 0
-  - coordinate:
-      x: 5
-      y: 5
+      x: 0
+      y: 0
     direction: 1
     wallType: 0
   - coordinate:
       x: 0
-      y: 8
-    direction: 3
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 1
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 1
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 2
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 3
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 3
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 4
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 4
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 7
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 7
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 8
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 8
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 9
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 9
+      y: 10
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 0
+    direction: 1
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 10
+    direction: 0
     wallType: 0
   - coordinate:
       x: 0
+      y: 0
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 0
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 1
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 1
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 2
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 2
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 3
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 3
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 4
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 4
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 5
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 5
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 6
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 6
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 7
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
       y: 7
     direction: 2
     wallType: 0
   - coordinate:
       x: 0
       y: 8
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 8
     direction: 2
     wallType: 0
   - coordinate:
       x: 0
+      y: 9
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 9
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 10
+    direction: 3
+    wallType: 0
+  - coordinate:
+      x: 10
+      y: 10
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 0
+      y: 5
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 5
       y: 4
     direction: 0
     wallType: 0
   - coordinate:
-      x: 4
-      y: 0
+      x: 1
+      y: 7
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 5
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 7
+      y: 9
+    direction: 0
+    wallType: 0
+  - coordinate:
+      x: 8
+      y: 10
     direction: 2
     wallType: 0
   - coordinate:
       x: 9
-      y: 4
-    direction: 0
-    wallType: 0
-  - coordinate:
-      x: 4
       y: 9
     direction: 2
+    wallType: 0
+  - coordinate:
+      x: 6
+      y: 7
+    direction: 2
+    wallType: 0
+  - coordinate:
+      x: 7
+      y: 7
+    direction: 0
     wallType: 0
   items:
   - coordinate:
@@ -508,135 +653,103 @@ MonoBehaviour:
     SpawnType: 0
     ItemType: 0
   - coordinate:
-      x: 5
-      y: 4
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
-      x: 4
-      y: 5
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
-      x: 4
-      y: 4
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
-      x: 6
-      y: 3
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
       x: 3
-      y: 3
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
+      y: 4
+    item: {fileID: 6106543253938753962, guid: aca5d8c1b1b7ba844b666b6eb7ae105b, type: 3}
     direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
-      x: 6
-      y: 6
-    item: {fileID: 2899672415757235530, guid: a2af9888fe470b142be03e0346f982e5, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 14
-  - coordinate:
-      x: 3
-      y: 6
-    item: {fileID: 9110999766451375265, guid: 5bb45577117f9a34095a2f6d39cfdc3c, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 13
-  - coordinate:
-      x: 5
-      y: 5
-    item: {fileID: 9110999766451375265, guid: 5bb45577117f9a34095a2f6d39cfdc3c, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 13
-  - coordinate:
-      x: 9
-      y: 9
-    item: {fileID: 9110999766451375265, guid: 5bb45577117f9a34095a2f6d39cfdc3c, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
-    SpawnType: 0
-    ItemType: 13
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 16
   - coordinate:
       x: 8
+      y: 4
+    item: {fileID: 6700824935709160092, guid: 9e43c522ce1806f4594da021ab9fd301, type: 3}
+    direction: 3
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 15
+  - coordinate:
+      x: 9
+      y: 4
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 1
+      y: 7
+    item: {fileID: 4473756222092189016, guid: 33d37157a868603458e5a94fb13b586a, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 12
+  - coordinate:
+      x: 1
+      y: 9
+    item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 3
+  - coordinate:
+      x: 9
       y: 8
-    item: {fileID: -6020809816099345801, guid: 94899191ad4637344b79443aefef6bdd, type: 3}
-    direction: 3
-    AssociateWith: wall east [6,0]& wall west [4,5]
+    item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
+    direction: 0
+    AssociateWith: 
     SpawnType: 0
-    ItemType: 7
+    ItemType: 3
   - coordinate:
-      x: 8
-      y: 2
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 2
+      x: 4
+      y: 4
+    item: {fileID: 3706213132056409378, guid: 1e708e9f44b197d44ae01781f323eded, type: 3}
+    direction: 0
     AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
+    SpawnType: 0
+    ItemType: 3
   - coordinate:
       x: 1
-      y: 2
+      y: 3
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 3
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 1
-      y: 7
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 3
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 8
-      y: 7
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 2
+    direction: 0
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
       x: 0
-      y: 0
+      y: 6
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 1
+    direction: 2
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 9
-      y: 0
+      x: 3
+      y: 1
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 1
+    direction: 3
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 9
+      x: 7
+      y: 1
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 8
+      y: 3
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 5
       y: 4
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 0
@@ -644,31 +757,39 @@ MonoBehaviour:
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 0
-      y: 4
+      x: 4
+      y: 6
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 1
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 3
+      y: 8
+    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
+    direction: 2
+    AssociateWith: 
+    SpawnType: 1
+    ItemType: 6
+  - coordinate:
+      x: 1
+      y: 10
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 0
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 0
-      y: 5
+      x: 7
+      y: 7
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 1
+    direction: 3
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 9
-      y: 5
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 1
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 0
+      x: 7
       y: 9
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 0
@@ -676,48 +797,24 @@ MonoBehaviour:
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 9
+      x: 10
       y: 9
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 0
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 4
-      y: 3
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
     direction: 3
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   - coordinate:
-      x: 5
-      y: 3
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 2
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 4
+      x: 9
       y: 6
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 3
-    AssociateWith: 
-    SpawnType: 1
-    ItemType: 6
-  - coordinate:
-      x: 5
-      y: 6
-    item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
-    direction: 2
+    direction: 1
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
   startPosition:
-    x: 5
-    y: 0
+    x: 10
+    y: 4
   enemySpawnPosition:
-    x: 5
-    y: 9
+    x: 1
+    y: 1
