@@ -79,11 +79,23 @@ public class ShowIfDrawer : PropertyDrawer
     {
         if (conditionValue is bool boolValue)
         {
-            return boolValue.Equals(compareValues[0]);
+            foreach(var compareValue in compareValues)
+            {
+                if (boolValue.Equals(compareValue))
+                {
+                    return true;
+                }
+            }
         }
         if (conditionValue is int intValue)
         {
-            return intValue.Equals((int)compareValues[0]);
+            foreach(var compareValue in compareValues)
+            {
+                if (intValue.Equals(compareValue))
+                {
+                    return true;
+                }
+            }
         }
 
         // Add more type checks here if needed (e.g., for floats, strings)
@@ -113,9 +125,23 @@ public class ShowIfDrawer : PropertyDrawer
         switch (conditionProperty.propertyType)
         {
             case SerializedPropertyType.Boolean:
-                return conditionProperty.boolValue.Equals(compareValues[0]);
+                foreach(var compareValue in compareValues)
+                {
+                    if (conditionProperty.boolValue.Equals(compareValue))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             case SerializedPropertyType.Enum:
-                return conditionProperty.enumValueIndex.Equals((int)compareValues[0]);
+                foreach(var compareValue in compareValues)
+                {
+                    if (conditionProperty.enumValueIndex.Equals((int)compareValue))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             default:
                 Debug.LogWarning("Unsupported property type for ShowIf condition.");
                 return true;
