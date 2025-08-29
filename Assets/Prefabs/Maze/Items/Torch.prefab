@@ -55,14 +55,13 @@ MonoBehaviour:
       m_Calls: []
   itemIcon: {fileID: 21300000, guid: f5665df528ef42343a5ed4487e55feb0, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
-  standardtMaterial: 0
-  highlightedtMaterial: 1
   itemGenerationData:
     minDistanceFromThings: 0
     spawnType: 1
     replace: 0
   torchlight: {fileID: 1586879128320769873}
   lightCollider: {fileID: 8713531590200683844}
+  interactionCollider: {fileID: 6185794388864277759}
 --- !u!212 &6180454501068931032
 SpriteRenderer:
   m_ObjectHideFlags: 0

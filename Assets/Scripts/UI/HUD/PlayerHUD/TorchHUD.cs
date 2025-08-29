@@ -6,13 +6,15 @@ public class TorchHUD : Activateable
 {
     [Inject]
     private SignalBus signalBus;
+    [Inject]
+    private GameManager gameManager;
 
     [SerializeField]
     private Image torchFillImage;
 
     private PlayerTorch playerTorch;
 
-    private void Start()
+    private void Awake()
     {
         signalBus.Subscribe<OnPlayerSpawnedSignal>(OnPlayerSpawned);
     }
@@ -24,6 +26,8 @@ public class TorchHUD : Activateable
 
     private void Update()
     {
-        torchFillImage.fillAmount = playerTorch.CurrentLifeTime / playerTorch.MaxLifeTime;
+        if (!gameManager.IsPlaying) return;
+
+        torchFillImage.fillAmount = playerTorch.CurrentLifeTime / Constants.Player.TORCH_LIFETIME;
     }
 }

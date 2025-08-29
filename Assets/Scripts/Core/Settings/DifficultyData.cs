@@ -23,8 +23,6 @@ public class DifficultyData : ScriptableObject, IUISelectable
 
     [SerializeField, Header("Player")]
     private float playerTorchBurnSpeedModifier;
-    [SerializeField, Tooltip("In seconds")]
-    private float playerTorchLifeTime;
 
     [SerializeField, Header("Items")]
     private float spiritMovementSpeedModifier;
@@ -38,7 +36,6 @@ public class DifficultyData : ScriptableObject, IUISelectable
     public string Title => difficultyName;
     public List<DifficultyItemData> DifficultyItemDatas => difficultyItemDatas;
     public float PlayerTorchBurnSpeedModifier => playerTorchBurnSpeedModifier;
-    public float PlayerTorchLifeTime => playerTorchLifeTime;
     public float MaxDarknessTime => maxDarknessTime;
     public DifficultyType DifficultyType => difficulty;
     public SelectableType SelectableType => SelectableType.Difficulty;

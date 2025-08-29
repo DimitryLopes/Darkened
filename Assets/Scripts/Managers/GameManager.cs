@@ -17,6 +17,7 @@ public class GameManager
     private readonly SignalBus signalBus;
 
     public static bool IsOnPhone;
+    public bool IsPlaying { get; private set; } = false;
 
     public GameManager(LevelManager levelManager, MazeManager mazeManager, ObjectiveManager objectiveManager, EntityManager entityManager,
         ScreenManager screenManager, HUDManager hudManager, AudioManager audioManager, CameraManager cameraManager, InventoryManager inventoryManager,
@@ -97,9 +98,11 @@ public class GameManager
 
     public void FinishGame(bool objectiveCompleted, bool isForced = true)
     {
+        IsPlaying = false;
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
-        
+        player.DeactivateTorch();
+
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
         
         Objective currentObjective = objectiveManager.CurrentObjective;
@@ -150,12 +153,13 @@ public class GameManager
         }
     }
 
-    private void OnMazeLoadFinish()
+    private void OnMazeLoadFinish(OnMazeLoadFinishSignal signal)
     {
-        Player player = entityManager.GetPlayer();
+        hudManager.ShowHud();
 
+        Player player = entityManager.GetPlayer();
         player.transform.position = mazeManager.CurrentStartingNode.transform.position;
-        player.ResetPlayer();
+        player.ResetPlayer(signal.Maze.Data.DifficultyData);
 
         signalBus.Fire(new OnPlayerSpawnedSignal(player));
 
@@ -169,6 +173,6 @@ public class GameManager
         }
 
         audioManager.PlayBGM(AudioKey.BGM_in_game);
-        hudManager.ShowHud();
+        IsPlaying = true;
     }
 }

@@ -12,6 +12,7 @@ TagManager:
   - Wall Item Replace
   - Node Item Replace
   - Gate
+  - Torch
   layers:
   - Default
   - TransparentFX

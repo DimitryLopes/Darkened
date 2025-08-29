@@ -1,5 +1,57 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1464611575278284443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2882390700624874654}
+  - component: {fileID: 9032047553108274454}
+  m_Layer: 0
+  m_Name: PlayerLightDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2882390700624874654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464611575278284443}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7432367301369639679}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9032047553108274454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464611575278284443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2d8b38dc0afa840b7e84ab4b86025f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCheckDistance: 10
+  lightBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  playerCollider: {fileID: 5740333400471394317}
 --- !u!1 &4256354880463607171
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,6 +138,7 @@ Transform:
   m_Children:
   - {fileID: 3177275866755491845}
   - {fileID: 636647708303645938}
+  - {fileID: 2882390700624874654}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6915054487000960456
@@ -168,6 +221,7 @@ MonoBehaviour:
   movement: {fileID: 6005018496085755486}
   statusSO: {fileID: 11400000, guid: 35facf83647770f4cbdb5485958d0b04, type: 2}
   interaction: {fileID: 272070270571167502}
+  lightDetector: {fileID: 9032047553108274454}
   torch: {fileID: 6540329509454438479}
 --- !u!50 &9110118225361265098
 Rigidbody2D:

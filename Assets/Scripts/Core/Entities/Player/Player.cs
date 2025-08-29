@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -18,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerInteraction interaction;
     [SerializeField]
+    private PlayerLightDetector lightDetector;
+    [SerializeField]
     private PlayerTorch torch;
 
     private PlayerStatus status = new PlayerStatus();
@@ -25,22 +26,24 @@ public class Player : MonoBehaviour
     public float MaxStamina => status.MaxStamina;
     public PlayerTorch Torch => torch;
 
-    private List<Torch> TorchesInRange = new();
-    public bool IsNearTorch => TorchesInRange.Count > 0;
+    public bool IsLit => lightDetector.IsLit;
 
     public void SetUp()
     {
         status.Setup(statusSO);
         movement.SetUp(status, joystick, hud.BottomHUD.SprintButton, signalBus);
         interaction.SetUp(status, signalBus);
+        lightDetector.Setup(signalBus);
         torch.Setup(signalBus);
     }
 
-    public void ResetPlayer()
+    public void ResetPlayer(DifficultyData data)
     {
         movement.ResetMovement();
         ToggleActing(true);
         SetDefaultTorch();
+        ActivateTorch();
+        torch.SetBurnSpeedModifier(data);
         status.ResetStatus();
     }
 
@@ -72,7 +75,7 @@ public class Player : MonoBehaviour
 
     public void ActivateTorch()
     {
-        torch.ActiveTorch();
+        torch.ActivateTorch();
     }
 
     public void DeactivateTorch()
@@ -83,29 +86,5 @@ public class Player : MonoBehaviour
     public void SetBigTorch()
     {
         torch.SetBigTorch();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag(Constants.LayersAndTags.TORCH_TAG))
-        {
-            Torch torch = collision.GetComponent<Torch>();
-            if (torch != null && !TorchesInRange.Contains(torch))
-            {
-                TorchesInRange.Add(torch);
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag(Constants.LayersAndTags.TORCH_TAG))
-        {
-            Torch torch = collision.GetComponent<Torch>();
-            if (torch != null && TorchesInRange.Contains(torch))
-            {
-                TorchesInRange.Remove(torch);
-            }
-        }
     }
 }

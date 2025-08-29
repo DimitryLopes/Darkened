@@ -8,15 +8,13 @@ public class Light2DHelper : MonoBehaviour
     public Light2D Light;
     public List<ShadowCaster2DProximityChecker> AffectedCasters = new();
 
-    public void OnShadowCasterEnter(ShadowCaster2DProximityChecker shadowCaster)
-    {
-        AffectedCasters.Add(shadowCaster);
+    //public void OnShadowCasterEnter(ShadowCaster2DProximityChecker shadowCaster)
+    //{
+    //    AffectedCasters.Add(shadowCaster);
+    //}
 
-    }
-
-    public void OnShadowCasterExit(ShadowCaster2DProximityChecker shadowCaster)
-    {
-        AffectedCasters.Remove(shadowCaster);
-
-    }
+    //public void OnShadowCasterExit(ShadowCaster2DProximityChecker shadowCaster)
+    //{
+    //    AffectedCasters.Remove(shadowCaster);
+    //}
 }

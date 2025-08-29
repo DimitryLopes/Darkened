@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Zenject;
@@ -16,19 +13,21 @@ public class PlayerTorch : MonoBehaviour
     [SerializeField]
     private Color spectalTorchColor;
 
-    private float maxLifeTime;
     private float currentLifeTime;
     private float burnSpeedModifier;
 
     public float CurrentLifeTime => currentLifeTime;
-    public float MaxLifeTime => maxLifeTime;
 
     public void Setup(SignalBus signalBus)
     {
         this.signalBus = signalBus;
 
-        signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnTorchAbsorbedSignal>(OnTorchAbsorbed);
+    }
+
+    public void SetBurnSpeedModifier(DifficultyData data)
+    {
+        burnSpeedModifier = data.PlayerTorchBurnSpeedModifier;
     }
 
     private void Update()
@@ -38,31 +37,32 @@ public class PlayerTorch : MonoBehaviour
         {
             currentLifeTime = 0;
             DeactivateTorch();
-            signalBus.Fire(new OnPlayerTorchExtinguishedSignal());
         }
     }
 
     private void OnTorchAbsorbed(OnTorchAbsorbedSignal signal)
     {
-        currentLifeTime = maxLifeTime;
-        signalBus.Fire(new OnPlayerTorchLitSignal());
+        if (currentLifeTime <= 0)
+        {
+            ActivateTorch();
+        }
+        else
+        {
+            currentLifeTime = Constants.Player.TORCH_LIFETIME;
+        }
     }
 
-    private void OnMazeLoadFinish(OnMazeLoadFinishSignal signal)
-    {
-        maxLifeTime = signal.Maze.Data.DifficultyData.PlayerTorchLifeTime;
-        burnSpeedModifier = signal.Maze.Data.DifficultyData.PlayerTorchBurnSpeedModifier;
-        currentLifeTime = maxLifeTime;
-    }
-
-    public void ActiveTorch()
+    public void ActivateTorch()
     {
         playerTorch.enabled = true;
+        currentLifeTime = Constants.Player.TORCH_LIFETIME;
+        signalBus.Fire(new OnTorchLitSignal(playerTorch));
     }
 
     public void DeactivateTorch()
     {
         playerTorch.enabled = false;
+        signalBus.Fire(new OnTorchExtinguishedSignal(playerTorch));
     }
 
     public void SetBigTorch()

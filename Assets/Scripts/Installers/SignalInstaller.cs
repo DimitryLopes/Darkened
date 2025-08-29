@@ -11,6 +11,8 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnNewGameStartedSignal>();
         Container.DeclareSignal<OnPlayerInteractableChangedSignal>();
         Container.DeclareSignal<OnMazeChangedDinamicallySignal>();
+        Container.DeclareSignal<OnTorchLitSignal>();
+        Container.DeclareSignal<OnTorchAbsorbedSignal>();
         //Missions and Objectives
         Container.DeclareSignal<OnMissionProgressSignal>();
         Container.DeclareSignal<OnMissionCompletedSignal>();
@@ -22,13 +24,12 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnMazeLoadFinishSignal>();
         Container.DeclareSignal<OnMazeLoadStartedSignal>();
         Container.DeclareSignal<OnItemsLoadFinishSignal>();
+        Container.DeclareSignal<OnPlayerSpawnedSignal>();
         //Player
         Container.DeclareSignal<OnPlayerExaustedRecoveredSignal>();
         Container.DeclareSignal<OnPlayerStaminaChangedSignal>();
         Container.DeclareSignal<OnPlayerStaminaExaustedSignal>();
-        Container.DeclareSignal<OnPlayerTorchExtinguishedSignal>();
-        Container.DeclareSignal<OnPlayerTorchLitSignal>();
-        Container.DeclareSignal<OnTorchAbsorbedSignal>();
+        Container.DeclareSignal<OnTorchExtinguishedSignal>();
         //Enemy
         Container.DeclareSignal<OnEnemySpawnedSignal>();
         //Items

@@ -13,6 +13,7 @@ public static class Constants
         public const float PLAYER_DEFAULT_TORCH_SIZE = 1;
         public const float PLAYER_BIG_TORCH_SIZE = 1.6f;
         public const float PLAYER_SMALL_TORCH_SIZE = 0.75f;
+        public const float TORCH_LIFETIME = 20;
         public const string STATUS_EFFECTS_KEY_FORMAT = "S{0}D{1}M{2}";
     }
 

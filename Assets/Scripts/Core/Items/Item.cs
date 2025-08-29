@@ -62,10 +62,7 @@ public class Item : Activateable, IItem, IInteractable
 
     public void RemoveHighlight()
     {
-        if (canInteract)
-        {
-            spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
-        }
+        spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
     }
 
 }
