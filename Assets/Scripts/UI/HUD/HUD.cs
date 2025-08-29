@@ -10,6 +10,8 @@ public class HUD : MonoBehaviour
     private ItemHUD itemHUD;
     [SerializeField]
     private BottomHUD bottomHUD;
+    [SerializeField]
+    private TorchHUD torchHUD;
 
     public ItemHUD ItemHUD => itemHUD;
     public BottomHUD BottomHUD => bottomHUD;
@@ -20,6 +22,7 @@ public class HUD : MonoBehaviour
         bottomHUD.RawDeactivate();
         playerHUD.RawDeactivate();
         itemHUD.RawDeactivate();
+        torchHUD.RawDeactivate();
     }
 
     public void Show()
@@ -28,6 +31,7 @@ public class HUD : MonoBehaviour
         bottomHUD.Activate();
         playerHUD.Activate();
         itemHUD.Activate();
+        torchHUD.Activate();
     }
 
     public void Hide()
@@ -37,5 +41,6 @@ public class HUD : MonoBehaviour
         playerHUD.Deactivate();
         itemHUD.Deactivate();
         itemHUD.Clear();
+        torchHUD.Deactivate();
     }
 }

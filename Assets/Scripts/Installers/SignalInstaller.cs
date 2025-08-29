@@ -26,6 +26,9 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnPlayerExaustedRecoveredSignal>();
         Container.DeclareSignal<OnPlayerStaminaChangedSignal>();
         Container.DeclareSignal<OnPlayerStaminaExaustedSignal>();
+        Container.DeclareSignal<OnPlayerTorchExtinguishedSignal>();
+        Container.DeclareSignal<OnPlayerTorchLitSignal>();
+        Container.DeclareSignal<OnTorchAbsorbedSignal>();
         //Enemy
         Container.DeclareSignal<OnEnemySpawnedSignal>();
         //Items

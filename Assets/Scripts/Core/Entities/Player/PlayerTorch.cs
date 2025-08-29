@@ -20,6 +20,9 @@ public class PlayerTorch : MonoBehaviour
     private float currentLifeTime;
     private float burnSpeedModifier;
 
+    public float CurrentLifeTime => currentLifeTime;
+    public float MaxLifeTime => maxLifeTime;
+
     public void Setup(SignalBus signalBus)
     {
         this.signalBus = signalBus;
