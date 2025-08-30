@@ -25,11 +25,14 @@ public class UIGameFinishScreen : UIScreen<GameFinishScreenController>
         backToMainMenuButton.onClick.RemoveAllListeners();
         nextLevelButton.onClick.RemoveAllListeners();
 
-        replayButton.onClick.AddListener(Controller.OnReplayButtonClicked);
         replayButton.onClick.AddListener(Hide);
+        replayButton.onClick.AddListener(Controller.OnReplayButtonClicked);
 
+        backToMainMenuButton.onClick.AddListener(Hide);
         backToMainMenuButton.onClick.AddListener(Controller.OnMainMenuButtonClicked);
+
         nextLevelButton.gameObject.SetActive(Controller.OnNextLevelButtonClicked != null);
+        nextLevelButton.onClick.AddListener(Hide);
         nextLevelButton.onClick.AddListener(Controller.OnNextLevelButtonClicked);
     }
 }

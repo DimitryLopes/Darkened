@@ -1,24 +1,21 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class Darkness : MonoBehaviour
 {
     [Inject]
-    private CameraManager cameraManager; //will be used later for visual effects
-    [Inject]
     private SignalBus signalBus;
     [Inject]
     private GameManager gameManager;
+
+    [SerializeField]
+    private CreepyHand creepyHand;
 
     private float darknessTimer = 0f;
     private float maxDarknessTime;
     private Player player;
 
     private bool IsPlayerInDarkness => !player.IsLit;
-    private bool wasPlayerInDarkness;
 
     public void Start()
     {
@@ -35,6 +32,7 @@ public class Darkness : MonoBehaviour
     private void OnMazeLoadFinish(OnMazeLoadFinishSignal signal)
     {
         maxDarknessTime = signal.Maze.Data.DifficultyData.MaxDarknessTime;
+        creepyHand.SetDistance(0);
     }
 
     private void Update() 
@@ -44,19 +42,21 @@ public class Darkness : MonoBehaviour
         if (IsPlayerInDarkness)
         {
             darknessTimer += Time.deltaTime;
+            creepyHand.SetDistance(darknessTimer / maxDarknessTime);
             if (darknessTimer >= maxDarknessTime)
             {
+                darknessTimer = maxDarknessTime;
                 signalBus.Fire(new OnGameCompletedSignal(false));
             }
-            if(!wasPlayerInDarkness)
-            {
-                wasPlayerInDarkness = true;
-            }
         }
-        else if(wasPlayerInDarkness)
+        else if(darknessTimer > 0f)
         {
-            darknessTimer = 0f;
-            wasPlayerInDarkness = false;
+            darknessTimer -= Time.deltaTime;
+            creepyHand.SetDistance(darknessTimer / maxDarknessTime);
+            if(darknessTimer <= 0f)
+            {
+                darknessTimer = 0f;
+            }
         }
     }
 }
