@@ -47,15 +47,14 @@ public class Maze
 
     public void MarkNodeAsUsed(Node node, object usedBy)
     {
-        
-            UnityEngine.Debug.Log($"Node {node.name} is being marked as used by {usedBy}");
+        UnityEngine.Debug.Log($"Node {node.name} is being marked as used by {usedBy}");
 
         if (!FreeNodes.Contains(node))
         {
             UnityEngine.Debug.Log($"Node {node.Coordinates} is already used or not found in FreeNodes.");
             return;
         }
-
+        node.UsedBy = usedBy;
         UsedNodes.Add(node);
         FreeNodes.Remove(node);
     }

@@ -40,7 +40,7 @@ public class PoisonDartTrap : TrapItem
         if (internalCooldown > 0) return;
 
         var dart = mazeManager.GetAvailableItem(ItemType.PoisonDart) as PoisonDart;
-        dart.transform.position = transform.position;
+        dart.transform.position = transform.position + transform.right/2;
         dart.Shoot(transform.right);
         spriteRenderer.sprite = notReadySprite;
     }

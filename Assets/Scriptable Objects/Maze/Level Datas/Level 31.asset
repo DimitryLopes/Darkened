@@ -661,14 +661,6 @@ MonoBehaviour:
     SpawnType: 1
     ItemType: 16
   - coordinate:
-      x: 8
-      y: 4
-    item: {fileID: 6700824935709160092, guid: 9e43c522ce1806f4594da021ab9fd301, type: 3}
-    direction: 3
-    AssociateWith: 
-    SpawnType: 0
-    ItemType: 15
-  - coordinate:
       x: 9
       y: 4
     item: {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
@@ -812,6 +804,14 @@ MonoBehaviour:
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
+  - coordinate:
+      x: 8
+      y: 4
+    item: {fileID: 6700824935709160092, guid: 9e43c522ce1806f4594da021ab9fd301, type: 3}
+    direction: 3
+    AssociateWith: '[3,4]'
+    SpawnType: 0
+    ItemType: 15
   startPosition:
     x: 10
     y: 4

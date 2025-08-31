@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PressurePlate : TrapItem, IToggable
 {
-    private List<TrapItem> traps = new();
+    private List<ITrap> traps = new();
 
     [SerializeField]
     private Sprite activatedSprite;
@@ -26,7 +26,7 @@ public class PressurePlate : TrapItem, IToggable
         spriteRenderer.sprite = Toggled ? activatedSprite : deactivatedSprite;
     }
 
-    public void Associate(TrapItem trap)
+    public void Associate(ITrap trap)
     {
         traps.Add(trap);
     }
@@ -50,5 +50,27 @@ public class PressurePlate : TrapItem, IToggable
     {
         base.OnDeactivate();
         traps.Clear();
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Constants.LayersAndTags.PLAYER_TAG) || collision.CompareTag(Constants.LayersAndTags.ENEMY_TAG))
+        {
+            if (!Toggled)
+            {
+                Toggle(null);
+            }
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Constants.LayersAndTags.PLAYER_TAG) || collision.CompareTag(Constants.LayersAndTags.ENEMY_TAG))
+        {
+            if (Toggled)
+            {
+                Toggle(null);
+            }
+        }
     }
 }

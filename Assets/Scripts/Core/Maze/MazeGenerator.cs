@@ -679,11 +679,15 @@ public class MazeGenerator : MonoBehaviour
             Item item = mazeManager.GetAvailableItem(itemData.Item.Type);
             item.transform.SetParent(itemsContainer);
 
-            if (item.Type == ItemType.Switch)
+            switch (item.Type)
             {
-                SetupSwitchPreset(nodes, itemData, item);
+                case ItemType.PressurePlate:
+                    SetupPressurePlatePreset(nodes, itemData, item);
+                    break;
+                case ItemType.Switch:
+                    SetupSwitchPreset(nodes, itemData, item);
+                    break;
             }
-
 
             switch (item.GenerationData.SpawnType)
             {
@@ -708,9 +712,19 @@ public class MazeGenerator : MonoBehaviour
 
         void SetupSwitchPreset(Node[,] nodes, PresetItemData itemData, Item item)
         {
-            Switch switchItem = item as Switch;
-            string raw = itemData.AssociateWith;
+            SetupPreset<IToggable>(nodes, itemData, item,
+                (itm, target) => ((Switch)itm).Associate(target));
+        }
 
+        void SetupPressurePlatePreset(Node[,] nodes, PresetItemData itemData, Item item)
+        {
+            SetupPreset<ITrap>(nodes, itemData, item,
+                (itm, target) => ((PressurePlate)itm).Associate(target));
+        }
+
+        void SetupPreset<TInterface>(Node[,] nodes, PresetItemData itemData, Item item, System.Action<Item, TInterface> associateAction) where TInterface : class
+        {
+            string raw = itemData.AssociateWith;
             string[] parts = raw.Split('&');
 
             foreach (string part in parts)
@@ -732,8 +746,9 @@ public class MazeGenerator : MonoBehaviour
 
                     Node node = nodes[coord.X, coord.Y];
                     MazeWall wall = node.GetWall(dir);
-                    if (wall is IToggable toggableWall)
-                        switchItem.Associate(toggableWall);
+
+                    if (wall is TInterface target)
+                        associateAction(item, target);
                 }
                 else
                 {
@@ -741,29 +756,30 @@ public class MazeGenerator : MonoBehaviour
                     if (!TryParseCoordinate(link, out Coordinate coord)) continue;
 
                     Node node = nodes[coord.X, coord.Y];
-                    if (node.UsedBy is IToggable toggableItem)
-                        switchItem.Associate(toggableItem);
+
+                    if (node.UsedBy is TInterface target)
+                        associateAction(item, target);
                 }
-            }
-
-            bool TryParseCoordinate(string input, out Coordinate result)
-            {
-                result = default;
-
-                if (!input.StartsWith("[") || !input.EndsWith("]")) return false;
-
-                string[] parts = input.Substring(1, input.Length - 2).Split(',');
-                if (parts.Length != 2) return false;
-
-                if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
-                {
-                    result = new Coordinate(x, y);
-                    return true;
-                }
-
-                return false;
             }
         }
+    }
+
+    private bool TryParseCoordinate(string input, out Coordinate result)
+    {
+        result = default;
+
+        if (!input.StartsWith("[") || !input.EndsWith("]")) return false;
+
+        string[] parts = input.Substring(1, input.Length - 2).Split(',');
+        if (parts.Length != 2) return false;
+
+        if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+        {
+            result = new Coordinate(x, y);
+            return true;
+        }
+
+        return false;
     }
 
     private IEnumerator<float> SetPositionsPreset(PresetLevelData preset, Node[,] nodes)

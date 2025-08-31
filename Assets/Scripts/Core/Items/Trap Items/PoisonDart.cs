@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class PoisonDart : TrapItem, IProjectile
+public class PoisonDart : Item, IProjectile
 {
     [Inject]
     private EntityManager entityManager;
@@ -27,10 +27,6 @@ public class PoisonDart : TrapItem, IProjectile
             entityManager.GetPlayer().ApplyStatusEffect(effectData);
         }
         Deactivate();
-    }
-
-    public override void Trigger()
-    {
     }
 
     public void Shoot(Vector2 direction)
