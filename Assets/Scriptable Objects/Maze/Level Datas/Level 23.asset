@@ -955,6 +955,14 @@ MonoBehaviour:
     AssociateWith: wall east [8,6]
     SpawnType: 1
     ItemType: 11
+  - coordinate:
+      x: 2
+      y: 6
+    item: {fileID: 7054227215558818972, guid: d89c605c2ac128d418e24e3e47809130, type: 3}
+    direction: 3
+    AssociateWith: wall east [8,6]
+    SpawnType: 0
+    ItemType: 9
   startPosition:
     x: 4
     y: 0
