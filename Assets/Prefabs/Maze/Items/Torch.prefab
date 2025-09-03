@@ -55,6 +55,7 @@ MonoBehaviour:
       m_Calls: []
   itemIcon: {fileID: 21300000, guid: f5665df528ef42343a5ed4487e55feb0, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
+  itemCollider: {fileID: 6185794388864277759}
   itemGenerationData:
     minDistanceFromThings: 0
     spawnType: 1

@@ -46,10 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3155664a9c841f44b5a6fa6062b533e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   itemIcon: {fileID: 21300000, guid: e34de404b5358194a8361313b5f0c326, type: 3}
   spriteRenderer: {fileID: 1418582601741916346}
-  standardtMaterial: 0
-  highlightedtMaterial: 1
+  itemCollider: {fileID: 1515450181062793677}
   itemGenerationData:
     minDistanceFromThings: 5
     spawnType: 0
@@ -93,7 +98,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1300265393
-  m_SortingLayer: 4
+  m_SortingLayer: 14
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e34de404b5358194a8361313b5f0c326, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -14,12 +14,15 @@ public class Item : Activateable, IItem, IInteractable
     [SerializeField]
     protected SpriteRenderer spriteRenderer;
     [SerializeField]
+    private Collider2D itemCollider;
+    [SerializeField]
     private ItemGenerationData itemGenerationData;
 
     protected ItemType type;
 
     public virtual Sprite Icon => itemIcon;
     public virtual ItemType Type => type;
+    public Collider2D Collider => itemCollider;
 
     public ItemGenerationData GenerationData => itemGenerationData;
 

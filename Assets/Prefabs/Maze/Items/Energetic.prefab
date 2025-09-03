@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6137830826493694273}
   - component: {fileID: 6180454501068931032}
-  - component: {fileID: 6185794388864277759}
   - component: {fileID: 4473756222092189016}
+  - component: {fileID: 6185794388864277759}
   m_Layer: 9
   m_Name: Energetic
   m_TagString: Untagged
@@ -86,6 +86,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4473756222092189016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235955571069073806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3455ebbbf1544e54db832a2b58c8e8cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  itemIcon: {fileID: 21300000, guid: 8a70f19bca09a4c458ff97b3bea93c15, type: 3}
+  spriteRenderer: {fileID: 6180454501068931032}
+  itemCollider: {fileID: 6185794388864277759}
+  itemGenerationData:
+    minDistanceFromThings: 1
+    spawnType: 0
+    replace: 0
+  StatusEffectData:
+    Stat: 3
+    Multiplier: 0
+    Duration: 6
 --- !u!58 &6185794388864277759
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -121,31 +150,3 @@ CircleCollider2D:
   m_Offset: {x: 0.01999998, y: -0.029503912}
   serializedVersion: 2
   m_Radius: 0.26851168
---- !u!114 &4473756222092189016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 235955571069073806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3455ebbbf1544e54db832a2b58c8e8cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
-  onActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  itemIcon: {fileID: 21300000, guid: 8a70f19bca09a4c458ff97b3bea93c15, type: 3}
-  spriteRenderer: {fileID: 6180454501068931032}
-  itemGenerationData:
-    minDistanceFromThings: 1
-    spawnType: 0
-    replace: 0
-  StatusEffectData:
-    Stat: 3
-    Multiplier: 0
-    Duration: 6

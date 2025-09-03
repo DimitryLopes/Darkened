@@ -59,6 +59,7 @@ public static class Constants
         public const string NODE_ITEM_TAG = "Node Item";
         public const string WALL_ITEM_REPLACE_TAG = "Wall Item Replace";
         public const string NODE_ITEM_REPLACE_TAG = "Node Item Replace";
+        public const string INTERACTABLE_LAYER = "Interactable";
     }
 
     public static class AudioParameters

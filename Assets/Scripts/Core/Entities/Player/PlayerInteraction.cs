@@ -1,22 +1,26 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Zenject;
 
 public class PlayerInteraction : PlayerAction
 {
+    [SerializeField]
+    private CircleCollider2D interactionCollider;
     [SerializeField]
     private LayerMask interactableLayer;
     [SerializeField]
     private LayerMask obstructionLayer;
 
     public IInteractable currentInteractable;
-
     private SignalBus signalBus;
+    private List<IInteractable> interactablesInRange = new List<IInteractable>();
+
 
     public void SetUp(PlayerStatus status, SignalBus signalBus)
     {
         this.status = status;
         this.signalBus = signalBus;
-
+        interactionCollider.radius = status.InteractionRange;
         signalBus.Subscribe<OnInteractionButtonClickedSignal>(TryInteract);
     }
 
@@ -24,24 +28,17 @@ public class PlayerInteraction : PlayerAction
     {
         if (CanAct)
         {
-
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 signalBus.Fire(new OnPlayerTryToUseItemSignal());
             }
 
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, status.InteractionRange, interactableLayer);
+            if (interactablesInRange.Count == 0) return;
 
-            if (colliders.Length == 0)
-            {
-                ChangeInteractable(null);
-            }
+            IInteractable interactable = FindClosestInteractable();
 
-            Collider2D closestCollider = FindClosestCollider(colliders);
+            if (interactable == null) return;
 
-            if (!closestCollider) return; //if it's null
-
-            IInteractable interactable = closestCollider.GetComponent<IInteractable>();
             ChangeInteractable(interactable);
 
             if (!Input.GetKeyDown(KeyCode.E)) return;
@@ -51,35 +48,57 @@ public class PlayerInteraction : PlayerAction
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        Gizmos.color = Color.yellow;
-        if (status == null) return;
-        Gizmos.DrawWireSphere(transform.position, status.InteractionRange);
+        var interactable = collision.gameObject.GetComponent<IInteractable>();
+
+        if (interactable == null) return;
+
+        interactablesInRange.Remove(interactable);
+
+        if (interactablesInRange.Count > 0) return;
+
+        ChangeInteractable(null);
     }
 
-    private Collider2D FindClosestCollider(Collider2D[] colliders)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Collider2D closestCollider = null;
-        float closestDistance = Mathf.Infinity;
-        foreach (Collider2D collider in colliders)
-        {
-            if (IsObstructed(collider.gameObject)) continue;
+        var interactable = collision.gameObject.GetComponent<IInteractable>();
+        if (interactable == null) return;
+        interactablesInRange.Add(interactable);
+    }
 
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
+    private IInteractable FindClosestInteractable()
+    {
+        IInteractable closestInteractable = null;
+        float closestDistance = Mathf.Infinity;
+        foreach (IInteractable interactable in interactablesInRange)
+        {
+            if (IsObstructed(interactable.Collider)) continue;
+
+            float distance = Vector3.Distance(transform.position, interactable.Collider.bounds.center);
             if (distance < closestDistance)
             {
-                closestCollider = collider;
+                closestInteractable = interactable;
                 closestDistance = distance;
             }
         }
-        return closestCollider;
+        return closestInteractable;
     }
 
-    private bool IsObstructed(GameObject target)
+    private bool IsObstructed(Collider2D target)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.transform.position - transform.position).normalized, status.InteractionRange, obstructionLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.bounds.center - transform.position).normalized, status.InteractionRange, obstructionLayer);
         return hit.collider != null;
+    }
+    private void OnDrawGizmos()
+    {
+        if (currentInteractable != null)
+        {
+            Vector3 direction = (currentInteractable.Collider.bounds.center - transform.position).normalized;
+            Gizmos.color = IsObstructed(currentInteractable.Collider) ? Color.red : Color.green;
+            Gizmos.DrawRay(transform.position, direction * status.InteractionRange);
+        }
     }
 
     private void ChangeInteractable(IInteractable interactable)

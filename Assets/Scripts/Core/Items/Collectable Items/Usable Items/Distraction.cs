@@ -8,9 +8,6 @@ public class Distraction : UsableItem
     [Inject]
     private InventoryManager inventoryManager;
 
-    [SerializeField]
-    private Rigidbody2D rb;
-
     public override ItemType Type => ItemType.Distraction;
 
     public override bool CanUse => inventoryManager.HasEnoughItem(Type);

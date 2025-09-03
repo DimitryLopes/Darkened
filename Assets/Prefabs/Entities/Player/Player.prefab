@@ -62,6 +62,7 @@ GameObject:
   m_Component:
   - component: {fileID: 636647708303645938}
   - component: {fileID: 272070270571167502}
+  - component: {fileID: 2727912907859831080}
   m_Layer: 10
   m_Name: PlayerInteraction
   m_TagString: Untagged
@@ -96,12 +97,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de08b9446fd1f84c8518d4deb6d3967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionCollider: {fileID: 2727912907859831080}
   interactableLayer:
     serializedVersion: 2
     m_Bits: 512
   obstructionLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!58 &2727912907859831080
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4256354880463607171}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &4654250996068578867
 GameObject:
   m_ObjectHideFlags: 0
