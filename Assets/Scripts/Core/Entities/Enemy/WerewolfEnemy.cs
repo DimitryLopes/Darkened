@@ -177,77 +177,77 @@ public class WerewolfEnemy : Enemy
         var path = movingState.Path;
         if (path == null || path.Count == 0) return;
 
-        Node changedNode = signal.Node;
-        MazeWall changedWall = signal.Wall;
+        //Node changedNode = signal.Node;
+        //MazeWall changedWall = signal.Wall;
 
-        Node adjacentWallNode1 = changedWall?.AdjacentNodes.Item1;
-        Node adjacentWallNode2 = changedWall?.AdjacentNodes.Item2;
+        //Node adjacentWallNode1 = changedWall?.AdjacentNodes.Item1;
+        //Node adjacentWallNode2 = changedWall?.AdjacentNodes.Item2;
 
-        bool isWallInPath = false;
-        if (adjacentWallNode1 != null)
-        {
-            if (path.Contains(adjacentWallNode1))
-            {
-                if (adjacentWallNode2 != null)
-                {
-                    if (path.Contains(adjacentWallNode2))
-                    {
-                        isWallInPath = true;
-                    }
-                }
-            }
-        }
+        //bool isWallInPath = false;
+        //if (adjacentWallNode1 != null)
+        //{
+        //    if (path.Contains(adjacentWallNode1))
+        //    {
+        //        if (adjacentWallNode2 != null)
+        //        {
+        //            if (path.Contains(adjacentWallNode2))
+        //            {
+        //                isWallInPath = true;
+        //            }
+        //        }
+        //    }
+        //}
 
-        Node targetNode = changedNode;
+        //Node targetNode = changedNode;
 
-        if (isWallInPath)
-        {
-            foreach(Node node in path)
-            {
-                if (node == adjacentWallNode1 || node == adjacentWallNode2)
-                {
-                     targetNode = node;
-                    break;
-                }
-            }
-        }
+        //if (isWallInPath)
+        //{
+        //    foreach(Node node in path)
+        //    {
+        //        if (node == adjacentWallNode1 || node == adjacentWallNode2)
+        //        {
+        //             targetNode = node;
+        //            break;
+        //        }
+        //    }
+        //}
 
 
-        if (!path.Contains(targetNode)) return;
+        //if (!path.Contains(targetNode)) return;
 
-        // Check if enemy is touching the target node
-        Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("MazeNode"));
-        Node touchingNode = hit?.GetComponent<Node>();
+        //// Check if enemy is touching the target node
+        //Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("MazeNode"));
+        //Node touchingNode = hit?.GetComponent<Node>();
 
-        bool isTouchingChangedNode = touchingNode == targetNode;
+        //bool isTouchingChangedNode = touchingNode == targetNode;
 
-        // Convert path to array (top of stack is last in array)
-        Node[] pathArray = path.ToArray();
-        Node previousNode = null;
+        //// Convert path to array (top of stack is last in array)
+        //Node[] pathArray = path.ToArray();
+        //Node previousNode = null;
 
-        for (int i = 0; i < pathArray.Length - 1; i++)
-        {
-            if (pathArray[i] == targetNode)
-            {
-                previousNode = pathArray[i + 1]; // previous in logical path
-                break;
-            }
-        }
+        //for (int i = 0; i < pathArray.Length - 1; i++)
+        //{
+        //    if (pathArray[i] == targetNode)
+        //    {
+        //        previousNode = pathArray[i + 1]; // previous in logical path
+        //        break;
+        //    }
+        //}
 
-        // Bounce back if currently on the changed node
-        if (isTouchingChangedNode && previousNode != null)
-        {
-            transform.position = previousNode.transform.position;
-            ChangeState(waitingState);
-            return;
-        }
+        //// Bounce back if currently on the changed node
+        //if (isTouchingChangedNode && previousNode != null)
+        //{
+        //    transform.position = previousNode.transform.position;
+        //    ChangeState(waitingState);
+        //    return;
+        //}
 
-        // Stop before target
-        if (!isTouchingChangedNode && targetNode != null)
-        {
-            transform.position = previousNode != null ? previousNode.transform.position : targetNode.transform.position;
-            ChangeState(waitingState);
-        }
+        //// Stop before target
+        //if (!isTouchingChangedNode && targetNode != null)
+        //{
+        //    transform.position = previousNode != null ? previousNode.transform.position : targetNode.transform.position;
+        //    ChangeState(waitingState);
+        //}
     }
 
     #region Callbacks

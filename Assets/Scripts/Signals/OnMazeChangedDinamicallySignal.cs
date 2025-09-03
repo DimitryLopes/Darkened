@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+
 public class OnMazeChangedDinamicallySignal 
 {
-    public Node Node { get; private set; }
-    public MazeWall Wall { get; private set; }
+    public List<IToggable> ToggledItems { get; private set; }
 
-    public OnMazeChangedDinamicallySignal(Node node, MazeWall wall)
+    public OnMazeChangedDinamicallySignal(List<IToggable> toggledItems)
     {
-        Node = node;
-        Wall = wall;
+        ToggledItems = toggledItems;
     }
 }

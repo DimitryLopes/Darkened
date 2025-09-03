@@ -16,7 +16,7 @@ public class ShadowCasterGenerator : MonoBehaviour
     [SerializeField]
     private ShadowCasterHelper helperPrefab;
     [SerializeField]
-    private bool selfShadows = true;
+    private bool selfShadows = false;
 
     private List<ShadowCasterHelper> Helpers = new();
     private readonly PathEqualityComparer pathComparer = new(1e-3f);
@@ -108,7 +108,7 @@ public class ShadowCasterGenerator : MonoBehaviour
     {
         if (lastCollider == null) return;
 
-        List<Vector2[]> newPaths = new ();
+        List<Vector2[]> newPaths = new();
         for (int i = 0; i < lastCollider.pathCount; i++)
         {
             newPaths.Add(GetPathClone(lastCollider, i));
@@ -126,18 +126,11 @@ public class ShadowCasterGenerator : MonoBehaviour
             }
         }
 
-        switch (addedPaths.Count)
+        foreach (Vector2[] path in addedPaths)
         {
-            case 0:
-                break; // No changes, nothing to do
-            case 1:
-                UpdatePath(addedPaths[0]);
-                break;
-            default:
-                UpdatePath(addedPaths[0]);
-                UpdatePath(addedPaths[1]);
-                break;
-        }   
+            UpdatePath(path);
+        }
+
         lastPaths = newPaths;
     }
 

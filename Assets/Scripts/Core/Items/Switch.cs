@@ -43,10 +43,13 @@ public class Switch : Item, IToggable
 
     public void Toggle(MazeManager mazeManager)
     {
-        foreach (IToggable gate in toggles)
+        foreach (IToggable toggble in toggles)
         {
-            gate.Toggle(mazeManager);
+            toggble.Toggle(mazeManager);
         }
+
+
+        signalBus.Fire(new OnMazeChangedDinamicallySignal(toggles));
 
         Toggled = !Toggled;
         spriteRenderer.sprite = Toggled ? OnSpire : OffSpire;

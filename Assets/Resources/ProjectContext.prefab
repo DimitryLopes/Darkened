@@ -811,6 +811,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MazeGeneratorInstaller
       objectReference: {fileID: 0}
+    - target: {fileID: 5190308357292084754, guid: fecb42ad2ba1afa468fec74eb9afac2d, type: 3}
+      propertyPath: selfShadows
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

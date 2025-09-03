@@ -52,7 +52,6 @@ MonoBehaviour:
   onActivate:
     m_PersistentCalls:
       m_Calls: []
-  WALL_ITEM_OFFSET: 0.17
   boxCollider: {fileID: 9119037806584697216}
 --- !u!212 &1418582601741916346
 SpriteRenderer:
@@ -149,5 +148,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 2.15, y: 2.56}
   m_EdgeRadius: 0
