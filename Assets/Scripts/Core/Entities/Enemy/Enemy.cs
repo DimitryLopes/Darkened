@@ -20,6 +20,7 @@ public abstract class Enemy : Activateable, IStateUser
     protected Player Player;
     protected Maze Maze;
     protected Distraction distraction;
+    protected Rigidbody2D Rb => rb;
 
     protected bool IsDistracted => distraction != null;
     public float EnhancedDetectionRange => data.EnhancedDetectionRange;

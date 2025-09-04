@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
@@ -116,13 +115,12 @@ public class WerewolfEnemy : Enemy
 
         distanceBetweenPlayer = Vector2.Distance(transform.position, Player.transform.position);
 
-        // Cast raycasts
         leftHit = Physics2D.Raycast(LeftRaycastOrigin, LeftRayCastDirection, DetectionRange, sightLayer);
         rightHit = Physics2D.Raycast(RightRaycastOrigin, RightRayCastDirection, DetectionRange, sightLayer);
 
         // Debug draw the raycasts
-        Debug.DrawRay(LeftRaycastOrigin, LeftRayCastDirection * DetectionRange, Color.blue);
-        Debug.DrawRay(RightRaycastOrigin, RightRayCastDirection * DetectionRange, Color.blue);
+        //Debug.DrawRay(LeftRaycastOrigin, LeftRayCastDirection * DetectionRange, Color.blue);
+        //Debug.DrawRay(RightRaycastOrigin, RightRayCastDirection * DetectionRange, Color.blue);
 
         arrowPointer.ToggleArrow(distanceBetweenPlayer);
         //Is not in range
@@ -317,6 +315,7 @@ public class WerewolfEnemy : Enemy
 
     private void OnDistractionStateEnded()
     {
+        Rb.velocity = Vector2.zero;
         ChangeState(distractedWaitingEnemyState);
     }
 
