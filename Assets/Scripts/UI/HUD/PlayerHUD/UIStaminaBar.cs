@@ -14,6 +14,7 @@ public class UIStaminaBar : MonoBehaviour
     public void SetUp(Player player)
     {
         this.player = player;
+        UpdateBar();
     }
 
     public void UpdateBar()
