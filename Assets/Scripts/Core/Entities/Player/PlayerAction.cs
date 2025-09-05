@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    protected PlayerStatus status;
+    protected EntityStatus status;
 
     public bool CanAct { get; protected set; }
 

@@ -16,7 +16,7 @@ public class PlayerInteraction : PlayerAction
     private List<IInteractable> interactablesInRange = new List<IInteractable>();
 
 
-    public void SetUp(PlayerStatus status, SignalBus signalBus)
+    public void SetUp(EntityStatus status, SignalBus signalBus)
     {
         this.status = status;
         this.signalBus = signalBus;

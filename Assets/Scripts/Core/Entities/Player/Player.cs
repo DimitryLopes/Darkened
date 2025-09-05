@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     [Inject]
     private SignalBus signalBus;
@@ -13,24 +13,21 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerMovement movement;
     [SerializeField]
-    private PlayerStatusSO statusSO;
-    [SerializeField]
     private PlayerInteraction interaction;
     [SerializeField]
     private PlayerLightDetector lightDetector;
     [SerializeField]
     private PlayerTorch torch;
 
-    private PlayerStatus status = new PlayerStatus();
     public float CurrentStamina => movement.CurrentStamina;
-    public float MaxStamina => status.MaxStamina;
+    public float MaxStamina => status.GetStat(StatusKey.MaxStamina);
     public PlayerTorch Torch => torch;
 
     public bool IsLit => lightDetector.IsLit;
 
     public void SetUp()
     {
-        status.Setup(statusSO);
+        Initialize();
         movement.SetUp(status, joystick, hud.BottomHUD.SprintButton, signalBus);
         interaction.SetUp(status, signalBus);
         lightDetector.Setup(signalBus);

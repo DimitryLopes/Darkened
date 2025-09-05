@@ -8,9 +8,9 @@ public class StatusEffect
     public bool IsActive { get; private set; }
     public float MaxDuration { get; private set; }
     private float increment;
-    private PlayerStatus Status { get; set; }
+    private EntityStatus Status { get; set; }
 
-    public StatusEffect(StatusKey key, float value, float duration, PlayerStatus status)
+    public StatusEffect(StatusKey key, float value, float duration, EntityStatus status)
     {
         Stat = key;
         Multiplier = value;
@@ -43,6 +43,7 @@ public class StatusEffect
 
     public void Activate()
     {
+        if (!Status.BaseStatusDictionary.ContainsKey(Stat)) return;
         IsActive = true;
         float baseValue = Status.BaseStatusDictionary[Stat];
         float modifiedValue = baseValue * Multiplier;

@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 using Zenject;
 
-public abstract class Enemy : Activateable, IStateUser
+public abstract class Enemy : Entity, IStateUser
 {
     [SerializeField]
     private Collider2D enemyCollider;
     [SerializeField]
-    private EnemyData data;
-    [SerializeField]
     private Rigidbody2D rb;
+    [SerializeField]
+    private EntityStatusSO statusData;
 
     [Inject]
     protected EnemyArrowPointer arrowPointer;
@@ -23,21 +24,20 @@ public abstract class Enemy : Activateable, IStateUser
     protected Rigidbody2D Rb => rb;
 
     protected bool IsDistracted => distraction != null;
-    public float EnhancedDetectionRange => data.EnhancedDetectionRange;
-    public float DetectionRange => data.DetectionRange;
-    public float MovementSpeed => data.Speed;
-    public float SprintingSpeed => data.Speed * data.SprintingSpeedMultiplier;
+    public float DetectionRange => status.GetStat(StatusKey.InteractionRange);
+    public float MovementSpeed => status.GetStat(StatusKey.MovementSpeed);
+    public float SprintingSpeed => MovementSpeed * status.GetStat(StatusKey.SprintingSpeedMultiplier);
     public Transform Transform => transform;
 
     [Inject]
     public virtual void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager,
         SignalBus signalBus)
     {
+        Initialize();
         this.audioManager = audioManager;
         Player = entityManager.GetPlayer();
         this.cameraManager = cameraManager;
         this.signalBus = signalBus;
-
         signalBus.Subscribe<OnEnemyHitSignal>(OnHit);
     }
 
@@ -98,4 +98,9 @@ public abstract class Enemy : Activateable, IStateUser
 
     protected virtual void OnDistracted(Distraction distraction) { }
     protected virtual void OnDistractionEnded() { }
+
+    internal void ApplyStatusEffect(StatusEffectData effectData)
+    {
+        throw new NotImplementedException();
+    }
 }

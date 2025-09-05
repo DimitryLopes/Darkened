@@ -1,21 +1,35 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class PlayerStatus
+public class EntityStatus
 {
     public Dictionary<StatusKey, float> StatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
     public Dictionary<StatusKey, float> BaseStatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
-    private Dictionary<string,StatusEffect> statusEffects = new();
+    protected Dictionary<string, StatusEffect> statusEffects = new();
 
+    public float InteractionRange => StatusDictionary[StatusKey.InteractionRange];
+    public float MovementSpeed => StatusDictionary[StatusKey.MovementSpeed]; 
     public float DepletedStaminaRegenSpeedMultiplier => StatusDictionary[StatusKey.DepletedStaminaRegenSpeedMultiplier];
     public float DepletedStaminaRegenCooldown => StatusDictionary[StatusKey.DepletedStaminaRegenCooldown];
     public float SprintingSpeedMultiplier => StatusDictionary[StatusKey.SprintingSpeedMultiplier];
     public float StaminaConsumptionSpeed => StatusDictionary[StatusKey.StaminaConsumptionSpeed];
     public float StaminaRegenSpeed => StatusDictionary[StatusKey.StaminaRegenSpeed];
-    public float InteractionRange => StatusDictionary[StatusKey.InteractionRange];
-    public float MovementSpeed => StatusDictionary[StatusKey.MovementSpeed];
     public float MaxStamina => StatusDictionary[StatusKey.MaxStamina];
 
-    public void Setup(PlayerStatusSO baseStats)
+    public float GetStat(StatusKey key)
+    {
+        if(StatusDictionary.ContainsKey(key))
+        {
+            return StatusDictionary[key];
+        }
+        else
+        {
+            Debug.LogWarning($"Stat {key} not found in StatusDictionary.");
+            return 0f;
+        }
+    }
+
+    public void Setup(EntityStatusSO baseStats)
     {
         foreach (Status status in baseStats.Statuses)
         {
@@ -42,7 +56,7 @@ public class PlayerStatus
     public void ApplyStatusEffect(float multiplier, StatusKey status, float duration)
     {
         string effectKey = GetStatusEffectKey(multiplier, status, duration);
-        if(statusEffects.ContainsKey(effectKey))
+        if (statusEffects.ContainsKey(effectKey))
         {
             statusEffects[effectKey].Reaply();
         }

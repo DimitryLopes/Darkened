@@ -106,9 +106,10 @@ MonoBehaviour:
   onActivate:
     m_PersistentCalls:
       m_Calls: []
+  statusSO: {fileID: 11400000, guid: 8221129434ea70c4481fd87932ff510e, type: 2}
   enemyCollider: {fileID: 6934716329174473029}
-  data: {fileID: 11400000, guid: 22a2b9eb22b52124280cdbc9883af1ba, type: 2}
   rb: {fileID: 4829018076957723263}
+  statusData: {fileID: 11400000, guid: 8221129434ea70c4481fd87932ff510e, type: 2}
   spriteRenderer: {fileID: 6402335485789434333}
   effectsRenderer: {fileID: 4008633894832868557}
   sightLayer:

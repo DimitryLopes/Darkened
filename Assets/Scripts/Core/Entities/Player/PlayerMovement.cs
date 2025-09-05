@@ -17,7 +17,7 @@ public class PlayerMovement : PlayerAction
 
     public float CurrentStamina => currentStamina;
 
-    public void SetUp(PlayerStatus status, Joystick joystick, UIToggleButton sprintButton, SignalBus signalBus)
+    public void SetUp(EntityStatus status, Joystick joystick, UIToggleButton sprintButton, SignalBus signalBus)
     {
         this.status = status;
         this.signalBus = signalBus;

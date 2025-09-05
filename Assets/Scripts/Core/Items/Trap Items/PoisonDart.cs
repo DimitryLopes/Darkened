@@ -26,6 +26,10 @@ public class PoisonDart : Item, IProjectile
         {
             entityManager.GetPlayer().ApplyStatusEffect(effectData);
         }
+        if (collision.CompareTag(Constants.LayersAndTags.ENEMY_TAG))
+        {
+            entityManager.GetCurrentEnemy()?.ApplyStatusEffect(effectData);
+        }
         Deactivate();
     }
 

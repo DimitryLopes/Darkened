@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Player Status", menuName = "Scriptable Objects/Player Status")]
-public class PlayerStatusSO : ScriptableObject
+public class EntityStatusSO : ScriptableObject
 {
     [SerializeField]
     private Status[] statuses;
