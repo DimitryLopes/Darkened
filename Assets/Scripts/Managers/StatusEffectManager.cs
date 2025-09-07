@@ -20,7 +20,7 @@ public class StatusEffectManager
     public void OnStatusEffectApplied(OnStatusEffectAppliedSignal signal)
     {
         string key = GetStatusEffectKey(signal.StatusEffect.Multiplier, signal.StatusEffect.Stat, signal.StatusEffect.MaxDuration);
-        bool isPositive = signal.StatusEffect.Multiplier > 1f;
+        bool isPositive = signal.StatusEffect.Multiplier > 1f || signal.StatusEffect.Multiplier == 0;
         VisualEntityStatusEffect effectInstance = GetAvailableVisualEffect(key);
         StatusEffectVisualInfo visualInfo = visualDataBase.GetVisualInfo(signal.StatusEffect.Stat, isPositive);
         effectInstance.SetEffect(signal.TargetRenderer, isPositive ? visualInfo.PositiveMaterial : visualInfo.NegativeMaterial);

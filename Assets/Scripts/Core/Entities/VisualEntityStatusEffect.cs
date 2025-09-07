@@ -13,6 +13,7 @@ public class VisualEntityStatusEffect : Activateable
         transform.SetAsLastSibling();
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        gameObject.layer = effectSpriteRenderer.gameObject.layer;
         spriteRenderer.material = effectMaterial;
         spriteRenderer.sprite = effectSpriteRenderer.sprite;
         spriteRenderer.sortingLayerID = effectSpriteRenderer.sortingLayerID;
