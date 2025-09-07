@@ -25,6 +25,8 @@ public class DataBaseIntaller : MonoInstaller
     private UnlockConditionDataBase unlockConditionDataBase;
     [SerializeField]
     private WallDatabase wallDatabase;
+    [SerializeField]
+    private StatusEffectVisualDataBase statusEffectVisualDataBase;
 
     public override void InstallBindings()
     {
@@ -36,6 +38,7 @@ public class DataBaseIntaller : MonoInstaller
         screenDataBase.SetUp();
         materialDataBase.SetUp();
         objectivesDataBase.SetUp();
+        statusEffectVisualDataBase.SetUp();
 
         Container.Bind<WallDatabase>().FromInstance(wallDatabase).AsSingle();
         Container.Bind<ItemDataBase>().FromInstance(itemDataBase).AsSingle();
@@ -45,6 +48,7 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
         Container.Bind<MaterialDataBase>().FromInstance(materialDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
+        Container.Bind<StatusEffectVisualDataBase>().FromInstance(statusEffectVisualDataBase).AsSingle();
 
         Container.Bind<MazeSizeDataBase>().FromInstance(mazeSizeDataBase).AsSingle();
         Container.Bind<DifficultyDataBase>().FromInstance(difficultyDataBase).AsSingle();

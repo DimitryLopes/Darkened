@@ -257,8 +257,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f249cd5645c91a84f94bd3b9cf7ce15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 6005018496085755486}
+  onDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
   statusSO: {fileID: 11400000, guid: 35facf83647770f4cbdb5485958d0b04, type: 2}
+  spriteRenderer: {fileID: 6915054487000960456}
+  movement: {fileID: 6005018496085755486}
   interaction: {fileID: 272070270571167502}
   lightDetector: {fileID: 9032047553108274454}
   torch: {fileID: 6540329509454438479}

@@ -32,6 +32,9 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnTorchExtinguishedSignal>();
         //Enemy
         Container.DeclareSignal<OnEnemySpawnedSignal>();
+        //Entities
+        Container.DeclareSignal<OnStatusEffectAppliedSignal>();
+        Container.DeclareSignal<OnStatusEffectRemovedSignal>();
         //Items
         Container.DeclareSignal<OnPlayerUsedItemSignal>();
         Container.DeclareSignal<OnPlayerTryToUseItemSignal>();

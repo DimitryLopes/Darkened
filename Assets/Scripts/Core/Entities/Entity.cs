@@ -1,9 +1,15 @@
 using UnityEngine;
+using Zenject;
 
 public class Entity : Activateable
 {
+    [Inject]
+    protected SignalBus signalBus;
+
     [SerializeField]
     private EntityStatusSO statusSO;
+    [SerializeField]
+    protected SpriteRenderer spriteRenderer;
 
     protected EntityStatus status;
 
@@ -11,6 +17,6 @@ public class Entity : Activateable
     public void Initialize()
     {
         status = new EntityStatus();
-        status.Setup(statusSO);
+        status.Setup(statusSO, signalBus);
     }
 }

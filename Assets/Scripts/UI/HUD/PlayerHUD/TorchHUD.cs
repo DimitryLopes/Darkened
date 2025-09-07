@@ -28,6 +28,6 @@ public class TorchHUD : Activateable
     {
         if (!gameManager.IsPlaying) return;
 
-        torchFillImage.fillAmount = playerTorch.CurrentLifeTime / Constants.Player.TORCH_LIFETIME;
+        torchFillImage.fillAmount = playerTorch.CurrentLifeTime / Constants.Entities.TORCH_LIFETIME;
     }
 }

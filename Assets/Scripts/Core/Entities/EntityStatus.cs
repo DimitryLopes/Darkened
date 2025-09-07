@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class EntityStatus
 {
+    private SignalBus signalBus;
     public Dictionary<StatusKey, float> StatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
     public Dictionary<StatusKey, float> BaseStatusDictionary { get; private set; } = new Dictionary<StatusKey, float>();
     protected Dictionary<string, StatusEffect> statusEffects = new();
@@ -29,8 +32,9 @@ public class EntityStatus
         }
     }
 
-    public void Setup(EntityStatusSO baseStats)
+    public void Setup(EntityStatusSO baseStats, SignalBus signalBus)
     {
+        this.signalBus = signalBus;
         foreach (Status status in baseStats.Statuses)
         {
             StatusDictionary.Add(status.Key, status.Value);
@@ -53,23 +57,21 @@ public class EntityStatus
     }
 
     #region Status Effects
-    public void ApplyStatusEffect(float multiplier, StatusKey status, float duration)
+    public void ApplyStatusEffect(float multiplier, StatusKey status, float duration,
+        SpriteRenderer baseRenderer)
     {
-        string effectKey = GetStatusEffectKey(multiplier, status, duration);
+        string effectKey = StatusEffectManager.GetStatusEffectKey(multiplier, status, duration);
         if (statusEffects.ContainsKey(effectKey))
         {
             statusEffects[effectKey].Reaply();
         }
         else
         {
-            StatusEffect effect = new StatusEffect(status, multiplier, duration, this);
+            StatusEffect effect = new StatusEffect(status, multiplier, duration, this, signalBus);
             statusEffects.Add(effectKey, effect);
+            effect.Activate();
         }
-    }
-
-    private string GetStatusEffectKey(float multiplier, StatusKey status, float duration)
-    {
-        return string.Format(Constants.Player.STATUS_EFFECTS_KEY_FORMAT, status, duration, multiplier);
+        signalBus.Fire(new OnStatusEffectAppliedSignal(statusEffects[effectKey], baseRenderer));
     }
 
     public void UpdateStatusEffects(float deltaTime)

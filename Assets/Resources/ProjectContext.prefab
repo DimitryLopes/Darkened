@@ -464,6 +464,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataBaseInstaller
       objectReference: {fileID: 0}
+    - target: {fileID: 9175168343185863484, guid: 494fc7421c0ac774b9f202a70b993380, type: 3}
+      propertyPath: statusEffectVisualDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f6e9c36deed1224082fc714f3c53855, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -678,6 +682,10 @@ PrefabInstance:
     - target: {fileID: 1505441984224175564, guid: 9084a7ecdee84fb45901afc2667f1be9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640216707726568960, guid: 9084a7ecdee84fb45901afc2667f1be9, type: 3}
+      propertyPath: m_Name
+      value: EntityFactoryInstaller
       objectReference: {fileID: 0}
     - target: {fileID: 1937998319532142121, guid: 9084a7ecdee84fb45901afc2667f1be9, type: 3}
       propertyPath: m_Name
@@ -917,6 +925,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 207321213078882575}
     m_Modifications:
+    - target: {fileID: 2419751582289939779, guid: 093760bcf3860b8429d81c9a6a73d5df, type: 3}
+      propertyPath: visualEntityStatusEffect
+      value: 
+      objectReference: {fileID: 3923900946815583888, guid: d7c087e449214c444887681b95bcaa43, type: 3}
     - target: {fileID: 4879068390570763040, guid: 093760bcf3860b8429d81c9a6a73d5df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

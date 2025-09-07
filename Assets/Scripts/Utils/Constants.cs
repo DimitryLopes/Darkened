@@ -8,7 +8,7 @@ public static class Constants
         public const int LEVEL_SELECTION_SCREEN_LEVEL_COUNT_PER_PAGE =10;
     }
 
-    public static class Player
+    public static class Entities
     {
         public const float PLAYER_DEFAULT_TORCH_SIZE = 1;
         public const float PLAYER_BIG_TORCH_SIZE = 1.6f;

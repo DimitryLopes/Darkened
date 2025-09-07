@@ -13,6 +13,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<ObjectiveManager>().AsSingle();
         Container.Bind<PersistenceManager>().AsSingle();
         Container.Bind<FloatingTextManager>().AsSingle();
+        Container.Bind<StatusEffectManager>().AsSingle();
         //Needs previous managers
         Container.Bind<HUDManager>().AsSingle();
         Container.Bind<AudioManager>().AsSingle();

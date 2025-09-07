@@ -15,7 +15,12 @@ public class GameManager
     private readonly MazeManager mazeManager;
     private readonly HUDManager hudManager;
     private readonly SignalBus signalBus;
-
+    
+    [Inject]
+    private StatusEffectManager statusEffectManager;
+    //statusEffectManager is not used, but it's injected so Zenject initializes the manager
+    
+    
     public static bool IsOnPhone;
     public bool IsPlaying { get; private set; } = false;
 
@@ -34,7 +39,6 @@ public class GameManager
         this.mazeManager = mazeManager;
         this.hudManager = hudManager;
         this.signalBus = signalBus;
-
         IsOnPhone = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
 
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);

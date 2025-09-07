@@ -48,14 +48,14 @@ public class PlayerTorch : MonoBehaviour
         }
         else
         {
-            currentLifeTime = Constants.Player.TORCH_LIFETIME;
+            currentLifeTime = Constants.Entities.TORCH_LIFETIME;
         }
     }
 
     public void ActivateTorch()
     {
         playerTorch.enabled = true;
-        currentLifeTime = Constants.Player.TORCH_LIFETIME;
+        currentLifeTime = Constants.Entities.TORCH_LIFETIME;
         signalBus.Fire(new OnTorchLitSignal(playerTorch));
     }
 
@@ -67,12 +67,12 @@ public class PlayerTorch : MonoBehaviour
 
     public void SetBigTorch()
     {
-        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_BIG_TORCH_SIZE;
+        playerTorch.pointLightOuterRadius = Constants.Entities.PLAYER_BIG_TORCH_SIZE;
     }
 
     public void SetDefaultTorch()
     {
-        playerTorch.pointLightOuterRadius = Constants.Player.PLAYER_DEFAULT_TORCH_SIZE;
+        playerTorch.pointLightOuterRadius = Constants.Entities.PLAYER_DEFAULT_TORCH_SIZE;
         playerTorch.shadowsEnabled = true;
         playerTorch.color = defaultTorchColor;
     }

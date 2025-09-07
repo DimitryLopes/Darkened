@@ -12,13 +12,16 @@ public class PrefabInstaller : MonoInstaller
     private UIItemView itemView;
     [SerializeField]
     private FloatingText floatingText;
+    [SerializeField]
+    private VisualEntityStatusEffect visualEntityStatusEffect;
 
     public override void InstallBindings()
     {
-        Container.Bind<UISelectableItem>().FromInstance(selectableItem).AsTransient();
-        Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
         Container.Bind<Player>().FromInstance(playerPrefab).AsTransient();
         Container.Bind<UIItemView>().FromInstance(itemView).AsTransient();
+        Container.Bind<AudioSource>().FromInstance(audioSource).AsTransient();
         Container.Bind<FloatingText>().FromInstance(floatingText).AsTransient();
+        Container.Bind<UISelectableItem>().FromInstance(selectableItem).AsTransient();
+        Container.Bind<VisualEntityStatusEffect>().FromInstance(visualEntityStatusEffect).AsTransient();
     }
 }

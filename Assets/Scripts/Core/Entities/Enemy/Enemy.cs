@@ -17,7 +17,6 @@ public abstract class Enemy : Entity, IStateUser
     protected CameraManager cameraManager;
     protected AudioManager audioManager;
     protected IState currentState;
-    protected SignalBus signalBus;
     protected Player Player;
     protected Maze Maze;
     protected Distraction distraction;
@@ -30,14 +29,12 @@ public abstract class Enemy : Entity, IStateUser
     public Transform Transform => transform;
 
     [Inject]
-    public virtual void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager,
-        SignalBus signalBus)
+    public virtual void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager)
     {
         Initialize();
         this.audioManager = audioManager;
         Player = entityManager.GetPlayer();
         this.cameraManager = cameraManager;
-        this.signalBus = signalBus;
         signalBus.Subscribe<OnEnemyHitSignal>(OnHit);
     }
 
@@ -101,6 +98,6 @@ public abstract class Enemy : Entity, IStateUser
 
     internal void ApplyStatusEffect(StatusEffectData effectData)
     {
-        throw new NotImplementedException();
+        status.ApplyStatusEffect(effectData.Multiplier, effectData.Stat, effectData.Duration, spriteRenderer);
     }
 }

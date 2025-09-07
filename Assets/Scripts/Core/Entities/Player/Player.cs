@@ -4,8 +4,6 @@ using Zenject;
 public class Player : Entity
 {
     [Inject]
-    private SignalBus signalBus;
-    [Inject]
     private Joystick joystick;
     [Inject]
     private HUD hud;
@@ -52,11 +50,12 @@ public class Player : Entity
 
     public void ApplyStatusEffect(StatusEffectData data)
     {
-        status.ApplyStatusEffect(data.Multiplier, data.Stat, data.Duration);
+        status.ApplyStatusEffect(data.Multiplier, data.Stat, data.Duration, spriteRenderer);
     }
 
     private void Update()
     {
+        //this can be moved to a status manager if needed later
         status.UpdateStatusEffects(Time.deltaTime);
     }
 

@@ -1,4 +1,5 @@
 using System;
+using Zenject;
 
 public class StatusEffect 
 {
@@ -9,14 +10,16 @@ public class StatusEffect
     public float MaxDuration { get; private set; }
     private float increment;
     private EntityStatus Status { get; set; }
+    private SignalBus signalBus;
 
-    public StatusEffect(StatusKey key, float value, float duration, EntityStatus status)
+    public StatusEffect(StatusKey key, float value, float duration, EntityStatus status, SignalBus signalBus)
     {
         Stat = key;
         Multiplier = value;
         Duration = duration;
         MaxDuration = duration;
         Status = status;
+        this.signalBus = signalBus;
     }
 
     public void Tick(float deltaTime)
@@ -39,6 +42,7 @@ public class StatusEffect
     {
         IsActive = false;
         Status.StatusDictionary[Stat] -= increment;
+        signalBus.Fire(new OnStatusEffectRemovedSignal(this));
     }
 
     public void Activate()

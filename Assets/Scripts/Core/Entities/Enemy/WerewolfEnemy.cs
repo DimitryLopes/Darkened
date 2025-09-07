@@ -6,8 +6,6 @@ using Zenject;
 public class WerewolfEnemy : Enemy
 {
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
     private SpriteRenderer effectsRenderer;
 
     [SerializeField, Header("Config")]
@@ -67,10 +65,10 @@ public class WerewolfEnemy : Enemy
         base.OnHit(signal);
     }
 
-    public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager, SignalBus signalBus)
+    public override void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager)
     {
         effectsRendererColor = Color.red;
-        base.Initialize(entityManager, cameraManager, audioManager, signalBus);
+        base.Initialize(entityManager, cameraManager, audioManager);
         CreateDatas();
     }
 
@@ -110,6 +108,7 @@ public class WerewolfEnemy : Enemy
     private void Update()
     {
         currentState.HandleState();
+        status.UpdateStatusEffects(Time.deltaTime);
 
         if (IsDistracted) return;
 
