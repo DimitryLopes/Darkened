@@ -46,5 +46,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1070b8dbdb833504a977068062c4e131, type: 2}
   - {fileID: 11400000, guid: ca3b6c738a56f5d40ac82dee2e9239e9, type: 2}
   - {fileID: 11400000, guid: 16e7a00e68b343a40a59274894c826a9, type: 2}
+  - {fileID: 11400000, guid: 649af544bca12cd4cbc6cda559a1516b, type: 2}
   torches:
   - {fileID: 1669193551814374406, guid: d967fd153e41268479247a74e33862db, type: 3}
