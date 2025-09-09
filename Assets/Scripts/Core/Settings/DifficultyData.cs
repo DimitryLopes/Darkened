@@ -26,6 +26,10 @@ public class DifficultyData : ScriptableObject, IUISelectable
 
     [SerializeField, Header("Items")]
     private float spiritMovementSpeedModifier;
+
+    [SerializeField, Header("Traps")]
+    private float darknessDartTorchReductionOnHit;
+
     [SerializeField]
     private List<DifficultyItemData> difficultyItemDatas;
 
@@ -40,6 +44,7 @@ public class DifficultyData : ScriptableObject, IUISelectable
     public DifficultyType DifficultyType => difficulty;
     public SelectableType SelectableType => SelectableType.Difficulty;
     public float SpiritMovementSpeedModifier => spiritMovementSpeedModifier;
+    public float DarknessDartTorchReductionOnHit => darknessDartTorchReductionOnHit;
 
     [Serializable]
     public struct DifficultyItemData

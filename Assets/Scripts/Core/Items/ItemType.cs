@@ -18,4 +18,6 @@ public enum ItemType
     PressurePlate,
     PoisonDartTrap,
     PoisonDart,
+    DarknessDartTrap,
+    DarknessDart,
 }

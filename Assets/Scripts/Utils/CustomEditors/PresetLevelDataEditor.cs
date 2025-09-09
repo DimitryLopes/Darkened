@@ -104,6 +104,7 @@ public class PresetLevelDataEditor : Editor
                 ItemType.PressurePlate => new Color(0.7f, 0.7f, 0.7f, 1),
                 ItemType.PoisonDartTrap => new Color(0.1f, 0.8f, 0.1f, 1),
                 ItemType.Energetic => Color.magenta,
+                ItemType.DarknessDartTrap => new Color(0.15f, 0.15f, 0.15f, 1),
                 _ => Color.white
             };
 

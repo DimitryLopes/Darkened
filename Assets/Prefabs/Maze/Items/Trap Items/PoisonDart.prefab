@@ -55,13 +55,14 @@ MonoBehaviour:
       m_Calls: []
   itemIcon: {fileID: 21300000, guid: 8f7bb949363c53942a0516412ae4750b, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
+  itemCollider: {fileID: 6185794388864277759}
   itemGenerationData:
     minDistanceFromThings: 0
     spawnType: 0
     replace: 0
   rb: {fileID: 6621194480629600078}
   travelTime: 4
-  speed: 3
+  speed: 5
   effectData:
     Stat: 0
     Multiplier: 0.5

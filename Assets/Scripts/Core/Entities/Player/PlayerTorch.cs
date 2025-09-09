@@ -30,6 +30,28 @@ public class PlayerTorch : MonoBehaviour
         burnSpeedModifier = data.PlayerTorchBurnSpeedModifier;
     }
 
+    public void ChangeCurrentLifeTime(float value)
+    {
+        bool isPositive = value > 0;
+        
+        if(isPositive && currentLifeTime == 0)
+        {
+            ActivateTorch();
+        
+        }
+        currentLifeTime += value;
+
+        if (currentLifeTime > Constants.Entities.TORCH_LIFETIME)
+        {
+            currentLifeTime = Constants.Entities.TORCH_LIFETIME;
+        }
+        else if (currentLifeTime < 0)
+        {
+            currentLifeTime = 0;
+            DeactivateTorch();
+        }
+    }
+
     private void Update()
     {
         currentLifeTime -= Time.deltaTime * burnSpeedModifier;
