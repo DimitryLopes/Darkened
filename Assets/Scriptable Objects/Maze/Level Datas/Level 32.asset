@@ -836,6 +836,14 @@ MonoBehaviour:
     AssociateWith: wall west [0,0]
     SpawnType: 0
     ItemType: 15
+  - coordinate:
+      x: 0
+      y: 9
+    item: {fileID: 1265893472881442220, guid: 7c2a121108b6cc249b373503b6a89a26, type: 3}
+    direction: 0
+    AssociateWith: wall west [0,0]
+    SpawnType: 0
+    ItemType: 0
   startPosition:
     x: 5
     y: 4

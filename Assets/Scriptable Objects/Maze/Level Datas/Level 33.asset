@@ -833,6 +833,38 @@ MonoBehaviour:
     AssociateWith: 
     SpawnType: 1
     ItemType: 6
+  - coordinate:
+      x: 9
+      y: 10
+    item: {fileID: 7054227215558818972, guid: d89c605c2ac128d418e24e3e47809130, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 9
+  - coordinate:
+      x: 2
+      y: 6
+    item: {fileID: 7054227215558818972, guid: d89c605c2ac128d418e24e3e47809130, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 9
+  - coordinate:
+      x: 7
+      y: 5
+    item: {fileID: 7054227215558818972, guid: d89c605c2ac128d418e24e3e47809130, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 9
+  - coordinate:
+      x: 4
+      y: 0
+    item: {fileID: 516744806006562524, guid: c2966408e1d784348b32d9e29ad935cf, type: 3}
+    direction: 0
+    AssociateWith: 
+    SpawnType: 0
+    ItemType: 10
   startPosition:
     x: 3
     y: 2

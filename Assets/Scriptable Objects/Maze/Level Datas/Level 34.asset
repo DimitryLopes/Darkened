@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level 34
   m_EditorClassIdentifier: 
   sizeData: {fileID: 11400000, guid: b70843d92107e3f42b25f9876077d027, type: 2}
-  objectiveData: {fileID: 11400000, guid: aca059b777ff82e40940df31ff2d5ba1, type: 2}
+  objectiveData: {fileID: 11400000, guid: b6d1fafdb3315354e8eaec23e49cc8d7, type: 2}
   unlockConditionData: {fileID: 11400000, guid: 64bfdbc45a030d841ad06a903f582b41, type: 2}
   enemyType: 0
   difficultyData: {fileID: 11400000, guid: 2820d39289a49d84cacc96cc96a7d23f, type: 2}
