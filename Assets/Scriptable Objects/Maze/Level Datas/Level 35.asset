@@ -645,7 +645,7 @@ MonoBehaviour:
     wallType: 1
   items:
   - coordinate:
-      x: 20
+      x: 9
       y: 5
     item: {fileID: 1265893472881442220, guid: 7c2a121108b6cc249b373503b6a89a26, type: 3}
     direction: 3
