@@ -898,8 +898,8 @@ MonoBehaviour:
     SpawnType: 0
     ItemType: 9
   startPosition:
-    x: 9
-    y: 7
-  enemySpawnPosition:
-    x: 3
+    x: 2
     y: 2
+  enemySpawnPosition:
+    x: 4
+    y: 9
