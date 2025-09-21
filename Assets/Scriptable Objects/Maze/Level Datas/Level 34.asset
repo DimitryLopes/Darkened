@@ -836,8 +836,8 @@ MonoBehaviour:
     SpawnType: 1
     ItemType: 6
   startPosition:
-    x: 5
-    y: 1
-  enemySpawnPosition:
-    x: 9
+    x: 7
     y: 8
+  enemySpawnPosition:
+    x: 2
+    y: 6
