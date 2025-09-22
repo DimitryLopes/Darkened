@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 8381653057655002583, guid: daf2eaa5fdc00b64c8b97e47c0402ccc, type: 3}
   audioSource: {fileID: 6669032310483767517, guid: 1259796071ab07d478a21fd7eddc8788, type: 3}
-  mainCanvas: {fileID: 0}
   selectableItem: {fileID: 2948998494977838938, guid: 6d5cb5a9c963da247998c55e8faae047, type: 3}
   itemView: {fileID: 8465315272671842177, guid: 06d918dc412a0534ca6fe4a37b99cbf8, type: 3}
+  floatingText: {fileID: 9043185342567305294, guid: 782df54383cdaa5458eef8415c98adf3, type: 3}
+  visualEntityStatusEffect: {fileID: 3923900946815583888, guid: d7c087e449214c444887681b95bcaa43, type: 3}

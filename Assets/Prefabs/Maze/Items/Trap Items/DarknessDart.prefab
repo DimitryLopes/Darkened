@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6137830826493694273}
-  - component: {fileID: -6167776141584675061}
+  - component: {fileID: 2078081411430031244}
   - component: {fileID: 6180454501068931032}
   - component: {fileID: 6185794388864277759}
   - component: {fileID: 6621194480629600078}
@@ -38,7 +38,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6167776141584675061
+--- !u!114 &2078081411430031244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 235955571069073806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2210a31b19fae544adc7ba659017927, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bd982a31c614de44b3f51c2aaecaaf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onDeactivate:
@@ -66,10 +66,6 @@ MonoBehaviour:
   rb: {fileID: 6621194480629600078}
   travelTime: 4
   speed: 3
-  effectData:
-    Stat: 0
-    Multiplier: 0.5
-    Duration: 4
 --- !u!212 &6180454501068931032
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -227,7 +223,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.05
-  m_PreviewTimeScale: 0.1
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

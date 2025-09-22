@@ -77,7 +77,6 @@ public abstract class UIAnimation
 
         // Start the actual animation
         DoAnimation(target);
-        isPlaying = true;
         if (!debug)
         {
             animationManager.AddAnimation(this);
@@ -107,10 +106,12 @@ public abstract class UIAnimation
         {
             isPlaying = false;
 
-            animationManager.RemoveAnimation(this);
+            if(!debug)
+                animationManager.RemoveAnimation(this);
             tween = null;
             this.callback?.Invoke();
         });
+        isPlaying = true;
     }
 
     /// <summary>

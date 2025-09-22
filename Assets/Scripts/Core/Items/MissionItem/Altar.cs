@@ -9,7 +9,8 @@ public class Altar : MissionItem
     private InventoryManager inventoryManager;
     [Inject]
     private ObjectiveManager objectiveManager;
-
+    [Inject]
+    private FloatingTextManager floatingTextManager;
     [SerializeField]
     private Light2D altarLight;
     [SerializeField]
@@ -19,7 +20,7 @@ public class Altar : MissionItem
     {
         if (!inventoryManager.HasEnoughItem(ItemType.Orb))
         {
-            //TODO: SHOW FLOATING TEXT
+            floatingTextManager.ShowFloatingText("Need an Orb to activate", transform.position);
             return;
         }
 

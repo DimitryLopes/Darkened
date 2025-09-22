@@ -16,11 +16,15 @@ public class UIPositionAnimation : UIAnimation
     [SerializeField][ShowIf("movementType", MovementType.Arch)] private AnimationCurve movementCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f); // Animation curve for arch movement
     
     private RectTransform rectTransform;
+
+    private Vector3 defaultEndValue;
     protected override void DoAnimation(GameObject target)
     {
         if (!startFromSetPosition)
         {
             startPosition = rectTransform.anchoredPosition;
+            endPosition.x = rectTransform.anchoredPosition.x + defaultEndValue.x;
+            endPosition.y = rectTransform.anchoredPosition.y + defaultEndValue.y;
         }
         if (movementType == MovementType.Linear)
         {
@@ -44,13 +48,14 @@ public class UIPositionAnimation : UIAnimation
 
     protected override void FirstShowSetup()
     {
+        defaultEndValue = endPosition;
         if (rectTransform == null)
         {
             rectTransform = animationTarget.GetComponent<RectTransform>();
             return;
         }
 
-        if(rectTransform == null)
+        if (rectTransform == null)
         {
             Debug.LogError("UIPositionAnimation: The target GameObject "+ animationTarget.name + " does not have a RectTransform component.");
         }

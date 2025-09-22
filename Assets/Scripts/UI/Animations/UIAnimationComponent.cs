@@ -99,11 +99,11 @@ public class UIAnimationComponent : MonoBehaviour
         if (playAllAtOnce)
         {
             var sortedAnimations = animations.OrderByDescending(a => a.Duration).ToList();
-            sortedAnimations[0].Animate(animationTarget, onComplete, debug);
             for (int i = 1; i < animations.Count; i++)
             {
                 animations[i].Animate(animationTarget, debug: debug);
             }
+            sortedAnimations[0].Animate(animationTarget, onComplete, debug);
         }
         else
         {

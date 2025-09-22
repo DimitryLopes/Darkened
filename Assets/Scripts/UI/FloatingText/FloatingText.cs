@@ -12,7 +12,7 @@ public class FloatingText : Activateable
     {
         Activate();
         this.text.text = text;
-        animation.PlayOutAnimations(Hide);
+        animation.PlayInAnimations(Hide);
     }
 
     private void Hide()
