@@ -60,6 +60,8 @@ public static class Constants
         public const string WALL_ITEM_REPLACE_TAG = "Wall Item Replace";
         public const string NODE_ITEM_REPLACE_TAG = "Node Item Replace";
         public const string INTERACTABLE_LAYER = "Interactable";
+        public const string FLOATING_TEXT_SORTING_LAYER = "Floating Text";
+        public const int FLOATING_TEXT_SORTING_LAYER_ID = 17;
     }
 
     public static class AudioParameters

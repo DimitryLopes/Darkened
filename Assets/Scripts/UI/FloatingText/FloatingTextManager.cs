@@ -5,20 +5,20 @@ public class FloatingTextManager
 {
     private List<FloatingText> floatingTexts = new();
     private FloatingTextFactory floatingTextFactory;
-    private FloatingTextContainer container;
-
-    public FloatingTextManager(FloatingTextFactory factory, EnemyFactory enemyFactory, FloatingTextContainer container)
+    private Camera mainCamera;
+    public FloatingTextManager(FloatingTextFactory factory, EnemyFactory enemyFactory)
     {
         floatingTextFactory = factory;
-        this.container = container;
+        mainCamera = Camera.main;
     }
 
-    public void ShowFloatingText(string text, Vector3 position)
+    public void ShowFloatingText(string text, Transform parent)
     {
         FloatingText floatingText = GetAvailableFloatingText();
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(position);
-        floatingText.transform.position = screenPos;
-        floatingText.Show(text);        
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(parent.position);
+        floatingText.transform.SetParent(parent.transform);
+        floatingText.transform.position = parent.position;
+        floatingText.Show(text, mainCamera);
     }
 
     #region Pooling
@@ -33,7 +33,6 @@ public class FloatingTextManager
         }
 
         var newFloatingText = floatingTextFactory.Create();
-        newFloatingText.transform.SetParent(container.transform);
         floatingTexts.Add(newFloatingText);
         return newFloatingText;
     }

@@ -28,7 +28,7 @@ TagManager:
   - Light
   - ShadowCaster
   - Trap
-  - 
+  - Floating Text
   - 
   - 
   - 
@@ -100,4 +100,7 @@ TagManager:
     locked: 0
   - name: Debug
     uniqueID: 2632910733
+    locked: 0
+  - name: Floating Text
+    uniqueID: 407672053
     locked: 0

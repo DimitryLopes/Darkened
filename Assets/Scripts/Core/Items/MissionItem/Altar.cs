@@ -20,7 +20,7 @@ public class Altar : MissionItem
     {
         if (!inventoryManager.HasEnoughItem(ItemType.Orb))
         {
-            floatingTextManager.ShowFloatingText("Need an Orb to activate", transform.position);
+            floatingTextManager.ShowFloatingText("Need an Orb to activate", transform);
             return;
         }
 

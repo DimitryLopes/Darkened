@@ -4,7 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class CameraManager
 {
-
     private Volume postProcessVolume;
     private LeanTweenAnimationData finishVignetteIntensityAnimationData;
     private LeanTweenAnimationData finishVignetteSmoothnessAnimationData;
