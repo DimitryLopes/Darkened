@@ -32,7 +32,7 @@ public class TutorialManager : ITickable
     private void OnTutorialActionCompleted(Tutorial tutorial)
     {
         CurrentTutorial = null;
-        signalBus.Fire(new OnTutorialCompletedSignal(tutorial.Data.TutorialID));
+        signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
     }
 
     public void Tick()
