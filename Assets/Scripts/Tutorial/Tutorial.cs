@@ -27,8 +27,8 @@ public class Tutorial
         {
             if (Input.GetKeyDown(key))
             {
-                onComplete?.Invoke(this);
                 floatingText?.InstantHide();
+                onComplete?.Invoke(this);
                 return; // Exit after the first detected input
             }
         }
