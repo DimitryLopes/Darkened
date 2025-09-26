@@ -27,6 +27,7 @@ public class TutorialManager : ITickable
 
         Tutorial tutorial = new Tutorial(data, OnTutorialActionCompleted);
         CurrentTutorial = tutorial;
+        tutorial.Start(floatingTextManager, entityManager.GetPlayer());
     }
 
     private void OnTutorialActionCompleted(Tutorial tutorial)

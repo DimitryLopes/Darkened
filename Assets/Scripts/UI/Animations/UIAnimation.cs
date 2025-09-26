@@ -22,7 +22,6 @@ public abstract class UIAnimation
     protected float startDelay = 0f;
     [SerializeReference] protected bool ignoreTimeScale = false;
 
-
     protected LTDescr tween;
     protected Action callback;
     protected GameObject animationTarget;
@@ -32,7 +31,6 @@ public abstract class UIAnimation
     public LTDescr Tween => tween;
     public bool IsPlaying => isPlaying;
     public int Priority => priority;
-  
 
     private bool isFirstPlayDone = false;
     private UIAnimationManager animationManager;
@@ -112,6 +110,11 @@ public abstract class UIAnimation
             this.callback?.Invoke();
         });
         isPlaying = true;
+    }
+
+    public void SetDynamicDelay(float delay)
+    {
+        startDelay = delay;
     }
 
     /// <summary>

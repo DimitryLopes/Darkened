@@ -129,6 +129,36 @@ public class UIAnimationComponent : MonoBehaviour
         }
     }
 
+    public void SetInDelay(float delay)
+    {
+        if (playAllAtOnce)
+        {
+            foreach (UIAnimation anim in inAnimations)
+            {
+                anim.SetDynamicDelay(delay);
+            }
+        }
+        else if (inAnimations.Count > 0)
+        {
+            inAnimations[0].SetDynamicDelay(delay);
+        }
+    }
+
+    public void SetOutDelay(float delay)
+    {
+        if (playAllAtOnce)
+        {
+            foreach (UIAnimation anim in outAnimations)
+            {
+                anim.SetDynamicDelay(delay);
+            }
+        }
+        else if (outAnimations.Count > 0)
+        {
+            outAnimations[0].SetDynamicDelay(delay);
+        }
+    }
+
     public void StopCurrentAnimations()
     {
         if (overrideOtherAnimationsWhenPlayed)

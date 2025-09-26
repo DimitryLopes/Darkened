@@ -6,6 +6,7 @@ public static class Constants
     public static class UI 
     {
         public const int LEVEL_SELECTION_SCREEN_LEVEL_COUNT_PER_PAGE =10;
+        public const int FLOATING_TEXT_DEFAULT_DURATION = 0;
     }
 
     public static class Entities
