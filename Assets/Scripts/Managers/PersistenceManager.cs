@@ -26,7 +26,7 @@ public class PersistenceManager
         {
             persistences.SaveData(ref gameData);
         }
-        SaveGame();
+        Save();
     }
 
     public void LoadGame()
@@ -44,7 +44,7 @@ public class PersistenceManager
         }
     }
 
-    public void SaveGame()
+    public void Save()
     {
         foreach (IDataPersistence persistence in persistences)
         {
@@ -54,6 +54,12 @@ public class PersistenceManager
             persistence.ResetDirty();
         }
 
+        persistenceHandler.Save(gameData);
+    }
+
+    public void Save(IDataPersistence dataPersistence)
+    {
+        dataPersistence.SaveData(ref gameData);
         persistenceHandler.Save(gameData);
     }
 

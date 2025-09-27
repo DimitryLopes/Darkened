@@ -55,6 +55,6 @@ public class UnlockableManager
             unlockable.Unlock();
         }
         if (!save) return;
-        persistenceManager.SaveGame();
+        persistenceManager.Save();
     }
 }

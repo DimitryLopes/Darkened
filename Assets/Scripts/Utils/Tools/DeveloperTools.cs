@@ -121,7 +121,7 @@ public class DeveloperTools
                 unlockable.Unlock();
             }
         }
-        persistenceManager.SaveGame();
+        persistenceManager.Save();
     }
     #endregion
 }

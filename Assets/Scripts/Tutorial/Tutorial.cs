@@ -7,6 +7,7 @@ public class Tutorial
     private TutorialData data;
 
     public TutorialData Data => data;
+
     private event Action<Tutorial> onComplete;
     private FloatingText floatingText;
 
