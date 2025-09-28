@@ -9,6 +9,7 @@ public class GameData
         levelSavedData = new();
         tutorialSavedData = new();
     }
+
     #region Level Data
     public UnlockableSavedData GetLevelSavedData(string key)
     {

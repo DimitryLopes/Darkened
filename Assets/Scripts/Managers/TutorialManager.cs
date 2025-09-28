@@ -10,8 +10,8 @@ public class TutorialManager : ITickable
     private EntityManager entityManager;
     private SignalBus signalBus;
 
-    public Tutorial CurrentTutorial { get; private set; }
     public Queue<Tutorial> tutorialQueue;
+    public Tutorial CurrentTutorial { get; private set; }
 
     [Inject]
     public TutorialManager(TutorialDatabase tutorialDatabase,FloatingTextManager floatingTextManager,
@@ -35,13 +35,26 @@ public class TutorialManager : ITickable
             Tutorial tutorial = new Tutorial(tutorialData, OnTutorialActionCompleted);
             tutorialQueue.Enqueue(tutorial);
         }
+        ListenToNextTutorial();
     }
 
-    private void StartTutorial(TutorialID id)
+    private void ListenToNextTutorial()
     {
-        var data = tutorialDatabase.GetTutorial(id);
+        if(tutorialQueue.Count == 0 || CurrentTutorial != null) return;
+        TutorialTriggerType triggerType = tutorialQueue.Peek().Data.TriggerData.TriggerType;
+        switch (triggerType)
+        {
+            case TutorialTriggerType.Level:
+                StartTutorial(tutorialQueue.Peek());
+                break;
+            default:
+                StartTutorial(tutorialQueue.Peek());
+                break;
+        }
+    }
 
-        Tutorial tutorial = new Tutorial(data, OnTutorialActionCompleted);
+    private void StartTutorial(Tutorial tutorial)
+    {
         CurrentTutorial = tutorial;
         tutorial.Start(floatingTextManager, entityManager.GetPlayer());
     }
@@ -58,4 +71,30 @@ public class TutorialManager : ITickable
     {
         CurrentTutorial?.CheckForCompletion();
     }
+
+    #region Tutorial Listeners
+    private void OnLevelLoaded(OnMazeLoadFinishSignal signal)
+    {
+        if(CurrentTutorial == null || CurrentTutorial.Data.TriggerData.TriggerType != TutorialTriggerType.Level) return;
+
+        if (signal.Maze.Data is PresetLevelData data)
+        {
+            if(data.ID == CurrentTutorial?.Data.TriggerData.LevelID)
+            {
+                StartTutorial(CurrentTutorial);
+            }
+        }
+    }
+
+    private void OnPlayerInteractableChanged(OnPlayerInteractableChangedSignal signal)
+    {
+        if(CurrentTutorial == null || CurrentTutorial.Data.TriggerData.TriggerType != TutorialTriggerType.Interaction) return;
+        if(signal.Item == null) return;
+
+        if(signal.Item.Type == CurrentTutorial.Data.TriggerData.ItemType)
+        {
+            StartTutorial(CurrentTutorial);
+        }
+    }
+    #endregion
 }
