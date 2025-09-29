@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TutorialDatabase", menuName = "Scriptable Objects/Data Bases/Tutorial Database")]
-
 public class TutorialDatabase : ScriptableObject
 {
     [SerializeField]

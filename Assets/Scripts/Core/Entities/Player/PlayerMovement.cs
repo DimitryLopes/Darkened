@@ -16,6 +16,7 @@ public class PlayerMovement : PlayerAction
     private bool isRegeneratingAfterExaustion;
 
     public float CurrentStamina => currentStamina;
+    private Vector3 movement;
 
     public void SetUp(EntityStatus status, Joystick joystick, UIToggleButton sprintButton, SignalBus signalBus)
     {
@@ -59,26 +60,13 @@ public class PlayerMovement : PlayerAction
 
     private void HandlePCMovement()
     {
-        Vector3 movement = Vector3.zero;
+        movement = Vector3.zero;
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            movement += Vector3.up;
-        }
-        if (Input.GetKey(KeyCode.A)) 
-        {
-            movement -= Vector3.right;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movement -= Vector3.up;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movement += Vector3.right;
-        }
-
-        isMoving = movement != Vector3.zero;
+        movement.x = moveX;
+        movement.y = moveY;
+        isMoving = movement.magnitude >= 0.1f;
         movement *= status.MovementSpeed;
 
         if (isMoving)
@@ -89,6 +77,7 @@ public class PlayerMovement : PlayerAction
         else
         {
             rb.velocity = Vector3.zero;
+            return;
         }
 
         rb.velocity = movement;

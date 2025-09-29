@@ -2,19 +2,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "TutorialData", menuName = "Scriptable Objects/Tutorial/Tutorial Data")]
 public class TutorialData : ScriptableObject, IDataPersistence
 {
     [SerializeField]
     private string tutorialText;
     [SerializeField]
-    private List<KeyCode> requiredInput;
+    private List<string> requiredInput;
     [SerializeField]
     private TutorialID tutorialID;
     [SerializeField]
     private TutorialTriggerData triggerData;
 
     public string TutorialText => tutorialText;
-    public List<KeyCode> RequiredInputs => requiredInput;
+    public List<string> RequiredInputs => requiredInput;
     public TutorialID TutorialID => tutorialID;
     public TutorialTriggerData TriggerData => triggerData;
 

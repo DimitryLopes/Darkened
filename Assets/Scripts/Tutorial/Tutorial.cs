@@ -25,7 +25,13 @@ public class Tutorial
     {
         foreach (var key in data.RequiredInputs)
         {
-            if (Input.GetKeyDown(key))
+            if (Input.GetAxis(key) > 0)
+            {
+                floatingText?.InstantHide();
+                onComplete?.Invoke(this);
+                return; // Exit after the first detected input
+            }
+            else if (Input.GetKeyDown(key))
             {
                 floatingText?.InstantHide();
                 onComplete?.Invoke(this);
@@ -33,5 +39,4 @@ public class Tutorial
             }
         }
     }
-
 }
