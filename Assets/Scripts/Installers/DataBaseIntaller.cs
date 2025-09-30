@@ -27,6 +27,8 @@ public class DataBaseIntaller : MonoInstaller
     private WallDatabase wallDatabase;
     [SerializeField]
     private StatusEffectVisualDataBase statusEffectVisualDataBase;
+    [SerializeField]
+    private TutorialDatabase tutorialDatabase;
 
     public override void InstallBindings()
     {
@@ -37,6 +39,7 @@ public class DataBaseIntaller : MonoInstaller
         audioDataBase.SetUp();
         screenDataBase.SetUp();
         materialDataBase.SetUp();
+        tutorialDatabase.SetUp();
         objectivesDataBase.SetUp();
         statusEffectVisualDataBase.SetUp();
 
@@ -46,6 +49,7 @@ public class DataBaseIntaller : MonoInstaller
         Container.Bind<AudioDataBase>().FromInstance(audioDataBase).AsSingle();
         Container.Bind<EnemyDataBase>().FromInstance(enemyDataBase).AsSingle();
         Container.Bind<UIScreenDataBase>().FromInstance(screenDataBase).AsSingle();
+        Container.Bind<TutorialDatabase>().FromInstance(tutorialDatabase).AsSingle();
         Container.Bind<MaterialDataBase>().FromInstance(materialDataBase).AsSingle();
         Container.Bind<ObjectivesDataBase>().FromInstance(objectivesDataBase).AsSingle();
         Container.Bind<StatusEffectVisualDataBase>().FromInstance(statusEffectVisualDataBase).AsSingle();

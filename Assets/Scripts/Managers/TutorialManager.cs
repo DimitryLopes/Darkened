@@ -14,7 +14,7 @@ public class TutorialManager : ITickable
     public Tutorial CurrentTutorial { get; private set; }
 
     [Inject]
-    public TutorialManager(TutorialDatabase tutorialDatabase,FloatingTextManager floatingTextManager,
+    public TutorialManager(TutorialDatabase tutorialDatabase, FloatingTextManager floatingTextManager,
         EntityManager entityManager, PersistenceManager persistenceManager, SignalBus signalBus)
     {
         this.floatingTextManager = floatingTextManager;
@@ -22,6 +22,7 @@ public class TutorialManager : ITickable
         this.tutorialDatabase = tutorialDatabase;
         this.entityManager = entityManager;
         this.signalBus = signalBus;
+        Initialize();
     }
 
     private void Initialize()
@@ -45,10 +46,10 @@ public class TutorialManager : ITickable
         switch (triggerType)
         {
             case TutorialTriggerType.Level:
-                StartTutorial(tutorialQueue.Peek());
+                signalBus.Subscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
                 break;
             default:
-                StartTutorial(tutorialQueue.Peek());
+                signalBus.Subscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
                 break;
         }
     }
@@ -57,6 +58,7 @@ public class TutorialManager : ITickable
     {
         CurrentTutorial = tutorial;
         tutorial.Start(floatingTextManager, entityManager.GetPlayer());
+        Time.timeScale = 0f;
     }
 
     private void OnTutorialActionCompleted(Tutorial tutorial)
@@ -65,6 +67,7 @@ public class TutorialManager : ITickable
         tutorial.Data.SavedData.IsCompleted = true;
         persistenceManager.Save(tutorial.Data);
         signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
+        Time.timeScale = 1f;
     }
 
     public void Tick()
@@ -84,6 +87,7 @@ public class TutorialManager : ITickable
                 StartTutorial(CurrentTutorial);
             }
         }
+        signalBus.Unsubscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
     }
 
     private void OnPlayerInteractableChanged(OnPlayerInteractableChangedSignal signal)
@@ -95,6 +99,7 @@ public class TutorialManager : ITickable
         {
             StartTutorial(CurrentTutorial);
         }
+        signalBus.Unsubscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
     }
     #endregion
 }

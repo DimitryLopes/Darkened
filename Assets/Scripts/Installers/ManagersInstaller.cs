@@ -19,6 +19,7 @@ public class ManagersInstaller : MonoInstaller
         Container.Bind<AudioManager>().AsSingle();
         Container.Bind<InventoryManager>().AsSingle();
         Container.Bind<UnlockableManager>().AsSingle();
+        Container.Bind<TutorialManager>().AsSingle();
         //Needs previous managers
         Container.Bind<LevelManager>().AsSingle();
         //Needs previous managers

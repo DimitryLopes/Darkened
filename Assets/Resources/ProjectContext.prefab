@@ -469,10 +469,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataBaseInstaller
       objectReference: {fileID: 0}
-    - target: {fileID: 9175168343185863484, guid: 494fc7421c0ac774b9f202a70b993380, type: 3}
-      propertyPath: statusEffectVisualDataBase
-      value: 
-      objectReference: {fileID: 11400000, guid: 3f6e9c36deed1224082fc714f3c53855, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

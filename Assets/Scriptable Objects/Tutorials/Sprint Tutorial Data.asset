@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialText: W,A,S,D to Move
   requiredInput:
-  - LShift
+  - LeftShift
   tutorialID: 1

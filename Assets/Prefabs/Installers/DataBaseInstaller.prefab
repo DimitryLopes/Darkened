@@ -55,3 +55,5 @@ MonoBehaviour:
   materialDataBase: {fileID: 11400000, guid: 99e4b826739fc19419e7b6271a293568, type: 2}
   unlockConditionDataBase: {fileID: 11400000, guid: c919c1a7f8103624a99d20c1f2f5692d, type: 2}
   wallDatabase: {fileID: 11400000, guid: fe891efd93cb54e45bfb43351b8f5dd4, type: 2}
+  statusEffectVisualDataBase: {fileID: 11400000, guid: 3f6e9c36deed1224082fc714f3c53855, type: 2}
+  tutorialDatabase: {fileID: 11400000, guid: 56fad68d472fa874cbb6d55f6aa956c3, type: 2}
