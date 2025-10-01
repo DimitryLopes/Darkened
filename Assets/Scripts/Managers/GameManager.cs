@@ -19,8 +19,11 @@ public class GameManager
     [Inject]
     private StatusEffectManager statusEffectManager;
     //statusEffectManager is not used, but it's injected so Zenject initializes the manager
-    
-    
+    [Inject]
+    private TutorialManager tutorialManager;
+    //tutorialManager is not used, but it's injected so Zenject initializes the manager
+
+
     public static bool IsOnPhone;
     public bool IsPlaying { get; private set; } = false;
 
@@ -95,6 +98,12 @@ public class GameManager
         screenManager.Show<MainMenuScreen>(controller);
     }
 
+    public void ToggleTutorialPaus(bool hasTutorial)
+    {
+        entityManager.ToggleEntityActing(!hasTutorial);
+        entityManager.GetPlayer().ToggleTorchBurn(!hasTutorial);
+    }
+
     private void OnLevelViewClicked(PresetLevelData data)
     {
         levelManager.StartStoryLevel(data);
@@ -105,6 +114,7 @@ public class GameManager
         IsPlaying = false;
         Player player = entityManager.GetPlayer();
         player.ToggleActing(false);
+        player.ToggleTorchBurn(false);
         player.DeactivateTorch();
 
         entityManager.DeactivateEnemy(levelManager.CurrentLevelData.EnemyType);
@@ -164,7 +174,6 @@ public class GameManager
         Player player = entityManager.GetPlayer();
         player.transform.position = mazeManager.CurrentStartingNode.transform.position;
         player.ResetPlayer(signal.Maze.Data.DifficultyData);
-
         signalBus.Fire(new OnPlayerSpawnedSignal(player));
 
         if (levelManager.CurrentLevelData.EnemyType != EnemyType.None)
@@ -174,6 +183,7 @@ public class GameManager
             entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
             enemy.SetMaze(mazeManager.CurrentMaze);
             signalBus.Fire(new OnEnemySpawnedSignal(enemy));
+            enemy.CanAct = true;
         }
 
         audioManager.PlayBGM(AudioKey.BGM_in_game);

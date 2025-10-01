@@ -6,6 +6,8 @@ public class UIPauseScreen : UIScreen<PauseScreenController>
 {
     [Inject]
     private GameManager gameManager;
+    [Inject]
+    private TimeManager timeManager;
 
     [SerializeField]
     private Button quitButton;
@@ -40,12 +42,12 @@ public class UIPauseScreen : UIScreen<PauseScreenController>
     protected override void OnBeforeShow()
     {
         base.OnBeforeShow();
-        Time.timeScale = 0;
+        timeManager.Pause(this);
     }
 
     protected override void OnBeforeHide()
     {
         base.OnBeforeHide();
-        Time.timeScale = 1;
+        timeManager.Resume(this);
     }
 }

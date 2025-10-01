@@ -39,6 +39,7 @@ public class Player : Entity
         SetDefaultTorch();
         ActivateTorch();
         torch.SetBurnSpeedModifier(data);
+        torch.CanBurn = true;
         status.ResetStatus();
     }
 
@@ -46,6 +47,11 @@ public class Player : Entity
     {
         movement.ToggleActing(value);
         interaction.ToggleActing(value);
+    }
+
+    public void ToggleTorchBurn(bool value)
+    {
+        torch.CanBurn = value;
     }
 
     public void ApplyStatusEffect(StatusEffectData data)

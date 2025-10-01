@@ -5,7 +5,7 @@ public class TimeManager
 {
     private const float BASE_TIME_SCALE = 1f;
 
-    private List<object> pauseStack;
+    private List<object> pauseStack = new();
 
 
     public void Pause(object source)

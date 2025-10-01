@@ -17,6 +17,7 @@ public class PlayerTorch : MonoBehaviour
     private float burnSpeedModifier;
 
     public float CurrentLifeTime => currentLifeTime;
+    public bool CanBurn { get; set; }
 
     public void Setup(SignalBus signalBus)
     {
@@ -54,6 +55,8 @@ public class PlayerTorch : MonoBehaviour
 
     private void Update()
     {
+        if (!CanBurn) return;
+
         currentLifeTime -= Time.deltaTime * burnSpeedModifier;
         if (currentLifeTime <= 0)
         {

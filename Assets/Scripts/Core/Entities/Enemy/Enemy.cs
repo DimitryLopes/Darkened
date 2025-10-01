@@ -28,6 +28,8 @@ public abstract class Enemy : Entity, IStateUser
     public float SprintingSpeed => MovementSpeed * status.GetStat(StatusKey.SprintingSpeedMultiplier);
     public Transform Transform => transform;
 
+    public bool CanAct { get; set; } = true;
+
     [Inject]
     public virtual void Initialize(EntityManager entityManager, CameraManager cameraManager, AudioManager audioManager)
     {
@@ -90,11 +92,17 @@ public abstract class Enemy : Entity, IStateUser
 
     private void Update()
     {
+        if (!CanAct) return;
         currentState.HandleState();
     }
 
     protected virtual void OnDistracted(Distraction distraction) { }
     protected virtual void OnDistractionEnded() { }
+
+    public override void OnDeactivate()
+    {
+        CanAct = false;
+    }
 
     internal void ApplyStatusEffect(StatusEffectData effectData)
     {

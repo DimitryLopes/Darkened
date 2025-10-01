@@ -4,6 +4,7 @@ public class ManagersInstaller : MonoInstaller
     public override void InstallBindings()
     {
         //Doesn't need other managers
+        Container.Bind<TimeManager>().AsSingle();
         Container.Bind<MazeManager>().AsSingle();
         Container.Bind<EntityManager>().AsSingle();
         Container.Bind<CameraManager>().AsSingle();

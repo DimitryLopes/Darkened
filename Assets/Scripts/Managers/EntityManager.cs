@@ -56,6 +56,15 @@ public class EntityManager
         return enemy;
     }
 
+    public void ToggleEntityActing(bool canAct)
+    {
+        foreach (var enemy in Enemies.Values)
+        {
+            enemy.CanAct = canAct;
+        }
+        player.ToggleActing(canAct);
+    }
+
     public void DeactivateEnemy(EnemyType enemyType)
     {
         if (enemyType == EnemyType.None)

@@ -8,20 +8,22 @@ public class TutorialManager : ITickable
     private PersistenceManager persistenceManager;
     private TutorialDatabase tutorialDatabase;
     private EntityManager entityManager;
+    private TimeManager timeManager;
     private SignalBus signalBus;
-
     public Queue<Tutorial> tutorialQueue;
     public Tutorial CurrentTutorial { get; private set; }
 
     [Inject]
     public TutorialManager(TutorialDatabase tutorialDatabase, FloatingTextManager floatingTextManager,
-        EntityManager entityManager, PersistenceManager persistenceManager, SignalBus signalBus)
+        EntityManager entityManager, PersistenceManager persistenceManager,
+        TimeManager timeManager, SignalBus signalBus)
     {
         this.floatingTextManager = floatingTextManager;
         this.persistenceManager = persistenceManager;
         this.tutorialDatabase = tutorialDatabase;
         this.entityManager = entityManager;
         this.signalBus = signalBus;
+        this.timeManager = timeManager;
         Initialize();
     }
 
@@ -42,7 +44,9 @@ public class TutorialManager : ITickable
     private void ListenToNextTutorial()
     {
         if(tutorialQueue.Count == 0 || CurrentTutorial != null) return;
-        TutorialTriggerType triggerType = tutorialQueue.Peek().Data.TriggerData.TriggerType;
+
+        CurrentTutorial = tutorialQueue.Peek();
+        TutorialTriggerType triggerType = CurrentTutorial.Data.TriggerData.TriggerType;
         switch (triggerType)
         {
             case TutorialTriggerType.Level:
@@ -56,9 +60,8 @@ public class TutorialManager : ITickable
 
     private void StartTutorial(Tutorial tutorial)
     {
-        CurrentTutorial = tutorial;
         tutorial.Start(floatingTextManager, entityManager.GetPlayer());
-        Time.timeScale = 0f;
+        timeManager.Pause(this);
     }
 
     private void OnTutorialActionCompleted(Tutorial tutorial)
@@ -67,7 +70,7 @@ public class TutorialManager : ITickable
         tutorial.Data.SavedData.IsCompleted = true;
         persistenceManager.Save(tutorial.Data);
         signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
-        Time.timeScale = 1f;
+        timeManager.Resume(this);
     }
 
     public void Tick()

@@ -1,12 +1,14 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public struct TutorialTriggerData
 {
     [SerializeField]
     private TutorialTriggerType triggerType;
-    [SerializeField, ShowIf("TriggerType", TutorialTriggerType.Level)]
+    [SerializeField, ShowIf("triggerType", TutorialTriggerType.Level)]
     private int levelID;
-    [SerializeField, ShowIf("TriggerType", TutorialTriggerType.Item, TutorialTriggerType.Interaction)]
+    [SerializeField, ShowIf("triggerType", TutorialTriggerType.Item, TutorialTriggerType.Interaction)]
     private ItemType itemType;
 
     public TutorialTriggerType TriggerType => triggerType;
