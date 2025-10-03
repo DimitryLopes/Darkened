@@ -19,12 +19,15 @@ public class FloatingText : Activateable
         canvas.worldCamera = camera;
         canvas.sortingLayerName = Constants.LayersAndTags.FLOATING_TEXT_SORTING_LAYER;
         this.text.text = text;
-        if(duration < 0) 
+        if (duration < 0)
         {
             animation.PlayInAnimations();
-            return;
+
         }
-        animation.PlayInAnimations(Hide);
+        else
+        {
+            animation.PlayInAnimations(Hide);
+        }
     }
 
     private void Hide()

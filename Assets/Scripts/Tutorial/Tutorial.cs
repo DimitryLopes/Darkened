@@ -25,17 +25,31 @@ public class Tutorial
     {
         foreach (var key in data.RequiredInputs)
         {
+            if (Enum.TryParse(key, out KeyCode parsedKey))
+            {
+                CheckKeyInput(parsedKey);
+            }
+            else
+            {
+                CheckAxisInput(key);
+            }
+        }
+
+        void CheckAxisInput(string key)
+        {
             if (Input.GetAxis(key) > 0)
             {
                 floatingText?.InstantHide();
                 onComplete?.Invoke(this);
-                return; // Exit after the first detected input
             }
-            else if (Input.GetKeyDown(key))
+        }
+
+        void CheckKeyInput(KeyCode key)
+        {
+            if (Input.GetKeyDown(key))
             {
                 floatingText?.InstantHide();
                 onComplete?.Invoke(this);
-                return; // Exit after the first detected input
             }
         }
     }

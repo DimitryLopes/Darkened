@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -8,22 +9,24 @@ public class TutorialManager : ITickable
     private PersistenceManager persistenceManager;
     private TutorialDatabase tutorialDatabase;
     private EntityManager entityManager;
-    private TimeManager timeManager;
+    private Coroutiner coroutiner;
     private SignalBus signalBus;
-    public Queue<Tutorial> tutorialQueue;
+    private bool isPlayingTutorial = false;
+
+    private Queue<Tutorial> tutorialQueue;
     public Tutorial CurrentTutorial { get; private set; }
 
     [Inject]
     public TutorialManager(TutorialDatabase tutorialDatabase, FloatingTextManager floatingTextManager,
         EntityManager entityManager, PersistenceManager persistenceManager,
-        TimeManager timeManager, SignalBus signalBus)
+        TimeManager timeManager, SignalBus signalBus, Coroutiner coroutiner)
     {
         this.floatingTextManager = floatingTextManager;
         this.persistenceManager = persistenceManager;
         this.tutorialDatabase = tutorialDatabase;
         this.entityManager = entityManager;
         this.signalBus = signalBus;
-        this.timeManager = timeManager;
+        this.coroutiner = coroutiner;
         Initialize();
     }
 
@@ -34,10 +37,10 @@ public class TutorialManager : ITickable
         foreach (var tutorialData in tutorialDatas)
         {
             if(tutorialData.SavedData.IsCompleted) continue;
-            tutorialData.SetPersistenceKey();
             Tutorial tutorial = new Tutorial(tutorialData, OnTutorialActionCompleted);
             tutorialQueue.Enqueue(tutorial);
         }
+        isPlayingTutorial = false;
         ListenToNextTutorial();
     }
 
@@ -61,20 +64,22 @@ public class TutorialManager : ITickable
     private void StartTutorial(Tutorial tutorial)
     {
         tutorial.Start(floatingTextManager, entityManager.GetPlayer());
-        timeManager.Pause(this);
+        isPlayingTutorial = true;
+        signalBus.Fire(new OnTutorialStartedSignal(tutorial));
     }
 
     private void OnTutorialActionCompleted(Tutorial tutorial)
     {
+        isPlayingTutorial = false;
         CurrentTutorial = null;
         tutorial.Data.SavedData.IsCompleted = true;
         persistenceManager.Save(tutorial.Data);
         signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
-        timeManager.Resume(this);
     }
 
     public void Tick()
     {
+        if (!isPlayingTutorial) return;
         CurrentTutorial?.CheckForCompletion();
     }
 
@@ -87,10 +92,16 @@ public class TutorialManager : ITickable
         {
             if(data.ID == CurrentTutorial?.Data.TriggerData.LevelID)
             {
-                StartTutorial(CurrentTutorial);
+                coroutiner.StartCoroutine(WaitForTutorial());
             }
         }
         signalBus.Unsubscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
+    }
+
+    private IEnumerator WaitForTutorial()
+    {
+        yield return new WaitForSeconds(2);
+        StartTutorial(CurrentTutorial);
     }
 
     private void OnPlayerInteractableChanged(OnPlayerInteractableChangedSignal signal)

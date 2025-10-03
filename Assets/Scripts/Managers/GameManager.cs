@@ -48,6 +48,8 @@ public class GameManager
         signalBus.Subscribe<OnGameCompletedSignal>(OnGameCompleted);
         signalBus.Subscribe<OnMazeLoadStartedSignal>(OnMazeLoadStart);
         signalBus.Subscribe<OnNewGameStartedSignal>(OnNewGameStarted);
+        signalBus.Subscribe<OnTutorialStartedSignal>(OnTutorialStarted);
+        signalBus.Subscribe<OnTutorialCompletedSignal>(OnTutorialCompleted);
     }
 
 
@@ -83,6 +85,16 @@ public class GameManager
         unlockableManager.OnConditionMet(UnlockCondition.StartUnlocked, false);
     }
 
+    private void OnTutorialStarted(OnTutorialStartedSignal signal)
+    {
+        ToggleTutorialPause(true);
+    }
+
+    private void OnTutorialCompleted(OnTutorialCompletedSignal signal)
+    {
+        ToggleTutorialPause(false);
+    }
+
     //called be main menu listener, there might be a better way to do this
     public void OnGameStarted()
     {
@@ -98,7 +110,7 @@ public class GameManager
         screenManager.Show<MainMenuScreen>(controller);
     }
 
-    public void ToggleTutorialPaus(bool hasTutorial)
+    public void ToggleTutorialPause(bool hasTutorial)
     {
         entityManager.ToggleEntityActing(!hasTutorial);
         entityManager.GetPlayer().ToggleTorchBurn(!hasTutorial);

@@ -50,7 +50,10 @@ public class SignalInstaller : MonoInstaller
         Container.DeclareSignal<OnInteractionButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDNextButtonClickedSignal>();
         Container.DeclareSignal<OnBottomHUDPreviousButtonClickedSignal>();
-        //whatever armengue shit I did
+        //Tutorials
+        Container.DeclareSignal<OnTutorialStartedSignal>();
+        Container.DeclareSignal<OnTutorialCompletedSignal>();
+        //whatever armengue I did
         Container.DeclareSignal<OnBindingsFinishedSignal>();
     }
 }

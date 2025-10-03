@@ -5,19 +5,24 @@ public class FloatingTextManager
 {
     private List<FloatingText> floatingTexts = new();
     private FloatingTextFactory floatingTextFactory;
+    private FloatingTextContainer floatingTextContainer;
     private Camera mainCamera;
-    public FloatingTextManager(FloatingTextFactory factory, EnemyFactory enemyFactory)
+
+    public FloatingTextManager(FloatingTextFactory factory, EnemyFactory enemyFactory,
+        FloatingTextContainer floatingTextContainer)
     {
+        this.floatingTextContainer = floatingTextContainer;
         floatingTextFactory = factory;
         mainCamera = Camera.main;
     }
 
-    public FloatingText ShowFloatingText(string text, Transform parent, float duration = Constants.UI.FLOATING_TEXT_DEFAULT_DURATION)
+    public FloatingText ShowFloatingText(string text, Transform position, float duration = Constants.UI.FLOATING_TEXT_DEFAULT_DURATION)
     {
         FloatingText floatingText = GetAvailableFloatingText();
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(parent.position);
-        floatingText.transform.SetParent(parent.transform);
-        floatingText.transform.position = parent.position;
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(position.position);
+        (floatingText.transform as RectTransform).anchoredPosition = screenPos;
+
         floatingText.Show(text, mainCamera, duration);
         return floatingText;
     }
@@ -35,6 +40,7 @@ public class FloatingTextManager
 
         var newFloatingText = floatingTextFactory.Create();
         floatingTexts.Add(newFloatingText);
+        newFloatingText.transform.SetParent(floatingTextContainer.transform);
         return newFloatingText;
     }
     #endregion

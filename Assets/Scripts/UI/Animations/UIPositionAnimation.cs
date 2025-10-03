@@ -17,15 +17,13 @@ public class UIPositionAnimation : UIAnimation
     
     private RectTransform rectTransform;
 
-    private Vector3 defaultEndValue;
     protected override void DoAnimation(GameObject target)
     {
         if (!startFromSetPosition)
         {
-            startPosition = rectTransform.anchoredPosition;
-            endPosition.x = rectTransform.anchoredPosition.x + defaultEndValue.x;
-            endPosition.y = rectTransform.anchoredPosition.y + defaultEndValue.y;
+            startPosition =  rectTransform.anchoredPosition;
         }
+
         if (movementType == MovementType.Linear)
         {
             rectTransform.anchoredPosition = startPosition;
@@ -48,7 +46,6 @@ public class UIPositionAnimation : UIAnimation
 
     protected override void FirstShowSetup()
     {
-        defaultEndValue = endPosition;
         if (rectTransform == null)
         {
             rectTransform = animationTarget.GetComponent<RectTransform>();

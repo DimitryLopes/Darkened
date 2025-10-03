@@ -14,6 +14,7 @@ public class TutorialDatabase : ScriptableObject
         foreach (TutorialData tutorial in tutorials)
         {
             TutorialDictionary.Add(tutorial.TutorialID, tutorial);
+            tutorial.SetPersistenceKey();
         }
     }
 
