@@ -10,10 +10,13 @@ public struct TutorialTriggerData
     private int levelID;
     [SerializeField, ShowIf("triggerType", TutorialTriggerType.Item, TutorialTriggerType.Interaction)]
     private ItemType itemType;
+    [SerializeField, ShowIf("triggerType", TutorialTriggerType.OtherTutorial)]
+    private TutorialID requiredTutorial;
 
     public TutorialTriggerType TriggerType => triggerType;
     public int LevelID => levelID;
     public ItemType ItemType => itemType;
+    public TutorialID RequiredTutorial => requiredTutorial;
 }
 
 public enum TutorialTriggerType
@@ -21,4 +24,5 @@ public enum TutorialTriggerType
     Level,
     Interaction,
     Item,
+    OtherTutorial,
 }

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9622e1136a21e824d97955e66147015d, type: 3}
   m_Name: Sprint Tutorial Data
   m_EditorClassIdentifier: 
-  tutorialText: W,A,S,D to Move
+  tutorialText: Hold Left Shift to Sprint
   requiredInput:
   - LeftShift
   tutorialID: 1
+  triggerData:
+    triggerType: 3
+    levelID: 0
+    itemType: 0
+    requiredTutorial: 0

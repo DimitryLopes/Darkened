@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Zenject;
+using System;
 
 public class TutorialManager : ITickable
 {    
@@ -55,11 +56,15 @@ public class TutorialManager : ITickable
             case TutorialTriggerType.Level:
                 signalBus.Subscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
                 break;
+            case TutorialTriggerType.OtherTutorial:
+                signalBus.Subscribe<OnTutorialCompletedSignal>(OnTutorialCompleted);
+                break;
             default:
                 signalBus.Subscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
                 break;
         }
     }
+
 
     private void StartTutorial(Tutorial tutorial)
     {
@@ -72,8 +77,10 @@ public class TutorialManager : ITickable
     {
         isPlayingTutorial = false;
         CurrentTutorial = null;
+        tutorialQueue.Dequeue();
         tutorial.Data.SavedData.IsCompleted = true;
         persistenceManager.Save(tutorial.Data);
+        ListenToNextTutorial();
         signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
     }
 
@@ -98,6 +105,15 @@ public class TutorialManager : ITickable
         signalBus.Unsubscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
     }
 
+    private void OnTutorialCompleted(OnTutorialCompletedSignal signal)
+    {
+        if (CurrentTutorial == null || CurrentTutorial.Data.TriggerData.TriggerType != TutorialTriggerType.OtherTutorial) return;
+
+        if(signal.Tutorial.Data.TutorialID == CurrentTutorial.Data.TriggerData.RequiredTutorial)
+        {
+            coroutiner.StartCoroutine(WaitForTutorial());
+        }
+    }
     private IEnumerator WaitForTutorial()
     {
         yield return new WaitForSeconds(2);
