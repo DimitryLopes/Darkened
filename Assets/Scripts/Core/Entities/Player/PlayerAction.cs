@@ -6,7 +6,7 @@ public class PlayerAction : MonoBehaviour
 
     public bool CanAct { get; protected set; }
 
-    public void ToggleActing(bool value)
+    public virtual void ToggleActing(bool value)
     {
         CanAct = value;
     }

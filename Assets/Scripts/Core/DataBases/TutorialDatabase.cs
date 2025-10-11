@@ -34,5 +34,6 @@ public enum TutorialID
     Move,
     Sprint,
     Interact,
+    AbsorbTorch,
     UseItem,
 }

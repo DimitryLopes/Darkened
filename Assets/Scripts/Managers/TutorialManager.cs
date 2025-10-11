@@ -109,14 +109,28 @@ public class TutorialManager : ITickable
     {
         if (CurrentTutorial == null || CurrentTutorial.Data.TriggerData.TriggerType != TutorialTriggerType.OtherTutorial) return;
 
-        if(signal.Tutorial.Data.TutorialID == CurrentTutorial.Data.TriggerData.RequiredTutorial)
+        TutorialTriggerType triggerType = CurrentTutorial.Data.TriggerData.TriggerType;
+        switch (triggerType)
+        {
+            case TutorialTriggerType.Level:
+                signalBus.Unsubscribe<OnMazeLoadFinishSignal>(OnLevelLoaded);
+                break;
+            case TutorialTriggerType.OtherTutorial:
+                signalBus.Unsubscribe<OnTutorialCompletedSignal>(OnTutorialCompleted);
+                break;
+            default:
+                signalBus.Unsubscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
+                break;
+        }
+
+        if (signal.Tutorial.Data.TutorialID == CurrentTutorial.Data.TriggerData.RequiredTutorial)
         {
             coroutiner.StartCoroutine(WaitForTutorial());
         }
     }
     private IEnumerator WaitForTutorial()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(CurrentTutorial.Data.StartDelay);
         StartTutorial(CurrentTutorial);
     }
 

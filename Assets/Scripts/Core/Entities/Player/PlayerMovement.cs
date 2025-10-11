@@ -58,6 +58,17 @@ public class PlayerMovement : PlayerAction
         rb.velocity = movement;
     }
 
+    public override void ToggleActing(bool value)
+    {
+        base.ToggleActing(value);
+        StopMovement();
+    }
+
+    private void StopMovement()
+    {
+        rb.velocity = Vector3.zero;
+    }
+
     private void HandlePCMovement()
     {
         movement = Vector3.zero;

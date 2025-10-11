@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9622e1136a21e824d97955e66147015d, type: 3}
-  m_Name: Sprint Tutorial Data
+  m_Name: Interact Tutorial Data
   m_EditorClassIdentifier: 
-  tutorialText: Hold Left Shift to Sprint
+  tutorialText: Press E to interact with objects
   requiredInput:
-  - LeftShift
-  tutorialID: 1
+  - E
+  tutorialID: 2
   triggerData:
-    triggerType: 3
+    triggerType: 1
     levelID: 0
-    itemType: 0
+    itemType: 6
     requiredTutorial: 0
-  startDelay: 0.2
+  startDelay: 0

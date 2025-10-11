@@ -13,11 +13,14 @@ public class TutorialData : ScriptableObject, IDataPersistence
     private TutorialID tutorialID;
     [SerializeField]
     private TutorialTriggerData triggerData;
+    [SerializeField]
+    private float startDelay = 0.4f;
 
     public string TutorialText => tutorialText;
     public List<string> RequiredInputs => requiredInput;
     public TutorialID TutorialID => tutorialID;
     public TutorialTriggerData TriggerData => triggerData;
+    public float StartDelay => startDelay;
 
     public CompletableSavedData SavedData { get; private set; }
     public bool IsDirty { get; private set; }
