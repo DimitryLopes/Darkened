@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,8 +41,11 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
         currentPageStartingLevelIndex = 0;
         foreach (PresetLevelData levelData in Controller.LevelDatas)
         {
-            LevelView levelView = GetAvailableLevelView();
-            levelView.Setup(levelData, OnLevelViewClicked);
+            if (levelData.SavedData.IsUnlocked)
+            {
+                LevelView levelView = GetAvailableLevelView();
+                levelView.Setup(levelData, OnLevelViewClicked);
+            }
         }
         PopulatePages();
     }

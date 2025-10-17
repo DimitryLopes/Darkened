@@ -19,6 +19,6 @@ MonoBehaviour:
   triggerData:
     triggerType: 2
     levelID: 0
-    itemType: 1
+    itemType: 7
     requiredTutorial: 0
   startDelay: 0

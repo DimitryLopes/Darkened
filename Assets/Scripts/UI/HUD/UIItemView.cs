@@ -89,6 +89,7 @@ public class UIItemView : Activateable, ISelectable
     {
         base.OnDeactivate();
         itemImage.gameObject.SetActive(false);
+        itemAmountText.gameObject.SetActive(false);
         UpdateView(new InventoryItemData());
     }
 
