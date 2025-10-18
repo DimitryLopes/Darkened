@@ -91,8 +91,8 @@ public class LevelManager
             Debug.LogError("No more levels to load, hide the button developer");
             return;
         }
-
-        StartStoryLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID + 1] as PresetLevelData);
+        //ID = story level index + 1
+        StartStoryLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID] as PresetLevelData);
     }
 
     #endregion

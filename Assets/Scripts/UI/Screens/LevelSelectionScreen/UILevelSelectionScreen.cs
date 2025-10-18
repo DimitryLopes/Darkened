@@ -84,6 +84,20 @@ public class UILevelSelectionScreen : UIScreen<LevelSelectionScreenController>
         int totalLevels = levelViews.Count;
         int totalPages = Mathf.CeilToInt((float)totalLevels / levelsPerPage);
 
+        bool hasMultiplePages = totalPages > 1;
+        nextPageButton.gameObject.SetActive(hasMultiplePages);
+        previousPageButton.gameObject.SetActive(hasMultiplePages);
+
+        if(!hasMultiplePages)
+        {
+            for (int i = 0; i < totalLevels; i++)
+            {
+                levelViews[i].transform.SetParent(levelViewContainer.transform);
+                levelViews[i].Activate();
+            }
+            return;
+        }
+
         int currentPageIndex = currentPageStartingLevelIndex / levelsPerPage;
 
         int[] pagesToShow = new int[]

@@ -28,10 +28,9 @@ public class TutorialManager : ITickable
         this.entityManager = entityManager;
         this.signalBus = signalBus;
         this.coroutiner = coroutiner;
-        Initialize();
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         tutorialQueue = new Queue<Tutorial>();
         List<TutorialData> tutorialDatas = tutorialDatabase.GetAllTutorials();
@@ -59,12 +58,23 @@ public class TutorialManager : ITickable
             case TutorialTriggerType.OtherTutorial:
                 signalBus.Subscribe<OnTutorialCompletedSignal>(OnTutorialCompleted);
                 break;
+            case TutorialTriggerType.Interaction:
+                signalBus.Subscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
+                break;
+            case TutorialTriggerType.Item:
+                signalBus.Subscribe<OnInventoryItemGetSignal>(OnInventoryItemGet);
+                break;
             default:
                 signalBus.Subscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
                 break;
         }
     }
 
+    public void Tick()
+    {
+        if (!isPlayingTutorial) return;
+        CurrentTutorial?.CheckForCompletion();
+    }
 
     private void StartTutorial(Tutorial tutorial)
     {
@@ -84,10 +94,10 @@ public class TutorialManager : ITickable
         signalBus.Fire(new OnTutorialCompletedSignal(tutorial));
     }
 
-    public void Tick()
+    private IEnumerator WaitForTutorial()
     {
-        if (!isPlayingTutorial) return;
-        CurrentTutorial?.CheckForCompletion();
+        yield return new WaitForSeconds(CurrentTutorial.Data.StartDelay);
+        StartTutorial(CurrentTutorial);
     }
 
     #region Tutorial Listeners
@@ -118,6 +128,12 @@ public class TutorialManager : ITickable
             case TutorialTriggerType.OtherTutorial:
                 signalBus.Unsubscribe<OnTutorialCompletedSignal>(OnTutorialCompleted);
                 break;
+            case TutorialTriggerType.Interaction:
+                signalBus.Unsubscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
+                break;
+            case TutorialTriggerType.Item:
+                signalBus.Unsubscribe<OnInventoryItemGetSignal>(OnInventoryItemGet);
+                break;
             default:
                 signalBus.Unsubscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
                 break;
@@ -127,11 +143,6 @@ public class TutorialManager : ITickable
         {
             coroutiner.StartCoroutine(WaitForTutorial());
         }
-    }
-    private IEnumerator WaitForTutorial()
-    {
-        yield return new WaitForSeconds(CurrentTutorial.Data.StartDelay);
-        StartTutorial(CurrentTutorial);
     }
 
     private void OnPlayerInteractableChanged(OnPlayerInteractableChangedSignal signal)
@@ -144,6 +155,18 @@ public class TutorialManager : ITickable
             StartTutorial(CurrentTutorial);
         }
         signalBus.Unsubscribe<OnPlayerInteractableChangedSignal>(OnPlayerInteractableChanged);
+    }
+
+    private void OnInventoryItemGet(OnInventoryItemGetSignal signal)
+    {
+        if(CurrentTutorial == null || CurrentTutorial.Data.TriggerData.TriggerType != TutorialTriggerType.Item) return;
+        if(signal.Item == null) return;
+
+        if(signal.Item.Type == CurrentTutorial.Data.TriggerData.ItemType)
+        {
+            StartTutorial(CurrentTutorial);
+        }
+        signalBus.Unsubscribe<OnInventoryItemGetSignal>(OnInventoryItemGet);
     }
     #endregion
 }

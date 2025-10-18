@@ -21,4 +21,4 @@ MonoBehaviour:
     levelID: 0
     itemType: 7
     requiredTutorial: 0
-  startDelay: 0
+  startDelay: 0.1

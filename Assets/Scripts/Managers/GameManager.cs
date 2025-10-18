@@ -21,7 +21,7 @@ public class GameManager
     //statusEffectManager is not used, but it's injected so Zenject initializes the manager
     [Inject]
     private TutorialManager tutorialManager;
-    //tutorialManager is not used, but it's injected so Zenject initializes the manager
+
 
 
     public static bool IsOnPhone;
@@ -99,6 +99,7 @@ public class GameManager
     public void OnGameStarted()
     {
         percistenceManager.LoadGame();
+        tutorialManager.Initialize();
     }
 
     public void ShowMainMenu()
