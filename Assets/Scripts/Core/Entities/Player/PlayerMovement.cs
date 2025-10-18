@@ -72,11 +72,11 @@ public class PlayerMovement : PlayerAction
     private void HandlePCMovement()
     {
         movement = Vector3.zero;
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        if (Input.GetKey(KeyCode.W)) movement.y += 1;
+        if (Input.GetKey(KeyCode.S)) movement.y -= 1;
+        if (Input.GetKey(KeyCode.D)) movement.x += 1;
+        if (Input.GetKey(KeyCode.A)) movement.x -= 1;
 
-        movement.x = moveX;
-        movement.y = moveY;
         isMoving = movement.magnitude >= 0.1f;
         movement *= status.MovementSpeed;
 
