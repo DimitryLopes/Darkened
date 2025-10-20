@@ -81,7 +81,7 @@ public class LevelManager
     {
         if (IsLastLevel(CurrentStoryLevel.ID)) return;
 
-        UnlockLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID + 1]);
+        UnlockLevel(levelDataBase.LevelDatas[CurrentStoryLevel.ID]);
     }
 
     public void StartNextStoryLevel()
