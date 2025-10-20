@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statuses:
   - key: 0
-    value: 1
+    value: 0.9
   - key: 6
-    value: 1.5
+    value: 1.2
   - key: 4
     value: 3
