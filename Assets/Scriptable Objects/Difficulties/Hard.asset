@@ -19,9 +19,9 @@ MonoBehaviour:
   maxTorchRatio: 0.3
   litTorchRatio: 0.2
   maxDarknessTime: 3
-  playerTorchBurnSpeedModifier: 1.6
+  playerTorchBurnSpeedModifier: 1.4
   spiritMovementSpeedModifier: 1
-  darknessDartTorchReductionOnHit: 0.36
+  darknessDartTorchReductionOnHit: 4.5
   difficultyItemDatas:
   - probability: 0.7
     item: 2
