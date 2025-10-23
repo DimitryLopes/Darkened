@@ -746,16 +746,8 @@ MonoBehaviour:
     SpawnType: 0
     ItemType: 12
   - coordinate:
-      x: 8
-      y: 1
-    item: {fileID: 4473756222092189016, guid: 33d37157a868603458e5a94fb13b586a, type: 3}
-    direction: 1
-    AssociateWith: wall east [7,4]
-    SpawnType: 0
-    ItemType: 12
-  - coordinate:
-      x: 8
-      y: 1
+      x: 9
+      y: 9
     item: {fileID: 4473756222092189016, guid: 33d37157a868603458e5a94fb13b586a, type: 3}
     direction: 1
     AssociateWith: wall east [7,4]
