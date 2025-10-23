@@ -25,7 +25,7 @@ public class DarknessDart : Item, IProjectile
         if (collision.CompareTag(Constants.LayersAndTags.PLAYER_TAG))
         {
             float torchReduction = mazeManager.CurrentMaze.Data.DifficultyData.DarknessDartTorchReductionOnHit;
-            entityManager.GetPlayer().Torch.ChangeCurrentLifeTime(torchReduction);
+            entityManager.GetPlayer().Torch.ChangeCurrentLifeTime(-torchReduction);
         }
         Deactivate();
     }
