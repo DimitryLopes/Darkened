@@ -21,6 +21,12 @@ public class Darkness : MonoBehaviour
     {
         signalBus.Subscribe<OnMazeLoadFinishSignal>(OnMazeLoadFinish);
         signalBus.Subscribe<OnPlayerSpawnedSignal>(OnPlayerSpawned);
+        signalBus.Subscribe<OnGameCompletedSignal>(OnGameCompleted);
+    }
+
+    private void OnGameCompleted()
+    {
+        gameObject.SetActive(false);
     }
 
     private void OnPlayerSpawned(OnPlayerSpawnedSignal signal)
@@ -31,6 +37,7 @@ public class Darkness : MonoBehaviour
 
     private void OnMazeLoadFinish(OnMazeLoadFinishSignal signal)
     {
+        gameObject.SetActive(true);
         maxDarknessTime = signal.Maze.Data.DifficultyData.MaxDarknessTime;
         creepyHand.SetDistance(0);
     }
