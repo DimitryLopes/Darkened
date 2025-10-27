@@ -13,6 +13,9 @@ public class DeveloperToolsTrigger : MonoBehaviour
   
     private void Start()
     {
+#if !UNITY_EDITOR
+        gameObject.SetActive(false);
+#endif
         button = GetComponent<Button>();
         button.onClick.AddListener(OnButtonClicked);
     }
