@@ -21,10 +21,12 @@ public class Item : Activateable, IItem, IInteractable
     private ItemGenerationData itemGenerationData;
 
     protected ItemType type;
+    protected string defaultAnimationKey = "default";
 
     public virtual Sprite Icon => itemIcon;
     public virtual ItemType Type => type;
     public Collider2D Collider => itemCollider;
+    public SpriteAnimator SpriteAnimator => spriteAnimator;
 
     public ItemGenerationData GenerationData => itemGenerationData;
 
@@ -50,6 +52,7 @@ public class Item : Activateable, IItem, IInteractable
     {
         canInteract = true;
         RemoveHighlight();
+        base.OnActivate();
     }
 
     public override void OnDeactivate()
@@ -70,6 +73,12 @@ public class Item : Activateable, IItem, IInteractable
         spriteRenderer.material = materialManager.GetMaterial(MaterialType.Default);
     }
 
+    protected virtual void PlayDefaultAnimation()
+    {
+        SpriteAnimator.PlayAnimation(defaultAnimationKey, PlayDefaultAnimation);
+    }
+
+    protected virtual void SetDefaultAnimationKey() { }
 }
 
 [Serializable]

@@ -105,12 +105,12 @@ SpriteRenderer:
   m_SortingLayerID: -1300265393
   m_SortingLayer: 14
   m_SortingOrder: 4
-  m_Sprite: {fileID: -576583709, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+  m_Sprite: {fileID: 1686229729, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.48, y: 0.32}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -164,20 +164,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animations:
-  - animationKey: Idle
+  - animationKey: Lit Horizontal
     sprites:
-    - {fileID: -576583709, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -272721718, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: 537517134, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -272721718, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -2052382382, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -771963092, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: 1916928279, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -771963092, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-    - {fileID: -2052382382, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
-  - animationKey: Extinguished
+    - {fileID: 1686229729, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+    - {fileID: -1947266994, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+    - {fileID: 602669710, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+    - {fileID: -397096582, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+  - animationKey: Lit Vertical
     sprites:
-    - {fileID: 284950826, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: 2006035221, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
+    - {fileID: -894987263, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
+    - {fileID: -1272456291, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
+    - {fileID: -43322470, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
+  - animationKey: Unlit Horizontal
+    sprites:
+    - {fileID: 221871246, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+  - animationKey: Unlit Vertical
+    sprites:
+    - {fileID: 1798647908, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
   frameRate: 10
 --- !u!1 &2401224889736174325

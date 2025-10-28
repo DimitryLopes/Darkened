@@ -10,7 +10,6 @@ public class Torch : Item
     [SerializeField]
     private CircleCollider2D interactionCollider;
 
-
     private Cardinal alignedWith;
     
     public bool isLit => torchlight.enabled;
@@ -38,6 +37,12 @@ public class Torch : Item
     public void Setup(Cardinal cardinal)
     {
         alignedWith = cardinal;
+
+        if (SpriteAnimator != null)
+        {
+            SetDefaultAnimationKey();
+            PlayDefaultAnimation();
+        }
     }
 
     public override void OnActivate()
@@ -57,6 +62,7 @@ public class Torch : Item
     {
         torchlight.enabled = false;
         lightCollider.enabled = false;
+        SpriteAnimator.PlayDefault();
         signalBus.Fire(new OnTorchExtinguishedSignal(torchlight));
     }
 
@@ -65,6 +71,22 @@ public class Torch : Item
         torchlight.enabled = true;
         lightCollider.enabled = true;
         interactionCollider.enabled = true;
+        string animationKey = string.Format(Constants.Items.TORCH_LIT_ANIMATION_KEY, alignedWith);
+        SpriteAnimator.PlayAnimation(animationKey, null);
         signalBus.Fire(new OnTorchLitSignal(torchlight));
+    }
+
+    protected override void SetDefaultAnimationKey()
+    {
+        string orientation;
+        if(alignedWith == Cardinal.North || alignedWith == Cardinal.South)
+        {
+            orientation = Constants.Orientations.VERTICAL;
+        }
+        else
+        {
+            orientation = Constants.Orientations.HORIZONTAL;
+        }
+        defaultAnimationKey = string.Format(Constants.Items.TORCH_UNLIT_ANIMATION_KEY, orientation);        
     }
 }

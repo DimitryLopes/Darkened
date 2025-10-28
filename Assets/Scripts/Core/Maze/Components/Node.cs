@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Node : Activateable
 {
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
     //Generation
     private Coordinate coordinates;
 
-    public bool Visited { get; set; }
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public bool IsOnCorner { get; private set; }
@@ -17,11 +19,6 @@ public class Node : Activateable
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
-
-    public void Visit()
-    {
-        Visited = true;
-    }
 
     #region Walls
     public bool HasWall(Cardinal direction)
@@ -215,26 +212,52 @@ public class Node : Activateable
         }
     }
 
-    public void SetCoordinate(int x, int y)
+    public void SetCoordinate(int x, int y, MazeSizeData sizeData)
     {
-
+        switch (x, y)
+        {
+            case (0, 0):
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.bottomleft);
+                break;
+            case (0, var yy) when yy == sizeData.Height - 1:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.topleft);
+                break;
+            case (var xx, 0) when xx == sizeData.Width - 1:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.bottomright);
+                break;
+            case (var xx, var yy) when xx == sizeData.Width - 1 && yy == sizeData.Height - 1:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.topright);
+                break;
+            case (var xx, _) when xx == 0:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.left);
+                break;
+            case (var xx, _) when xx == sizeData.Width - 1:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.right);
+                break;
+            case (_, var yy) when yy == 0:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.bottom);
+                break;
+            case (_, var yy) when yy == sizeData.Height - 1:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.top);
+                break;
+            default:
+                spriteRenderer.sprite = AssetService.GetMazeFloor(MazeFloorType.middle);
+                break;
+        }
         MazeUtils.ExecuteActionWithAllCardinals(FillDictionary);
         coordinates = new Coordinate(x, y);
         text.text = x + "," + y;
     }
 
-    #region In Game
-    //In Game
-    [SerializeField]
-    private TextMeshProUGUI text;
-    [SerializeField]
-    private SpriteRenderer floorRenderer;
-    #endregion
-
     #region Path Finding
     public float gScore { get; set; }
     public float fScore { get; set; }
 
+    public bool Visited { get; set; }
+    public void Visit()
+    {
+        Visited = true;
+    }
     public float GetHeuristic(Node node)
     {
         return Vector3.Distance(transform.position, node.transform.position);
@@ -243,11 +266,13 @@ public class Node : Activateable
 
     #region Debug
 
+    [SerializeField]
+    private TextMeshProUGUI text;
     public void DebugColor(Color color)
     {
         if (color == null) return;
 
-        floorRenderer.color = color;
+        spriteRenderer.color = color;
     }
     #endregion
 }

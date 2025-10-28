@@ -161,7 +161,7 @@ public class MazeGenerator : MonoBehaviour
                 node = GetNode(new Coordinate(x,y));
                 nodes[x, y] = node;
                 node.Activate();
-                node.SetCoordinate(x, y);
+                node.SetCoordinate(x, y, CurrentData.SizeData);
                 SetNodeEdges(node, CurrentData.SizeData);
                 if ((y * CurrentData.Height + x) % 10 == 0)
                     yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
@@ -359,11 +359,11 @@ public class MazeGenerator : MonoBehaviour
                 break;
             case SpawnType.Wall:
                 (MazeWall, Cardinal) wallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, shuffledNodes, item, false);
-                PlaceObjectOnWall(item, wallCardinal.Item2, wallCardinal.Item1);
+                PlaceItemOnWall(item, wallCardinal.Item2, wallCardinal.Item1);
                 break;
             case SpawnType.EdgeWalls:
                 (MazeWall, Cardinal) edgewallCardinal = GetAvailableWallAwayFrom(currentMaze.UsedNodes, currentMaze.EdgeNodes.Values, item, true);
-                PlaceObjectOnWall(item, edgewallCardinal.Item2, edgewallCardinal.Item1);
+                PlaceItemOnWall(item, edgewallCardinal.Item2, edgewallCardinal.Item1);
                 break;
         }
         item.transform.SetParent(itemsContainer);
@@ -588,7 +588,7 @@ public class MazeGenerator : MonoBehaviour
                 Node node = GetNode(new Coordinate(x, y));
                 nodes[x, y] = node;
                 node.Activate();
-                node.SetCoordinate(x, y);
+                node.SetCoordinate(x, y, CurrentData.SizeData);
                 SetNodeEdges(node, preset.SizeData);
                 yield return LoadingUtils.GetProgress(y * width + x, width * height);
             }
@@ -701,7 +701,7 @@ public class MazeGenerator : MonoBehaviour
                     Node edgeNode = nodes[itemData.Coordinate.X, itemData.Coordinate.Y];
                     currentMaze.MarkNodeAsUsed(edgeNode, item);
                     MazeWall wall = NodeUtils.GetWallAt(edgeNode, itemData.Direction, currentMaze);
-                    PlaceObjectOnWall(item, itemData.Direction, wall);
+                    PlaceItemOnWall(item, itemData.Direction, wall);
                     break;
             }
 
@@ -794,8 +794,21 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    public void PlaceObjectOnWall(Item item, Cardinal direction, MazeWall wall)
+    public void PlaceItemOnWall(Item item, Cardinal direction, MazeWall wall)
     {
+        if(item.Type == ItemType.DefaultTorch)
+        {
+            item.transform.position = wall.transform.position;
+            if(direction == Cardinal.North)
+            {
+                item.transform.localScale = new Vector3(1, -1, 1);
+            }
+            if(direction == Cardinal.East)
+            {
+                item.transform.localScale = new Vector3(-1, 1, 1);
+            }
+            return;
+        }
         float rotation = NodeUtils.GetWallRotationByCardinal(direction);
         item.transform.SetPositionAndRotation(wall.transform.position, Quaternion.Euler(0, 0, rotation));
     }
@@ -858,7 +871,7 @@ public class MazeGenerator : MonoBehaviour
         Torch torch = mazeManager.GetMazeTorch(CurrentData);
         torch.transform.SetParent(torchContainer);
         MazeWall wall = NodeUtils.GetWallAt(node, direction, currentMaze);
-        PlaceObjectOnWall(torch, direction, wall);
+        PlaceItemOnWall(torch, direction, wall);
         currentMaze.AddTorch(node, torch, direction);
     }
     #endregion
@@ -890,9 +903,8 @@ public class MazeGenerator : MonoBehaviour
         }
 
         Node newNode = Instantiate(nodePrefab, nodeContainer);
-        newNode.DebugColor(Color.grey);
         newNode.name = $"Node {coordinate.X},{coordinate.Y}";
-        newNode.transform.localPosition = new Vector2(coordinate.X, coordinate.Y);
+        newNode.transform.localPosition = new Vector2(coordinate.X * NodeUtils.NODE_SIZE, coordinate.Y * NodeUtils.NODE_SIZE);
         instantiatedNodes.Add(coordinate, newNode);
         return newNode;
     }

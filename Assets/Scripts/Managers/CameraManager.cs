@@ -19,8 +19,6 @@ public class CameraManager
         signalBus.Subscribe<OnGameCompletedSignal>(ForceFinishAllAnimations);
     }
 
-
-
     #region Vignette
     public void AnimateVignette(VignetteAnimationData animationData)
     {

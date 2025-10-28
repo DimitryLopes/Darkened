@@ -48,7 +48,7 @@ public class SpriteAnimator : MonoBehaviour
                 currentFrame = (currentFrame + 1) % currentFrames.Length;
             if(currentFrame == 0)
             {
-                animationCallback.Invoke();
+                animationCallback?.Invoke();
             }
             spriteRenderer.sprite = currentFrames[currentFrame];
         }

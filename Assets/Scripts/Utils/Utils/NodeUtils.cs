@@ -1,9 +1,8 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 public class NodeUtils : MonoBehaviour
 {
-    public const float NODE_SIZE = 1;
+    public const float NODE_SIZE = 0.16f;
 
     private static readonly Dictionary<Cardinal, (Cardinal, Cardinal)> adjacentDirections =
         new Dictionary<Cardinal, (Cardinal, Cardinal)>

@@ -9,6 +9,18 @@ public static class Constants
         public const int FLOATING_TEXT_DEFAULT_DURATION = 0;
     }
 
+    public static class Orientations
+    {
+        public const string VERTICAL = "Vertical";
+        public const string HORIZONTAL = "Horizontal";
+    }
+
+    public static class Items
+    {
+        public const string TORCH_LIT_ANIMATION_KEY = "Lit {0}";
+        public const string TORCH_UNLIT_ANIMATION_KEY = "Unlit {0}";
+    }
+
     public static class Entities
     {
         public const float PLAYER_DEFAULT_TORCH_SIZE = 1;
@@ -69,6 +81,12 @@ public static class Constants
     public static class AudioParameters
     {
         public const string MIXER_GROUP_VOLUME_PARAMETER = "_Volume";
+    }
+
+    public static class Assets
+    {
+        public const string MAZE_FLOOR_SPRITE_PATH = "Sprites/Maze/Interior/floor_{0}";
+        public const string MAZE_WALL_SPRITE_PATH = "Sprites/Maze/Interior/wall_{0}";
     }
 }
 
