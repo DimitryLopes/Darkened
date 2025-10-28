@@ -801,11 +801,11 @@ public class MazeGenerator : MonoBehaviour
             item.transform.position = wall.transform.position;
             if(direction == Cardinal.North)
             {
-                item.transform.localScale = new Vector3(1, -1, 1);
+                item.transform.localScale = new Vector3(item.transform.localScale.x, -item.transform.localScale.y, item.transform.localScale.z);
             }
             if(direction == Cardinal.East)
             {
-                item.transform.localScale = new Vector3(-1, 1, 1);
+                item.transform.localScale = new Vector3(-item.transform.localScale.x, item.transform.localScale.y, item.transform.localScale.z);
             }
             return;
         }

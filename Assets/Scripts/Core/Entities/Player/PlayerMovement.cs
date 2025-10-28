@@ -4,7 +4,10 @@ using Zenject;
 
 public class PlayerMovement : PlayerAction
 {
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField]
+    private Rigidbody2D rb;
+    [SerializeField]
+    private SpriteAnimator animator;
 
     private SignalBus signalBus;
     private Joystick joystick;
@@ -52,7 +55,6 @@ public class PlayerMovement : PlayerAction
         if (isMoving)
         {
             movement = HandleSprinting(movement);
-            HandleRotation(movement);
         }
 
         rb.velocity = movement;
@@ -83,15 +85,30 @@ public class PlayerMovement : PlayerAction
         if (isMoving)
         {
             movement = HandleSprinting(movement);
-            HandleRotation(movement);
+            if (movement.x > 0)
+            {
+                animator.PlayAnimation("Walk_East", null);
+            }
+            else if (movement.x < 0)
+            {
+                animator.PlayAnimation("Walk_West", null);
+            }
+            else if (movement.y > 0)
+            {
+                animator.PlayAnimation("Walk_North", null);
+            }
+            else if (movement.y < 0)
+            {
+                animator.PlayAnimation("Walk_South", null);
+            }
+            rb.velocity = movement;
         }
         else
         {
             rb.velocity = Vector3.zero;
+            animator.FinishCurrent(false);
             return;
         }
-
-        rb.velocity = movement;
     }
 
     private Vector3 HandleSprinting(Vector3 movement)
@@ -107,12 +124,6 @@ public class PlayerMovement : PlayerAction
         }
 
         return movement;
-    }
-
-    private void HandleRotation(Vector3 movement)
-    {
-        float angle = Mathf.Atan2(-movement.x, movement.y) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 
     private void SetIsSprinting()

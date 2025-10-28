@@ -10,22 +10,25 @@ public class SpriteAnimator : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private float frameRate = 10f;
+    [SerializeField]
+    private bool playOnAwake = false;
 
-    private Dictionary<string, Sprite[]> animationDictionary;
-    private Sprite[] currentFrames;
+    private Dictionary<string, AnimationData> animationDictionary;
+    private AnimationData currentAnimation;
     private int currentFrame;
     private float timer;
     private Action animationCallback;
+    private bool isPlaying;
 
     private void Awake()
     {
-        animationDictionary = new Dictionary<string, Sprite[]>();
+        animationDictionary = new Dictionary<string, AnimationData>();
         foreach (var animation in animations)
         {
-            animationDictionary[animation.Key] = animation.Frames;
+            animationDictionary[animation.Key] = animation;
         }
 
-        if (animations.Count > 0)
+        if (animations.Count > 0 && playOnAwake)
         {
             PlayDefault();
         }
@@ -39,26 +42,30 @@ public class SpriteAnimator : MonoBehaviour
 
     private void Update()
     {
-        if (currentFrames == null || currentFrames.Length == 0) return;
+        if (!isPlaying) return;
 
         timer += Time.deltaTime;
         if (timer >= 1f / frameRate)
         {
             timer = 0f;
-                currentFrame = (currentFrame + 1) % currentFrames.Length;
+                currentFrame = (currentFrame + 1) % currentAnimation.Frames.Length;
             if(currentFrame == 0)
             {
+                isPlaying = false;
                 animationCallback?.Invoke();
             }
-            spriteRenderer.sprite = currentFrames[currentFrame];
+            spriteRenderer.sprite = currentAnimation.Frames[currentFrame];
         }
     }
 
-    public void PlayAnimation(string key, Action onAnimationFinish)
+    public void PlayAnimation(string key, Action onAnimationFinish, bool reset = false)
     {
-        if (animationDictionary.TryGetValue(key, out var frames))
+        if (currentAnimation.Key == key && !reset && isPlaying) return;
+
+        if (animationDictionary.TryGetValue(key, out var animation))
         {
-            currentFrames = frames;
+            isPlaying = true;
+            currentAnimation = animation;
             currentFrame = 0;
             timer = 0;
             animationCallback = onAnimationFinish;
@@ -67,6 +74,18 @@ public class SpriteAnimator : MonoBehaviour
         {
             Debug.LogWarning($"Animation with key '{key}' not found.");
         }
+    }
+
+    public void FinishCurrent(bool playCallback)
+    {
+        if (!isPlaying) return;
+        isPlaying = false;
+
+        spriteRenderer.sprite = currentAnimation.Frames[^1];
+        
+        if (!playCallback) return;
+
+        animationCallback?.Invoke();
     }
 
     [Serializable]

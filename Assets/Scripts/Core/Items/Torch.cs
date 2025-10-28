@@ -11,6 +11,7 @@ public class Torch : Item
     private CircleCollider2D interactionCollider;
 
     private Cardinal alignedWith;
+    private string orientation;
     
     public bool isLit => torchlight.enabled;
     public Cardinal AlignedWith => alignedWith;
@@ -71,14 +72,18 @@ public class Torch : Item
         torchlight.enabled = true;
         lightCollider.enabled = true;
         interactionCollider.enabled = true;
-        string animationKey = string.Format(Constants.Items.TORCH_LIT_ANIMATION_KEY, alignedWith);
-        SpriteAnimator.PlayAnimation(animationKey, null);
+        PlayLitAnimation();
         signalBus.Fire(new OnTorchLitSignal(torchlight));
+    }
+
+    private void PlayLitAnimation()
+    {
+        string animationKey = string.Format(Constants.Items.TORCH_LIT_ANIMATION_KEY, orientation);
+        SpriteAnimator.PlayAnimation(animationKey, PlayLitAnimation);
     }
 
     protected override void SetDefaultAnimationKey()
     {
-        string orientation;
         if(alignedWith == Cardinal.North || alignedWith == Cardinal.South)
         {
             orientation = Constants.Orientations.VERTICAL;
