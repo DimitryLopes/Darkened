@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1669193551814374406}
   - component: {fileID: 6180454501068931032}
   - component: {fileID: 6185794388864277759}
+  - component: {fileID: 3595835582073301556}
   m_Layer: 9
   m_Name: Torch
   m_TagString: Untagged
@@ -56,10 +57,10 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: f5665df528ef42343a5ed4487e55feb0, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
   itemCollider: {fileID: 6185794388864277759}
+  spriteAnimator: {fileID: 3595835582073301556}
   itemGenerationData:
     minDistanceFromThings: 0
     spawnType: 1
-    replace: 0
   torchlight: {fileID: 1586879128320769873}
   lightCollider: {fileID: 8713531590200683844}
   interactionCollider: {fileID: 6185794388864277759}
@@ -104,7 +105,7 @@ SpriteRenderer:
   m_SortingLayerID: -1300265393
   m_SortingLayer: 14
   m_SortingOrder: 4
-  m_Sprite: {fileID: -1606681317, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+  m_Sprite: {fileID: -576583709, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -150,6 +151,35 @@ CircleCollider2D:
   m_Offset: {x: 0.16, y: 0}
   serializedVersion: 2
   m_Radius: 0.16
+--- !u!114 &3595835582073301556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235955571069073806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb3d7f6975b8c944a6bfdc862692d6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animations:
+  - animationKey: Idle
+    sprites:
+    - {fileID: -576583709, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -272721718, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: 537517134, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -272721718, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -2052382382, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -771963092, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: 1916928279, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -771963092, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+    - {fileID: -2052382382, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+  - animationKey: Extinguished
+    sprites:
+    - {fileID: 284950826, guid: ed21898f2c339bb4e8440ecfe168db17, type: 3}
+  spriteRenderer: {fileID: 6180454501068931032}
+  frameRate: 10
 --- !u!1 &2401224889736174325
 GameObject:
   m_ObjectHideFlags: 0

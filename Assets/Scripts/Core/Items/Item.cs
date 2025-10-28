@@ -16,6 +16,8 @@ public class Item : Activateable, IItem, IInteractable
     [SerializeField]
     private Collider2D itemCollider;
     [SerializeField]
+    private SpriteAnimator spriteAnimator;
+    [SerializeField]
     private ItemGenerationData itemGenerationData;
 
     protected ItemType type;
@@ -77,11 +79,8 @@ public struct ItemGenerationData
     private int minDistanceFromThings;
     [SerializeField]
     private SpawnType spawnType;
-    [SerializeField, Tooltip("wether the item will replace or not the wall/node in it's position")]
-    private bool replace;
 
     public SpawnType SpawnType => spawnType;
-    public bool Replace => replace;
     public int MinDistanceFromThings => minDistanceFromThings;
 }
 

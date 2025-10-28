@@ -3,7 +3,7 @@ guid: ed21898f2c339bb4e8440ecfe168db17
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -123,12 +123,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Torch 1_0
+      name: Torch_0
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -137,19 +137,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b133e0d1cffd56f418aa9b825174685a
-      internalID: -1606681317
+      spriteID: ac44f3dcb0a345245a5de9c43b31ddaa
+      internalID: -576583709
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Torch 1_1
+      name: Torch_1
       rect:
         serializedVersion: 2
         x: 48
         y: 64
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -158,19 +158,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5dcd9adaad5d7f4428ead186971c3092
-      internalID: -1448262320
+      spriteID: 1cc43ca7c65e2c74b85d54294a180c0e
+      internalID: -272721718
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Torch 1_2
+      name: Torch_2
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 48
+        height: 32
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 692c873d090e1784b9e52cf93e32fc27
+      internalID: 284950826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Torch_3
       rect:
         serializedVersion: 2
         x: 0
         y: 32
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -179,19 +200,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69f6d87407013684daf5ef875ba77eb1
-      internalID: 1622482506
+      spriteID: c41327571dfda954c887685dfacb91e6
+      internalID: 537517134
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Torch 1_3
+      name: Torch_4
       rect:
         serializedVersion: 2
         x: 48
         y: 32
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -200,19 +221,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 749179c44a41d254b938182e9ac757ed
-      internalID: 383440929
+      spriteID: 50ea82ef49e342c44a1f59ac66575ac8
+      internalID: 1916928279
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Torch 1_4
+      name: Torch_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -221,19 +242,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b93b098850b9ce546afb4ca52bff5afd
-      internalID: 358680342
+      spriteID: c3f3023d790361a42af97aa957c090d7
+      internalID: -771963092
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Torch 1_5
+      name: Torch_6
       rect:
         serializedVersion: 2
         x: 48
         y: 0
-        width: 32
+        width: 48
         height: 32
       alignment: 4
       pivot: {x: 0, y: 0.5}
@@ -242,8 +263,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6cb59ac10d05eb64fb0951f0573d9228
-      internalID: -1106366640
+      spriteID: 2f5da8ae7ac30884b8a860748492f221
+      internalID: -2052382382
       vertices: []
       indices: 
       edges: []
@@ -259,12 +280,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Torch 1_0: -1606681317
-      Torch 1_1: -1448262320
-      Torch 1_2: 1622482506
-      Torch 1_3: 383440929
-      Torch 1_4: 358680342
-      Torch 1_5: -1106366640
+      Torch_0: -576583709
+      Torch_1: -272721718
+      Torch_2: 284950826
+      Torch_3: 537517134
+      Torch_4: 1916928279
+      Torch_5: -771963092
+      Torch_6: -2052382382
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
