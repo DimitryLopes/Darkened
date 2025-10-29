@@ -20,13 +20,11 @@ public static class Constants
         public const string TORCH_LIT_ANIMATION_KEY = "Lit {0}";
         public const string TORCH_UNLIT_ANIMATION_KEY = "Unlit {0}";
         public const string TORCH_DESTROYED_ANIMATION_KEY = "Fallen {0}";
-        public const float WALL_ITEM_COLLIDER_OFFSET = 0.04f;
+        public const float WALL_ITEM_OFFSET = 0.015f;
     }
 
     public static class Entities
     {
-        public const float PLAYER_DEFAULT_TORCH_SIZE = 1;
-        public const float PLAYER_BIG_TORCH_SIZE = 1.6f;
         public const float PLAYER_SMALL_TORCH_SIZE = 0.75f;
         public const float TORCH_LIFETIME = 20;
         public const string STATUS_EFFECTS_KEY_FORMAT = "S{0}D{1}M{2}";

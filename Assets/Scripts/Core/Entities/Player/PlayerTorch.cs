@@ -12,6 +12,10 @@ public class PlayerTorch : MonoBehaviour
     private Color defaultTorchColor;
     [SerializeField]
     private Color spectalTorchColor;
+    [SerializeField]
+    private float defaultSize = 0.16f;
+    [SerializeField]
+    private float bigSize = 0.24f;
 
     private float currentLifeTime;
     private float burnSpeedModifier;
@@ -92,12 +96,12 @@ public class PlayerTorch : MonoBehaviour
 
     public void SetBigTorch()
     {
-        playerTorch.pointLightOuterRadius = Constants.Entities.PLAYER_BIG_TORCH_SIZE;
+        playerTorch.pointLightOuterRadius = bigSize;
     }
 
     public void SetDefaultTorch()
     {
-        playerTorch.pointLightOuterRadius = Constants.Entities.PLAYER_DEFAULT_TORCH_SIZE;
+        playerTorch.pointLightOuterRadius = defaultSize;
         playerTorch.shadowsEnabled = true;
         playerTorch.color = defaultTorchColor;
     }

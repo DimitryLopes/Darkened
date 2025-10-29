@@ -587,6 +587,8 @@ MonoBehaviour:
   playerTorch: {fileID: 4020834806139711318}
   defaultTorchColor: {r: 0.90188676, g: 0.8665146, b: 0.692581, a: 1}
   spectalTorchColor: {r: 0.35283017, g: 1, b: 0.9837409, a: 1}
+  defaultSize: 0.1
+  bigSize: 0.16
 --- !u!1 &5249688738544080568
 GameObject:
   m_ObjectHideFlags: 0
