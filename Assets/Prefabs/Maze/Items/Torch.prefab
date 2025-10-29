@@ -148,9 +148,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.08295532, y: 0}
+  m_Offset: {x: 0.04, y: 0}
   serializedVersion: 2
-  m_Radius: 0.082955204
+  m_Radius: 0.04071055
 --- !u!114 &3595835582073301556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +182,12 @@ MonoBehaviour:
   - animationKey: Unlit Vertical
     sprites:
     - {fileID: 1798647908, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
+  - animationKey: Fallen Horizontal
+    sprites:
+    - {fileID: -570458661, guid: adf20cbb641f6694e8ad9ea705e7ffdc, type: 3}
+  - animationKey: Fallen Vertical
+    sprites:
+    - {fileID: 1095735700, guid: 900d604bf4b9f71408b8f8cffe3ecba2, type: 3}
   spriteRenderer: {fileID: 6180454501068931032}
   frameRate: 10
   playOnAwake: 0

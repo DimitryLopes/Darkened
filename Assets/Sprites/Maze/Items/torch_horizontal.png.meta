@@ -214,6 +214,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: torch_horizontal_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19ed2b7130678fd46adad818bb1a03b6
+      internalID: -570458661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -230,6 +251,7 @@ TextureImporter:
       torch_horizontal_2: 602669710
       torch_horizontal_3: -397096582
       torch_horizontal_4: 221871246
+      torch_horizontal_5: -570458661
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -19,6 +19,8 @@ public static class Constants
     {
         public const string TORCH_LIT_ANIMATION_KEY = "Lit {0}";
         public const string TORCH_UNLIT_ANIMATION_KEY = "Unlit {0}";
+        public const string TORCH_DESTROYED_ANIMATION_KEY = "Fallen {0}";
+        public const float WALL_ITEM_COLLIDER_OFFSET = 0.04f;
     }
 
     public static class Entities

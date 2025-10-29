@@ -25,6 +25,8 @@ public class Torch : Item
             {
                 DeactivateLights();
                 RemoveHighlight();
+                string animationKey = string.Format(Constants.Items.TORCH_DESTROYED_ANIMATION_KEY, orientation);
+                SpriteAnimator.PlayAnimation(animationKey, null);
                 signalBus.Fire(new OnTorchAbsorbedSignal(this));
                 canInteract = false;
             }
@@ -63,7 +65,6 @@ public class Torch : Item
     {
         torchlight.enabled = false;
         lightCollider.enabled = false;
-        SpriteAnimator.PlayDefault();
         signalBus.Fire(new OnTorchExtinguishedSignal(torchlight));
     }
 

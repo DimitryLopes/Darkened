@@ -88,7 +88,8 @@ public class PlayerInteraction : PlayerAction
 
     private bool IsObstructed(Collider2D target)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.bounds.center - transform.position).normalized, status.InteractionRange, obstructionLayer);
+        float distance = Vector3.Distance(transform.position, target.bounds.center);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, (target.bounds.center - transform.position).normalized, distance, obstructionLayer);
         return hit.collider != null;
     }
     private void OnDrawGizmos()

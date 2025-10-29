@@ -36,7 +36,6 @@ public class SpriteAnimator : MonoBehaviour
 
     public void PlayDefault()
     {
-
         PlayAnimation(animations[0].Key, PlayDefault);
     }
 

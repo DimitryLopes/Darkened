@@ -802,10 +802,20 @@ public class MazeGenerator : MonoBehaviour
             if(direction == Cardinal.North)
             {
                 item.transform.localScale = new Vector3(item.transform.localScale.x, -item.transform.localScale.y, item.transform.localScale.z);
+                item.Collider.offset = new Vector2(0, Constants.Items.WALL_ITEM_COLLIDER_OFFSET);
             }
             if(direction == Cardinal.East)
             {
                 item.transform.localScale = new Vector3(-item.transform.localScale.x, item.transform.localScale.y, item.transform.localScale.z);
+                item.Collider.offset = new Vector2(Constants.Items.WALL_ITEM_COLLIDER_OFFSET, 0);
+            }
+            if(direction == Cardinal.West)
+            {
+                item.Collider.offset = new Vector2(Constants.Items.WALL_ITEM_COLLIDER_OFFSET, 0);
+            }
+            if(direction == Cardinal.South)
+            {
+                item.Collider.offset = new Vector2(0, Constants.Items.WALL_ITEM_COLLIDER_OFFSET);
             }
             return;
         }
