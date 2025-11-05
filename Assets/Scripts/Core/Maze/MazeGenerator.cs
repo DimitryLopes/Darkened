@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Zenject;
 
 public class MazeGenerator : MonoBehaviour
@@ -23,11 +24,11 @@ public class MazeGenerator : MonoBehaviour
     private Node nodePrefab;
 
     [SerializeField, Header("Containers")]
-    private Transform nodeContainer;
+    private Tilemap nodeTilemap;
     [SerializeField]
-    private Transform wallsContainer;
+    private Tilemap wallTilemap;
     [SerializeField]
-    private Transform edgeWallsContainer;
+    private Tilemap edgeWallsTilemap;
     [SerializeField]
     private Transform itemsContainer;
     [SerializeField]
@@ -61,6 +62,9 @@ public class MazeGenerator : MonoBehaviour
                 node.Deactivate();
             }
         }
+        wallTilemap.ClearAllTiles();
+        edgeWallsTilemap.ClearAllTiles();
+        nodeTilemap.ClearAllTiles();
         generationPath.Clear();
     }
 
@@ -161,7 +165,7 @@ public class MazeGenerator : MonoBehaviour
                 node = GetNode(new Coordinate(x,y));
                 nodes[x, y] = node;
                 node.Activate();
-                node.SetCoordinate(x, y, CurrentData.SizeData);
+                node.Setup(x, y, CurrentData.SizeData);
                 SetNodeEdges(node, CurrentData.SizeData);
                 if ((y * CurrentData.Height + x) % 10 == 0)
                     yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
@@ -480,7 +484,7 @@ public class MazeGenerator : MonoBehaviour
         wall.AddNode(node);
         if (!node.IsOnEdge(direction)) return;
 
-        wall.transform.SetParent(edgeWallsContainer);
+        wall.transform.SetParent(edgeWallsTilemap);
     }
 
     private string GetWallKey(Node node, Cardinal direction)
@@ -627,9 +631,9 @@ public class MazeGenerator : MonoBehaviour
             }
 
             if (node.IsOnEdge(wallData.Direction))
-                wall.transform.SetParent(edgeWallsContainer);
+                wall.transform.SetParent(edgeWallsTilemap);
             else
-                wall.transform.SetParent(wallsContainer);
+                wall.transform.SetParent(wallTilemap);
 
             currentWall++;
             yield return LoadingUtils.GetProgress(currentWall, totalWalls);
@@ -722,7 +726,7 @@ public class MazeGenerator : MonoBehaviour
                 (itm, target) => ((PressurePlate)itm).Associate(target));
         }
 
-        void SetupPreset<TInterface>(Node[,] nodes, PresetItemData itemData, Item item, System.Action<Item, TInterface> associateAction) where TInterface : class
+        void SetupPreset<T>(Node[,] nodes, PresetItemData itemData, Item item, System.Action<Item, T> associateAction) where T : class
         {
             string raw = itemData.AssociateWith;
             string[] parts = raw.Split('&');
@@ -747,7 +751,7 @@ public class MazeGenerator : MonoBehaviour
                     Node node = nodes[coord.X, coord.Y];
                     MazeWall wall = node.GetWall(dir);
 
-                    if (wall is TInterface target)
+                    if (wall is T target)
                         associateAction(item, target);
                 }
                 else
@@ -757,7 +761,7 @@ public class MazeGenerator : MonoBehaviour
 
                     Node node = nodes[coord.X, coord.Y];
 
-                    if (node.UsedBy is TInterface target)
+                    if (node.UsedBy is T target)
                         associateAction(item, target);
                 }
             }
@@ -896,7 +900,7 @@ public class MazeGenerator : MonoBehaviour
         }
         else
         {
-            wall = Instantiate(wallDatabase.Walls[WallType.wall], wallsContainer);
+            wall = Instantiate(wallDatabase.Walls[WallType.wall], wallTilemap);
             wall.OnWallCreated(signalBus);
             wall.name = $"Wall {id}";
             walls.Add(id, wall);
@@ -912,7 +916,7 @@ public class MazeGenerator : MonoBehaviour
             return instantiatedNodes[coordinate];
         }
 
-        Node newNode = Instantiate(nodePrefab, nodeContainer);
+        Node newNode = Instantiate(nodePrefab, nodeTilemap);
         newNode.name = $"Node {coordinate.X},{coordinate.Y}";
         newNode.transform.localPosition = new Vector2(coordinate.X * NodeUtils.NODE_SIZE, coordinate.Y * NodeUtils.NODE_SIZE);
         instantiatedNodes.Add(coordinate, newNode);

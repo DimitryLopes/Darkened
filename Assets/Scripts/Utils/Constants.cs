@@ -87,6 +87,8 @@ public static class Constants
     {
         public const string MAZE_FLOOR_SPRITE_PATH = "Sprites/Maze/Interior/floor_{0}";
         public const string MAZE_WALL_SPRITE_PATH = "Sprites/Maze/Interior/wall_{0}";
+        public const string MAZE_FLOOR_TILE_PATH = "Tilemaps/Tiles/Floor";
+        public const string MAZE_WALL_TILE_PATH = "Tilemaps/Tiles/Wall";
     }
 }
 

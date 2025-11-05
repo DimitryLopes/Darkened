@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class AssetService
 {
@@ -22,6 +23,26 @@ public class AssetService
             Debug.LogError($"Failed to load sprite at path: {path}");
         }
         return sprite;
+    }
+
+    public static TileBase GetMazeFloorTile()
+    {
+        return LoadTile(Constants.Assets.MAZE_FLOOR_TILE_PATH);
+    }
+
+    public static TileBase GetMazeWallTile()
+    {
+        return LoadTile(Constants.Assets.MAZE_WALL_TILE_PATH);
+    }
+
+    public static TileBase LoadTile(string path)
+    {
+        TileBase tile = Resources.Load<TileBase>(path);
+        if (tile == null)
+        {
+            Debug.LogError($"Failed to load tile at path: {path}");
+        }
+        return tile;
     }
 }
 
