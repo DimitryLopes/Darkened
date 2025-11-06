@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 using Zenject;
 
-public class MazeWall : Activateable
+public class MazeWall 
 {
-    [SerializeField]
-    private BoxCollider2D boxCollider;
+    private List<Coordinate> associatedTiles = new List<Coordinate>();
 
     protected SignalBus signalBus;
 
@@ -30,33 +29,44 @@ public class MazeWall : Activateable
         }
     }
 
-    public override void OnActivate()
+    public void Setup(List<Coordinate> associatedTiles, bool isAtBorder)
     {
-        gameObject.SetActive(true);
-    }
-
-    public override void OnDeactivate()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public virtual void AlignWith(Cardinal direction, bool isAtBorder)
-    {
+        this.associatedTiles = associatedTiles;
         IsAtBorder = isAtBorder;
-        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
-        transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
-    public virtual void OnWallCreated(SignalBus signalBus)
+    public void SetAsWall(Tilemap tilemap)
     {
-        this.signalBus = signalBus;
-        signalBus.Subscribe<OnItemsLoadFinishSignal>(AddToComposite);
+        Vector3Int pos = new Vector3Int();
+        foreach (Coordinate coordinate in associatedTiles)
+        {
+            pos.x = coordinate.X;
+            pos.y = coordinate.Y;
+            tilemap.SetTile(pos, AssetService.GetWallTile());
+        }
     }
 
-    private void AddToComposite()
+    public void SetAsEmpty(Tilemap tilemap)
     {
-        boxCollider.usedByComposite = true;
-        signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
+        Vector3Int pos = new Vector3Int();
+        foreach (Coordinate coordinate in associatedTiles)
+        {
+            pos.x = coordinate.X;
+            pos.y = coordinate.Y;
+            tilemap.SetTile(pos, AssetService.GetFloorTile());
+        }
     }
+
+    //public virtual void OnWallCreated(SignalBus signalBus)
+    //{
+    //    this.signalBus = signalBus;
+    //    signalBus.Subscribe<OnItemsLoadFinishSignal>(AddToComposite);
+    //}
+
+    //private void AddToComposite()
+    //{
+    //    boxCollider.usedByComposite = true;
+    //    signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
+    //}
 
 }

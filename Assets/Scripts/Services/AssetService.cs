@@ -25,12 +25,17 @@ public class AssetService
         return sprite;
     }
 
-    public static TileBase GetMazeFloorTile()
+    public static TileBase GetFloorTile()
     {
         return LoadTile(Constants.Assets.MAZE_FLOOR_TILE_PATH);
     }
 
-    public static TileBase GetMazeWallTile()
+    public static TileBase GetWallTile()
+    {
+        return LoadTile(Constants.Assets.MAZE_WALL_TILE_PATH);
+    }
+
+    public static TileBase GetGateTile()
     {
         return LoadTile(Constants.Assets.MAZE_WALL_TILE_PATH);
     }

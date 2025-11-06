@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +43,7 @@ public class MazeGenerator : MonoBehaviour
     //for whatever reason injecting this directly creates a circular dependency
     private MazeManager mazeManager;
 
-    private Dictionary<Coordinate, Node> instantiatedNodes = new();
+    private Dictionary<Coordinate, Node> createdNodes = new();
     private List<Node> generationPath = new List<Node>();
     private List<Node> generationNeighbors = new List<Node>();
     private Dictionary<string, MazeWall> walls = new();
@@ -55,13 +55,6 @@ public class MazeGenerator : MonoBehaviour
 
     private void ClearMaze()
     {
-        if(currentMaze != null)
-        {
-            foreach (Node node in currentMaze.Nodes)
-            {
-                node.Deactivate();
-            }
-        }
         wallTilemap.ClearAllTiles();
         edgeWallsTilemap.ClearAllTiles();
         nodeTilemap.ClearAllTiles();
@@ -71,7 +64,7 @@ public class MazeGenerator : MonoBehaviour
     #region Main Generation
     public void CreateMaze(RandomLevelData data, MazeManager mazeManager)
     {
-        this.mazeManager = mazeManager;
+        this.mazeManager ??= mazeManager;
         ClearMaze();
         currentMaze = new Maze(data);
 
@@ -102,16 +95,13 @@ public class MazeGenerator : MonoBehaviour
     private LoadingOperation MazeLoadOperation()
     {
         IEnumerator<float> step1enumerator = CreateBase();
-        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Sweeping the floor, badly");
+        LoadingStep step1 = new LoadingStep(step1enumerator, coroutiner, "Sweeping the floor");
 
         IEnumerator<float> step2enumerator = CreateWalls();
         LoadingStep step2 = new LoadingStep(step2enumerator, coroutiner, "Making the duck proud");
 
         IEnumerator<float> step3enumerator = CreatePath();
         LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Sneaking in");
-
-        //IEnumerator<float> step4enumerator = RemoveDeadEnds();
-        //LoadingStep step4 = new LoadingStep(step4enumerator, coroutiner, "Removing dead ends");
 
         IEnumerator<float> step5enumerator = AddItems();
         LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Forcing your build");
@@ -124,7 +114,7 @@ public class MazeGenerator : MonoBehaviour
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, /*step4,*/ step5, step6, step7
+            step1, step2, step3, step5, step6, step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
@@ -158,35 +148,94 @@ public class MazeGenerator : MonoBehaviour
     {
         Node[,] nodes = new Node[CurrentData.Width, CurrentData.Height];
         Node node;
+
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
             {
-                node = GetNode(new Coordinate(x,y));
+                node = GetNode(new Coordinate(x, y));
                 nodes[x, y] = node;
-                node.Activate();
-                node.Setup(x, y, CurrentData.SizeData);
-                SetNodeEdges(node, CurrentData.SizeData);
+
+                // Paint the 3x3 section for this node
+                PaintNodeTiles(node, x, y);
+
                 if ((y * CurrentData.Height + x) % 10 == 0)
                     yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
             }
         }
+
         SetSpawnPoints(nodes);
         currentMaze.SetNodes(nodes);
     }
 
+    
+
+    private Vector3Int GetWallTilePosition(int startX, int startY, Cardinal direction)
+    {
+        return direction switch
+        {
+            Cardinal.North => new Vector3Int(startX + 1, startY + 2, 0),
+            Cardinal.South => new Vector3Int(startX + 1, startY, 0),
+            Cardinal.East => new Vector3Int(startX + 2, startY + 1, 0),
+            Cardinal.West => new Vector3Int(startX, startY + 1, 0),
+            _ => Vector3Int.zero,
+        };
+    }
+
     private IEnumerator<float> CreateWalls()
     {
-        int lenght = currentMaze.Nodes.Length;
+        int length = currentMaze.Nodes.Length;
         Node currentNode;
+
         for (int y = 0; y < CurrentData.Height; y++)
         {
             for (int x = 0; x < CurrentData.Width; x++)
             {
-                currentNode = currentMaze.Nodes[x,y];
-                MazeUtils.ExecuteActionWithAllCardinals(AddNodeWall, currentNode);
+                currentNode = currentMaze.Nodes[x, y];
+                MazeUtils.ExecuteActionWithAllCardinals((direction) =>
+                {
+                    if (currentNode.HasWall(direction))
+                    {
+                        PaintWallTiles(currentNode, x, y, direction);
+                    }
+                });
             }
-            yield return LoadingUtils.GetProgress(y * CurrentData.Height, lenght);
+
+            yield return LoadingUtils.GetProgress(y * CurrentData.Height, length);
+        }
+    }
+
+
+    private void PaintWallTiles(Node node, int nodeX, int nodeY, Cardinal direction)
+    {
+        // Calculate the starting position of the 3x3 section
+        int startX = nodeX * 3 + 1;
+        int startY = nodeY * 3 + 1;
+
+        // Paint the wall tile
+        Vector3Int wallPosition = GetWallTilePosition(startX, startY, direction);
+        wallTilemap.SetTile(wallPosition, AssetService.GetWallTile());
+
+        // Fill tiles between walls if necessary
+        if (direction == Cardinal.North || direction == Cardinal.South)
+        {
+            Vector3Int leftTile = new Vector3Int(wallPosition.x - 1, wallPosition.y, 0);
+            Vector3Int rightTile = new Vector3Int(wallPosition.x + 1, wallPosition.y, 0);
+
+            if (wallTilemap.HasTile(leftTile) && wallTilemap.HasTile(rightTile))
+            {
+                wallTilemap.SetTile(wallPosition, AssetService.GetWallTile());
+            }
+        }
+        else if (direction == Cardinal.East || direction == Cardinal.West)
+        {
+            Vector3Int topTile = new Vector3Int(wallPosition.x, wallPosition.y + 1, 0);
+            Vector3Int bottomTile = new Vector3Int(wallPosition.x, wallPosition.y - 1, 0);
+
+            if (wallTilemap.HasTile(topTile) && wallTilemap.HasTile(bottomTile))
+            {
+                wallTilemap.SetTile(wallPosition, AssetService.GetWallTile());
+            }
         }
     }
 
@@ -377,7 +426,7 @@ public class MazeGenerator : MonoBehaviour
     {
         int gateCount =  Mathf.FloorToInt(currentMaze.Data.SizeData.AverageGateAmount);
         float additionalGateChance = currentMaze.Data.SizeData.AverageGateAmount - gateCount;
-        float random = Random.Range(0, 1f);
+        float random = UnityEngine.Random.Range(0, 1f);
         if(random < additionalGateChance)
         {
             gateCount++;
@@ -438,7 +487,7 @@ public class MazeGenerator : MonoBehaviour
 
     private Node SetStartingPoint(Node[,] nodes, LevelData data)
     {
-        int startingX = Random.Range(0, data.Width);
+        int startingX = UnityEngine.Random.Range(0, data.Width);
         currentMaze.MarkNodeAsUsed(nodes[startingX, 0], null);
         return nodes[startingX, 0];
     }
@@ -489,12 +538,10 @@ public class MazeGenerator : MonoBehaviour
 
     private string GetWallKey(Node node, Cardinal direction)
     {
-        // Coordenada do nodo atual
         int x = node.Coordinates.X;
         int y = node.Coordinates.Y;
 
         int nx, ny;
-        // Simular nodo vizinho
         switch (direction)
         {
             case Cardinal.North:
@@ -519,8 +566,6 @@ public class MazeGenerator : MonoBehaviour
                 break;
         }
 
-
-        // Ordena para garantir simetria
         if (x > nx || (x == nx && y > ny))
         {
             return string.Format(Constants.Generation.WALL_ID_FORMAT, nx, ny, x, y);
@@ -532,52 +577,6 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private void SetNodeEdges(Node node, MazeSizeData data)
-    {
-        if (node.Coordinates.X == 0)
-        {
-            node.SetEdge(Cardinal.West, true);
-            if (node.Coordinates.Y == 0 || node.Coordinates.Y == data.Height - 1)
-            {
-                node.SetCorner();
-            }
-        }
-        else
-        {
-            node.SetEdge(Cardinal.West, false);
-        }
-
-        if (node.Coordinates.X == data.Width - 1)
-        {
-            node.SetEdge(Cardinal.East, true); 
-            if (node.Coordinates.Y == 0 || node.Coordinates.Y == data.Height -1)
-            {
-                node.SetCorner();
-            }
-        }
-        else
-        {
-            node.SetEdge(Cardinal.East, false);
-        }
-
-        if (node.Coordinates.Y == 0)
-        {
-            node.SetEdge(Cardinal.South, true);
-        }
-        else
-        {
-            node.SetEdge(Cardinal.South, false);
-        }
-
-        if (node.Coordinates.Y == data.Height - 1)
-        {
-            node.SetEdge(Cardinal.North, true);
-        }
-        else
-        {
-            node.SetEdge(Cardinal.North, false);
-        }
-    }
 
     #region Preset Generation
     private IEnumerator<float> CreateNodesPreset(PresetLevelData preset, Node[,] nodes)
@@ -592,8 +591,7 @@ public class MazeGenerator : MonoBehaviour
                 Node node = GetNode(new Coordinate(x, y));
                 nodes[x, y] = node;
                 node.Activate();
-                node.SetCoordinate(x, y, CurrentData.SizeData);
-                SetNodeEdges(node, preset.SizeData);
+                node.Setup(x, y, CurrentData.SizeData);
                 yield return LoadingUtils.GetProgress(y * width + x, width * height);
             }
         }
@@ -909,19 +907,6 @@ public class MazeGenerator : MonoBehaviour
         return wall;
     }
 
-    private Node GetNode(Coordinate coordinate)
-    {
-        if (instantiatedNodes.ContainsKey(coordinate))
-        {
-            return instantiatedNodes[coordinate];
-        }
-
-        Node newNode = Instantiate(nodePrefab, nodeTilemap);
-        newNode.name = $"Node {coordinate.X},{coordinate.Y}";
-        newNode.transform.localPosition = new Vector2(coordinate.X * NodeUtils.NODE_SIZE, coordinate.Y * NodeUtils.NODE_SIZE);
-        instantiatedNodes.Add(coordinate, newNode);
-        return newNode;
-    }
 
     public Gate GetGate()
     {
@@ -970,7 +955,6 @@ public class MazeGenerator : MonoBehaviour
 
     private Node GetAvailableNodeAwayFrom(IEnumerable focusNodes, IEnumerable nodes, int minDistance)
     {
-
         if(focusNodes == null || !focusNodes.Cast<Node>().Any())
         {
             return nodes.Cast<Node>().First();
