@@ -8,10 +8,12 @@ public class MazeWall
     private List<Coordinate> associatedTiles = new List<Coordinate>();
 
     protected SignalBus signalBus;
-
     public bool IsAtBorder { get; protected set; }
+    public bool IsActive => State != MazeWallState.Empty;
+    public MazeWallState State { get; private set; }
 
     public (Node, Node) AdjacentNodes;
+
 
     public void AddNode(Node node)
     {
@@ -44,6 +46,19 @@ public class MazeWall
             pos.y = coordinate.Y;
             tilemap.SetTile(pos, AssetService.GetWallTile());
         }
+        State = MazeWallState.Wall;
+    }
+
+    public void SetAsGate(Tilemap tilemap)
+    {
+        Vector3Int pos = new Vector3Int();
+        foreach (Coordinate coordinate in associatedTiles)
+        {
+            pos.x = coordinate.X;
+            pos.y = coordinate.Y;
+            tilemap.SetTile(pos, AssetService.GetGateTile());
+        }
+        State = MazeWallState.Gate;
     }
 
     public void SetAsEmpty(Tilemap tilemap)
@@ -55,6 +70,7 @@ public class MazeWall
             pos.y = coordinate.Y;
             tilemap.SetTile(pos, AssetService.GetFloorTile());
         }
+        State = MazeWallState.Empty;
     }
 
     //public virtual void OnWallCreated(SignalBus signalBus)
@@ -68,5 +84,11 @@ public class MazeWall
     //    boxCollider.usedByComposite = true;
     //    signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
     //}
+}
 
+public enum MazeWallState
+{
+    Empty,
+    Wall,
+    Gate
 }

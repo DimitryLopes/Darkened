@@ -68,18 +68,18 @@ public class MazeGeneration : MonoBehaviour
         IEnumerator<float> step3enumerator = CreatePath();
         LoadingStep step3 = new LoadingStep(step3enumerator, coroutiner, "Sneaking in");
 
-        IEnumerator<float> step5enumerator = AddItems();
-        LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Forcing your build");
+        //IEnumerator<float> step5enumerator = AddItems();
+        //LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Forcing your build");
 
-        IEnumerator<float> step6enumerator = AddGates();
-        LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Open sezame");
+        //IEnumerator<float> step6enumerator = AddGates();
+        //LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Open sezame");
 
         IEnumerator<float> step7enumerator = AddTorches();
         LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "adicionando lá iluminación");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, step5, step6, step7
+            step1, step2, step3, /*step5, step6,*/ step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
@@ -170,18 +170,169 @@ public class MazeGeneration : MonoBehaviour
             wall.AddNode(node);
         }
 
-        if (node.IsOnEdge(direction)) 
+        bool isOnEdge = node.IsOnEdge(direction)
+        if (isOnEdge) 
             wall.SetAsWall(borderWallsTilemap);
         else 
             wall.SetAsWall(wallTilemap);
+        //TODO: Get tiles
+        wall.Setup(, isOnEdge);
     }
     #endregion
 
     #region Step 3
+    private IEnumerator<float> CreatePath()
+    {
+        float visitedNodes = 0;
+        Stack<Node> stack = GetNodeStack();
+        bool backtracking = false;
+        int targetProgress = currentMaze.Nodes.Length * 2;
+        List<Node> neighbors;
 
+        while (stack.Count > 0)
+        {
+            Node currentNode = stack.Pop();
+            currentNode.Visit();
+            generationPath.Add(currentNode);
+            visitedNodes++;
+            neighbors = GetNodeNeighbors(currentNode, true);
+            if (neighbors.Count > 0)
+            {
+                if (backtracking)
+                {
+                    backtracking = false;
+                }
+
+                stack.Push(currentNode);
+                neighbors.Shuffle();
+                stack.Push(neighbors[0]);
+                RemoveWallBetween(stack.Peek(), currentNode);
+            }
+            else
+            {
+                if (!backtracking)
+                {
+                    backtracking = true;
+                    RemoveDeadEndWalls(currentNode);
+                }
+            }
+
+            if (visitedNodes % 10 == 0)
+            {
+                yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
+            }
+        }
+        yield return LoadingUtils.GetProgress(visitedNodes, targetProgress);
+    }
     #endregion
 
+    #region Step 7
+    private IEnumerator<float> AddTorches()
+    {
+        int minTorchCount = (CurrentData as RandomLevelData).MinTorchCount;
+        int maxTorchCount = (CurrentData as RandomLevelData).MaxTorchCount;
+        int torchCount = UnityEngine.Random.Range(minTorchCount, maxTorchCount + 1);
+
+        List<Node> validNodes = new List<Node>(currentMaze.FreeNodes);
+
+        if (validNodes.Count < torchCount)
+            torchCount = validNodes.Count;
+
+        validNodes.Shuffle();
+
+        // Divide em partes para espalhar
+        float step = (float)validNodes.Count / torchCount;
+        int added = 0;
+        for (int i = 0; i < torchCount; i++)
+        {
+            int idx = Mathf.RoundToInt(i * step);
+            if (idx >= validNodes.Count) idx = validNodes.Count - 1;
+            Node node = validNodes[idx];
+            (MazeWall, Cardinal) wallToPlaceTorchOn = node.GetAnyDefaultWall();
+            PlaceTorchAt(node, wallToPlaceTorchOn.Item2);
+            added++;
+            yield return LoadingUtils.GetProgress(added, torchCount);
+        }
+
+        yield return 1;
+    }
+
+    public void PlaceTorchAt(Node node, Cardinal direction)
+    {
+        Torch torch = mazeManager.GetMazeTorch(CurrentData);
+        torch.transform.SetParent(torchContainer);
+        MazeWall wall = NodeUtils.GetWallAt(node, direction, currentMaze);
+        PlaceItemOnWall(torch, direction, wall);
+        currentMaze.AddTorch(node, torch, direction);
+    }
     #endregion
+
+    public void PlaceItemOnWall(Item item, Cardinal direction, MazeWall wall)
+    {
+        if (item.Type == ItemType.DefaultTorch)
+        {
+            item.transform.position = wall.transform.position;
+            if (direction == Cardinal.North)
+            {
+                item.transform.localScale = new Vector3(item.transform.localScale.x, -item.transform.localScale.y, item.transform.localScale.z);
+                item.transform.position += new Vector3(0, -Constants.Items.WALL_ITEM_OFFSET, 0);
+            }
+            if (direction == Cardinal.East)
+            {
+                item.transform.localScale = new Vector3(-item.transform.localScale.x, item.transform.localScale.y, item.transform.localScale.z);
+                item.transform.position += new Vector3(-Constants.Items.WALL_ITEM_OFFSET, 0, 0);
+            }
+            if (direction == Cardinal.West)
+            {
+                item.transform.position += new Vector3(Constants.Items.WALL_ITEM_OFFSET, 0, 0);
+            }
+            if (direction == Cardinal.South)
+            {
+                item.transform.position += new Vector3(0, Constants.Items.WALL_ITEM_OFFSET, 0);
+            }
+            return;
+        }
+        float rotation = NodeUtils.GetWallRotationByCardinal(direction);
+        item.transform.SetPositionAndRotation(wall.transform.position, Quaternion.Euler(0, 0, rotation));
+    }
+
+    #endregion
+    public void RemoveWallBetween(Node nodeA, Node nodeB)
+    {
+        Cardinal direction = NodeUtils.GetCardinalDirection(nodeB, nodeA);
+        string wallID = GetWallKey(nodeA, direction);
+        MazeWall wall = GetWall(wallID);
+        wall.SetAsEmpty(wallTilemap);
+    }
+
+    private void RemoveDeadEndWalls(Node node)
+    {
+        List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
+        if (node.IsOnCorner)
+        {
+            List<Node> cornerNeighbors = GetNodeNeighbors(node, false);
+            foreach (Node corner in cornerNeighbors)
+            {
+                RemoveWallBetween(corner, node);
+            }
+            return;
+        }
+
+        int wallsRemoved = 0;
+        cardinals.Shuffle();
+        while (cardinals.Count > 0 && wallsRemoved < 2)
+        {
+            var direction = cardinals[0];
+            cardinals.RemoveAt(0);
+
+            if (!node.IsOnEdge(direction) && node.HasWall(direction))
+            {
+                Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+                RemoveWallBetween(node, neighbor);
+                wallsRemoved++;
+            }
+        }
+    }
 
     #region Utils
     private Node GetAvailableNodeAwayFrom(Node focusNode, IEnumerable nodes, int minDistance)
@@ -270,6 +421,33 @@ public class MazeGeneration : MonoBehaviour
         }
 
         return wall;
+    }
+    private Stack<Node> GetNodeStack()
+    {
+        Stack<Node> stack = new Stack<Node>();
+        Coordinate coordinate = new Coordinate(mazeManager.CurrentStartingNode.X, mazeManager.CurrentStartingNode.Y);
+        stack.Push(currentMaze.NodesByCoordinate[coordinate]);
+
+        return stack;
+    }
+    private List<Node> GetNodeNeighbors(Node node, bool excludeVisited, bool removeNulls = true)
+    {
+        List<Node> neighbors = new List<Node>();
+        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref neighbors);
+
+        neighbors.RemoveAll(item => (item == null && removeNulls) || (excludeVisited && item.Visited));
+
+        Node AddToNeighborsList(Cardinal direction, Node node)
+        {
+            Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
+            if (neighbor != null)
+            {
+                return neighbor;
+            }
+            return null;
+        }
+
+        return neighbors;
     }
     #endregion
     private void ClearMaze()

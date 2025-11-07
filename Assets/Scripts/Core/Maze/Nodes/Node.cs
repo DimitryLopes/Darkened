@@ -24,7 +24,6 @@ public class Node
 
     public void Setup(Coordinate coordinate, MazeSizeData sizeData)
     {
-        MazeUtils.ExecuteActionWithAllCardinals(ClearWall);
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
         UsedBy = null;
         Visited = false;
@@ -62,13 +61,13 @@ public class Node
             default:
                 break;
         }
-        coordinates = new Coordinate(x, y);
+        coordinates = new Coordinate(X, Y);
     }
     
     #region Walls
     public bool HasWall(Cardinal direction)
     {
-        return wallDictionary[direction] && wallDictionary[direction].IsActive;
+        return wallDictionary[direction].IsActive;
     }
 
     public bool HasAnyWall()
@@ -144,9 +143,7 @@ public class Node
 
     private void ClearWall(Cardinal direction)
     {
-        if (wallDictionary[direction] == null || !wallDictionary[direction].IsActive) return;
 
-        wallDictionary[direction].Deactivate();
 
     }
 

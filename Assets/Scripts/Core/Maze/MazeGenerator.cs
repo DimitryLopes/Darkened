@@ -465,26 +465,6 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
-    private List<Node> GetNeighbors(Node node, bool excludeVisited, bool removeNulls = true)
-    {
-        generationNeighbors.Clear();
-        MazeUtils.ExecuteActionWithAllCardinals(AddToNeighborsList, node, ref generationNeighbors);
-
-        generationNeighbors.RemoveAll(item => (item == null && removeNulls) || (excludeVisited && item.Visited));
-
-        return generationNeighbors;
-    }
-
-    private Node AddToNeighborsList(Cardinal direction, Node node)
-    {
-        Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
-        if (neighbor != null)
-        {
-            return neighbor;
-        }
-        return null;
-    }
-
     private Node SetStartingPoint(Node[,] nodes, LevelData data)
     {
         int startingX = UnityEngine.Random.Range(0, data.Width);
