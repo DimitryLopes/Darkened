@@ -5,7 +5,7 @@ using Zenject;
 
 public class MazeWall 
 {
-    private List<Coordinate> associatedTiles = new List<Coordinate>();
+    public List<TileData> AssociatedTiles { get; private set; }
 
     protected SignalBus signalBus;
     public bool IsAtBorder { get; protected set; }
@@ -31,16 +31,16 @@ public class MazeWall
         }
     }
 
-    public void Setup(List<Coordinate> associatedTiles, bool isAtBorder)
+    public void Setup(List<TileData> associatedTiles, bool isAtBorder)
     {
-        this.associatedTiles = associatedTiles;
+        AssociatedTiles = associatedTiles;
         IsAtBorder = isAtBorder;
     }
 
     public void SetAsWall(Tilemap tilemap)
     {
         Vector3Int pos = new Vector3Int();
-        foreach (Coordinate coordinate in associatedTiles)
+        foreach (TileData coordinate in AssociatedTiles)
         {
             pos.x = coordinate.X;
             pos.y = coordinate.Y;
@@ -52,7 +52,7 @@ public class MazeWall
     public void SetAsGate(Tilemap tilemap)
     {
         Vector3Int pos = new Vector3Int();
-        foreach (Coordinate coordinate in associatedTiles)
+        foreach (TileData coordinate in AssociatedTiles)
         {
             pos.x = coordinate.X;
             pos.y = coordinate.Y;
@@ -64,7 +64,7 @@ public class MazeWall
     public void SetAsEmpty(Tilemap tilemap)
     {
         Vector3Int pos = new Vector3Int();
-        foreach (Coordinate coordinate in associatedTiles)
+        foreach (TileData coordinate in AssociatedTiles)
         {
             pos.x = coordinate.X;
             pos.y = coordinate.Y;

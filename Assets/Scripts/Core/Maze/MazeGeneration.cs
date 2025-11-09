@@ -99,7 +99,7 @@ public class MazeGeneration : MonoBehaviour
                 node = GetNode(new Coordinate(x,y));
                 nodes[x, y] = node;
 
-                PaintNodeTiles(node, x, y);
+                AssociatedTileToNode(node, x, y);
 
                 if ((y * CurrentData.Height + x) % 10 == 0)
                     yield return LoadingUtils.GetProgress(y * CurrentData.Height + x, CurrentData.Size);
@@ -110,18 +110,21 @@ public class MazeGeneration : MonoBehaviour
         currentMaze.SetNodes(nodes);
     }
 
-    private void PaintNodeTiles(Node node, int nodeX, int nodeY)
+    private void AssociatedTileToNode(Node node, int nodeX, int nodeY)
     {
         int startX = nodeX * 3 + nodeX + 1;
         int startY = nodeY * 3 + nodeY + 1;
-
-        for(int x = 0; x < 3; x++)
+        List<TileData> tiles = new();
+        for (int x = 0; x < 3; x++)
         {
             for(int y = 0; y < 3; y++)
             {
-                nodeTilemap.SetTile(new Vector3Int(startX + x, startY + y, 0), AssetService.GetFloorTile());
+                Vector3Int tilePosition = new Vector3Int(startX + x, startY + y, 0);
+                tiles.Add(new TileData(nodeTilemap.GetTile(tilePosition), tilePosition));
+                nodeTilemap.SetTile(tilePosition, AssetService.GetFloorTile());
             }
         }
+        node.AssociateTiles(tiles);
     }
 
     private void SetSpawnPoints(Node[,] nodes)
@@ -170,13 +173,59 @@ public class MazeGeneration : MonoBehaviour
             wall.AddNode(node);
         }
 
-        bool isOnEdge = node.IsOnEdge(direction)
+        bool isOnEdge = node.IsOnEdge(direction);
         if (isOnEdge) 
             wall.SetAsWall(borderWallsTilemap);
         else 
             wall.SetAsWall(wallTilemap);
-        //TODO: Get tiles
-        wall.Setup(, isOnEdge);
+        
+        List<TileData> associatedTiles = new List<TileData>();
+        associatedTiles = GetWallAssociatedTiles(node, direction);
+        wall.Setup(associatedTiles, isOnEdge);
+    }
+
+    private List<TileData> GetWallAssociatedTiles(Node node, Cardinal direction)
+    {
+        int startX = node.X * 3 + node.X + 1;
+        int startY = node.Y * 3 + node.Y + 1;
+
+        switch (direction)
+        {
+            case Cardinal.North:
+                startY += 3;
+                break;
+            case Cardinal.East: 
+                startX += 3;
+                break;
+            case Cardinal.South:
+                startY -= 1;
+                break;
+            case Cardinal.West: 
+                startX -= 1;
+                break;
+        }
+
+        List<TileData> tiles = new();
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3Int tilePosition;
+            switch (direction)
+            {
+                case Cardinal.North:
+                case Cardinal.South:
+                    tilePosition = new Vector3Int(startX + i, startY, 0);
+                    break;
+                case Cardinal.East:
+                case Cardinal.West:
+                    tilePosition = new Vector3Int(startX, startY + i, 0);
+                    break;
+                default:
+                    tilePosition = new Vector3Int(startX, startY, 0);
+                    break;
+            }
+            tiles.Add(new TileData(nodeTilemap.GetTile(tilePosition), tilePosition));
+        }
+        return tiles;
     }
     #endregion
 
@@ -256,7 +305,6 @@ public class MazeGeneration : MonoBehaviour
 
         yield return 1;
     }
-
     public void PlaceTorchAt(Node node, Cardinal direction)
     {
         Torch torch = mazeManager.GetMazeTorch(CurrentData);
@@ -271,7 +319,7 @@ public class MazeGeneration : MonoBehaviour
     {
         if (item.Type == ItemType.DefaultTorch)
         {
-            item.transform.position = wall.transform.position;
+            item.transform.position = wallTilemap.CellToWorld(wall.AssociatedTiles[1].Position);
             if (direction == Cardinal.North)
             {
                 item.transform.localScale = new Vector3(item.transform.localScale.x, -item.transform.localScale.y, item.transform.localScale.z);
@@ -293,7 +341,7 @@ public class MazeGeneration : MonoBehaviour
             return;
         }
         float rotation = NodeUtils.GetWallRotationByCardinal(direction);
-        item.transform.SetPositionAndRotation(wall.transform.position, Quaternion.Euler(0, 0, rotation));
+        item.transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
     #endregion
@@ -449,7 +497,13 @@ public class MazeGeneration : MonoBehaviour
 
         return neighbors;
     }
+
     #endregion
+    private void OnMazeGenerationFinish()
+    {
+        signalBus.Fire(new OnMazeLoadFinishSignal(currentMaze));
+    }
+
     private void ClearMaze()
     {
         wallTilemap.ClearAllTiles();

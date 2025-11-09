@@ -16,15 +16,46 @@ public class Node
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
+    private List<TileData> associatedTiles;
 
     public Node(Coordinate coordinate, MazeSizeData sizeData)
     {
         Setup(coordinate, sizeData);
     }
 
+    #region Tiles
+    public void AssociateTiles(List<TileData> associatedTiles)
+    {
+        this.associatedTiles = associatedTiles;
+    }
+
+    public List<TileData> GetCardinalTiles(Cardinal direction)
+    {
+        List<TileData> tileDatas = new();
+        switch (direction)
+        {
+            case Cardinal.North:
+                associatedTiles.FindAll(t => t.Y == 2).ForEach(t => tileDatas.Add(t));
+                break;
+            case Cardinal.East:
+                associatedTiles.FindAll(t => t.X == 2).ForEach(t => tileDatas.Add(t));
+                break;
+            case Cardinal.South:
+                associatedTiles.FindAll(t => t.Y == 0).ForEach(t => tileDatas.Add(t));
+                break;
+            case Cardinal.West:
+                associatedTiles.FindAll(t => t.X == 0).ForEach(t => tileDatas.Add(t));
+                break;
+        }
+        return tileDatas;
+    }
+
+    #endregion
+
     public void Setup(Coordinate coordinate, MazeSizeData sizeData)
     {
         MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
+        MazeUtils.ExecuteActionWithAllCardinals(FillDictionary);
         UsedBy = null;
         Visited = false;
         coordinates = coordinate;
@@ -63,7 +94,7 @@ public class Node
         }
         coordinates = new Coordinate(X, Y);
     }
-    
+
     #region Walls
     public bool HasWall(Cardinal direction)
     {
