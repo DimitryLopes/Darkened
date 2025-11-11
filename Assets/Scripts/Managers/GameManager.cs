@@ -185,14 +185,14 @@ public class GameManager
         hudManager.ShowHud();
 
         Player player = entityManager.GetPlayer();
-        player.transform.position = mazeManager.CurrentStartingNode.transform.position;
+        player.transform.position = mazeManager.CurrentStartingNode.Position;
         player.ResetPlayer(signal.Maze.Data.DifficultyData);
         signalBus.Fire(new OnPlayerSpawnedSignal(player));
 
         if (levelManager.CurrentLevelData.EnemyType != EnemyType.None)
         {
             Enemy enemy = entityManager.GetEnemy(levelManager.CurrentLevelData.EnemyType, true);
-            enemy.transform.position = mazeManager.EnemyStartingNode.transform.position;
+            enemy.transform.position = mazeManager.EnemyStartingNode.Position;
             entityManager.ActivateEnemy(levelManager.CurrentLevelData.EnemyType);
             enemy.SetMaze(mazeManager.CurrentMaze);
             signalBus.Fire(new OnEnemySpawnedSignal(enemy));

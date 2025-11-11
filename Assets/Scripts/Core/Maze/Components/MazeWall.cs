@@ -13,6 +13,7 @@ public class MazeWall
     public MazeWallState State { get; private set; }
 
     public (Node, Node) AdjacentNodes;
+    public Vector3 Position => AssociatedTiles[1].Position;
 
 
     public void AddNode(Node node)

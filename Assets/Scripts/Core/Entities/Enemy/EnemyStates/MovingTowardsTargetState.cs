@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MovingTowardsTargetState : State<BaseStateData>
 {
@@ -43,11 +44,11 @@ public class MovingTowardsTargetState : State<BaseStateData>
     protected void HandleMovement()
     {
         Node nextNode = path.Peek();
-        Vector3 targetDirection = nextNode.transform.position;
+        Vector3 targetDirection = nextNode.Position;
         Vector3 direction = targetDirection - Transform.position;
 
         Data.User.Move(direction, Data.IsSprinting);
-        float distance = Vector3.Distance(Transform.position, nextNode.transform.position);
+        float distance = Vector3.Distance(Transform.position, nextNode.Position);
         if (distance < 0.25f)
         {
             path.Pop();

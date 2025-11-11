@@ -49,7 +49,6 @@ public class StatusEffectManager
             effect.Key = key;
             effect.Instance.Activate();
             return effect.Instance;
-
         }
         VisualEntityStatusEffect newEffect = effectFactory.Create();
         activeEffects.Add(new EffectInstance(newEffect, key));

@@ -66,7 +66,14 @@ public class NodeUtils : MonoBehaviour
 
     public static Cardinal GetCardinalDirection(Node fromNode, Node toNode)
     {
-        Coordinate offset = new Coordinate(fromNode.X - toNode.X, fromNode.Y - toNode.Y);
+        if(fromNode == null || toNode == null)
+        {
+                       Debug.LogError("Cannot determine cardinal direction from or to a null node.");
+            return Cardinal.North;
+        }
+        int x = fromNode.X - toNode.X;
+        int y = fromNode.Y - toNode.Y;
+        Coordinate offset = new Coordinate(x,y);
         Cardinal direction = Cardinal.North;
         if (offset.Y > 0 && Mathf.Abs(offset.Y) > Mathf.Abs(offset.X))
         {

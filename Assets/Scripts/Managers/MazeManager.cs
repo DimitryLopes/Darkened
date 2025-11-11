@@ -38,7 +38,7 @@ public class MazeManager
         }
         else
         {
-            mazeGenerator.CreateMaze(data as PresetLevelData, this);
+            //mazeGenerator.CreateMaze(data as PresetLevelData, this);
             Debug.Log($"Generating Maze with data following data: \n Size: {data.Size} cells");
         }
     }
@@ -95,7 +95,6 @@ public class MazeManager
             {
                 if (baseMission is ItemMission mission)
                 {
-                    mission.SetupMissionData();
                     List<ItemType> missionItemsInfo = mission.GetRequiredItems();
                     foreach (ItemType type in missionItemsInfo)
                     {
@@ -121,7 +120,6 @@ public class MazeManager
             {
                 if (baseMission is ItemMission mission)
                 {
-                    mission.SetupMissionData();
                     itemMissions.Add(mission);
                 }
             }
@@ -142,24 +140,6 @@ public class MazeManager
             }
         }
         return items;
-    }
-
-    public void SetupMissions()
-    {
-        foreach (MissionGroup missionGroup in objectiveManager.CurrentObjective.MissionGroups)
-        {
-            foreach (IMission baseMission in missionGroup.Missions)
-            {
-                switch (baseMission)
-                {
-                    case ItemMission itemMission:
-                        itemMission.SetupMissionData();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
     }
 
     public Torch GetMazeTorch(LevelData data)

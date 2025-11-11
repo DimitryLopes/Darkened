@@ -13,6 +13,7 @@ public class Node
     public bool IsOnCorner { get; private set; }
     public object UsedBy { get; set; }
     public Coordinate Coordinates => coordinates;
+    public Vector3 Position => associatedTiles[4].Position;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
@@ -98,7 +99,11 @@ public class Node
     #region Walls
     public bool HasWall(Cardinal direction)
     {
-        return wallDictionary[direction].IsActive;
+        if(wallDictionary.ContainsKey(direction))
+        {
+            return wallDictionary[direction] != null && wallDictionary[direction].IsActive;
+        }
+        return false;
     }
 
     public bool HasAnyWall()

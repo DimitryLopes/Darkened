@@ -137,7 +137,7 @@ public class MazeUtils
                     continue;
                 }
 
-                float tentativeGScore = current.gScore + Vector3.Distance(current.transform.position, neighbor.transform.position);
+                float tentativeGScore = current.gScore + Vector3.Distance(current.Position, neighbor.Position);
 
                 if (!openSet.Contains(neighbor) || tentativeGScore < neighbor.gScore)
                 {
@@ -193,14 +193,11 @@ public class MazeUtils
         Node closestNode = null;
         foreach (Node node in nodes)
         {
-            if (node.IsActive)
+            float currentDistance = Vector2.Distance(position, node.Position);
+            if (currentDistance < closest)
             {
-                float currentDistance = Vector2.Distance(position, node.transform.position);
-                if (currentDistance < closest)
-                {
-                    closestNode = node;
-                    closest = currentDistance;
-                }
+                closestNode = node;
+                closest = currentDistance;
             }
         }
         return closestNode;

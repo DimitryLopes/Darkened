@@ -31,8 +31,7 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
 
     private void OnStoryModeButtonClicked()
     {
-        onAfterHideCallback = ShowLevelSelectionScreen;
-        Hide();
+        ShowLevelSelectionScreen();
     }
 
     private void ShowLevelSelectionScreen()
@@ -49,8 +48,10 @@ public class MainMenuScreen : UIScreen<MainMenuScreenController>
 
     public void StartCustomGame()
     {
-        gameManager.StartCustomGame();
+        onAfterHideCallback = gameManager.StartCustomGame;
+        Hide();
     }
+
     public void StartRandomGame()
     {
         gameManager.StartRandomGame();
