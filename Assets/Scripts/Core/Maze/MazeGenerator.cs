@@ -178,17 +178,16 @@ public class MazeGenerator : MonoBehaviour
             wall.AddNode(node);
         }
 
-        bool isOnEdge = node.IsOnEdge(direction);
+        bool isOnBorder = node.IsOnBorder(direction);
 
         List<TileData> associatedTiles = new List<TileData>();
         associatedTiles = GetWallAssociatedTiles(node, direction);
-        wall.Setup(associatedTiles, isOnEdge);
+        wall.Setup(associatedTiles, isOnBorder);
 
-        if (isOnEdge) 
+        if (isOnBorder) 
             wall.SetAsWall(borderWallsTilemap);
         else 
-            wall.SetAsWall(wallTilemap);
-        
+            wall.SetAsWall(wallTilemap);       
         
     }
 
@@ -413,12 +412,12 @@ public class MazeGenerator : MonoBehaviour
     private void RemoveDeadEndWalls(Node node)
     {
         List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
-        if (node.IsOnCorner)
+        if (node.IsOnEdge())
         {
-            List<Node> cornerNeighbors = GetNodeNeighbors(node, false);
-            foreach (Node corner in cornerNeighbors)
+            List<Node> BorderNeighbors = GetNodeNeighbors(node, false);
+            foreach (Node border in BorderNeighbors)
             {
-                RemoveWallBetween(corner, node);
+                RemoveWallBetween(border, node);
             }
             return;
         }
@@ -430,7 +429,7 @@ public class MazeGenerator : MonoBehaviour
             var direction = cardinals[0];
             cardinals.RemoveAt(0);
 
-            if (!node.IsOnEdge(direction) && node.HasWall(direction))
+            if (!node.IsOnBorder(direction) && node.HasWall(direction))
             {
                 Node neighbor = MazeUtils.GetNodeAtCardinalFromNode(direction, node, currentMaze);
                 RemoveWallBetween(node, neighbor);
@@ -461,6 +460,7 @@ public class MazeGenerator : MonoBehaviour
 
         return fallbackNode;
     }
+
     private Node GetNode(Coordinate coordinate)
     {
         if (createdNodes.ContainsKey(coordinate))
@@ -473,6 +473,7 @@ public class MazeGenerator : MonoBehaviour
         createdNodes.Add(coordinate, newNode);
         return newNode;
     }
+
     private string GetWallKey(Node node, Cardinal direction)
     {
         int x = node.Coordinates.X;

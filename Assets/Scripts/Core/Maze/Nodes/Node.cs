@@ -10,13 +10,13 @@ public class Node
 
     public int X => coordinates.X;
     public int Y => coordinates.Y;
-    public bool IsOnCorner { get; private set; }
     public object UsedBy { get; set; }
     public Coordinate Coordinates => coordinates;
     public Vector3 Position => associatedTiles[4].Position;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();
     private Dictionary<Cardinal, bool> edges = new Dictionary<Cardinal, bool>();
+    private Dictionary<Cardinal, bool> borders = new Dictionary<Cardinal, bool>();
     private List<TileData> associatedTiles;
 
     public Node(Coordinate coordinate, MazeSizeData sizeData)
@@ -55,44 +55,26 @@ public class Node
 
     public void Setup(Coordinate coordinate, MazeSizeData sizeData)
     {
-        MazeUtils.ExecuteActionWithAllCardinals(ClearEdgeAndCorner);
         MazeUtils.ExecuteActionWithAllCardinals(FillDictionary);
         UsedBy = null;
         Visited = false;
         coordinates = coordinate;
-        switch (X, Y)
-        {
-            case (0, 0):
-                edges[Cardinal.South] = true;
-                edges[Cardinal.West] = true;
-                break;
-            case (0, var yy) when yy == sizeData.Height - 1:
-                edges[Cardinal.North] = true;
-                edges[Cardinal.East] = true;
-                break;
-            case (var xx, 0) when xx == sizeData.Width - 1:
-                edges[Cardinal.South] = true;
-                edges[Cardinal.East] = true;
-                break;
-            case (var xx, var yy) when xx == sizeData.Width - 1 && yy == sizeData.Height - 1:
-                edges[Cardinal.North] = true;
-                edges[Cardinal.West] = true;
-                break;
-            case (var xx, _) when xx == 0:
-                edges[Cardinal.West] = true;
-                break;
-            case (var xx, _) when xx == sizeData.Width - 1:
-                edges[Cardinal.East] = true;
-                break;
-            case (_, var yy) when yy == 0:
-                edges[Cardinal.South] = true;
-                break;
-            case (_, var yy) when yy == sizeData.Height - 1:
-                edges[Cardinal.North] = true;
-                break;
-            default:
-                break;
-        }
+
+        bool isOnWestBorder = X == 0;
+        bool isOnEastBorder = X == sizeData.Width - 1;
+        bool isOnNorthBorder = Y == sizeData.Height - 1;
+        bool isOnSouthBorder = Y == 0;
+
+        borders[Cardinal.West] = isOnWestBorder;
+        borders[Cardinal.East] = isOnEastBorder;
+        borders[Cardinal.South] = isOnSouthBorder;
+        borders[Cardinal.North] = isOnNorthBorder;
+
+        edges[Cardinal.West] = isOnWestBorder && (isOnNorthBorder || isOnSouthBorder);
+        edges[Cardinal.East] = isOnEastBorder && (isOnNorthBorder || isOnSouthBorder);
+        edges[Cardinal.South] = isOnSouthBorder && (isOnEastBorder || isOnWestBorder);
+        edges[Cardinal.North] = isOnNorthBorder && (isOnEastBorder || isOnWestBorder);
+
         coordinates = new Coordinate(X, Y);
     }
 
@@ -102,18 +84,6 @@ public class Node
         if(wallDictionary.ContainsKey(direction))
         {
             return wallDictionary[direction] != null && wallDictionary[direction].IsActive;
-        }
-        return false;
-    }
-
-    public bool HasAnyWall()
-    {
-        foreach (Cardinal cardinal in Enum.GetValues(typeof(Cardinal)))
-        {
-            if (wallDictionary[cardinal].IsActive)
-            {
-                return true;
-            }
         }
         return false;
     }
@@ -143,18 +113,6 @@ public class Node
         }
     }
 
-    public void RemoveWall(Cardinal direction)
-    {
-        if (HasWall(direction))
-        {
-            ClearWall(direction);
-        }
-        else
-        {
-            Debug.LogWarning("There was no a wall to remove at X: " + coordinates.X + " Y: " + coordinates.Y + " " + direction);
-        }
-    }
-
     public void ReplaceWall(Cardinal direction, MazeWall wall)
     {
         if (HasWall(direction))
@@ -175,12 +133,6 @@ public class Node
             return wallDictionary[cardinal];
         }
         return null;
-    }
-
-    private void ClearWall(Cardinal direction)
-    {
-
-
     }
 
     /// <summary>
@@ -224,29 +176,20 @@ public class Node
     }
     #endregion
 
-    #region Edges
-    private void ClearEdgeAndCorner(Cardinal cardinal)
-    {
-        edges[cardinal] = false;
-        IsOnCorner = false;
-    }
-
-    public void SetEdge(Cardinal cardinal, bool isOnEdge = false)
-    {
-        edges[cardinal] = isOnEdge;
-    }
-
     public bool IsOnEdge(Cardinal cardinal)
     {
         return edges[cardinal];
     }
 
-    public void SetCorner()
+    public bool IsOnEdge()
     {
-        IsOnCorner = true;
+        return edges[Cardinal.North] || edges[Cardinal.East] || edges[Cardinal.South] || edges[Cardinal.West];
     }
 
-    #endregion
+    public bool IsOnBorder(Cardinal cardinal)
+    {
+        return borders[cardinal];
+    }    
 
     private void FillDictionary(Cardinal direction)
     {

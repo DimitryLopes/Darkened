@@ -5,12 +5,12 @@ public class Maze
     private LevelData data;
     private Node[,] nodes;
     private Dictionary<Coordinate, Node> edgeNodes;
-    private Dictionary<Coordinate, Node> cornerNodes;
+    private Dictionary<Coordinate, Node> borderNodes;
 
     public LevelData Data => data;
     public Node[,] Nodes => nodes;
     public Dictionary<Coordinate, Node> EdgeNodes => edgeNodes;
-    public Dictionary<Coordinate, Node> CornerNodes => cornerNodes;
+    public Dictionary<Coordinate, Node> BorderNodes => borderNodes;
 
     public List<Node> FreeNodes { get; set; } = new();
     public List<Node> UsedNodes { get; set; } = new();
@@ -35,7 +35,7 @@ public class Maze
         }
 
         edgeNodes = MazeUtils.GetEdgeNodes(nodes, data.SizeData);
-        cornerNodes = MazeUtils.GetCornerNodes(nodes, data.SizeData);
+        borderNodes = MazeUtils.GetBorderNodes(nodes, data.SizeData);
     }
 
     public void AddTorch(Node node, Torch torch, Cardinal direction)

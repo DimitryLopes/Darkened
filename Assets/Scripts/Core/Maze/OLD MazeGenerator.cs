@@ -305,12 +305,12 @@
 //    private void RemoveDeadEndWalls(Node node)
 //    {
 //        List<Cardinal> cardinals = EnumUtils.GetEnumValues<Cardinal>();
-//        if (node.IsOnCorner)
+//        if (node.IsOnBorder)
 //        {
-//            List<Node> cornerNeighbors = GetNeighbors(node, false);
-//            foreach (Node corner in cornerNeighbors)
+//            List<Node> borderNeighbors = GetNeighbors(node, false);
+//            foreach (Node border in borderNeighbors)
 //            {
-//                RemoveWallBetween(corner, node);
+//                RemoveWallBetween(border, node);
 //            }
 //            return;
 //        }

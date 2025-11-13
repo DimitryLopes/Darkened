@@ -66,16 +66,16 @@ public class MazeUtils
         return edgeNodes;
     }
 
-    public static Dictionary<Coordinate,Node> GetCornerNodes(Node[,] nodes, MazeSizeData data)
+    public static Dictionary<Coordinate,Node> GetBorderNodes(Node[,] nodes, MazeSizeData data)
     {
-        Dictionary<Coordinate, Node> corners = new Dictionary<Coordinate, Node>
+        Dictionary<Coordinate, Node> borders = new Dictionary<Coordinate, Node>
         {
             { nodes[0, 0].Coordinates, nodes[0, 0] },
             { nodes[0, data.Height - 1].Coordinates, nodes[0, data.Height - 1] },
             { nodes[data.Width - 1, 0].Coordinates, nodes[data.Width - 1, 0] },
             { nodes[data.Width - 1, data.Height - 1].Coordinates, nodes[data.Width - 1, data.Height - 1] }
         };
-        return corners;
+        return borders;
     }
 
     public static int GetCantorPairing(Coordinate item1, Coordinate item2)
