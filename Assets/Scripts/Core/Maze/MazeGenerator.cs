@@ -294,6 +294,7 @@ public class MazeGenerator : MonoBehaviour
                 if (x == 0 || x >= currentMaze.Data.Width || y == 0 || y >= currentMaze.Data.Height)
                 {
                     borderWallsTilemap.SetTile(pos, AssetService.GetWallTile());
+                    wallTilemap.SetTile(pos, AssetService.GetWallTile());
                     continue;
                 }
                 bool isBetween = CheckIfTileIsBetweenWalls(currentMaze.Nodes[x, y], currentMaze.Nodes[x - 1, y - 1]);
@@ -399,6 +400,10 @@ public class MazeGenerator : MonoBehaviour
         string wallID = GetWallKey(nodeA, direction);
         MazeWall wall = GetWall(wallID);
         wall.SetAsEmpty(wallTilemap);
+        foreach(TileData tile in wall.AssociatedTiles)
+        {
+            nodeTilemap.SetTile(tile.Position, AssetService.GetFloorTile());
+        }
     }
 
     public void ActivateWallBetween(Node nodeA, Node nodeB)
