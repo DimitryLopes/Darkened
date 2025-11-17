@@ -31,30 +31,18 @@ public class DifficultyData : ScriptableObject, IUISelectable
     private float darknessDartTorchReductionOnHit;
 
     [SerializeField]
-    private List<DifficultyItemData> difficultyItemDatas;
+    private List<ItemGenerationData> difficultyItemDatas;
 
     public float MinimumTorchRatio => minTorchRatio;
     public float LitTorchRatio => litTorchRatio;
     public float MaximumTorchRatio => maxTorchRatio;
     public float TorchRadius => torchRadius;
     public string Title => difficultyName;
-    public List<DifficultyItemData> DifficultyItemDatas => difficultyItemDatas;
+    public List<ItemGenerationData> DifficultyItemDatas => difficultyItemDatas;
     public float PlayerTorchBurnSpeedModifier => playerTorchBurnSpeedModifier;
     public float MaxDarknessTime => maxDarknessTime;
     public DifficultyType DifficultyType => difficulty;
     public SelectableType SelectableType => SelectableType.Difficulty;
     public float SpiritMovementSpeedModifier => spiritMovementSpeedModifier;
     public float DarknessDartTorchReductionOnHit => darknessDartTorchReductionOnHit;
-
-    [Serializable]
-    public struct DifficultyItemData
-    {
-        [SerializeField, Range(0, 1)]
-        private float probability;
-        [SerializeField]
-        private ItemType item;
-
-        public float Probability => probability;
-        public ItemType Item => item;
-    }
 }

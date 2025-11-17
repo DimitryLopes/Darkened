@@ -153,7 +153,7 @@ public class Node
         return (null, Cardinal.North);
     }
     /// <summary>
-    /// this will only returns a wall
+    /// this will only return a wall
     /// </summary>
     /// <returns></returns>
     public (MazeWall, Cardinal) GetAnyDefaultWall()

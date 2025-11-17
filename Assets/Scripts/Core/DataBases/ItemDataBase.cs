@@ -11,6 +11,7 @@ public class ItemDataBase : ScriptableObject
     private Dictionary<ItemType, Item> itemDatas;
 
     public Dictionary<ItemType, Item> ItemDatas => itemDatas;
+    public List<ItemTypeData> DataBase => itemDataBase;
 
     public void SetUp()
     {
@@ -30,6 +31,18 @@ public struct ItemTypeData
     [SerializeField]
     private Item item;
 
+    [Range(0, 100)]
+    [SerializeField]
+    private float probability; // Probability field
+
     public Item Item => item;
     public ItemType Type => type;
+
+    public float Probability
+    {
+        get => probability;
+        set => probability = Mathf.Clamp(value, 0, 100);
+    }
 }
+
+
