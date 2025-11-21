@@ -410,6 +410,32 @@ public class MazeGenerator : MonoBehaviour
     }
     #endregion
 
+    #region Step 6 
+    private IEnumerator<float> AddGates()
+    {
+        int gateCount = Mathf.FloorToInt(currentMaze.Data.SizeData.AverageGateAmount);
+        float additionalGateChance = currentMaze.Data.SizeData.AverageGateAmount - gateCount;
+        float random = UnityEngine.Random.Range(0, 1f);
+        if (random < additionalGateChance)
+        {
+            gateCount++;
+        }
+
+        for (int i = 0; i < gateCount; i++)
+        {
+            //find 3 nodes in a row with walls colliding
+            //Get wall between two walls
+
+            yield return LoadingUtils.GetProgress(i + 1, gateCount);
+        }
+
+
+        signalBus.Fire(new OnItemsLoadFinishSignal());
+        shadowCreator.Create(mazeCollider);
+        yield return 1;
+    }
+    #endregion
+
     #region Step 7
     private IEnumerator<float> AddTorches()
     {
