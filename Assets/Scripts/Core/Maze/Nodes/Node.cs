@@ -11,7 +11,7 @@ public class Node
     public int X => coordinates.X;
     public int Y => coordinates.Y;
     public object UsedBy { get; set; }
-    public Coordinate Coordinates => coordinates;
+    public Coordinate Coordinate => coordinates;
     public Vector3 Position => associatedTiles[4].Position;
 
     private Dictionary<Cardinal, MazeWall> wallDictionary = new Dictionary<Cardinal, MazeWall>();

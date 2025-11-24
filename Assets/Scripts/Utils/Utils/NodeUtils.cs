@@ -134,7 +134,7 @@ public class NodeUtils : MonoBehaviour
         MazeWall wall = node.GetWall(direction);
         if (wall == null)
         {
-            Debug.LogWarning($"No wall found at {direction} for node {node.Coordinates}. Attempting to find neighbor node.");
+            Debug.LogWarning($"No wall found at {direction} for node {node.Coordinate}. Attempting to find neighbor node.");
             var neighborNode = MazeUtils.GetNodeAtCardinalFromNode(direction, node, maze);
             var oppositeCardinal = GetOppositeCardinal(direction);
             wall = neighborNode.GetWall(oppositeCardinal);

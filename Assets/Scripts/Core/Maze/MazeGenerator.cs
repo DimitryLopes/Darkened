@@ -423,9 +423,8 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < gateCount; i++)
         {
-            //find 3 nodes in a row with walls colliding
-            //Get wall between two walls
-
+            List<MazeWall> availableWalls = GetAvailableGatePositions();
+            //Find walls that can be used for Switches 
             yield return LoadingUtils.GetProgress(i + 1, gateCount);
         }
 
@@ -433,6 +432,57 @@ public class MazeGenerator : MonoBehaviour
         signalBus.Fire(new OnItemsLoadFinishSignal());
         shadowCreator.Create(mazeCollider);
         yield return 1;
+    }
+
+    private List<MazeWall> GetAvailableGatePositions()
+    {
+        List<MazeWall> availableGates = new List<MazeWall>();
+
+        Node northNeighbor;
+        Node southNeighbor;
+        Node eastNeighbor;
+        Node westNeighbor;
+
+        foreach (var node in currentMaze.Nodes)
+        {
+            var north = MazeUtils.GetNodeAtCardinalFromNode(Cardinal.North, node, currentMaze);
+            var south = MazeUtils.GetNodeAtCardinalFromNode(Cardinal.South, node, currentMaze);
+            var east = MazeUtils.GetNodeAtCardinalFromNode(Cardinal.East, node, currentMaze);
+            var west = MazeUtils.GetNodeAtCardinalFromNode(Cardinal.West, node, currentMaze);
+
+            CheckOne(north, Cardinal.East, Cardinal.South);
+            CheckOne(north, Cardinal.West, Cardinal.South);
+
+            CheckOne(south, Cardinal.East, Cardinal.North);
+            CheckOne(south, Cardinal.West, Cardinal.North);
+
+            CheckOne(east, Cardinal.South, Cardinal.West);
+            CheckOne(east, Cardinal.North, Cardinal.West);
+
+            CheckOne(west, Cardinal.South, Cardinal.East);
+            CheckOne(west, Cardinal.North, Cardinal.East);
+
+            CheckTwo(west, east, Cardinal.North);
+            CheckTwo(west, east, Cardinal.South);
+
+            CheckTwo(north, south, Cardinal.East);
+            CheckTwo(north, south, Cardinal.West);
+
+            void CheckOne(Node neighbor, Cardinal dir, Cardinal complement)
+            {
+                if (neighbor == null) return;
+                if (neighbor.HasWall(dir) && node.HasWall(dir) && node.HasWall(complement))
+                    availableGates.Add(node.GetWall(dir));
+            }
+
+            void CheckTwo(Node nodeA, Node nodeB, Cardinal dir)
+            {
+                if (nodeA == null || nodeB == null) return;
+                if (nodeA.HasWall(dir) && nodeB.HasWall(dir) && node.HasWall(dir))
+                    availableGates.Add(node.GetWall(dir));
+            }
+        }
+        return availableGates;
     }
     #endregion
 
@@ -629,8 +679,8 @@ public class MazeGenerator : MonoBehaviour
 
     private string GetWallKey(Node node, Cardinal direction)
     {
-        int x = node.Coordinates.X;
-        int y = node.Coordinates.Y;
+        int x = node.Coordinate.X;
+        int y = node.Coordinate.Y;
 
         int nx, ny;
         switch (direction)

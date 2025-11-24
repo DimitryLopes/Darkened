@@ -53,14 +53,14 @@ public class MazeUtils
 
         for (int y = 0; y < height; y++)
         {
-            edgeNodes.Add(nodes[0, y].Coordinates, nodes[0, y]);
-            edgeNodes.Add(nodes[width - 1, y].Coordinates, nodes[width - 1, y]);
+            edgeNodes.Add(nodes[0, y].Coordinate, nodes[0, y]);
+            edgeNodes.Add(nodes[width - 1, y].Coordinate, nodes[width - 1, y]);
         }
 
         for (int x = 1; x < width - 1; x++)
         {
-            edgeNodes.Add(nodes[x, 0].Coordinates, nodes[x, 0]);
-            edgeNodes.Add(nodes[x, height - 1].Coordinates, nodes[x, height - 1]);
+            edgeNodes.Add(nodes[x, 0].Coordinate, nodes[x, 0]);
+            edgeNodes.Add(nodes[x, height - 1].Coordinate, nodes[x, height - 1]);
         }
 
         return edgeNodes;
@@ -70,10 +70,10 @@ public class MazeUtils
     {
         Dictionary<Coordinate, Node> borders = new Dictionary<Coordinate, Node>
         {
-            { nodes[0, 0].Coordinates, nodes[0, 0] },
-            { nodes[0, data.Height - 1].Coordinates, nodes[0, data.Height - 1] },
-            { nodes[data.Width - 1, 0].Coordinates, nodes[data.Width - 1, 0] },
-            { nodes[data.Width - 1, data.Height - 1].Coordinates, nodes[data.Width - 1, data.Height - 1] }
+            { nodes[0, 0].Coordinate, nodes[0, 0] },
+            { nodes[0, data.Height - 1].Coordinate, nodes[0, data.Height - 1] },
+            { nodes[data.Width - 1, 0].Coordinate, nodes[data.Width - 1, 0] },
+            { nodes[data.Width - 1, data.Height - 1].Coordinate, nodes[data.Width - 1, data.Height - 1] }
         };
         return borders;
     }
@@ -215,30 +215,30 @@ public class MazeUtils
         switch (direction)
         {
             case Cardinal.North:
-                if (node.Coordinates.Y < maze.Data.Height - 1)
+                if (node.Coordinate.Y < maze.Data.Height - 1)
                 {
-                    coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y + 1);
+                    coordinate = new Coordinate(node.Coordinate.X, node.Coordinate.Y + 1);
                     return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.South:
-                if (node.Coordinates.Y > 0)
+                if (node.Coordinate.Y > 0)
                 {
-                    coordinate = new Coordinate(node.Coordinates.X, node.Coordinates.Y - 1);
+                    coordinate = new Coordinate(node.Coordinate.X, node.Coordinate.Y - 1);
                     return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.East:
-                if (node.Coordinates.X < maze.Data.Width - 1)
+                if (node.Coordinate.X < maze.Data.Width - 1)
                 {
-                    coordinate = new Coordinate(node.Coordinates.X + 1, node.Coordinates.Y);
+                    coordinate = new Coordinate(node.Coordinate.X + 1, node.Coordinate.Y);
                     return maze.NodesByCoordinate[coordinate];
                 }
                 break;
             case Cardinal.West:
-                if (node.Coordinates.X > 0)
+                if (node.Coordinate.X > 0)
                 {
-                    coordinate = new Coordinate(node.Coordinates.X - 1, node.Coordinates.Y);
+                    coordinate = new Coordinate(node.Coordinate.X - 1, node.Coordinate.Y);
                     return maze.NodesByCoordinate[coordinate];
                 }
                 break;

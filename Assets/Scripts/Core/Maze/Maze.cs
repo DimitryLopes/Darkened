@@ -31,7 +31,7 @@ public class Maze
         foreach(Node node in nodes)
         {
             FreeNodes.Add(node);
-            NodesByCoordinate.Add(node.Coordinates, node);
+            NodesByCoordinate.Add(node.Coordinate, node);
         }
 
         edgeNodes = MazeUtils.GetEdgeNodes(nodes, data.SizeData);
@@ -51,7 +51,7 @@ public class Maze
 
         if (!FreeNodes.Contains(node))
         {
-            UnityEngine.Debug.Log($"Node {node.Coordinates} is already used or not found in FreeNodes.");
+            UnityEngine.Debug.Log($"Node {node.Coordinate} is already used or not found in FreeNodes.");
             return;
         }
         node.UsedBy = usedBy;
