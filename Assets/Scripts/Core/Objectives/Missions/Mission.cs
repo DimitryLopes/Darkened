@@ -77,7 +77,7 @@ public abstract class Mission<T> : IMission where T : MissionData
         IsCompleted = true;
     }
 
-    public void SetUp<U>(U data, DifficultyType difficulty) where U : MissionData
+    public virtual void SetUp<U>(U data, DifficultyType difficulty) where U : MissionData
     {
         Data = data as T;
         Difficulty = difficulty;

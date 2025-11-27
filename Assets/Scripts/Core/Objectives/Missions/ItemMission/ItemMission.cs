@@ -20,6 +20,13 @@ public class ItemMission : Mission<ItemMissionData>
         UpdateProgress();
     }
 
+    public override void SetUp<U>(U data, DifficultyType difficulty)
+    {
+        base.SetUp(data, difficulty);
+        Data.Clear();
+        Data.SetUp();
+    }
+
     public List<ItemType> GetRequiredItems()
     {
         List<ItemType> items = new List<ItemType>();
@@ -44,8 +51,6 @@ public class ItemMission : Mission<ItemMissionData>
 
     protected override void OnActivate()
     {
-        Data.Clear();
-        Data.SetUp();
         foreach (MissionItem item in Items)
         {
             item.EnableInteraction();

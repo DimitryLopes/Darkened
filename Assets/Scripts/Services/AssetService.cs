@@ -35,9 +35,14 @@ public class AssetService
         return LoadTile(Constants.Assets.MAZE_WALL_TILE_PATH);
     }
 
-    public static TileBase GetGateTile()
+    public static TileBase GetClosedGateTile()
     {
-        return LoadTile(Constants.Assets.MAZE_WALL_TILE_PATH);
+        return LoadTile(Constants.Assets.MAZE_GATE_CLOSED_TILE_PATH);
+    }
+
+    public static TileBase GetOpenGateTile()
+    {
+        return LoadTile(Constants.Assets.MAZE_GATE_OPEN_TILE_PATH);
     }
 
     public static TileBase LoadTile(string path)

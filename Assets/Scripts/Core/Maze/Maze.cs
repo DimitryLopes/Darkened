@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 
 public class Maze
 {
@@ -16,11 +17,13 @@ public class Maze
     public List<Node> UsedNodes { get; set; } = new();
     public List<Torch> Torches = new();
     public List<IToggable> Toggables { get; set; } = new();
+    public Tilemap WallTilemap { get; private set; }
     public Dictionary<Coordinate, Node> NodesByCoordinate { get; private set; } = new();
 
-    public Maze(LevelData data)
+    public Maze(LevelData data, Tilemap wallsTilemap)
     {
         this.data = data;
+        WallTilemap = wallsTilemap;
     }
 
     public void SetNodes(Node[,] nodes)

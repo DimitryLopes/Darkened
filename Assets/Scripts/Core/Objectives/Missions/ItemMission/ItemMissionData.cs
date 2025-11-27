@@ -12,7 +12,7 @@ public class ItemMissionData : MissionData
     private List<MissionItemData> dataList;
 
     public ItemType Item => itemType;
-    public Dictionary<DifficultyType, MissionItemData> ItemDatas = new();
+    public Dictionary<DifficultyType, MissionItemData> ItemDatas { get; private set;} = new();
 
     public void SetUp()
     {

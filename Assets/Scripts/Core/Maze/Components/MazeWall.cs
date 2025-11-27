@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
 
-public class MazeWall 
+public class MazeWall : IToggable
 {
     public List<TileData> AssociatedTiles { get; private set; }
 
@@ -14,11 +14,12 @@ public class MazeWall
 
     public (Node, Node) AdjacentNodes;
     public Vector3 Position => AssociatedTiles[1].Position;
-
+    private bool toggled;
+    public bool Toggled => toggled;
 
     public void AddNode(Node node)
     {
-        if(AdjacentNodes.Item1 == null || AdjacentNodes.Item1 == node)
+        if (AdjacentNodes.Item1 == null || AdjacentNodes.Item1 == node)
         {
             AdjacentNodes.Item1 = node;
         }
@@ -50,16 +51,28 @@ public class MazeWall
         State = MazeWallState.Wall;
     }
 
-    public void SetAsGate(Tilemap tilemap)
+    public void SetAsClosedGate(Tilemap tilemap)
     {
         Vector3Int pos = new Vector3Int();
         foreach (TileData coordinate in AssociatedTiles)
         {
             pos.x = coordinate.X;
             pos.y = coordinate.Y;
-            tilemap.SetTile(pos, AssetService.GetGateTile());
+            tilemap.SetTile(pos, AssetService.GetClosedGateTile());
         }
-        State = MazeWallState.Gate;
+        State = MazeWallState.Gate_Closed;
+    }
+
+    public void SetAsOpenGate(Tilemap tilemap)
+    {
+        Vector3Int pos = new Vector3Int();
+        foreach (TileData coordinate in AssociatedTiles)
+        {
+            pos.x = coordinate.X;
+            pos.y = coordinate.Y;
+            tilemap.SetTile(pos, AssetService.GetOpenGateTile());
+        }
+        State = MazeWallState.Gate_Open;
     }
 
     public void SetAsEmpty(Tilemap tilemap)
@@ -74,22 +87,37 @@ public class MazeWall
         State = MazeWallState.Empty;
     }
 
-    //public virtual void OnWallCreated(SignalBus signalBus)
-    //{
-    //    this.signalBus = signalBus;
-    //    signalBus.Subscribe<OnItemsLoadFinishSignal>(AddToComposite);
-    //}
+    public void Toggle(MazeManager mazeManager)
+    {
+        if (State == MazeWallState.Gate_Closed)
+        {
+            SetAsOpenGate(mazeManager.CurrentMaze.WallTilemap);
+            toggled = true;
+        }
+        else if (State == MazeWallState.Gate_Open)
+        {
+            SetAsClosedGate(mazeManager.CurrentMaze.WallTilemap);
+            toggled = false;
+        }
 
-    //private void AddToComposite()
-    //{
-    //    boxCollider.usedByComposite = true;
-    //    signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
-    //}
-}
+        //public virtual void OnWallCreated(SignalBus signalBus)
+        //{
+        //    this.signalBus = signalBus;
+        //    signalBus.Subscribe<OnItemsLoadFinishSignal>(AddToComposite);
+        //}
 
-public enum MazeWallState
-{
-    Empty,
-    Wall,
-    Gate
+        //private void AddToComposite()
+        //{
+        //    boxCollider.usedByComposite = true;
+        //    signalBus.Unsubscribe<OnItemsLoadFinishSignal>(AddToComposite);
+        //}
+    }
+
+    public enum MazeWallState
+    {
+        Empty,
+        Wall,
+        Gate_Closed,
+        Gate_Open
+    }
 }

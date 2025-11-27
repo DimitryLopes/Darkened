@@ -50,7 +50,7 @@ public class MazeGenerator : MonoBehaviour
     {
         this.mazeManager ??= mazeManager;
         ClearMaze();
-        currentMaze = new Maze(data);
+        currentMaze = new Maze(data, wallTilemap);
 
         LoadingOperation mazeLoadingOperation = MazeLoadOperation();
         LoadingScreenController controller = new LoadingScreenController(mazeLoadingOperation, OnMazeGenerationFinish, audioManager);
@@ -76,15 +76,15 @@ public class MazeGenerator : MonoBehaviour
         IEnumerator<float> step5enumerator = AddItems();
         LoadingStep step5 = new LoadingStep(step5enumerator, coroutiner, "Forcing your build");
 
-        //IEnumerator<float> step6enumerator = AddGates();
-        //LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Open sezame");
+        IEnumerator<float> step6enumerator = AddGates();
+        LoadingStep step6 = new LoadingStep(step6enumerator, coroutiner, "Open sezame");
 
         IEnumerator<float> step7enumerator = AddTorches();
         LoadingStep step7 = new LoadingStep(step7enumerator, coroutiner, "adicionando lá iluminación");
 
         List<LoadingStep> steps = new List<LoadingStep>
         {
-            step1, step2, step3, step4, step5, /*step6,*/ step7
+            step1, step2, step3, step4, step5, step6, step7
         };
 
         LoadingOperation operation = new LoadingOperation(steps, coroutiner);
@@ -424,7 +424,12 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 0; i < gateCount; i++)
         {
             List<MazeWall> availableWalls = GetAvailableGatePositions();
-            //Find walls that can be used for Switches 
+            availableWalls.Shuffle();
+
+            var switchItem = mazeManager.GetAvailableItem(ItemType.Switch) as Switch;
+            switchItem.Associate(availableWalls[0]);
+            PositionItem(switchItem);
+
             yield return LoadingUtils.GetProgress(i + 1, gateCount);
         }
 
