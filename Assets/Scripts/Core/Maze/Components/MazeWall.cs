@@ -81,8 +81,8 @@ public class MazeWall : IToggable
         foreach (TileData coordinate in AssociatedTiles)
         {
             pos.x = coordinate.X;
-            pos.y = coordinate.Y;
-            tilemap.SetTile(pos, AssetService.GetFloorTile());
+            pos.y = coordinate.Y; 
+            tilemap.SetTile(pos, null);
         }
         State = MazeWallState.Empty;
     }

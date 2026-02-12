@@ -295,7 +295,6 @@ public class MazeGenerator : MonoBehaviour
                 if (x == 0 || x >= currentMaze.Data.Width || y == 0 || y >= currentMaze.Data.Height)
                 {
                     borderWallsTilemap.SetTile(pos, AssetService.GetWallTile());
-                    wallTilemap.SetTile(pos, AssetService.GetWallTile());
                     continue;
                 }
                 bool isBetween = CheckIfTileIsBetweenWalls(currentMaze.Nodes[x, y], currentMaze.Nodes[x - 1, y - 1]);
@@ -306,10 +305,10 @@ public class MazeGenerator : MonoBehaviour
                 }
                 else
                 {
-                    wallTilemap.SetTile(pos, AssetService.GetFloorTile());
+                    nodeTilemap.SetTile(pos, AssetService.GetFloorTile());
                 }
-                yield return LoadingUtils.GetProgress(y * CurrentData.Height, length);
             }
+            yield return LoadingUtils.GetProgress(x * CurrentData.Width, length);
         }
         yield return LoadingUtils.GetProgress(length, length);
     }
@@ -435,7 +434,6 @@ public class MazeGenerator : MonoBehaviour
 
 
         signalBus.Fire(new OnItemsLoadFinishSignal());
-        shadowCreator.Create(mazeCollider);
         yield return 1;
     }
 
@@ -519,7 +517,9 @@ public class MazeGenerator : MonoBehaviour
             yield return LoadingUtils.GetProgress(added, torchCount);
         }
 
+        shadowCreator.Create(mazeCollider);
         yield return 1;
+
     }
     public void PlaceTorchAt(Node node, Cardinal direction)
     {

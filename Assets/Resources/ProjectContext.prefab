@@ -1753,7 +1753,7 @@ MonoBehaviour:
   borderWallsTilemap: {fileID: 7295185990799556119}
   itemsContainer: {fileID: 865137027384874084}
   torchContainer: {fileID: 1271501962966000743}
-  mazeCollider: {fileID: 7331202548768803152}
+  mazeCollider: {fileID: 8560624775339179183}
   shadowCreator: {fileID: 967600210060295656}
 --- !u!4 &8865144187318529271 stripped
 Transform:

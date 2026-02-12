@@ -61,7 +61,7 @@ public class PlayerTorch : MonoBehaviour
     {
         if (!CanBurn) return;
 
-        currentLifeTime -= Time.deltaTime * burnSpeedModifier;
+       // currentLifeTime -= Time.deltaTime * burnSpeedModifier;
         if (currentLifeTime <= 0)
         {
             currentLifeTime = 0;
